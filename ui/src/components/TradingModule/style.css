@@ -1,0 +1,11 @@
+.trading_module {
+  border: 2px solid white;
+  border-radius: 15px;
+  background-color: rgb(10, 5, 27);
+  height: 50%;
+  overflow: hidden;
+}
+
+.connect_button {
+  height: 70%;
+}

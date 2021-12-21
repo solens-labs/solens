@@ -1,0 +1,90 @@
+.App {
+  /* position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto; */
+  /* background: linear-gradient(
+    90deg,
+    rgb(145, 137, 127) -40%,
+    rgb(253, 240, 222),
+    rgb(145, 137, 127) 130%
+  ); */
+  /* background-color: rgb(228, 215, 200); */
+  background-color: rgb(25, 16, 51);
+}
+
+.light_mode {
+}
+
+.font_main {
+  font-family: "MTV";
+}
+
+.font_alt {
+  font-family: "alt";
+}
+
+.navigation {
+  /* height: 10%; */
+  /* overflow: hidden; */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.page_content {
+  margin-top: 2%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5%;
+}
+
+.page_box {
+  background: linear-gradient(rgba(75, 53, 134, 0.7), rgba(0, 0, 0, 0.7));
+  /* border: 2px solid rgb(250, 163, 64); */
+  /* background: linear-gradient(
+    rgba(75, 53, 134, 0.7),
+    rgba(35, 141, 67, 0.5) 80%
+  ); */
+  backdrop-filter: blur(50px);
+  border: 2px solid rgb(64, 250, 120);
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px black;
+  /* box-shadow: 0px 0px 20px 5px white; */
+  overflow: hidden;
+  padding: 50px 20px;
+  height: auto;
+  /* width: auto; */
+  /* height: 100%; */
+  /* margin: auto auto; */
+}
+
+.scroll_top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+
+  align-items: center;
+  border-color: black;
+  border-radius: 50px;
+  box-shadow: 0px 0px 2px black;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  height: 40px;
+  width: 100px;
+  overflow: hidden;
+  padding: 0px 7px;
+  z-index: 3;
+}
+
+@media screen and (max-width: 1250px) {
+  .scroll_top {
+    bottom: 10px;
+  }
+}

@@ -1,0 +1,35 @@
+.search_collection_input {
+  background: rgb(18, 11, 37);
+  border-radius: 15px;
+  padding: 15px 30px;
+  margin-bottom: 0.5rem;
+  min-width: 400px;
+  border: 1px solid black;
+  color: white;
+}
+
+.select_collection_filter {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url("../../assets/images/down_arrow.svg") no-repeat 360px 23px;
+  background-color: rgb(18, 11, 37);
+  border-radius: 15px;
+  padding: 15px 30px;
+  margin-bottom: 0.5rem;
+  min-width: 400px;
+  border: 1px solid black;
+  color: white;
+}
+
+@media screen and (max-width: 900px) {
+  .search_collection_input {
+    min-width: 350px;
+  }
+  .select_collection_filter {
+    background: url("../../assets/images/down_arrow.svg") no-repeat 310px 23px;
+    background-color: rgb(18, 11, 37);
+    min-width: 350px;
+    height: 65px;
+  }
+}

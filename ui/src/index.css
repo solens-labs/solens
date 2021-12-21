@@ -1,0 +1,77 @@
+/* * {
+  box-sizing: border-box;
+} */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
+* {
+  box-sizing: border-box;
+  font-family: "main", sans-serif;
+  font-size: 22px;
+}
+
+html {
+  height: 100%;
+  overflow: auto;
+}
+::-webkit-scrollbar {
+  width: 8px; /* Remove scrollbar space */
+  height: 5px;
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+::-webkit-scrollbar-thumb {
+  background: white;
+}
+
+body {
+  height: 100%;
+  /* overflow: visible; */
+  margin: 0;
+  color: white;
+  /* background: linear-gradient(0deg, rgba(51, 38, 38, 0.3), rgba(0, 0, 0, 0.6)),
+    url("images/background.png") no-repeat center center fixed; */
+  /* background: url("images/background.png") no-repeat center center fixed; */
+  /* background-size: cover; */
+  background-color: rgb(25, 16, 51);
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+@font-face {
+  font-family: "alt";
+  src: local("alt"),
+    url("./assets/fonts/MidnightMinutes.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "main";
+  src: local("main"), url("./assets/fonts/Rajdhani.ttf") format("truetype");
+}
+
+/* .MuiDialogTitle-root {
+  color: white !important;
+  background: radial-gradient(
+    circle at left bottom,
+    rgb(193, 122, 171),
+    rgb(77, 96, 185),
+    rgb(80, 235, 188)
+  ) !important;
+}
+
+.MuiButton-root {
+  color: white !important;
+}
+
+.MuiButton-root:hover {
+  color: black !important;
+  background: rgb(212, 212, 212) !important;
+} */

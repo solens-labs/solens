@@ -1,0 +1,93 @@
+.mint_box {
+  /* background: linear-gradient(rgb(250, 163, 64), rgb(75, 53, 134)); */
+  /* background-color: rgb(75, 53, 134); */
+  background-color: rgba(46, 33, 83, 0.7);
+  /* background: radial-gradient(
+      circle at center center,
+      rgb(250, 163, 64),
+      rgb(75, 53, 134) 110%
+    ); */
+  /* border: 2px solid rgb(250, 163, 64); */
+  border: 2px solid rgb(64, 250, 120);
+  color: rgb(64, 250, 120);
+  border-radius: 15px;
+  backdrop-filter: blur(50px);
+  box-shadow: 0px 0px 20px black;
+  overflow: hidden;
+  padding: 40px 0px;
+  /* min-height: 250px; */
+}
+
+.mint_container {
+  margin-bottom: 5%;
+}
+
+.input_amount {
+  width: 100%;
+  min-width: 250px;
+  text-align: center;
+  border-radius: 15px;
+  border: 2px solid black;
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(64, 250, 120);
+  color: rgb(75, 53, 134);
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.minted_amount {
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+}
+
+.stat_header {
+  font-size: 2.5rem;
+  border-bottom: 1px solid rgb(64, 250, 120);
+}
+
+.stat {
+  font-size: 2rem;
+}
+
+.collection_image {
+  /* height: 350px; */
+  width: auto;
+  border: 2px solid black;
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px black;
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width: 1250px) {
+  .input_amount {
+    font-size: 1.3rem;
+  }
+
+  .stat_header {
+    font-size: 2rem;
+  }
+
+  .stat {
+    font-size: 1.5rem;
+  }
+}
+
+/* .MuiButton-containedPrimary,
+.MuiButton-contained {
+  align-items: center !important;
+  border: 2px solid rgb(250, 163, 64) !important;
+  border-radius: 15px !important;
+  box-shadow: 0px 0px 5px 2px #000000 !important;
+  color: rgb(250, 163, 64) !important;
+  cursor: pointer !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  height: 50px !important;
+  justify-content: center !important;
+  margin: 5px !important;
+  overflow: hidden !important;
+  padding: 0 50px !important;
+  transition: border 0.185s ease-out !important;
+  z-index: 3 !important;
+  background-color: rgb(75, 53, 134) !important;
+} */

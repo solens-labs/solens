@@ -1,0 +1,93 @@
+/*
+COLORS:
+- main: rgb(240,148,55), F09437
+- alt: rgb(193, 122, 171), c17aab
+- accent: rgb(56,137,216), 3889D8
+
+rgb(193, 122, 171),
+rgb(77, 96, 185),
+rgb(80, 235, 188)
+*/
+
+.btn-button {
+  align-items: center;
+  border-color: black;
+  border-radius: 15px;
+  box-shadow: 0px 0px 5px black;
+  color: white;
+  cursor: pointer;
+  font-size: 25px;
+  font-weight: 700;
+  height: 50px;
+  justify-content: center;
+  /* margin: 5px; */
+  width: 160px;
+  overflow: hidden;
+  padding: 0 16px;
+  position: relative;
+  text-indent: 0;
+  transition: border 0.185s ease-out;
+  z-index: 3;
+}
+
+.pagination_button {
+  width: 100px;
+  font-size: 20px;
+  height: 40px;
+  padding: 0 10px;
+}
+
+.btn-button:hover {
+  /* background: rgba(255, 255, 255, 1); */
+}
+
+.btn-main {
+  /* background: linear-gradient(90deg, rgb(63, 49, 109), rgb(134, 64, 117)); */
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+}
+.btn-wide {
+  display: block;
+  width: 100% !important;
+}
+
+.btn-alt {
+  background-color: #c17aab;
+}
+
+.btn-accent {
+  /* background-color: rgb(80, 235, 188); */
+  background-color: rgb(64, 250, 120);
+  color: black;
+}
+
+.btn-large {
+  height: 70px;
+  width: 250px;
+}
+
+.btn-mint {
+  background-color: #3889d8;
+  border: 1px solid black !important;
+}
+
+.btn-nft {
+  background-color: #3889d8;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  height: 24px !important;
+}
+
+.btn-button:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
+/* @media only screen and (max-width: 576px) {
+  .social-buttons {
+    margin-top: 20px;
+  }
+
+  .btn-button {
+    height: 40px;
+    font-size: 20px;
+  }
+} */
