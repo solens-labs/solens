@@ -11,7 +11,7 @@ import { selectAllCollections, setAllCollections } from "../redux/app";
 import axios from "axios";
 import Navigation from "../components/Navigation";
 import LandingPage from "../components/LandingPage";
-import { api } from "../constants/constants";
+import { endpoints } from "../constants/constants";
 import ScrollToTop from "../utils/ScrollToTop";
 import createHistory from "history/createBrowserHistory";
 import ReactGA from "react-ga";
@@ -36,7 +36,7 @@ export default function Home(props) {
   useEffect(async () => {
     if (allCollections.length === 0) {
       const collectionsData = await axios
-        .get(api.allCollections)
+        .get(endpoints.api.getAllCollections)
         .then((response) => {
           const collections = response.data;
           const collectionsAboveZero = collections.filter((collection) => {
@@ -55,6 +55,7 @@ export default function Home(props) {
             return addedStat;
           });
 
+          // console.log(dailyChangeAdded);
           dispatch(setAllCollections(dailyChangeAdded));
         })
         .catch((error) => console.log(error));

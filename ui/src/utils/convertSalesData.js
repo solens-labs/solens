@@ -16,8 +16,7 @@ const addTransaction = (transaction) => {
       target="_blank"
       style={{ textDecoration: "none" }}
     >
-      {shortenAddress(transaction["mint"])}
-      {/* {transaction["mint"]} */}
+      {transaction["mint"]}
     </a>
   );
   const price = Number(transaction["price"]).toFixed(2);
