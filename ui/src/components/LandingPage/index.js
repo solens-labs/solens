@@ -93,7 +93,13 @@ export default function LandingPage(props) {
         </div>
         <div className="market_stat mt-5">
           <h1>Solana Price</h1>
-          <h3>${solPrice.toLocaleString()}</h3>
+          <h3>
+            $
+            {solPrice.toLocaleString("en", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </h3>
         </div>
       </div>
 
