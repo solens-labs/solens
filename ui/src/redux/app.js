@@ -16,6 +16,8 @@ const initialState = {
   solPrice: 0,
   debug: false,
   showMore: false,
+  whaleBuyers: [],
+  whaleSellers: [],
 };
 
 // Slice
@@ -65,6 +67,12 @@ const app = createSlice({
     setShowMore: (state, action) => {
       state.showMore = action.payload;
     },
+    setWhaleBuyers: (state, action) => {
+      state.whaleBuyers = action.payload;
+    },
+    setWhaleSellers: (state, action) => {
+      state.whaleSellers = action.payload;
+    },
   },
 });
 
@@ -84,6 +92,8 @@ export const {
   setSolPrice,
   setDebugMode,
   setShowMore,
+  setWhaleBuyers,
+  setWhaleSellers,
 } = app.actions;
 
 // Selectors
@@ -101,6 +111,8 @@ export const selectSort = (state) => state.app.sort;
 export const selectSolPrice = (state) => state.app.solPrice;
 export const selectDebugMode = (state) => state.app.debug;
 export const selectShowMore = (state) => state.app.showMore;
+export const selectWhaleBuyers = (state) => state.app.whaleBuyers;
+export const selectWhaleSellers = (state) => state.app.whaleSellers;
 
 // Reducer
 export default app.reducer;

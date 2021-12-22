@@ -2,7 +2,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import "./Home.css";
 
 import { useLocation, Switch, Route } from "react-router-dom";
-import { selectCollection, selectColorMode, setDebugMode } from "../redux/app";
+import {
+  selectCollection,
+  selectColorMode,
+  selectWhaleBuyers,
+  selectWhaleSellers,
+  setDebugMode,
+  setWhaleBuyers,
+  setWhaleSellers,
+} from "../redux/app";
 import { useSelector, useDispatch } from "react-redux";
 import ItemPage from "../components/ItemPage";
 import CollectionList from "../components/CollectionList";
@@ -11,8 +19,8 @@ import { selectAllCollections, setAllCollections } from "../redux/app";
 import axios from "axios";
 import Navigation from "../components/Navigation";
 import LandingPage from "../components/LandingPage";
-import { api } from "../constants/constants";
-import ScrollToTop from "../utils/ScrollToTop";
+import { api, queries } from "../constants/constants";
+import ScrollToTop from "../utils/scrollToTop";
 import createHistory from "history/createBrowserHistory";
 import ReactGA from "react-ga";
 
@@ -31,6 +39,8 @@ export default function Home(props) {
 
   // Get Global State Collections List
   const allCollections = useSelector(selectAllCollections);
+  const whaleBuyers = useSelector(selectWhaleBuyers);
+  const whaleSellers = useSelector(selectWhaleSellers);
 
   // Fetch All Collections & Send to Global State
   useEffect(async () => {
@@ -58,6 +68,31 @@ export default function Home(props) {
           dispatch(setAllCollections(dailyChangeAdded));
         })
         .catch((error) => console.log(error));
+    }
+  }, []);
+
+  // Fetch Whales Data
+  useEffect(async () => {
+    if (whaleBuyers.length === 0) {
+      const apiRequest =
+        api.topTraders + "?type=buyers" + queries.days + 7 + queries.sortVolume;
+      const whales = axios.get(apiRequest).then((response) => {
+        const whaleList = response.data;
+        dispatch(setWhaleBuyers(whaleList));
+      });
+    }
+
+    if (whaleSellers.length === 0) {
+      const apiRequest =
+        api.topTraders +
+        "?type=sellers" +
+        queries.days +
+        7 +
+        queries.sortVolume;
+      const whales = axios.get(apiRequest).then((response) => {
+        const whaleList = response.data;
+        dispatch(setWhaleSellers(whaleList));
+      });
     }
   }, []);
 

@@ -1,0 +1,47 @@
+.whale_card {
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
+  margin: 5px;
+  width: 400px;
+  height: 400px;
+  border: 1px solid black;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0px 0px 20px black;
+  padding: 20px 0px 0px 0px;
+}
+.font_white {
+  color: white;
+}
+
+.whale_image_container {
+  height: 125px;
+  width: 125px;
+  overflow: hidden;
+  /* background: rgb(28, 0, 59); */
+  background: white;
+  border-radius: 100%;
+  /* border: 2px solid black; */
+}
+
+.whale_image {
+  /* padding-top: 20px; */
+  max-height: 125px;
+  /* width: 100%; */
+  object-fit: cover;
+  /* max-width: 100px; */
+}
+
+.whale_address {
+  font-size: 1.5rem;
+  color: white;
+  /* font-weight: bold; */
+}
+
+.whale_stat_large {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.whale_stat_small {
+  font-size: 1rem;
+}

@@ -7,15 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectAllCollections,
   selectSolPrice,
+  selectWhaleBuyers,
+  selectWhaleSellers,
   setSolPrice,
 } from "../../redux/app";
 import { getTopTrending } from "../../utils/landingPage";
 import axios from "axios";
 import { links } from "../../constants/constants";
+import WhaleCard from "../WhaleCard";
 
 export default function LandingPage(props) {
   const dispatch = useDispatch();
   const collections = useSelector(selectAllCollections);
+  const whaleBuyers = useSelector(selectWhaleBuyers);
+  const whaleSellers = useSelector(selectWhaleSellers);
   const [trending, setTrending] = useState([]);
   const solPrice = useSelector(selectSolPrice);
   const [volumeTotal, setVolumeTotal] = useState(0);
@@ -35,7 +40,7 @@ export default function LandingPage(props) {
           collection.daily_volume > 20
         );
       });
-      const truncated = relevant.slice(0, 8);
+      const truncated = relevant.slice(0, 4);
       // console.log(truncated);
       setTrending(truncated);
     }
@@ -102,6 +107,55 @@ export default function LandingPage(props) {
         <h5 className="collection_stats_days mb-3">LAST 24 HOURS</h5>
 
         <CollectionSection collections={trending} sort={"daily_change"} />
+      </div>
+
+      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
+        <h1 className="mb-0">Whales of the Week</h1>
+        <hr style={{ color: "white", width: "50%" }} className="mb-4" />
+
+        <h5
+          className="collection_stats_days font_white mt-2 mb-3"
+          style={{ fontSize: "1.5rem" }}
+        >
+          BIGGEST BUYERS
+        </h5>
+
+        <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
+          {whaleBuyers.map((whale, i) => {
+            if (i <= 3) {
+              return (
+                <div
+                  key={i}
+                  className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
+                >
+                  <WhaleCard data={whale} type={"BUYS"} />
+                </div>
+              );
+            }
+          })}
+        </div>
+
+        <h5
+          className="collection_stats_days font_white mt-2 mb-3"
+          style={{ fontSize: "1.5rem" }}
+        >
+          BIGGEST SELLERS
+        </h5>
+
+        <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
+          {whaleSellers.map((whale, i) => {
+            if (i <= 3) {
+              return (
+                <div
+                  key={i}
+                  className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
+                >
+                  <WhaleCard data={whale} type={"SALES"} />
+                </div>
+              );
+            }
+          })}
+        </div>
       </div>
 
       <Link to="/collections">
