@@ -107,7 +107,8 @@ export default function LandingPage(props) {
       </div>
 
       <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
-        <h1 className="mb-0">Whales of the Day</h1>
+        <h1 className="mb-2">Whales of the Day</h1>
+        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
         <div className="d-flex flex-row flex-wrap justify-content-center col-12">
@@ -165,7 +166,8 @@ export default function LandingPage(props) {
       </div>
 
       <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
-        <h1 className="mb-0">Whales of the Week</h1>
+        <h1 className="mb-2">Whales of the Week</h1>
+        <h5 className="collection_stats_days">LAST 7 DAYS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
         <div className="d-flex flex-row flex-wrap justify-content-center col-12">
