@@ -39,7 +39,7 @@ const Header = (props) => {
         </Link>
       </div>
 
-      <div className="d-none d-lg-flex col-lg-9 flex-wrap justify-content-end">
+      <div className="d-none d-lg-flex col-lg-9 flex-wrap justify-content-end align-items-center">
         <Link to="/" style={{ textDecoration: "none" }}>
           <h1 className="nav_page">HOME</h1>
         </Link>

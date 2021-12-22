@@ -15,6 +15,7 @@ html {
   overflow: auto;
 }
 ::-webkit-scrollbar {
+  z-index: -1;
   width: 8px; /* Remove scrollbar space */
   height: 5px;
   background: transparent; /* Optional: just make scrollbar invisible */
@@ -26,6 +27,7 @@ html {
 body {
   height: 100%;
   /* overflow: visible; */
+  /* overflow: auto; */
   margin: 0;
   color: white;
   /* background: linear-gradient(0deg, rgba(51, 38, 38, 0.3), rgba(0, 0, 0, 0.6)),
