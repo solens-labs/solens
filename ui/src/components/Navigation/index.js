@@ -68,26 +68,28 @@ const Header = (props) => {
         </button>
       </div> */}
 
-      <div onClick={showMenu} className="menu_icon">
-        <Menu />
-      </div>
+      {!menu && (
+        <div onClick={showMenu} className="menu_icon">
+          <Menu />
+        </div>
+      )}
+
+      {menu && <Close onClick={() => setMenu(false)} className="close_icon" />}
 
       <div
         className={`${
-          menu ? "slide-menu active" : "slide-menu"
-        } d-flex justify-content-between`}
+          menu && "active"
+        } slide-menu d-flex justify-content-between`}
       >
-        <Close onClick={() => setMenu(false)} className="close_icon" />
-
         <div className="mobile_menu">
-          <Link to="/" style={{ textDecoration: "none" }}>
+          {/* <Link to="/" style={{ textDecoration: "none" }}>
             <img
               src={logo2}
               className="nav_logo nav_logo_mobile"
               alt="logo"
               onClick={() => showMenu()}
             />
-          </Link>
+          </Link> */}
 
           <Link to="/" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
