@@ -19,7 +19,8 @@ const addTransaction = (buyer) => {
       {shortenAddress(buyer["account"])}
     </a>
   );
-  const total = Number(buyer["total"]).toFixed(2);
+  // const total = Number(buyer["total"]).toFixed(2);
+  const total = Number(buyer["volume"]).toFixed(2);
   const average = Number(buyer["avg"]).toFixed(2);
   const min = Number(buyer["min"]).toFixed(2);
   const max = Number(buyer["max"]).toFixed(2);

@@ -1,19 +1,16 @@
 import getDateFromDayNum from "./getDateFromDay";
 
 export const calculateAllTimeVolume = (data) => {
-  // let counter = 0;
-  let array = [];
-  data.map((dailyStat) => {
-    // counter += dailyStat.volume;
-    array.push(dailyStat.volume);
+  let counter = 0;
+  data.map((stat) => {
+    counter += stat.volume;
   });
-  // setVolumeTotal(counter);
-  return array;
+  return counter;
 };
 export const calculateAllTimeTransactions = (data) => {
   let counter = 0;
-  data.map((dailyStat) => {
-    counter += Number(dailyStat.count);
+  data.map((stat) => {
+    counter += Number(stat.count);
   });
 
   return counter;
