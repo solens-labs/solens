@@ -9,22 +9,19 @@ export default function WhaleCard(props) {
   const { data, type } = props;
   const solPrice = useSelector(selectSolPrice);
 
-  const address = (
-    <a
-      href={`https://explorer.solana.com/address/${data.account}`}
-      target="_blank"
-      style={{ textDecoration: "none" }}
-    >
-      <h3 className="whale_address">{shortenAddress(data.account)}</h3>
-    </a>
-  );
-
   return (
     <div className="whale_card d-flex flex-column align-items-center justify-content-around">
-      <div className="whale_image_container">
-        <img src={whale_pic} alt="" className="whale_image" />
-      </div>
-      <div>{address}</div>
+      <a
+        href={`https://explorer.solana.com/address/${data.account}`}
+        target="_blank"
+        style={{ textDecoration: "none" }}
+      >
+        <div className="whale_image_container">
+          <img src={whale_pic} alt="" className="whale_image" />
+        </div>
+        <h3 className="whale_address mt-1">{shortenAddress(data.account)}</h3>
+      </a>
+
       <div>
         <div className="d-flex flex-row flex-wrap col-12 justify-content-between">
           <h3 className="whale_stat_large">
@@ -34,7 +31,12 @@ export default function WhaleCard(props) {
               maximumFractionDigits: 0,
             })}
           </h3>
-          <h3 className="whale_stat_large m-2 mb-0 mt-0">|| </h3>
+          <h3
+            className="whale_stat_large m-2 mb-0 mt-0"
+            style={{ fontWeight: "normal" }}
+          >
+            |{" "}
+          </h3>
           <h3 className="whale_stat_large">
             {data.volume.toLocaleString("en", {
               minimumFractionDigits: 0,

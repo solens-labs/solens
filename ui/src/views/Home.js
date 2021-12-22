@@ -5,11 +5,17 @@ import { useLocation, Switch, Route } from "react-router-dom";
 import {
   selectCollection,
   selectColorMode,
+  selectSolPrice,
   selectWhaleBuyers,
+  selectWhaleBuyersDay,
   selectWhaleSellers,
+  selectWhaleSellersDay,
   setDebugMode,
+  setSolPrice,
   setWhaleBuyers,
+  setWhaleBuyersDay,
   setWhaleSellers,
+  setWhaleSellersDay,
 } from "../redux/app";
 import { useSelector, useDispatch } from "react-redux";
 import ItemPage from "../components/ItemPage";
@@ -19,10 +25,11 @@ import { selectAllCollections, setAllCollections } from "../redux/app";
 import axios from "axios";
 import Navigation from "../components/Navigation";
 import LandingPage from "../components/LandingPage";
-import { api, queries } from "../constants/constants";
+import { api, links, queries } from "../constants/constants";
 import ScrollToTop from "../utils/scrollToTop";
 import createHistory from "history/createBrowserHistory";
 import ReactGA from "react-ga";
+import WhaleWatch from "../components/WhaleWatch";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -41,6 +48,9 @@ export default function Home(props) {
   const allCollections = useSelector(selectAllCollections);
   const whaleBuyers = useSelector(selectWhaleBuyers);
   const whaleSellers = useSelector(selectWhaleSellers);
+  const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
+  const whaleSellersDay = useSelector(selectWhaleSellersDay);
+  const solPrice = useSelector(selectSolPrice);
 
   // Fetch All Collections & Send to Global State
   useEffect(async () => {
@@ -94,6 +104,37 @@ export default function Home(props) {
         dispatch(setWhaleSellers(whaleList));
       });
     }
+    if (whaleBuyersDay.length === 0) {
+      const apiRequest =
+        api.topTraders + "?type=buyers" + queries.days + 1 + queries.sortVolume;
+      const whales = axios.get(apiRequest).then((response) => {
+        const whaleList = response.data;
+        dispatch(setWhaleBuyersDay(whaleList));
+      });
+    }
+
+    if (whaleSellersDay.length === 0) {
+      const apiRequest =
+        api.topTraders +
+        "?type=sellers" +
+        queries.days +
+        1 +
+        queries.sortVolume;
+      const whales = axios.get(apiRequest).then((response) => {
+        const whaleList = response.data;
+        dispatch(setWhaleSellersDay(whaleList));
+      });
+    }
+  }, []);
+
+  // Fetch SOL Price
+  useEffect(() => {
+    if (solPrice === 0) {
+      axios.get(links.coingecko.solPrice).then((response) => {
+        const price = response.data.solana.usd;
+        dispatch(setSolPrice(price));
+      });
+    }
   }, []);
 
   return (
@@ -107,6 +148,7 @@ export default function Home(props) {
         <Switch>
           <Route path exact="/" component={LandingPage} />
           <Route path="/collections" component={CollectionList} />
+          <Route path="/whales" component={WhaleWatch} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/item" component={ItemPage} />
           <Route path="*" component={LandingPage} />

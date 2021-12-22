@@ -83,9 +83,10 @@
   margin: 0px 30px;
 }
 
-.nav-link:hover {
+.nav_page:hover {
   /* background: rgba(255, 255, 255, 0.5); */
-  color: black;
+  cursor: pointer;
+  color: rgb(134, 64, 117);
 }
 
 .nav-link:visited {

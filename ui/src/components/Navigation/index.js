@@ -41,17 +41,20 @@ const Header = (props) => {
 
       <div className="d-none d-lg-flex col-lg-9 flex-wrap justify-content-end align-items-center">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">HOME</h1>
+          <h1 className="nav_page">home</h1>
         </Link>
         <Link to="/collections" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">COLLECTIONS</h1>
+          <h1 className="nav_page">collections</h1>
+        </Link>
+        <Link to="/whales" style={{ textDecoration: "none" }}>
+          <h1 className="nav_page">wallets</h1>
         </Link>
         <a
           href={links.twitter.url}
           target="_blank"
           style={{ textDecoration: "none" }}
         >
-          <h1 className="nav_page">TWITTER</h1>
+          <h1 className="nav_page">twitter</h1>
         </a>
       </div>
 
@@ -99,6 +102,11 @@ const Header = (props) => {
           <Link to="/collections" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
               Collections
+            </h1>
+          </Link>
+          <Link to="/whales" style={{ textDecoration: "none" }}>
+            <h1 className="nav_page" onClick={() => showMenu()}>
+              Whales
             </h1>
           </Link>
           <a

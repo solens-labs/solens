@@ -1,8 +1,8 @@
 .whale_card {
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
   margin: 5px;
-  width: 400px;
-  height: 400px;
+  width: 350px;
+  height: 375px;
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;
@@ -18,7 +18,7 @@
   width: 125px;
   overflow: hidden;
   /* background: rgb(28, 0, 59); */
-  background: white;
+  background: linear-gradient(180deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
   border-radius: 100%;
   /* border: 2px solid black; */
 }
@@ -32,7 +32,7 @@
 }
 
 .whale_address {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: white;
   /* font-weight: bold; */
 }
