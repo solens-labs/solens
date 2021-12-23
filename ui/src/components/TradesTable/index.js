@@ -20,12 +20,12 @@ export default function TradesTable(props) {
         accessor: "price",
       },
       {
-        Header: "SELLER",
-        accessor: "seller",
-      },
-      {
         Header: "BUYER",
         accessor: "buyer",
+      },
+      {
+        Header: "SELLER",
+        accessor: "seller",
       },
     ],
     []

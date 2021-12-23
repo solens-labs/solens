@@ -87,7 +87,6 @@ export default function Home(props) {
   // Fetch Market Data
   useEffect(async () => {
     if (volumeWeek === 0 && solPrice !== 0) {
-      console.log("fetching weekly");
       const apiRequest = api.marketStats + "?days=" + 365;
       const marketData = axios.get(apiRequest).then((response) => {
         const data = response.data.splice(-7);

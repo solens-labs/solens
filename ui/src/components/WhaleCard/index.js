@@ -8,6 +8,7 @@ import {
   selectWeeklyVolume,
 } from "../../redux/app";
 import { useSelector } from "react-redux";
+import { explorerLink } from "../../constants/constants";
 
 export default function WhaleCard(props) {
   const { data, type, volume } = props;
@@ -38,7 +39,7 @@ export default function WhaleCard(props) {
 
         <div className="d-flex flex-column align-items-end justify-content-center">
           <a
-            href={`https://explorer.solana.com/address/${data.account}`}
+            href={explorerLink("account", data.account)}
             target="_blank"
             style={{ textDecoration: "none" }}
           >

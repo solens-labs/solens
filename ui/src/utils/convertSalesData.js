@@ -1,4 +1,5 @@
 import { shortenAddress } from "../candy-machine";
+import { explorerLink } from "../constants/constants";
 
 const range = (len) => {
   const arr = [];
@@ -12,18 +13,17 @@ const addTransaction = (transaction) => {
   const date = new Date(transaction["date"]);
   const mintAddress = (
     <a
-      href={`https://explorer.solana.com/address/${transaction["mint"]}`}
+      href={explorerLink("token", transaction["mint"])}
       target="_blank"
       style={{ textDecoration: "none" }}
     >
       {shortenAddress(transaction["mint"])}
-      {/* {transaction["mint"]} */}
     </a>
   );
   const price = Number(transaction["price"]).toFixed(2);
   const buyerAddress = (
     <a
-      href={`https://explorer.solana.com/address/${transaction["buyer"]}`}
+      href={explorerLink("account", transaction["buyer"])}
       target="_blank"
       style={{ textDecoration: "none" }}
     >
@@ -32,7 +32,7 @@ const addTransaction = (transaction) => {
   );
   const sellerAddress = (
     <a
-      href={`https://explorer.solana.com/address/${transaction["seller"]}`}
+      href={explorerLink("account", transaction["seller"])}
       target="_blank"
       style={{ textDecoration: "none" }}
     >
@@ -51,7 +51,6 @@ const addTransaction = (transaction) => {
 
 export default function convertData(transactions, lens) {
   const makeDataLevel = () => {
-    // const len = lens[depth];
     const requestedLength = Math.min(transactions.length, lens);
 
     return range(requestedLength).map((d, i) => {
@@ -62,7 +61,6 @@ export default function convertData(transactions, lens) {
   };
 
   const exportedData = makeDataLevel();
-  //   console.log(exportedData);
 
   return exportedData;
 }

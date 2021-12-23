@@ -1,6 +1,7 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
-const server = "https://api-mainnet.arnori.io/api/stats/";
+const serverOld = "https://api-mainnet.arnori.io/api/stats/";
+const server = "https://api.arnori.io/stats/";
 const devServer = "http://3.19.58.245:3000/stats/";
 
 export const queries = {
@@ -13,12 +14,12 @@ export const queries = {
 };
 
 export const api = {
-  allCollections: `${devServer + "allCollections"}`, // working
-  topTrades: `${devServer + "topTrades"}`, // working
-  topNFTs: `${devServer + "topNFTs"}`, //working
-  collection: `${devServer + "collection"}`, // working
-  topTraders: `${devServer + "topTraders"}`, // working
-  marketStats: `${devServer + "marketStats"}`, // testing
+  allCollections: `${server + "allCollections"}`,
+  topTrades: `${server + "topTrades"}`,
+  topNFTs: `${server + "topNFTs"}`,
+  collection: `${server + "collection"}`,
+  topTraders: `${server + "topTraders"}`,
+  marketStats: `${server + "marketStats"}`,
 
   getAllCollections: `${server + "getAllCollections"}`,
   getCollection: `${server + "getCollection/"}`,
@@ -27,6 +28,20 @@ export const api = {
   getTopBuys: `${server + "getTopBuys/"}`,
   getTopBuyers: `${server + "getTopBuyers/"}`,
   getTopSellers: `${server + "getTopSellers/"}`,
+};
+
+export const explorerLink = (type, hash) => {
+  switch (type) {
+    case "tx":
+      return `https://solscan.io/tx/${hash}`;
+      break;
+    case "account":
+      return `https://solscan.io/account/${hash}`;
+      break;
+    case "token":
+      return `https://solscan.io/token/${hash}`;
+      break;
+  }
 };
 
 export const teepees = [
