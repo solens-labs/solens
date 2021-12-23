@@ -8,7 +8,7 @@ export default function WalletsSection(props) {
   return (
     <div className="d-flex flex-column align-items-center col-12 col-xxl-10 mb-5">
       <h5
-        className="collection_stats_days font_white mt-2 mb-3"
+        className="collection_stats_days font_white mt-3 mb-3"
         style={{ fontSize: "1.5rem" }}
       >
         TOP BUYERS
@@ -17,7 +17,7 @@ export default function WalletsSection(props) {
       <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
         {buyers.length === 0 && <Loader />}
         {buyers.map((whale, i) => {
-          if (i <= 3) {
+          if (i <= 7) {
             return (
               <div
                 key={i}
@@ -30,8 +30,10 @@ export default function WalletsSection(props) {
         })}
       </div>
 
+      <hr style={{ color: "white", width: "50%" }} className="mt-0" />
+
       <h5
-        className="collection_stats_days font_white mt-2 mb-3"
+        className="collection_stats_days font_white mt-3 mb-3"
         style={{ fontSize: "1.5rem" }}
       >
         TOP SELLERS
@@ -40,7 +42,7 @@ export default function WalletsSection(props) {
       <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
         {sellers.length === 0 && <Loader />}
         {sellers.map((whale, i) => {
-          if (i <= 3) {
+          if (i <= 7) {
             return (
               <div
                 key={i}

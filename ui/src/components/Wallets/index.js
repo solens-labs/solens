@@ -65,6 +65,7 @@ export default function Wallets(props) {
           1W
         </button>
       </div>
+
       {/* <h5 className="collection_stats_days">{timeframeTitle}</h5> */}
       <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
