@@ -45,7 +45,7 @@ export default function LandingPage(props) {
           collection.daily_volume > 20
         );
       });
-      const truncated = relevant.slice(0, 4);
+      const truncated = relevant.slice(0, 8);
       // console.log(truncated);
       setTrending(truncated);
     }
