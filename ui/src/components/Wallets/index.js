@@ -21,9 +21,10 @@ export default function Wallets(props) {
   const volumeWeek = useSelector(selectWeeklyVolume);
 
   return (
-    <div className="d-flex flex-wrap justify-content-center col-12 ">
+    <div className="d-flex flex-wrap justify-content-center col-12 mt-2">
       <div className="d-flex flex-column align-items-center col-12 col-xxl-10 mb-5">
-        <h1 className="mb-0">Whales of the Day</h1>
+        <h1 className="mb-2">Top Wallets</h1>
+        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
         <h5
@@ -74,7 +75,9 @@ export default function Wallets(props) {
         </div>
       </div>
       <div className="d-flex flex-column align-items-center col-12 col-xxl-10">
-        <h1 className="mb-0">Whales of the Week</h1>
+        <h1 className="mb-2">Top Wallets</h1>
+        <h5 className="collection_stats_days">LAST 7 DAYS</h5>
+
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
         <h5
