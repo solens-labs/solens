@@ -12,7 +12,7 @@ import Loader from "../Loader";
 import WhaleCard from "../WhaleCard";
 import "./style.css";
 
-export default function WhaleWatch(props) {
+export default function Wallets(props) {
   const whaleBuyers = useSelector(selectWhaleBuyers);
   const whaleSellers = useSelector(selectWhaleSellers);
   const whaleBuyersDay = useSelector(selectWhaleBuyersDay);

@@ -49,16 +49,6 @@ export default function LandingPage(props) {
       // console.log(truncated);
       setTrending(truncated);
     }
-
-    if (collections.length > 0 && solPrice > 0) {
-      const totalToday = collections.reduce(
-        (sum, collection) => sum + collection.daily_volume,
-        0
-      );
-
-      const convert = solPrice * totalToday;
-      dispatch(setDailyVolume(Math.floor(convert)));
-    }
   }, [collections, solPrice]);
 
   return (

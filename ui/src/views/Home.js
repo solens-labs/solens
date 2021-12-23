@@ -5,12 +5,14 @@ import { useLocation, Switch, Route } from "react-router-dom";
 import {
   selectCollection,
   selectColorMode,
+  selectDailyVolume,
   selectSolPrice,
   selectWeeklyVolume,
   selectWhaleBuyers,
   selectWhaleBuyersDay,
   selectWhaleSellers,
   selectWhaleSellersDay,
+  setDailyVolume,
   setDebugMode,
   setSolPrice,
   setWeeklyVolume,
@@ -31,7 +33,7 @@ import { api, links, queries } from "../constants/constants";
 import ScrollToTop from "../utils/scrollToTop";
 import createHistory from "history/createBrowserHistory";
 import ReactGA from "react-ga";
-import WhaleWatch from "../components/WhaleWatch";
+import Wallets from "../components/Wallets";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -48,12 +50,13 @@ export default function Home(props) {
 
   // Get Global State Collections List
   const allCollections = useSelector(selectAllCollections);
-  const whaleBuyers = useSelector(selectWhaleBuyers);
-  const whaleSellers = useSelector(selectWhaleSellers);
+  const whaleBuyersWeek = useSelector(selectWhaleBuyers);
+  const whaleSellersWeek = useSelector(selectWhaleSellers);
   const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
   const whaleSellersDay = useSelector(selectWhaleSellersDay);
   const volumeWeek = useSelector(selectWeeklyVolume);
   const solPrice = useSelector(selectSolPrice);
+  const dailyVolume = useSelector(selectDailyVolume);
 
   // Fetch All Collections
   useEffect(async () => {
@@ -103,10 +106,22 @@ export default function Home(props) {
       });
     }
   }, [solPrice]);
+  // Generate Daily Volume
+  useEffect(() => {
+    if (allCollections.length > 0 && solPrice > 0 && dailyVolume === 0) {
+      const totalToday = allCollections.reduce(
+        (sum, collection) => sum + collection.daily_volume,
+        0
+      );
+
+      const convert = solPrice * totalToday;
+      dispatch(setDailyVolume(Math.floor(convert)));
+    }
+  }, [allCollections, solPrice, dailyVolume]);
 
   // Fetch Whales Data
   useEffect(async () => {
-    if (whaleBuyers.length === 0) {
+    if (whaleBuyersWeek.length === 0) {
       const apiRequest =
         api.topTraders + "?type=buyers" + queries.days + 7 + queries.sortVolume;
       const whales = axios.get(apiRequest).then((response) => {
@@ -115,7 +130,7 @@ export default function Home(props) {
       });
     }
 
-    if (whaleSellers.length === 0) {
+    if (whaleSellersWeek.length === 0) {
       const apiRequest =
         api.topTraders +
         "?type=sellers" +
@@ -127,6 +142,7 @@ export default function Home(props) {
         dispatch(setWhaleSellers(whaleList));
       });
     }
+
     if (whaleBuyersDay.length === 0) {
       const apiRequest =
         api.topTraders + "?type=buyers" + queries.days + 1 + queries.sortVolume;
@@ -171,7 +187,7 @@ export default function Home(props) {
         <Switch>
           <Route path exact="/" component={LandingPage} />
           <Route path="/collections" component={CollectionList} />
-          <Route path="/wallets" component={WhaleWatch} />
+          <Route path="/wallets" component={Wallets} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/item" component={ItemPage} />
           <Route path="*" component={LandingPage} />
