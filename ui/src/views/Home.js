@@ -62,7 +62,7 @@ export default function Home(props) {
   useEffect(async () => {
     if (allCollections.length === 0) {
       const collectionsData = await axios
-        .get(endpoints.api.getAllCollections)
+        .get(api.allCollections)
         .then((response) => {
           const collections = response.data;
           const collectionsAboveZero = collections.filter((collection) => {
