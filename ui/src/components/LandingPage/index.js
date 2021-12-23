@@ -7,17 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectAllCollections,
   selectSolPrice,
-  selectTotalVolume,
   selectWhaleBuyers,
   selectWhaleBuyersDay,
   selectWhaleSellers,
   selectWhaleSellersDay,
-  setSolPrice,
-  setTotalVolume,
+  setDailyVolume,
+  selectDailyVolume,
+  selectWeeklyVolume,
 } from "../../redux/app";
-import { getTopTrending } from "../../utils/landingPage";
-import axios from "axios";
-import { links } from "../../constants/constants";
 import WhaleCard from "../WhaleCard";
 import Loader from "../Loader";
 
@@ -30,7 +27,8 @@ export default function LandingPage(props) {
   const whaleSellersDay = useSelector(selectWhaleSellersDay);
   const [trending, setTrending] = useState([]);
   const solPrice = useSelector(selectSolPrice);
-  const volumeTotal = useSelector(selectTotalVolume);
+  const volumeDay = useSelector(selectDailyVolume);
+  const volumeWeek = useSelector(selectWeeklyVolume);
 
   // Calculate Trending Collections
   useEffect(() => {
@@ -59,7 +57,7 @@ export default function LandingPage(props) {
       );
 
       const convert = solPrice * totalToday;
-      dispatch(setTotalVolume(Math.floor(convert)));
+      dispatch(setDailyVolume(Math.floor(convert)));
     }
   }, [collections, solPrice]);
 
@@ -91,7 +89,7 @@ export default function LandingPage(props) {
           <h1>Market Volume</h1>
 
           <h3>
-            ${volumeTotal && volumeTotal.toLocaleString()}{" "}
+            ${volumeDay && volumeDay.toLocaleString()}{" "}
             <span className="collection_stats_days">(24H)</span>
           </h3>
         </div>
@@ -112,21 +110,25 @@ export default function LandingPage(props) {
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
-        <CollectionSection collections={trending} sort={"daily_change"} />
+        {trending.length !== 0 ? (
+          <CollectionSection collections={trending} sort={"daily_change"} />
+        ) : (
+          <Loader />
+        )}
       </div>
 
-      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
+      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Whales of the Day</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
         <div className="d-flex flex-row flex-wrap justify-content-center col-12">
-          <div className="d-flex flex-column align-items-center col-6">
+          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
             <h5
               className="collection_stats_days font_white mt-2 mb-3"
               style={{ fontSize: "1.5rem" }}
             >
-              BIGGEST BUYERS
+              TOP BUYERS
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -138,7 +140,7 @@ export default function LandingPage(props) {
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard data={whale} type={"BUYS"} />
+                      <WhaleCard data={whale} type="BUYS" volume={volumeDay} />
                     </div>
                   );
                 }
@@ -146,12 +148,12 @@ export default function LandingPage(props) {
             </div>
           </div>
 
-          <div className="d-flex flex-column align-items-center col-6">
+          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
             <h5
               className="collection_stats_days font_white mt-2 mb-3"
               style={{ fontSize: "1.5rem" }}
             >
-              BIGGEST SELLERS
+              TOP SELLERS
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -164,7 +166,7 @@ export default function LandingPage(props) {
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard data={whale} type={"SALES"} />
+                      <WhaleCard data={whale} type="SALES" volume={volumeDay} />
                     </div>
                   );
                 }
@@ -180,12 +182,12 @@ export default function LandingPage(props) {
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
         <div className="d-flex flex-row flex-wrap justify-content-center col-12">
-          <div className="d-flex flex-column align-items-center col-6">
+          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
             <h5
               className="collection_stats_days font_white mt-2 mb-3"
               style={{ fontSize: "1.5rem" }}
             >
-              BIGGEST BUYERS
+              TOP BUYERS
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -197,7 +199,11 @@ export default function LandingPage(props) {
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard data={whale} type={"BUYS"} />
+                      <WhaleCard
+                        data={whale}
+                        type={"BUYS"}
+                        volume={volumeWeek}
+                      />
                     </div>
                   );
                 }
@@ -205,12 +211,12 @@ export default function LandingPage(props) {
             </div>
           </div>
 
-          <div className="d-flex flex-column align-items-center col-6">
+          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
             <h5
               className="collection_stats_days font_white mt-2 mb-3"
               style={{ fontSize: "1.5rem" }}
             >
-              BIGGEST SELLERS
+              TOP SELLERS
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -223,7 +229,11 @@ export default function LandingPage(props) {
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard data={whale} type={"SALES"} />
+                      <WhaleCard
+                        data={whale}
+                        type={"SALES"}
+                        volume={volumeWeek}
+                      />
                     </div>
                   );
                 }

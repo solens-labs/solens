@@ -46,7 +46,7 @@ const Header = (props) => {
         <Link to="/collections" style={{ textDecoration: "none" }}>
           <h1 className="nav_page">collections</h1>
         </Link>
-        <Link to="/whales" style={{ textDecoration: "none" }}>
+        <Link to="/wallets" style={{ textDecoration: "none" }}>
           <h1 className="nav_page">wallets</h1>
         </Link>
         <a
@@ -96,17 +96,17 @@ const Header = (props) => {
 
           <Link to="/" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Home
+              home
             </h1>
           </Link>
           <Link to="/collections" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Collections
+              collections
             </h1>
           </Link>
-          <Link to="/whales" style={{ textDecoration: "none" }}>
+          <Link to="/wallets" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Whales
+              wallets
             </h1>
           </Link>
           <a
@@ -115,7 +115,7 @@ const Header = (props) => {
             style={{ textDecoration: "none" }}
           >
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Twitter
+              twitter
             </h1>
           </a>
         </div>

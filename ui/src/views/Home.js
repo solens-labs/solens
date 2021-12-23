@@ -6,12 +6,14 @@ import {
   selectCollection,
   selectColorMode,
   selectSolPrice,
+  selectWeeklyVolume,
   selectWhaleBuyers,
   selectWhaleBuyersDay,
   selectWhaleSellers,
   selectWhaleSellersDay,
   setDebugMode,
   setSolPrice,
+  setWeeklyVolume,
   setWhaleBuyers,
   setWhaleBuyersDay,
   setWhaleSellers,
@@ -50,9 +52,10 @@ export default function Home(props) {
   const whaleSellers = useSelector(selectWhaleSellers);
   const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
   const whaleSellersDay = useSelector(selectWhaleSellersDay);
+  const volumeWeek = useSelector(selectWeeklyVolume);
   const solPrice = useSelector(selectSolPrice);
 
-  // Fetch All Collections & Send to Global State
+  // Fetch All Collections
   useEffect(async () => {
     if (allCollections.length === 0) {
       const collectionsData = await axios
@@ -80,6 +83,27 @@ export default function Home(props) {
         .catch((error) => console.log(error));
     }
   }, []);
+
+  // Fetch Market Data
+  useEffect(async () => {
+    if (volumeWeek === 0 && solPrice !== 0) {
+      console.log("fetching weekly");
+      const apiRequest = api.marketStats + "?days=" + 365;
+      const marketData = axios.get(apiRequest).then((response) => {
+        const data = response.data.splice(-7);
+
+        let weeklyVolumeCounter = 0;
+        data.map((day) => {
+          weeklyVolumeCounter += day.volume;
+        });
+
+        const weeklyConvertUSD = solPrice * weeklyVolumeCounter;
+        dispatch(setWeeklyVolume(Math.floor(weeklyConvertUSD)));
+
+        const todaysVolume = data[6].volume;
+      });
+    }
+  }, [solPrice]);
 
   // Fetch Whales Data
   useEffect(async () => {
@@ -148,7 +172,7 @@ export default function Home(props) {
         <Switch>
           <Route path exact="/" component={LandingPage} />
           <Route path="/collections" component={CollectionList} />
-          <Route path="/whales" component={WhaleWatch} />
+          <Route path="/wallets" component={WhaleWatch} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/item" component={ItemPage} />
           <Route path="*" component={LandingPage} />

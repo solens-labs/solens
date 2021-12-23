@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import {
+  selectDailyVolume,
+  selectWeeklyVolume,
   selectWhaleBuyers,
   selectWhaleBuyersDay,
   selectWhaleSellers,
@@ -15,6 +17,8 @@ export default function WhaleWatch(props) {
   const whaleSellers = useSelector(selectWhaleSellers);
   const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
   const whaleSellersDay = useSelector(selectWhaleSellersDay);
+  const volumeDay = useSelector(selectDailyVolume);
+  const volumeWeek = useSelector(selectWeeklyVolume);
 
   return (
     <div className="d-flex flex-wrap justify-content-center col-12 ">
@@ -26,7 +30,7 @@ export default function WhaleWatch(props) {
           className="collection_stats_days font_white mt-2 mb-3"
           style={{ fontSize: "1.5rem" }}
         >
-          BIGGEST BUYERS
+          TOP BUYERS
         </h5>
 
         <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -38,7 +42,7 @@ export default function WhaleWatch(props) {
                   key={i}
                   className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
                 >
-                  <WhaleCard data={whale} type={"BUYS"} />
+                  <WhaleCard data={whale} type={"BUYS"} volume={volumeDay} />
                 </div>
               );
             }
@@ -49,7 +53,7 @@ export default function WhaleWatch(props) {
           className="collection_stats_days font_white mt-2 mb-3"
           style={{ fontSize: "1.5rem" }}
         >
-          BIGGEST SELLERS
+          TOP SELLERS
         </h5>
 
         <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -62,7 +66,7 @@ export default function WhaleWatch(props) {
                   key={i}
                   className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
                 >
-                  <WhaleCard data={whale} type={"SALES"} />
+                  <WhaleCard data={whale} type={"SALES"} volume={volumeDay} />
                 </div>
               );
             }
@@ -77,7 +81,7 @@ export default function WhaleWatch(props) {
           className="collection_stats_days font_white mt-2 mb-3"
           style={{ fontSize: "1.5rem" }}
         >
-          BIGGEST BUYERS
+          TOP BUYERS
         </h5>
 
         <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -89,7 +93,7 @@ export default function WhaleWatch(props) {
                   key={i}
                   className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
                 >
-                  <WhaleCard data={whale} type={"BUYS"} />
+                  <WhaleCard data={whale} type={"BUYS"} volume={volumeWeek} />
                 </div>
               );
             }
@@ -100,7 +104,7 @@ export default function WhaleWatch(props) {
           className="collection_stats_days font_white mt-2 mb-3"
           style={{ fontSize: "1.5rem" }}
         >
-          BIGGEST SELLERS
+          TOP SELLERS
         </h5>
 
         <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
@@ -113,7 +117,7 @@ export default function WhaleWatch(props) {
                   key={i}
                   className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
                 >
-                  <WhaleCard data={whale} type={"SALES"} />
+                  <WhaleCard data={whale} type={"SALES"} volume={volumeWeek} />
                 </div>
               );
             }

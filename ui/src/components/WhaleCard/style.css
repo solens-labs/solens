@@ -1,8 +1,8 @@
 .whale_card {
-  background: linear-gradient(0deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
   margin: 5px;
   width: 350px;
-  height: 400px;
+  height: 375px;
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;
@@ -10,7 +10,7 @@
   padding: 15px 0px 0px 0px;
 }
 .seller {
-  background: linear-gradient(180deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
+  /* background: linear-gradient(180deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%); */
 }
 
 .font_white {
@@ -42,9 +42,12 @@
 
 .whale_address {
   font-size: 1.2rem;
-  letter-spacing: 2px;
   color: white;
   /* font-weight: bold; */
+}
+
+.spaced {
+  letter-spacing: 2px;
 }
 
 .whale_stat_large {

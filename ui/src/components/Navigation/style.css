@@ -134,9 +134,9 @@
   fill: white;
   width: 30px;
   height: 30px;
-  position: absolute;
-  top: 15px;
-  right: 23px;
+  /* position: absolute; */
+  /* top: 15px; */
+  /* right: 23px; */
   /* margin-top: 3vh; */
   /* margin-left: 3vw; */
 }
@@ -162,12 +162,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-top: 60px;
+    padding-top: 70px;
   }
   .mobile_menu a {
     margin: 1vh 1.5vw;
     color: white;
     text-decoration: none;
     font-size: 30px;
+    padding: 5px 0px;
   }
 }

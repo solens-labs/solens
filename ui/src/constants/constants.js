@@ -16,8 +16,9 @@ export const api = {
   allCollections: `${devServer + "allCollections"}`, // working
   topTrades: `${devServer + "topTrades"}`, // working
   topNFTs: `${devServer + "topNFTs"}`, //working
-  collection: `${devServer + "collection"}`, // not working
-  topTraders: `${devServer + "topTraders"}`,
+  collection: `${devServer + "collection"}`, // working
+  topTraders: `${devServer + "topTraders"}`, // working
+  marketStats: `${devServer + "marketStats"}`, // testing
 
   getAllCollections: `${server + "getAllCollections"}`,
   getCollection: `${server + "getCollection/"}`,

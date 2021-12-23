@@ -10,7 +10,7 @@ const range = (len) => {
 
 const addTransaction = (transaction) => {
   const date = new Date(transaction["date"]);
-  const address = (
+  const mintAddress = (
     <a
       href={`https://explorer.solana.com/address/${transaction["mint"]}`}
       target="_blank"
@@ -21,11 +21,31 @@ const addTransaction = (transaction) => {
     </a>
   );
   const price = Number(transaction["price"]).toFixed(2);
+  const buyerAddress = (
+    <a
+      href={`https://explorer.solana.com/address/${transaction["buyer"]}`}
+      target="_blank"
+      style={{ textDecoration: "none" }}
+    >
+      {shortenAddress(transaction["buyer"])}
+    </a>
+  );
+  const sellerAddress = (
+    <a
+      href={`https://explorer.solana.com/address/${transaction["seller"]}`}
+      target="_blank"
+      style={{ textDecoration: "none" }}
+    >
+      {shortenAddress(transaction["seller"])}
+    </a>
+  );
 
   return {
     date: date.toLocaleDateString(),
-    address: address,
+    address: mintAddress,
     price: price,
+    buyer: buyerAddress,
+    seller: sellerAddress,
   };
 };
 

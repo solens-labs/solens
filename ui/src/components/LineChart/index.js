@@ -62,6 +62,7 @@ export default function LineChart(props) {
         },
         grid: {
           color: "rgb(53, 43, 87)",
+          // borderColor: "rgb(53, 43, 87)",
         },
       },
       x: {

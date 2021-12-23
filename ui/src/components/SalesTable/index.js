@@ -19,6 +19,14 @@ export default function SalesTable(props) {
         Header: "PRICE",
         accessor: "price",
       },
+      {
+        Header: "BUYER",
+        accessor: "buyer",
+      },
+      {
+        Header: "SELLER",
+        accessor: "seller",
+      },
     ],
     []
   );

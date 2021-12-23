@@ -56,7 +56,6 @@ export default function CollectionPage(props) {
       setStats(collectionInfo.alltimestats);
       setMarketplaces(collectionInfo.alltimestats.length);
       setDaysSinceCreated(calculateLaunchDate(collectionInfo));
-      console.log(collectionInfo);
       setDailyStats(collectionInfo.dailystats);
 
       const links = {
@@ -72,10 +71,15 @@ export default function CollectionPage(props) {
   useEffect(async () => {
     if (topSales.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
+      const apiRequest =
+        api.topTrades + queries.symbol + name + queries.days + 365;
+
       const topSales = await axios
-        .get(`${api.getTopBuys}` + name) // NEED TO UPDATE API
+        // .get(`${api.getTopBuys}` + name) // NEED TO UPDATE API
+        .get(apiRequest)
         .then((response) => {
           const sales = response.data;
+
           if (sales.length > 0) {
             const data = convertSalesData(sales, tableLength);
             setTopSales(data);
@@ -356,7 +360,7 @@ export default function CollectionPage(props) {
         <div className="d-flex flex-wrap justify-content-around col-12">
           <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
             {" "}
-            <h1>Top {topSales.length || ""} Sales </h1>
+            <h1>Top {topSales.length || ""} Trades </h1>
             <h5 className="collection_stats_days mb-2">ALL TIME</h5>
             <hr style={{ color: "white", width: "100%" }} className="mt-0" />
             {topSales.length !== 0 ? (
