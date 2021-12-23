@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   selectDailyVolume,
@@ -10,123 +10,70 @@ import {
 } from "../../redux/app";
 import Loader from "../Loader";
 import WhaleCard from "../WhaleCard";
+import WalletsSection from "../WalletsSection";
 import "./style.css";
 
 export default function Wallets(props) {
-  const whaleBuyers = useSelector(selectWhaleBuyers);
-  const whaleSellers = useSelector(selectWhaleSellers);
+  const whaleBuyersWeek = useSelector(selectWhaleBuyers);
+  const whaleSellersWeek = useSelector(selectWhaleSellers);
   const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
   const whaleSellersDay = useSelector(selectWhaleSellersDay);
   const volumeDay = useSelector(selectDailyVolume);
   const volumeWeek = useSelector(selectWeeklyVolume);
 
+  const [timeframe, setTimeframe] = useState(1);
+  const [timeframeTitle, setTimeframeTitle] = useState("LAST 24 HOURS");
+  const [volume, setVolume] = useState(volumeDay);
+  const [buyers, setBuyers] = useState(whaleBuyersDay);
+  const [sellers, setSellers] = useState(whaleSellersDay);
+
+  useEffect(() => {
+    switch (timeframe) {
+      case 1:
+        setTimeframeTitle("LAST 24 HOURS");
+        setVolume(volumeDay);
+        setBuyers(whaleBuyersDay);
+        setSellers(whaleSellersDay);
+        break;
+      case 7:
+        setTimeframeTitle("LAST 7 DAYS");
+        setVolume(volumeWeek);
+        setBuyers(whaleBuyersWeek);
+        setSellers(whaleSellersWeek);
+        break;
+    }
+  }, [timeframe]);
+
   return (
-    <div className="d-flex flex-wrap justify-content-center col-12 mt-2">
-      <div className="d-flex flex-column align-items-center col-12 col-xxl-10 mb-5">
-        <h1 className="mb-2">Top Wallets</h1>
-        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-
-        <h5
-          className="collection_stats_days font_white mt-2 mb-3"
-          style={{ fontSize: "1.5rem" }}
+    <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-2">
+      <h1 className="mb-0">Top Wallets</h1>
+      <div className="d-flex flex-wrap flex-row justify-content-around col-1 mb-3">
+        <button
+          className={`btn_timeframe ${
+            timeframe === 1 && "btn_timeframe_selected"
+          }`}
+          onClick={() => setTimeframe(1)}
         >
-          TOP BUYERS
-        </h5>
-
-        <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-          {whaleBuyersDay.length === 0 && <Loader />}
-          {whaleBuyersDay.map((whale, i) => {
-            if (i <= 3) {
-              return (
-                <div
-                  key={i}
-                  className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
-                >
-                  <WhaleCard data={whale} type={"BUYS"} volume={volumeDay} />
-                </div>
-              );
-            }
-          })}
-        </div>
-
-        <h5
-          className="collection_stats_days font_white mt-2 mb-3"
-          style={{ fontSize: "1.5rem" }}
+          1D
+        </button>
+        <button
+          className={`btn_timeframe ${
+            timeframe === 7 && "btn_timeframe_selected"
+          }`}
+          onClick={() => setTimeframe(7)}
         >
-          TOP SELLERS
-        </h5>
-
-        <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-          {whaleSellersDay.length === 0 && <Loader />}
-
-          {whaleSellersDay.map((whale, i) => {
-            if (i <= 3) {
-              return (
-                <div
-                  key={i}
-                  className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
-                >
-                  <WhaleCard data={whale} type={"SALES"} volume={volumeDay} />
-                </div>
-              );
-            }
-          })}
-        </div>
+          1W
+        </button>
       </div>
-      <div className="d-flex flex-column align-items-center col-12 col-xxl-10">
-        <h1 className="mb-2">Top Wallets</h1>
-        <h5 className="collection_stats_days">LAST 7 DAYS</h5>
+      {/* <h5 className="collection_stats_days">{timeframeTitle}</h5> */}
+      <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-
-        <h5
-          className="collection_stats_days font_white mt-2 mb-3"
-          style={{ fontSize: "1.5rem" }}
-        >
-          TOP BUYERS
-        </h5>
-
-        <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-          {whaleBuyers.length === 0 && <Loader />}
-          {whaleBuyers.map((whale, i) => {
-            if (i <= 3) {
-              return (
-                <div
-                  key={i}
-                  className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
-                >
-                  <WhaleCard data={whale} type={"BUYS"} volume={volumeWeek} />
-                </div>
-              );
-            }
-          })}
-        </div>
-
-        <h5
-          className="collection_stats_days font_white mt-2 mb-3"
-          style={{ fontSize: "1.5rem" }}
-        >
-          TOP SELLERS
-        </h5>
-
-        <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-          {whaleSellers.length === 0 && <Loader />}
-
-          {whaleSellers.map((whale, i) => {
-            if (i <= 3) {
-              return (
-                <div
-                  key={i}
-                  className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
-                >
-                  <WhaleCard data={whale} type={"SALES"} volume={volumeWeek} />
-                </div>
-              );
-            }
-          })}
-        </div>
-      </div>
+      <WalletsSection
+        buyers={buyers}
+        sellers={sellers}
+        timeframe={timeframeTitle}
+        volume={volume}
+      />
     </div>
   );
 }
