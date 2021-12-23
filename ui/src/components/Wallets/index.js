@@ -46,8 +46,8 @@ export default function Wallets(props) {
 
   return (
     <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-2">
-      <h1 className="mb-0">Top Wallets</h1>
-      <div className="d-flex flex-wrap flex-row justify-content-around col-1 mb-3">
+      <h1 className="mb-2">Top Wallets</h1>
+      <div className="d-flex flex-wrap flex-row justify-content-around col-4 col-md-2 col-xxl-1 mb-3">
         <button
           className={`btn_timeframe ${
             timeframe === 1 && "btn_timeframe_selected"
