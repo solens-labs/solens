@@ -53,15 +53,11 @@ export default function BuysTable(props) {
     setPageSize,
     canPreviousPage,
     canNextPage,
-  } = useTable(
-    { columns: columns, data: data, initialState: { pageSize: 10 } },
-    useSortBy,
-    usePagination
-  );
+  } = useTable({ columns: columns, data: data }, useSortBy, usePagination);
 
   return (
     <>
-      {/* <div className="col-12">
+      <div className="col-12">
         <select
           value={pageSize}
           onChange={(e) => {
@@ -75,7 +71,7 @@ export default function BuysTable(props) {
             </option>
           ))}
         </select>
-      </div> */}
+      </div>
       <div className="col-12 data_table overflow-auto">
         <table {...getTableProps()}>
           <thead>
@@ -178,21 +174,19 @@ export default function BuysTable(props) {
             gotoPage(page);
           }}
         /> */}
-        <div className="col-12">
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-            }}
-            className="pagination_select"
-          >
-            {[5, 10, 20, 50, 100].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Display {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+          }}
+          className="pagination_select"
+        >
+          {[10, 20, 50, 100].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Display {pageSize}
+            </option>
+          ))}
+        </select> */}
       </div>
     </>
   );
