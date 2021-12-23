@@ -56,7 +56,8 @@ export default function CollectionPage(props) {
       setStats(collectionInfo.alltimestats);
       setMarketplaces(collectionInfo.alltimestats.length);
       setDaysSinceCreated(calculateLaunchDate(collectionInfo));
-      // setDailyStats(collectionInfo.dailystats);
+      console.log(collectionInfo);
+      setDailyStats(collectionInfo.dailystats);
 
       const links = {
         website: collectionInfo.website,
@@ -65,13 +66,6 @@ export default function CollectionPage(props) {
       };
       setCollectionLinks(links);
     });
-
-    const dailyStats = await axios
-      .get(`${api.getDailyStats}` + name) // NEED TO UPDATE API
-      .then((response) => {
-        const stats = response.data;
-        setDailyStats(stats);
-      });
   }, [name]);
 
   // Fetch Top Data (top sales, trades, buyers, sellers)

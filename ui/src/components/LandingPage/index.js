@@ -7,11 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectAllCollections,
   selectSolPrice,
+  selectTotalVolume,
   selectWhaleBuyers,
   selectWhaleBuyersDay,
   selectWhaleSellers,
   selectWhaleSellersDay,
   setSolPrice,
+  setTotalVolume,
 } from "../../redux/app";
 import { getTopTrending } from "../../utils/landingPage";
 import axios from "axios";
@@ -28,7 +30,7 @@ export default function LandingPage(props) {
   const whaleSellersDay = useSelector(selectWhaleSellersDay);
   const [trending, setTrending] = useState([]);
   const solPrice = useSelector(selectSolPrice);
-  const [volumeTotal, setVolumeTotal] = useState(0);
+  const volumeTotal = useSelector(selectTotalVolume);
 
   // Calculate Trending Collections
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function LandingPage(props) {
       );
 
       const convert = solPrice * totalToday;
-      setVolumeTotal(Math.floor(convert));
+      dispatch(setTotalVolume(Math.floor(convert)));
     }
   }, [collections, solPrice]);
 
@@ -87,14 +89,21 @@ export default function LandingPage(props) {
       <div className="d-flex flex-row flex-wrap col-12 col-xxl-8 justify-content-around">
         <div className="market_stat mt-5">
           <h1>Market Volume</h1>
+
           <h3>
-            ${volumeTotal.toLocaleString()}{" "}
+            ${volumeTotal && volumeTotal.toLocaleString()}{" "}
             <span className="collection_stats_days">(24H)</span>
           </h3>
         </div>
         <div className="market_stat mt-5">
           <h1>Solana Price</h1>
-          <h3>${solPrice.toLocaleString()}</h3>
+          <h3>
+            $
+            {solPrice.toLocaleString("en", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </h3>
         </div>
       </div>
 

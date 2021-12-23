@@ -16,6 +16,7 @@ const initialState = {
   solPrice: 0,
   debug: false,
   showMore: false,
+  totalVolume: 0,
   whaleBuyers: [],
   whaleSellers: [],
   whaleBuyersDay: [],
@@ -69,6 +70,9 @@ const app = createSlice({
     setShowMore: (state, action) => {
       state.showMore = action.payload;
     },
+    setTotalVolume: (state, action) => {
+      state.totalVolume = action.payload;
+    },
     setWhaleBuyers: (state, action) => {
       state.whaleBuyers = action.payload;
     },
@@ -100,6 +104,7 @@ export const {
   setSolPrice,
   setDebugMode,
   setShowMore,
+  setTotalVolume,
   setWhaleBuyers,
   setWhaleSellers,
   setWhaleBuyersDay,
@@ -121,6 +126,7 @@ export const selectSort = (state) => state.app.sort;
 export const selectSolPrice = (state) => state.app.solPrice;
 export const selectDebugMode = (state) => state.app.debug;
 export const selectShowMore = (state) => state.app.showMore;
+export const selectTotalVolume = (state) => state.app.totalVolume;
 export const selectWhaleBuyers = (state) => state.app.whaleBuyers;
 export const selectWhaleSellers = (state) => state.app.whaleSellers;
 export const selectWhaleBuyersDay = (state) => state.app.whaleBuyersDay;
