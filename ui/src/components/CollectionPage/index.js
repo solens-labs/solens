@@ -12,6 +12,7 @@ import convertSalesData from "../../utils/convertSalesData";
 import convertBuyersSellersData from "../../utils/convertBuyersSellersData";
 import {
   calculateAllTimeTransactions,
+  calculateAllTimeVolume,
   calculateLaunchDate,
   getMarketplaceData,
   marketplaceSelect,
@@ -27,21 +28,48 @@ export default function CollectionPage(props) {
   const tableLength = 100;
   const debug = useSelector(selectDebugMode);
 
-  const [marketplacesData, setMarketplacesData] = useState([]);
-  const [daysSinceCreated, setDaysSinceCreated] = useState(0);
-  const [stats, setStats] = useState([]); // needed to populate collection summary
-  const [collectionAverage, setCollectionAverage] = useState(0); // needed for collection summar
+  const [marketplacesData, setMarketplacesData] = useState([]); // needed for each MP's charts
+  const [daysSinceCreated, setDaysSinceCreated] = useState(0); // needed for days launched
+  const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
+  const [collectionVolume, setCollectionVolume] = useState(0); // needed for collection summary
+  const [collectionAverage, setCollectionAverage] = useState(0); // needed for collection summary
   const [collectionTxCount, setCollectionTxCount] = useState(0); // needed for collection summary
+  const [stats, setStats] = useState([]); // needed to populate collection summary
   const [topSales, setTopSales] = useState([]); // needed for table
+<<<<<<< HEAD
+  const [topTrades, setTopTrades] = useState([]); // needed for table
+=======
+>>>>>>> master
   const [topBuyers, setTopBuyers] = useState([]); // needed for table
   const [topSellers, setTopSellers] = useState([]); // needed for table
+  const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
-  const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [marketplaces, setMarketplaces] = useState(0);
   const [collectionLinks, setCollectionLinks] = useState({});
 
-  // Fetch daily stats
+  // Fetch Collection Data
   useEffect(async () => {
+<<<<<<< HEAD
+    const apiRequest = api.collection + queries.symbol + name;
+    const collectionInfo = await axios.get(apiRequest).then((response) => {
+      const collectionInfo = response.data[0];
+      setCollectionInfo(collectionInfo);
+      setStats(collectionInfo.alltimestats);
+      setMarketplaces(collectionInfo.alltimestats.length);
+      setDaysSinceCreated(calculateLaunchDate(collectionInfo));
+      setDailyStats(collectionInfo.dailystats);
+
+      const links = {
+        website: collectionInfo.website,
+        twitter: collectionInfo.twitter,
+        discord: collectionInfo.discord,
+      };
+      setCollectionLinks(links);
+    });
+  }, [name]);
+
+  // Fetch Top Data (top sales, trades, buyers, sellers)
+=======
     // console.log(collectionData);
 
     const dailyStats = await axios
@@ -100,13 +128,23 @@ export default function CollectionPage(props) {
   }, [dailyStats, marketplaces]);
 
   // Fetch All time data (top sales, buyers, sellers)
+>>>>>>> master
   useEffect(async () => {
     if (topSales.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
+      const apiRequest =
+        api.topTrades + queries.symbol + name + queries.days + 365;
+
       const topSales = await axios
+<<<<<<< HEAD
+        // .get(`${api.getTopBuys}` + name) // NEED TO UPDATE API
+        .get(apiRequest)
+=======
         .get(`${endpoints.api.getTopBuys}` + name)
+>>>>>>> master
         .then((response) => {
           const sales = response.data;
+
           if (sales.length > 0) {
             const data = convertSalesData(sales, tableLength);
             setTopSales(data);
@@ -116,6 +154,43 @@ export default function CollectionPage(props) {
     }
   }, [name]);
   useEffect(async () => {
+<<<<<<< HEAD
+    if (topTrades.length === 0) {
+      debug && console.log(`fetching top weekly trades - ${name}`);
+      const apiRequest =
+        api.topTrades + queries.symbol + name + queries.days + 7;
+
+      const topTrades = await axios.get(apiRequest).then((response) => {
+        const trades = response.data;
+        if (trades.length > 0) {
+          const data = convertTradesData(trades, tableLength);
+          setTopTrades(data);
+          debug && console.log(`received top trades -  ${name}`);
+        }
+      });
+    }
+  }, [name]);
+  useEffect(async () => {
+    if (topBuyers.length === 0) {
+      debug && console.log(`fetching top buyers - ${name}`);
+      const apiRequest =
+        api.topTraders +
+        queries.symbol +
+        name +
+        queries.typeBuyers +
+        queries.days +
+        365 +
+        queries.sortVolume;
+
+      const topBuyers = await axios.get(apiRequest).then((response) => {
+        const buyers = response.data;
+        if (buyers.length > 0) {
+          const data = convertBuyersSellersData(buyers, tableLength);
+          setTopBuyers(data);
+          debug && console.log(`received top buyers - ${name}`);
+        }
+      });
+=======
     if (topBuyers.length === 0) {
       debug && console.log(`fetching top buyers - ${name}`);
       const topBuyers = await axios
@@ -128,11 +203,55 @@ export default function CollectionPage(props) {
             debug && console.log(`received top buyers - ${name}`);
           }
         });
+>>>>>>> master
     }
   }, [name]);
   useEffect(async () => {
     if (topSellers.length === 0) {
       debug && console.log(`fetching top sellers - ${name}`);
+<<<<<<< HEAD
+      const apiRequest =
+        api.topTraders +
+        queries.symbol +
+        name +
+        queries.typeSellers +
+        queries.days +
+        365 +
+        queries.sortVolume;
+
+      const topSellers = await axios.get(apiRequest).then((response) => {
+        const sellers = response.data;
+        if (sellers.length > 0) {
+          const data = convertBuyersSellersData(sellers, tableLength);
+          setTopSellers(data);
+          debug && console.log(`received top sellers-  ${name}`);
+        }
+      });
+    }
+  }, [name]);
+  useEffect(async () => {
+    if (topNFTsWeek.length === 0) {
+      debug && console.log(`fetching top NFTs week - ${name}`);
+      const apiRequest =
+        api.topNFTs +
+        queries.symbol +
+        name +
+        queries.days +
+        7 +
+        queries.sortVolume;
+
+      const topSellers = await axios.get(apiRequest).then((response) => {
+        const nfts = response.data.splice(0, 4);
+        // console.log(nfts);
+
+        if (nfts.length > 0) {
+          setTopNFTsWeek(nfts);
+          debug && console.log(`received top NFTs week-  ${name}`);
+        }
+      });
+    }
+  }, [name]);
+=======
       const topSellers = await axios
         .get(`${endpoints.api.getTopSellers}` + name)
         .then((response) => {
@@ -145,18 +264,57 @@ export default function CollectionPage(props) {
         });
     }
   }, [name]);
+>>>>>>> master
 
-  // Calculate All time data figures
+  // Calculate Collection Summary Figures
   useEffect(() => {
     if (stats && stats.length > 0) {
+      const volumeAllTime = calculateAllTimeVolume(stats);
+      setCollectionVolume(volumeAllTime);
+
       const transactionsAllTime = calculateAllTimeTransactions(stats);
       setCollectionTxCount(transactionsAllTime);
 
-      const averageAllTime = collectionInfo.total_volume / transactionsAllTime;
+      const averageAllTime = volumeAllTime / transactionsAllTime;
       setCollectionAverage(averageAllTime);
     }
   }, [stats]);
 
+<<<<<<< HEAD
+  // Split Marketplace Data Structures
+  useEffect(() => {
+    if (marketplaces > 1 && dailyStats.length > 0) {
+      const splitData = splitMarketplaceData(dailyStats);
+
+      const solanartData = getMarketplaceData(splitData.solanart);
+      const magicedenData = getMarketplaceData(splitData.magiceden);
+      const allMarketplaceData = [];
+
+      if (Object.keys(solanartData).length > 0) {
+        allMarketplaceData.push(solanartData);
+      }
+      if (Object.keys(magicedenData).length > 0) {
+        allMarketplaceData.push(magicedenData);
+      }
+
+      // console.log(allMarketplaceData);
+
+      setMarketplacesData(allMarketplaceData);
+    } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
+      const allMarketplaceData = [];
+      const singleCollectionData = getMarketplaceData(dailyStats);
+      allMarketplaceData.push(singleCollectionData);
+      setMarketplacesData(allMarketplaceData);
+    }
+  }, [dailyStats, marketplaces]);
+
+  // Use to build multi-marketplace select
+  const toggleMarketplace = (index) => {
+    setSelectedMarketplace(index);
+  };
+
+=======
+>>>>>>> master
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
       <div className="collection_details d-flex flex-wrap col-12 col-lg-8">
@@ -194,8 +352,8 @@ export default function CollectionPage(props) {
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3">
         <div className="collection_stat">
           <h1 className="collection_info">
-            {collectionInfo.total_volume
-              ? collectionInfo.total_volume.toLocaleString("en", {
+            {collectionVolume
+              ? collectionVolume.toLocaleString("en", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 }) || "Loading..."
@@ -257,6 +415,35 @@ export default function CollectionPage(props) {
       )}
 
       <div className="top_tables d-flex flex-wrap flex-column align-items-center col-12">
+<<<<<<< HEAD
+        <div className="d-flex flex-wrap justify-content-around col-12">
+          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
+            {" "}
+            <h1>Top {topSales.length || ""} Trades </h1>
+            <h5 className="collection_stats_days mb-2">ALL TIME</h5>
+            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+            {topSales.length !== 0 ? (
+              <SalesTable data={topSales} />
+            ) : (
+              <div className="col-6">
+                <Loader />
+              </div>
+            )}
+          </div>
+          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
+            {" "}
+            <h1>Top {topTrades.length || ""} Trades</h1>
+            <h5 className="collection_stats_days mb-2">LAST 7 DAYS</h5>
+            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+            {topTrades.length !== 0 ? (
+              <TradesTable data={topTrades} />
+            ) : (
+              <div className="col-6">
+                <Loader />
+              </div>
+            )}
+          </div>
+=======
         <div className="chartbox d-flex flex-column align-items-center col-12 col-md-6">
           {" "}
           <h1>Top {topSales.length || ""} Sales</h1>
@@ -268,6 +455,7 @@ export default function CollectionPage(props) {
               <Loader />
             </div>
           )}
+>>>>>>> master
         </div>
         <div className="d-flex flex-wrap justify-content-around col-12">
           <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">

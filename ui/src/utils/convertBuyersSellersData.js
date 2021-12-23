@@ -1,4 +1,5 @@
 import { shortenAddress } from "../candy-machine";
+import { explorerLink } from "../constants/constants";
 
 const range = (len) => {
   const arr = [];
@@ -12,14 +13,15 @@ const addTransaction = (buyer) => {
   const count = buyer["count"];
   const address = (
     <a
-      href={`https://explorer.solana.com/address/${buyer["account"]}`}
+      href={explorerLink("account", buyer["account"])}
       target="_blank"
       style={{ textDecoration: "none" }}
     >
       {shortenAddress(buyer["account"])}
     </a>
   );
-  const total = Number(buyer["total"]).toFixed(2);
+  // const total = Number(buyer["total"]).toFixed(2);
+  const total = Number(buyer["volume"]).toFixed(2);
   const average = Number(buyer["avg"]).toFixed(2);
   const min = Number(buyer["min"]).toFixed(2);
   const max = Number(buyer["max"]).toFixed(2);

@@ -39,19 +39,22 @@ const Header = (props) => {
         </Link>
       </div>
 
-      <div className="d-none d-lg-flex col-lg-9 flex-wrap justify-content-end">
+      <div className="d-none d-lg-flex col-lg-9 flex-wrap justify-content-end align-items-center">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">HOME</h1>
+          <h1 className="nav_page">home</h1>
         </Link>
         <Link to="/collections" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">COLLECTIONS</h1>
+          <h1 className="nav_page">collections</h1>
+        </Link>
+        <Link to="/wallets" style={{ textDecoration: "none" }}>
+          <h1 className="nav_page">wallets</h1>
         </Link>
         <a
           href={links.twitter.url}
           target="_blank"
           style={{ textDecoration: "none" }}
         >
-          <h1 className="nav_page">TWITTER</h1>
+          <h1 className="nav_page">twitter</h1>
         </a>
       </div>
 
@@ -68,35 +71,42 @@ const Header = (props) => {
         </button>
       </div> */}
 
-      <div onClick={showMenu} className="menu_icon">
-        <Menu />
-      </div>
+      {!menu && (
+        <div onClick={showMenu} className="menu_icon">
+          <Menu />
+        </div>
+      )}
+
+      {menu && <Close onClick={() => setMenu(false)} className="close_icon" />}
 
       <div
         className={`${
-          menu ? "slide-menu active" : "slide-menu"
-        } d-flex justify-content-between`}
+          menu && "active"
+        } slide-menu d-flex justify-content-between`}
       >
-        <Close onClick={() => setMenu(false)} className="close_icon" />
-
         <div className="mobile_menu">
-          <Link to="/" style={{ textDecoration: "none" }}>
+          {/* <Link to="/" style={{ textDecoration: "none" }}>
             <img
               src={logo2}
               className="nav_logo nav_logo_mobile"
               alt="logo"
               onClick={() => showMenu()}
             />
-          </Link>
+          </Link> */}
 
           <Link to="/" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Home
+              home
             </h1>
           </Link>
           <Link to="/collections" style={{ textDecoration: "none" }}>
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Collections
+              collections
+            </h1>
+          </Link>
+          <Link to="/wallets" style={{ textDecoration: "none" }}>
+            <h1 className="nav_page" onClick={() => showMenu()}>
+              wallets
             </h1>
           </Link>
           <a
@@ -105,7 +115,7 @@ const Header = (props) => {
             style={{ textDecoration: "none" }}
           >
             <h1 className="nav_page" onClick={() => showMenu()}>
-              Twitter
+              twitter
             </h1>
           </a>
         </div>

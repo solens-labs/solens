@@ -1,26 +1,54 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
-// const server = "https://3.144.164.149:3000/api/stats/";
-const server = "https://api-mainnet.arnori.io/api/stats/";
-const devServer = "http://3.19.58.245:3000/";
-export const endpoints = {
-  api: {
-    getAllCollections: `${server + "getAllCollections"}`,
-    getCollection: `${server + "getCollection/"}`,
-    getDailyStats: `${server + "getDailyStats/"}`,
-    getHourlyStats: `${server + "getHourlyStats/"}`,
-    getTopBuys: `${server + "getTopBuys/"}`,
-    getTopBuyers: `${server + "getTopBuyers/"}`,
-    getTopSellers: `${server + "getTopSellers/"}`,
-  },
-  dev: {
-    allCollections: `${devServer + "allCollections"}`,
-    collections: `${devServer + "collections"}`,
-    topTrades: `${devServer + "topTrades"}`,
-    topTraders: `${devServer + "topTraders"}`,
-    topNFTs: `${devServer + "topNFTs"}`,
-  },
+const serverOld = "https://api-mainnet.arnori.io/api/stats/";
+const server = "https://api.arnori.io/stats/";
+const devServer = "http://3.19.58.245:3000/stats/";
+
+export const queries = {
+  symbol: "?symbol=",
+  days: "&days=",
+  sortVolume: "&sortBy=volume",
+  sortCount: "&sortBy=count",
+  typeBuyers: "&type=buyers",
+  typeSellers: "&type=sellers",
 };
+
+export const api = {
+  allCollections: `${server + "allCollections"}`,
+  topTrades: `${server + "topTrades"}`,
+  topNFTs: `${server + "topNFTs"}`,
+  collection: `${server + "collection"}`,
+  topTraders: `${server + "topTraders"}`,
+  marketStats: `${server + "marketStats"}`,
+
+  getAllCollections: `${server + "getAllCollections"}`,
+  getCollection: `${server + "getCollection/"}`,
+  getDailyStats: `${server + "getDailyStats/"}`,
+  getHourlyStats: `${server + "getHourlyStats/"}`,
+  getTopBuys: `${server + "getTopBuys/"}`,
+  getTopBuyers: `${server + "getTopBuyers/"}`,
+  getTopSellers: `${server + "getTopSellers/"}`,
+};
+
+export const explorerLink = (type, hash) => {
+  switch (type) {
+    case "tx":
+      return `https://solscan.io/tx/${hash}`;
+      break;
+    case "account":
+      return `https://solscan.io/account/${hash}`;
+      break;
+    case "token":
+      return `https://solscan.io/token/${hash}`;
+      break;
+  }
+};
+
+export const teepees = [
+  "Eft3BxNdD9gbrXCQfHpafd2bzFWA9L4RdCJZP47JqBwE",
+  "EGKjGUsEtCZtPsRSTiPv3FJM9LmPPLt1iUApddYm6XUL",
+  "Feh2PMNhYSej92eaFyczH7uuZac4cz3YgiAx8wEv1gLe",
+];
 
 export const contractInfo = {
   mainnet: "",

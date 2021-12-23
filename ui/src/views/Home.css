@@ -31,10 +31,14 @@
   /* overflow: hidden; */
   position: sticky;
   top: 0;
+  width: 100%;
   z-index: 100;
 }
 
 .page_content {
+  /* overflow-y: scroll; */
+  /* position: fixed; */
+  /* height: 100%; */
   margin-top: 2%;
   padding-left: 10px;
   padding-right: 10px;

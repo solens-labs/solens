@@ -71,7 +71,7 @@ export default function CollectionList(props) {
         const sorted = sortData(allCollections, sortSelected);
         setCollections(sorted);
       } else {
-        const sorted = sortData(allCollections, "daily_volume");
+        const sorted = sortData(allCollections, sortDefault);
         setCollections(sorted);
       }
     }
