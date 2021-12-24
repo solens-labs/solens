@@ -5,7 +5,7 @@ import "./style.css";
 import { useSelector } from "react-redux";
 import { selectCollection, selectDebugMode } from "../../redux/app";
 import axios from "axios";
-import { api, queries } from "../../constants/constants";
+import { api, exchangeApi, queries } from "../../constants/constants";
 import TradesTable from "../TradesTable";
 import BuyersTable from "../BuyersSellersTable";
 import convertTradesData from "../../utils/convertTradesData";
@@ -41,8 +41,11 @@ export default function CollectionPage(props) {
   const [topSellers, setTopSellers] = useState([]); // needed for table
   const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
-  const [marketplaces, setMarketplaces] = useState(0);
+  const [marketplaces, setMarketplaces] = useState(0); // needed to figure out how many datasets to show
   const [collectionLinks, setCollectionLinks] = useState({});
+  const [floorME, setFloorME] = useState(0); // needed for MP section & collection summary
+  const [floorSA, setFloorSA] = useState(0); // needed for MP section & collection summary
+  const [floor, setFloor] = useState(0);
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -168,7 +171,7 @@ export default function CollectionPage(props) {
     }
   }, [name]);
 
-  // Calculate Collection Summary Figures
+  // Calculate Collection Summary + Floor
   useEffect(() => {
     if (stats && stats.length > 0) {
       const volumeAllTime = calculateAllTimeVolume(stats);
@@ -181,6 +184,38 @@ export default function CollectionPage(props) {
       setCollectionAverage(averageAllTime);
     }
   }, [stats]);
+
+  useEffect(() => {
+    // Request ME Floor
+    const apiRequestME = exchangeApi.magiceden.floor + name;
+    const collectionFloorME = axios.get(apiRequestME).then((response) => {
+      const floorLamports = response.data.results.floorPrice;
+      if (floorLamports) {
+        const floor = floorLamports * 10e-10;
+        setFloorME(floor.toFixed(2));
+      }
+    });
+
+    // Request SA Floor
+    const apiRequestSA = exchangeApi.solanart.floor + name;
+    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
+      const floor = response.data.floorPrice;
+      if (floor) {
+        setFloorSA(floor.toFixed(2));
+      }
+    });
+  }, [name]);
+
+  useEffect(() => {
+    if (floorSA !== 0 && floorME !== 0) {
+      const floor = Math.min(floorSA, floorME);
+      setFloor(floor);
+    } else if (floorSA === 0 && floorME !== 0) {
+      setFloor(floorME);
+    } else if (floorSA !== 0 && floorME === 0) {
+      setFloor(floorSA);
+    } else setFloor("Unavailable");
+  }, [floorSA, floorME]);
 
   // Split Marketplace Data Structures
   useEffect(() => {
@@ -288,15 +323,9 @@ export default function CollectionPage(props) {
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {stats
-              ? marketplaces === 1
-                ? marketplaceSelect(stats[0].marketplace)
-                : marketplaces
-              : "Unavailable"}
+            {floor > 0 ? floor + " SOL" : "Unavaialble"}
           </h1>
-          <h1 className="collection_info_header">
-            {stats && marketplaces > 1 ? "Marketplaces" : "Marketplace"}
-          </h1>
+          <h1 className="collection_info_header">Floor Price</h1>
         </div>
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />

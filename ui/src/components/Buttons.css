@@ -36,12 +36,12 @@ rgb(80, 235, 188)
   border-radius: 15px;
   border: 1px solid rgb(156, 156, 156);
   padding: 5px 10px;
-  width: 50px;
+  width: 100px;
   height: 45px;
 }
 
 .btn_timeframe_selected {
-  background-color: rgb(156, 156, 156);
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
   color: white;
   border: 1px solid white;
 }
