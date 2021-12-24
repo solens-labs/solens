@@ -70,7 +70,6 @@ export default function Wallets(props) {
         </button>
       </div>
 
-      {/* <h5 className="collection_stats_days">{timeframeTitle}</h5> */}
       <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
       <WalletsSection
