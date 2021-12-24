@@ -340,7 +340,7 @@ export default function CollectionPage(props) {
       )}
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
           {/* <h5 className="collection_stats_days mb-2">ALL TIME</h5> */}
@@ -374,7 +374,7 @@ export default function CollectionPage(props) {
           )}
         </div>
 
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-5 mt-lg-3">
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>
