@@ -28,16 +28,16 @@ export default function WalletCard(props) {
         type === "SALES" && "seller"
       } d-flex flex-column align-items-center justify-content-around`}
     >
-      <div className="d-flex flex-row flex-wrap col-12 justify-content-around align-items-center">
+      <div className="d-flex flex-row flex-wrap col-12 justify-content-center align-items-center p-3 pb-0 pt-0">
         <div
-          className={`wallet_image_container ${
+          className={`col-4 wallet_image_container ${
             type === "SALES" && "seller_image_container"
           }`}
         >
           <img src={wallet_pic} alt="" className="wallet_image" />
         </div>
 
-        <div className="d-flex flex-column align-items-end justify-content-center">
+        <div className="col-8 d-flex flex-column align-items-end justify-content-center">
           <a
             href={explorerLink("account", data.account)}
             target="_blank"
