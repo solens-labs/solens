@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useMemo } from "react";
 
-import Home from "./views/Home";
+import Base from "./views/Base";
 
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
@@ -36,7 +36,7 @@ const App = () => {
       <WalletProvider wallets={wallets} autoConnect>
         <WalletDialogProvider>
           <Router>
-            <Home />
+            <Base />
           </Router>
         </WalletDialogProvider>
       </WalletProvider>

@@ -1,5 +1,3 @@
-import getDateFromDayNum from "./getDateFromDay";
-
 export const calculateAllTimeVolume = (data) => {
   let counter = 0;
   data.map((stat) => {

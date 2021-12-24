@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./style.css";
 import { useSelector } from "react-redux";
 import {
   selectDailyVolume,
@@ -8,10 +9,7 @@ import {
   selectWalletSellers,
   selectWalletSellersDay,
 } from "../../redux/app";
-import Loader from "../Loader";
-import WalletCard from "../WalletCard";
-import WalletsSection from "../WalletsSection";
-import "./style.css";
+import WalletsSection from "../../components/WalletsSection";
 
 export default function Wallets(props) {
   const walletBuyersWeek = useSelector(selectWalletBuyers);
@@ -43,6 +41,12 @@ export default function Wallets(props) {
         break;
     }
   }, [timeframe]);
+
+  useEffect(() => {
+    setVolume(volumeDay);
+    setBuyers(walletBuyersDay);
+    setSellers(walletSellersDay);
+  }, [walletBuyersDay, walletSellersDay, volumeDay]);
 
   return (
     <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-2">

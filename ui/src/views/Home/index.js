@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import logo from "../../assets/images/logo2.png";
 import { Link } from "react-router-dom";
-import CollectionSection from "../CollectionSection";
+import CollectionSection from "../../components/CollectionSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectAllCollections,
@@ -15,8 +15,8 @@ import {
   selectDailyVolume,
   selectWeeklyVolume,
 } from "../../redux/app";
-import WalletCard from "../WalletCard";
-import Loader from "../Loader";
+import WalletCard from "../../components/WalletCard";
+import Loader from "../../components/Loader";
 
 export default function LandingPage(props) {
   const dispatch = useDispatch();
@@ -46,7 +46,6 @@ export default function LandingPage(props) {
         );
       });
       const truncated = relevant.slice(0, 8);
-      // console.log(truncated);
       setTrending(truncated);
     }
   }, [collections, solPrice]);
@@ -55,7 +54,6 @@ export default function LandingPage(props) {
     <div className="landing_page d-flex flex-column align-items-center justify-content-center">
       <div>
         <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
-        {/* <h1 className="text_select">Welcome to Solens</h1> */}
         <h3 className="homepage_tagline mb-3 mb-lg-0">
           Solana's Premiere NFT Data Platform
         </h3>

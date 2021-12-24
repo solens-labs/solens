@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import "./Home.css";
+import "./style.css";
 
 import { useLocation, Switch, Route } from "react-router-dom";
 import {
@@ -20,20 +20,19 @@ import {
   setWalletBuyersDay,
   setWalletSellers,
   setWalletSellersDay,
-} from "../redux/app";
+} from "../../redux/app";
 import { useSelector, useDispatch } from "react-redux";
-import ItemPage from "../components/ItemPage";
-import CollectionList from "../components/CollectionList";
-import CollectionPage from "../components/CollectionPage";
-import { selectAllCollections, setAllCollections } from "../redux/app";
+import ItemPage from "../../components/ItemPage";
+import Collections from "../Collections";
+import CollectionPage from "../CollectionPage";
+import { selectAllCollections, setAllCollections } from "../../redux/app";
 import axios from "axios";
-import Navigation from "../components/Navigation";
-import LandingPage from "../components/LandingPage";
-import { api, links, queries } from "../constants/constants";
-import ScrollToTop from "../utils/scrollToTop";
-import createHistory from "history/createBrowserHistory";
+import Navigation from "../../components/Navigation";
+import HomePage from "../Home";
+import { api, links, queries } from "../../constants/constants";
+import ScrollToTop from "../../utils/scrollToTop";
 import ReactGA from "react-ga";
-import Wallets from "../components/Wallets";
+import Wallets from "../Wallets";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -186,12 +185,12 @@ export default function Home(props) {
       <div className="page_content col-12">
         <ScrollToTop />
         <Switch>
-          <Route path exact="/" component={LandingPage} />
-          <Route path="/collections" component={CollectionList} />
+          <Route path exact="/" component={HomePage} />
+          <Route path="/collections" component={Collections} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/item" component={ItemPage} />
-          <Route path="*" component={LandingPage} />
+          <Route path="*" component={HomePage} />
         </Switch>
       </div>
 

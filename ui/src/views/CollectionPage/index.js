@@ -1,31 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../CollectionStats/style.css";
+import "../../components/CollectionStats/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { selectCollection, selectDebugMode } from "../../redux/app";
 import axios from "axios";
 import { api, exchangeApi, queries } from "../../constants/constants";
-import TradesTable from "../TradesTable";
-import BuyersTable from "../BuyersSellersTable";
+import TradesTable from "../../components/TradesTable";
+import TradersTable from "../../components/TradersTable";
 import convertTradesData from "../../utils/convertTradesData";
-import convertBuyersSellersData from "../../utils/convertBuyersSellersData";
+import convertTradersData from "../../utils/convertTradersData";
 import {
   calculateAllTimeTransactions,
   calculateAllTimeVolume,
   calculateLaunchDate,
   getMarketplaceData,
-  marketplaceSelect,
   splitMarketplaceData,
 } from "../../utils/collectionStats";
-import Loader from "../Loader";
-import MarketplaceCharts from "../MarketplaceCharts";
-import SocialLinks from "../SocialLinks";
+import Loader from "../../components/Loader";
+import MarketplaceCharts from "../../components/MarketplaceCharts";
+import SocialLinks from "../../components/SocialLinks";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
-  const collectionData = useSelector(selectCollection);
-  const tableLength = 100;
   const debug = useSelector(selectDebugMode);
 
   const [marketplacesData, setMarketplacesData] = useState([]); // needed for each MP's charts
@@ -43,9 +40,9 @@ export default function CollectionPage(props) {
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
   const [marketplaces, setMarketplaces] = useState(0); // needed to figure out how many datasets to show
   const [collectionLinks, setCollectionLinks] = useState({});
-  const [floorME, setFloorME] = useState(0); // needed for MP section & collection summary
-  const [floorSA, setFloorSA] = useState(0); // needed for MP section & collection summary
-  const [floor, setFloor] = useState(0);
+  const [floorME, setFloorME] = useState(0); // needed for MP summary
+  const [floorSA, setFloorSA] = useState(0); // needed for MP summary
+  const [floor, setFloor] = useState(0); // needed for collection summary
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -81,7 +78,7 @@ export default function CollectionPage(props) {
           const sales = response.data;
 
           if (sales.length > 0) {
-            const data = convertTradesData(sales, tableLength);
+            const data = convertTradesData(sales);
             setTopSales(data);
             debug && console.log(`received top sales -  ${name}`);
           }
@@ -97,7 +94,7 @@ export default function CollectionPage(props) {
       const topTrades = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
         if (trades.length > 0) {
-          const data = convertTradesData(trades, tableLength);
+          const data = convertTradesData(trades);
           setTopTrades(data);
           debug && console.log(`received top trades -  ${name}`);
         }
@@ -119,7 +116,7 @@ export default function CollectionPage(props) {
       const topBuyers = await axios.get(apiRequest).then((response) => {
         const buyers = response.data;
         if (buyers.length > 0) {
-          const data = convertBuyersSellersData(buyers, tableLength);
+          const data = convertTradersData(buyers);
           setTopBuyers(data);
           debug && console.log(`received top buyers - ${name}`);
         }
@@ -141,7 +138,7 @@ export default function CollectionPage(props) {
       const topSellers = await axios.get(apiRequest).then((response) => {
         const sellers = response.data;
         if (sellers.length > 0) {
-          const data = convertBuyersSellersData(sellers, tableLength);
+          const data = convertTradersData(sellers);
           setTopSellers(data);
           debug && console.log(`received top sellers-  ${name}`);
         }
@@ -225,15 +222,12 @@ export default function CollectionPage(props) {
       const solanartData = getMarketplaceData(splitData.solanart);
       const magicedenData = getMarketplaceData(splitData.magiceden);
       const allMarketplaceData = [];
-
       if (Object.keys(solanartData).length > 0) {
         allMarketplaceData.push(solanartData);
       }
       if (Object.keys(magicedenData).length > 0) {
         allMarketplaceData.push(magicedenData);
       }
-
-      // console.log(allMarketplaceData);
 
       setMarketplacesData(allMarketplaceData);
     } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
@@ -309,6 +303,12 @@ export default function CollectionPage(props) {
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
+            {floor > 0 ? floor + " SOL" : "Unavaialble"}
+          </h1>
+          <h1 className="collection_info_header">Floor Price</h1>
+        </div>
+        <div className="collection_stat">
+          <h1 className="collection_info">
             {collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
               : "Unavailable"}
@@ -320,12 +320,6 @@ export default function CollectionPage(props) {
             {daysSinceCreated ? daysSinceCreated : "Unavailable"}
           </h1>
           <h1 className="collection_info_header">Days Launched</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {floor > 0 ? floor + " SOL" : "Unavaialble"}
-          </h1>
-          <h1 className="collection_info_header">Floor Price</h1>
         </div>
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
@@ -376,7 +370,7 @@ export default function CollectionPage(props) {
             <h1>Top {topBuyers.length || ""} Buyers</h1>
             <hr style={{ color: "white", width: "100%" }} className="mt-0" />
             {topBuyers.length !== 0 ? (
-              <BuyersTable data={topBuyers} />
+              <TradersTable data={topBuyers} />
             ) : (
               <div className="col-6">
                 <Loader />
@@ -387,7 +381,7 @@ export default function CollectionPage(props) {
             <h1>Top {topSellers.length || ""} Sellers</h1>
             <hr style={{ color: "white", width: "100%" }} className="mt-0" />
             {topSellers.length !== 0 ? (
-              <BuyersTable data={topSellers} />
+              <TradersTable data={topSellers} />
             ) : (
               <div className="col-6">
                 <Loader />

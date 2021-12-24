@@ -3,7 +3,7 @@ import "./style.css";
 import "../Buttons/style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 
-export default function BuysTable(props) {
+export default function TradersTable(props) {
   const { data } = props;
 
   const columns = useMemo(
@@ -57,7 +57,7 @@ export default function BuysTable(props) {
 
   return (
     <>
-      <div className="col-12">
+      {/* <div className="col-12">
         <select
           value={pageSize}
           onChange={(e) => {
@@ -71,7 +71,7 @@ export default function BuysTable(props) {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
       <div className="col-12 data_table overflow-auto">
         <table {...getTableProps()}>
           <thead>
@@ -174,7 +174,7 @@ export default function BuysTable(props) {
             gotoPage(page);
           }}
         /> */}
-        {/* <select
+        <select
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value));
@@ -186,7 +186,7 @@ export default function BuysTable(props) {
               Display {pageSize}
             </option>
           ))}
-        </select> */}
+        </select>
       </div>
     </>
   );
