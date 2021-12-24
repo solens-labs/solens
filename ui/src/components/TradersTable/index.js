@@ -13,26 +13,24 @@ export default function TradersTable(props) {
         accessor: "address",
       },
       {
+        Header: "TOTAL",
+        accessor: "total",
+      },
+      {
         Header: "COUNT",
         accessor: "count",
       },
       {
-        Header: "TOTAL",
-        accessor: "total",
+        Header: "MIN",
+        accessor: "min",
       },
       {
         Header: "AVG",
         accessor: "average",
       },
       {
-        Header: "MIN",
-        accessor: "min",
-        maxWidth: 70,
-      },
-      {
         Header: "MAX",
         accessor: "max",
-        maxWidth: 70,
       },
     ],
     []
@@ -145,7 +143,7 @@ export default function TradersTable(props) {
           </tbody>
         </table>
       </div>
-      <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-2 mb-2">
+      <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-3 mb-2">
         <button
           className="btn-button btn-main pagination_button"
           onClick={() => previousPage()}
@@ -181,7 +179,7 @@ export default function TradersTable(props) {
           }}
           className="pagination_select"
         >
-          {[10, 20, 50, 100].map((pageSize) => (
+          {[5, 10, 20, 50, 100].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Display {pageSize}
             </option>
