@@ -71,7 +71,7 @@ export const getMarketplaceData = (dailyData) => {
 export const getDates = (data) => {
   let array = [];
   data.map((dailyStat) => {
-    const date = new Date(dailyStat.start);
+    const date = new Date(dailyStat.end);
 
     const local = date.toLocaleDateString();
     const removeYear = local.slice(0, -5);

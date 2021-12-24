@@ -1,5 +1,5 @@
 .whale_card {
-  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
+  background: linear-gradient(0deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
   margin: 5px;
   width: 350px;
   height: 375px;
@@ -10,7 +10,7 @@
   padding: 15px 0px 0px 0px;
 }
 .seller {
-  /* background: linear-gradient(180deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%); */
+  background: linear-gradient(180deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
 }
 
 .font_white {
