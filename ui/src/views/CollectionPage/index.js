@@ -344,7 +344,7 @@ export default function CollectionPage(props) {
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
           {/* <h5 className="collection_stats_days mb-2">ALL TIME</h5> */}
-          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-4 mb-3">
+          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
             <button
               className={`btn_timeframe ${
                 timeframeTrades === 7 && "btn_timeframe_selected"
@@ -378,7 +378,7 @@ export default function CollectionPage(props) {
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>
-          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-4 mb-3">
+          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
             <button
               className={`btn_timeframe ${
                 traderType === "buyers" && "btn_timeframe_selected"
