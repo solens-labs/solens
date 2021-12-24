@@ -171,7 +171,7 @@ export default function CollectionPage(props) {
     }
   }, [name]);
 
-  // Calculate Collection Summary + Floor
+  // Calculate Collection Summary Stats
   useEffect(() => {
     if (stats && stats.length > 0) {
       const volumeAllTime = calculateAllTimeVolume(stats);
@@ -185,13 +185,14 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
+  // Request Collection Floors
   useEffect(() => {
     // Request ME Floor
     const apiRequestME = exchangeApi.magiceden.floor + name;
     const collectionFloorME = axios.get(apiRequestME).then((response) => {
-      const floorLamports = response.data.results.floorPrice;
-      if (floorLamports) {
-        const floor = floorLamports * 10e-10;
+      const floorLamports = response.data;
+      if (Object.keys(floorLamports).length > 0) {
+        const floor = floorLamports.results.floorPrice * 10e-10;
         setFloorME(floor.toFixed(2));
       }
     });
@@ -205,7 +206,6 @@ export default function CollectionPage(props) {
       }
     });
   }, [name]);
-
   useEffect(() => {
     if (floorSA !== 0 && floorME !== 0) {
       const floor = Math.min(floorSA, floorME);
