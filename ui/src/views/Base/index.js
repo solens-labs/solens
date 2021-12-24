@@ -32,7 +32,7 @@ import HomePage from "../Home";
 import { api, links, queries } from "../../constants/constants";
 import ReactGA from "react-ga";
 import Wallets from "../Wallets";
-import ScrollToTop from "../../utils/scrollToTop.js";
+import ScrollToTop from "../../utils/scrollToTop";
 
 export default function Home(props) {
   const dispatch = useDispatch();

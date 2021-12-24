@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useMemo } from "react";
 
-import Base from "./views/Base";
+import Base from "./views/Base/index.js";
 
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
