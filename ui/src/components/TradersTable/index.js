@@ -1,31 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
+import "../Buttons/style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 
-export default function SalesTable(props) {
+export default function TradersTable(props) {
   const { data } = props;
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
-        Header: "DATE",
-        accessor: "date",
-      },
-      {
-        Header: "MINT ADDRESS",
+        Header: "ADDRESS",
         accessor: "address",
       },
       {
-        Header: "PRICE",
-        accessor: "price",
+        Header: "TOTAL",
+        accessor: "total",
       },
       {
-        Header: "BUYER",
-        accessor: "buyer",
+        Header: "COUNT",
+        accessor: "count",
       },
       {
-        Header: "SELLER",
-        accessor: "seller",
+        Header: "MIN",
+        accessor: "min",
+      },
+      {
+        Header: "AVG",
+        accessor: "average",
+      },
+      {
+        Header: "MAX",
+        accessor: "max",
       },
     ],
     []
@@ -50,7 +55,7 @@ export default function SalesTable(props) {
 
   return (
     <>
-      <div className="col-12">
+      {/* <div className="col-12">
         <select
           value={pageSize}
           onChange={(e) => {
@@ -64,7 +69,7 @@ export default function SalesTable(props) {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
       <div className="col-12 data_table overflow-auto">
         <table {...getTableProps()}>
           <thead>
@@ -138,7 +143,7 @@ export default function SalesTable(props) {
           </tbody>
         </table>
       </div>
-      <div className="d-flex flex-row flex-wrap col-12 justify-content-center align-items-center mt-2 mb-2">
+      <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-3 mb-2">
         <button
           className="btn-button btn-main pagination_button"
           onClick={() => previousPage()}
@@ -167,19 +172,19 @@ export default function SalesTable(props) {
             gotoPage(page);
           }}
         /> */}
-        {/* <select
+        <select
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value));
           }}
           className="pagination_select"
         >
-          {[10, 20, 50, 100].map((pageSize) => (
+          {[5, 10, 20, 50, 100].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Display {pageSize}
             </option>
           ))}
-        </select> */}
+        </select>
       </div>
     </>
   );

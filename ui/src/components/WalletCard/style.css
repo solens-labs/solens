@@ -1,4 +1,4 @@
-.whale_card {
+.wallet_card {
   background: linear-gradient(0deg, rgb(65, 37, 156), rgb(134, 64, 117) 100%);
   margin: 5px;
   width: 350px;
@@ -17,7 +17,7 @@
   color: white;
 }
 
-.whale_image_container {
+.wallet_image_container {
   height: 100px;
   width: 100px;
   overflow: hidden;
@@ -32,7 +32,7 @@
   /* background: rgb(134, 64, 117); */
 }
 
-.whale_image {
+.wallet_image {
   /* padding-top: 20px; */
   max-height: 100px;
   /* width: 100%; */
@@ -40,7 +40,7 @@
   /* max-width: 100px; */
 }
 
-.whale_address {
+.wallet_address {
   font-size: 1.2rem;
   color: white;
   /* font-weight: bold; */
@@ -50,12 +50,12 @@
   letter-spacing: 2px;
 }
 
-.whale_stat_large {
+.wallet_stat_large {
   font-size: 1.4rem;
   font-weight: bold;
 }
 
-.whale_stat_small {
+.wallet_stat_small {
   font-size: 1rem;
 }
 

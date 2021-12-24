@@ -18,10 +18,10 @@ const initialState = {
   showMore: false,
   volumeDay: 0,
   volumeWeek: 0,
-  whaleBuyers: [],
-  whaleSellers: [],
-  whaleBuyersDay: [],
-  whaleSellersDay: [],
+  walletBuyers: [],
+  walletSellers: [],
+  walletBuyersDay: [],
+  walletSellersDay: [],
 };
 
 // Slice
@@ -77,17 +77,17 @@ const app = createSlice({
     setWeeklyVolume: (state, action) => {
       state.volumeWeek = action.payload;
     },
-    setWhaleBuyers: (state, action) => {
-      state.whaleBuyers = action.payload;
+    setWalletBuyers: (state, action) => {
+      state.walletBuyers = action.payload;
     },
-    setWhaleSellers: (state, action) => {
-      state.whaleSellers = action.payload;
+    setWalletSellers: (state, action) => {
+      state.walletSellers = action.payload;
     },
-    setWhaleBuyersDay: (state, action) => {
-      state.whaleBuyersDay = action.payload;
+    setWalletBuyersDay: (state, action) => {
+      state.walletBuyersDay = action.payload;
     },
-    setWhaleSellersDay: (state, action) => {
-      state.whaleSellersDay = action.payload;
+    setWalletSellersDay: (state, action) => {
+      state.walletSellersDay = action.payload;
     },
   },
 });
@@ -110,10 +110,10 @@ export const {
   setShowMore,
   setDailyVolume,
   setWeeklyVolume,
-  setWhaleBuyers,
-  setWhaleSellers,
-  setWhaleBuyersDay,
-  setWhaleSellersDay,
+  setWalletBuyers,
+  setWalletSellers,
+  setWalletBuyersDay,
+  setWalletSellersDay,
 } = app.actions;
 
 // Selectors
@@ -133,10 +133,10 @@ export const selectDebugMode = (state) => state.app.debug;
 export const selectShowMore = (state) => state.app.showMore;
 export const selectDailyVolume = (state) => state.app.volumeDay;
 export const selectWeeklyVolume = (state) => state.app.volumeWeek;
-export const selectWhaleBuyers = (state) => state.app.whaleBuyers;
-export const selectWhaleSellers = (state) => state.app.whaleSellers;
-export const selectWhaleBuyersDay = (state) => state.app.whaleBuyersDay;
-export const selectWhaleSellersDay = (state) => state.app.whaleSellersDay;
+export const selectWalletBuyers = (state) => state.app.walletBuyers;
+export const selectWalletSellers = (state) => state.app.walletSellers;
+export const selectWalletBuyersDay = (state) => state.app.walletBuyersDay;
+export const selectWalletSellersDay = (state) => state.app.walletSellersDay;
 
 // Reducer
 export default app.reducer;

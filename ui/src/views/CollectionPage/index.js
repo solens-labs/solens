@@ -1,32 +1,32 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../CollectionStats/style.css";
+import "../../components/CollectionStats/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { selectCollection, selectDebugMode } from "../../redux/app";
 import axios from "axios";
-import { api, queries } from "../../constants/constants";
-import TradesTable from "../TradesTable";
-import BuyersTable from "../BuyersSellersTable";
+import { api, exchangeApi, queries } from "../../constants/constants";
+import TradesTable from "../../components/TradesTable";
+import TradersTable from "../../components/TradersTable";
 import convertTradesData from "../../utils/convertTradesData";
-import convertBuyersSellersData from "../../utils/convertBuyersSellersData";
+import convertTradersData from "../../utils/convertTradersData";
 import {
   calculateAllTimeTransactions,
   calculateAllTimeVolume,
   calculateLaunchDate,
   getMarketplaceData,
-  marketplaceSelect,
   splitMarketplaceData,
 } from "../../utils/collectionStats";
-import Loader from "../Loader";
-import MarketplaceCharts from "../MarketplaceCharts";
-import SocialLinks from "../SocialLinks";
+import Loader from "../../components/Loader";
+import MarketplaceCharts from "../../components/MarketplaceCharts";
+import SocialLinks from "../../components/SocialLinks";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
-  const collectionData = useSelector(selectCollection);
-  const tableLength = 100;
   const debug = useSelector(selectDebugMode);
+
+  const [timeframeTrades, setTimeframeTrades] = useState(1000);
+  const [traderType, setTraderType] = useState("buyers");
 
   const [marketplacesData, setMarketplacesData] = useState([]); // needed for each MP's charts
   const [daysSinceCreated, setDaysSinceCreated] = useState(0); // needed for days launched
@@ -35,14 +35,17 @@ export default function CollectionPage(props) {
   const [collectionAverage, setCollectionAverage] = useState(0); // needed for collection summary
   const [collectionTxCount, setCollectionTxCount] = useState(0); // needed for collection summary
   const [stats, setStats] = useState([]); // needed to populate collection summary
-  const [topSales, setTopSales] = useState([]); // needed for table
-  const [topTrades, setTopTrades] = useState([]); // needed for table
+  const [topTradesAll, setTopTradesAll] = useState([]); // needed for table
+  const [topTradesWeek, setTopTradesWeek] = useState([]); // needed for table
   const [topBuyers, setTopBuyers] = useState([]); // needed for table
   const [topSellers, setTopSellers] = useState([]); // needed for table
   const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
-  const [marketplaces, setMarketplaces] = useState(0);
+  const [marketplaces, setMarketplaces] = useState(0); // needed to figure out how many datasets to show
   const [collectionLinks, setCollectionLinks] = useState({});
+  const [floorME, setFloorME] = useState(0); // needed for MP summary
+  const [floorSA, setFloorSA] = useState(0); // needed for MP summary
+  const [floor, setFloor] = useState(0); // needed for collection summary
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -66,36 +69,36 @@ export default function CollectionPage(props) {
 
   // Fetch Top Data (top sales, trades, buyers, sellers)
   useEffect(async () => {
-    if (topSales.length === 0) {
+    if (topTradesAll.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
       const apiRequest =
         api.topTrades + queries.symbol + name + queries.days + 365;
 
-      const topSales = await axios
+      const topTradesAll = await axios
         // .get(`${api.getTopBuys}` + name) // NEED TO UPDATE API
         .get(apiRequest)
         .then((response) => {
           const sales = response.data;
 
           if (sales.length > 0) {
-            const data = convertTradesData(sales, tableLength);
-            setTopSales(data);
+            const data = convertTradesData(sales);
+            setTopTradesAll(data);
             debug && console.log(`received top sales -  ${name}`);
           }
         });
     }
   }, [name]);
   useEffect(async () => {
-    if (topTrades.length === 0) {
+    if (topTradesWeek.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
         api.topTrades + queries.symbol + name + queries.days + 7;
 
-      const topTrades = await axios.get(apiRequest).then((response) => {
+      const topTradesWeek = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
         if (trades.length > 0) {
-          const data = convertTradesData(trades, tableLength);
-          setTopTrades(data);
+          const data = convertTradesData(trades);
+          setTopTradesWeek(data);
           debug && console.log(`received top trades -  ${name}`);
         }
       });
@@ -116,7 +119,7 @@ export default function CollectionPage(props) {
       const topBuyers = await axios.get(apiRequest).then((response) => {
         const buyers = response.data;
         if (buyers.length > 0) {
-          const data = convertBuyersSellersData(buyers, tableLength);
+          const data = convertTradersData(buyers);
           setTopBuyers(data);
           debug && console.log(`received top buyers - ${name}`);
         }
@@ -138,7 +141,7 @@ export default function CollectionPage(props) {
       const topSellers = await axios.get(apiRequest).then((response) => {
         const sellers = response.data;
         if (sellers.length > 0) {
-          const data = convertBuyersSellersData(sellers, tableLength);
+          const data = convertTradersData(sellers);
           setTopSellers(data);
           debug && console.log(`received top sellers-  ${name}`);
         }
@@ -168,7 +171,7 @@ export default function CollectionPage(props) {
     }
   }, [name]);
 
-  // Calculate Collection Summary Figures
+  // Calculate Collection Summary Stats
   useEffect(() => {
     if (stats && stats.length > 0) {
       const volumeAllTime = calculateAllTimeVolume(stats);
@@ -182,6 +185,38 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
+  // Request Collection Floors
+  useEffect(() => {
+    // Request ME Floor
+    const apiRequestME = exchangeApi.magiceden.floor + name;
+    const collectionFloorME = axios.get(apiRequestME).then((response) => {
+      const floorLamports = response.data;
+      if (Object.keys(floorLamports).length > 0) {
+        const floor = floorLamports.results.floorPrice * 10e-10;
+        setFloorME(floor.toFixed(2));
+      }
+    });
+
+    // Request SA Floor
+    const apiRequestSA = exchangeApi.solanart.floor + name;
+    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
+      const floor = response.data.floorPrice;
+      if (floor) {
+        setFloorSA(floor.toFixed(2));
+      }
+    });
+  }, [name]);
+  useEffect(() => {
+    if (floorSA !== 0 && floorME !== 0) {
+      const floor = Math.min(floorSA, floorME);
+      setFloor(floor);
+    } else if (floorSA === 0 && floorME !== 0) {
+      setFloor(floorME);
+    } else if (floorSA !== 0 && floorME === 0) {
+      setFloor(floorSA);
+    } else setFloor("Unavailable");
+  }, [floorSA, floorME]);
+
   // Split Marketplace Data Structures
   useEffect(() => {
     if (marketplaces > 1 && dailyStats.length > 0) {
@@ -190,15 +225,12 @@ export default function CollectionPage(props) {
       const solanartData = getMarketplaceData(splitData.solanart);
       const magicedenData = getMarketplaceData(splitData.magiceden);
       const allMarketplaceData = [];
-
       if (Object.keys(solanartData).length > 0) {
         allMarketplaceData.push(solanartData);
       }
       if (Object.keys(magicedenData).length > 0) {
         allMarketplaceData.push(magicedenData);
       }
-
-      // console.log(allMarketplaceData);
 
       setMarketplacesData(allMarketplaceData);
     } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
@@ -274,6 +306,12 @@ export default function CollectionPage(props) {
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
+            {floor > 0 ? floor + " SOL" : "Unavaialble"}
+          </h1>
+          <h1 className="collection_info_header">Floor Price</h1>
+        </div>
+        <div className="collection_stat">
+          <h1 className="collection_info">
             {collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
               : "Unavailable"}
@@ -285,18 +323,6 @@ export default function CollectionPage(props) {
             {daysSinceCreated ? daysSinceCreated : "Unavailable"}
           </h1>
           <h1 className="collection_info_header">Days Launched</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {stats
-              ? marketplaces === 1
-                ? marketplaceSelect(stats[0].marketplace)
-                : marketplaces
-              : "Unavailable"}
-          </h1>
-          <h1 className="collection_info_header">
-            {stats && marketplaces > 1 ? "Marketplaces" : "Marketplace"}
-          </h1>
         </div>
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
@@ -313,58 +339,73 @@ export default function CollectionPage(props) {
         </div>
       )}
 
-      <div className="top_tables d-flex flex-wrap flex-column align-items-center col-12">
-        <div className="d-flex flex-wrap justify-content-around col-12">
-          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
-            {" "}
-            <h1>Top {topSales.length || ""} Trades </h1>
-            <h5 className="collection_stats_days mb-2">ALL TIME</h5>
-            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-            {topSales.length !== 0 ? (
-              <TradesTable data={topSales} />
-            ) : (
-              <div className="col-6">
-                <Loader />
-              </div>
-            )}
+      <div className="top_tables d-flex flex-wrap justify-content-around col-12">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">
+          {" "}
+          <h1 className="top_table_header">Top Trades </h1>
+          {/* <h5 className="collection_stats_days mb-2">ALL TIME</h5> */}
+          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
+            <button
+              className={`btn_timeframe ${
+                timeframeTrades === 7 && "btn_timeframe_selected"
+              }`}
+              onClick={() => setTimeframeTrades(7)}
+            >
+              WEEK
+            </button>
+            <button
+              className={`btn_timeframe ${
+                timeframeTrades === 1000 && "btn_timeframe_selected"
+              }`}
+              onClick={() => setTimeframeTrades(1000)}
+            >
+              ALL TIME
+            </button>
           </div>
-          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
-            {" "}
-            <h1>Top {topTrades.length || ""} Trades</h1>
-            <h5 className="collection_stats_days mb-2">LAST 7 DAYS</h5>
-            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-            {topTrades.length !== 0 ? (
-              <TradesTable data={topTrades} />
-            ) : (
-              <div className="col-6">
-                <Loader />
-              </div>
-            )}
-          </div>
+          <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+          {topTradesAll.length !== 0 && topTradesWeek.length !== 0 ? (
+            <TradesTable
+              data={timeframeTrades === 7 ? topTradesWeek : topTradesAll}
+            />
+          ) : (
+            <div className="col-6">
+              <Loader />
+            </div>
+          )}
         </div>
-        <div className="d-flex flex-wrap justify-content-around col-12">
-          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
-            <h1>Top {topBuyers.length || ""} Buyers</h1>
-            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-            {topBuyers.length !== 0 ? (
-              <BuyersTable data={topBuyers} />
-            ) : (
-              <div className="col-6">
-                <Loader />
-              </div>
-            )}
+
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-5 mt-lg-3">
+          <h1 className="top_table_header">
+            Top {traderType === "buyers" ? "Buyers" : "Sellers"}
+          </h1>
+          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
+            <button
+              className={`btn_timeframe ${
+                traderType === "buyers" && "btn_timeframe_selected"
+              }`}
+              onClick={() => setTraderType("buyers")}
+            >
+              BUYERS
+            </button>
+            <button
+              className={`btn_timeframe ${
+                traderType === "sellers" && "btn_timeframe_selected"
+              }`}
+              onClick={() => setTraderType("sellers")}
+            >
+              SELLERS
+            </button>
           </div>
-          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
-            <h1>Top {topSellers.length || ""} Sellers</h1>
-            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-            {topSellers.length !== 0 ? (
-              <BuyersTable data={topSellers} />
-            ) : (
-              <div className="col-6">
-                <Loader />
-              </div>
-            )}
-          </div>
+          <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+          {topBuyers.length !== 0 && topSellers.length !== 0 ? (
+            <TradersTable
+              data={traderType === "buyers" ? topBuyers : topSellers}
+            />
+          ) : (
+            <div className="col-6">
+              <Loader />
+            </div>
+          )}
         </div>
       </div>
     </div>

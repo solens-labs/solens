@@ -8,10 +8,6 @@ export default function TradesTable(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: "DATE",
-        accessor: "date",
-      },
-      {
         Header: "MINT",
         accessor: "address",
       },
@@ -26,6 +22,10 @@ export default function TradesTable(props) {
       {
         Header: "SELLER",
         accessor: "seller",
+      },
+      {
+        Header: "DATE",
+        accessor: "date",
       },
     ],
     []
@@ -142,7 +142,7 @@ export default function TradesTable(props) {
           </tbody>
         </table>
       </div>
-      <div className="d-flex flex-row flex-wrap col-12 justify-content-center align-items-center mt-2 mb-2">
+      <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-3 mb-2">
         <button
           className="btn-button btn-main pagination_button"
           onClick={() => previousPage()}

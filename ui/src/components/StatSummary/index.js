@@ -1,6 +1,5 @@
 import React from "react";
 import "./style.css";
-import { default_button } from "../Buttons";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import ReactGA from "react-ga";
 

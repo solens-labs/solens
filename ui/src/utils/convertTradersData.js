@@ -36,9 +36,8 @@ const addTransaction = (buyer) => {
   };
 };
 
-export default function convertData(transactions, lens) {
+export default function convertData(transactions, lens = 100) {
   const makeDataLevel = () => {
-    // const len = lens[depth];
     const requestedLength = Math.min(transactions.length, lens);
 
     return range(requestedLength).map((d, i) => {
@@ -49,7 +48,6 @@ export default function convertData(transactions, lens) {
   };
 
   const exportedData = makeDataLevel();
-  //   console.log(exportedData);
 
   return exportedData;
 }

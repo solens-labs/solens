@@ -30,6 +30,15 @@ export const api = {
   getTopSellers: `${server + "getTopSellers/"}`,
 };
 
+export const exchangeApi = {
+  magiceden: {
+    floor: `https://api-mainnet.magiceden.io/rpc/getCollectionEscrowStats/`,
+  },
+  solanart: {
+    floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
+  },
+};
+
 export const explorerLink = (type, hash) => {
   switch (type) {
     case "tx":

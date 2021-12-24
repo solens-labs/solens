@@ -7,6 +7,7 @@ import { marketplaceSelect } from "../../utils/collectionStats";
 
 export default function MarketplaceCharts(props) {
   const { marketplaceData, symbol } = props;
+  // console.log(marketplaceData);
 
   return (
     <>

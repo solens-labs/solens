@@ -115,12 +115,12 @@ const CustomizedAccordions = () => {
                   src={downArrow}
                   alt=""
                 /> */}
-                <span className="font_alt">When is the mint date?</span>
+                <span className="font_main">When is the mint date?</span>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography className="answer-styles">
-                <span className="font_alt">
+                <span className="font_main">
                   Mint will be October 29th at 7PM EST.
                 </span>
               </Typography>
@@ -147,12 +147,12 @@ const CustomizedAccordions = () => {
                   src={downArrow}
                   alt=""
                 /> */}
-                <span className="font_alt">How much per mint?</span>
+                <span className="font_main">How much per mint?</span>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography className="answer-styles">
-                <span className="font_alt">
+                <span className="font_main">
                   Each Pesky Pumpkin will cost 1 SOL.
                   <br />
                   There will be a maximum of 10 minted per transaction.
@@ -181,12 +181,12 @@ const CustomizedAccordions = () => {
                   src={downArrow}
                   alt=""
                 /> */}
-                <span className="font_alt">How many minted?</span>
+                <span className="font_main">How many minted?</span>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography className="answer-styles">
-                <span className="font_alt">
+                <span className="font_main">
                   There will be 6666 Pesky Pumpkins minted. 50 will be minted
                   prior to the public mint for community giveaways and
                   marketing.
@@ -215,12 +215,12 @@ const CustomizedAccordions = () => {
                   src={downArrow}
                   alt=""
                 /> */}
-                <span className="font_alt">How to mint?</span>
+                <span className="font_main">How to mint?</span>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography className="answer-styles">
-                <span className="font_alt">
+                <span className="font_main">
                   Minting is easy! Simply load up a Phantom, Solflare or Sollet
                   wallet with Solana tokens, connect your wallet to our website,
                   and mint up to 10 Pumpkins per wallet address.
@@ -249,12 +249,12 @@ const CustomizedAccordions = () => {
                   src={downArrow}
                   alt=""
                 /> */}
-                <span className="font_alt">When roadmap?</span>
+                <span className="font_main">When roadmap?</span>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography className="answer-styles">
-                <span className="font_alt">
+                <span className="font_main">
                   No roadmap. Just spooky Halloween-inspired art to celebrate
                   one of the best seasons! We’ll make our own suggestions that
                   we think will provide value moving forward, but ultimately,
@@ -286,14 +286,14 @@ const CustomizedAccordions = () => {
                   src={downArrow}
                   alt=""
                 />
-                <span className="font_alt">
+                <span className="font_main">
                   Is there a Roadmap or any future plans for the project?
                 </span>
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography className="answer-styles">
-                <span className="font_alt">
+                <span className="font_main">
                   Most definitely. For now, only Phase 1's roadmap is public,
                   which you can checkout by going to the{" "}
                   <Link
@@ -332,14 +332,14 @@ const CustomizedAccordions = () => {
                 src={downArrow}
                 alt=""
               />
-              <span className="font_alt">
+              <span className="font_main">
                 How do I claim my Pimp Cut from royalties?
               </span>
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography className="answer-styles">
-              <span className="font_alt">
+              <span className="font_main">
                 Once we surpass 50+ ETH in secondary sales volume, we will
                 implement a smart contract for the royalties and add a claim
                 button to the website. All you will have to do is go to the

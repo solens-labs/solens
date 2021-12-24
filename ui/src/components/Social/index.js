@@ -1,5 +1,5 @@
 import React from "react";
-import "../Buttons.css";
+import "../Buttons/style.css";
 import { links } from "../../constants/constants";
 
 export default function Twitter(props) {

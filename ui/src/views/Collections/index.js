@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
-import CollectionStats from "../CollectionStats";
-import Loader from "../Loader";
+import CollectionStats from "../../components/CollectionStats";
+import Loader from "../../components/Loader";
 import "./style.css";
-import Table from "../Table";
+import Table from "../../components/Table";
 import { collections } from "../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -18,10 +18,10 @@ import {
   selectShowMore,
 } from "../../redux/app";
 import ToolBar from "../../components/ToolBar";
-import CollectionCard from "../CollectionCard";
+import CollectionCard from "../../components/CollectionCard";
 import { sortData, filterData } from "../../utils/sortAndSearch";
 import ReactGA from "react-ga";
-import CollectionCardMobile from "../CollectionCardMobile";
+import CollectionCardMobile from "../../components/CollectionCardMobile";
 
 export default function CollectionList(props) {
   const dispatch = useDispatch();
