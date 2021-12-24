@@ -8,18 +8,18 @@ import {
   selectDailyVolume,
   selectSolPrice,
   selectWeeklyVolume,
-  selectWhaleBuyers,
-  selectWhaleBuyersDay,
-  selectWhaleSellers,
-  selectWhaleSellersDay,
+  selectWalletBuyers,
+  selectWalletBuyersDay,
+  selectWalletSellers,
+  selectWalletSellersDay,
   setDailyVolume,
   setDebugMode,
   setSolPrice,
   setWeeklyVolume,
-  setWhaleBuyers,
-  setWhaleBuyersDay,
-  setWhaleSellers,
-  setWhaleSellersDay,
+  setWalletBuyers,
+  setWalletBuyersDay,
+  setWalletSellers,
+  setWalletSellersDay,
 } from "../redux/app";
 import { useSelector, useDispatch } from "react-redux";
 import ItemPage from "../components/ItemPage";
@@ -50,10 +50,10 @@ export default function Home(props) {
 
   // Get Global State Collections List
   const allCollections = useSelector(selectAllCollections);
-  const whaleBuyersWeek = useSelector(selectWhaleBuyers);
-  const whaleSellersWeek = useSelector(selectWhaleSellers);
-  const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
-  const whaleSellersDay = useSelector(selectWhaleSellersDay);
+  const walletBuyersWeek = useSelector(selectWalletBuyers);
+  const walletSellersWeek = useSelector(selectWalletSellers);
+  const walletBuyersDay = useSelector(selectWalletBuyersDay);
+  const walletSellersDay = useSelector(selectWalletSellersDay);
   const volumeWeek = useSelector(selectWeeklyVolume);
   const solPrice = useSelector(selectSolPrice);
   const dailyVolume = useSelector(selectDailyVolume);
@@ -120,49 +120,49 @@ export default function Home(props) {
     }
   }, [allCollections, solPrice, dailyVolume]);
 
-  // Fetch Whales Data
+  // Fetch Wallets Data
   useEffect(async () => {
-    if (whaleBuyersWeek.length === 0) {
+    if (walletBuyersWeek.length === 0) {
       const apiRequest =
         api.topTraders + "?type=buyers" + queries.days + 7 + queries.sortVolume;
-      const whales = axios.get(apiRequest).then((response) => {
-        const whaleList = response.data;
-        dispatch(setWhaleBuyers(whaleList));
+      const wallets = axios.get(apiRequest).then((response) => {
+        const walletList = response.data;
+        dispatch(setWalletBuyers(walletList));
       });
     }
 
-    if (whaleSellersWeek.length === 0) {
+    if (walletSellersWeek.length === 0) {
       const apiRequest =
         api.topTraders +
         "?type=sellers" +
         queries.days +
         7 +
         queries.sortVolume;
-      const whales = axios.get(apiRequest).then((response) => {
-        const whaleList = response.data;
-        dispatch(setWhaleSellers(whaleList));
+      const wallets = axios.get(apiRequest).then((response) => {
+        const walletList = response.data;
+        dispatch(setWalletSellers(walletList));
       });
     }
 
-    if (whaleBuyersDay.length === 0) {
+    if (walletBuyersDay.length === 0) {
       const apiRequest =
         api.topTraders + "?type=buyers" + queries.days + 1 + queries.sortVolume;
-      const whales = axios.get(apiRequest).then((response) => {
-        const whaleList = response.data;
-        dispatch(setWhaleBuyersDay(whaleList));
+      const wallets = axios.get(apiRequest).then((response) => {
+        const walletList = response.data;
+        dispatch(setWalletBuyersDay(walletList));
       });
     }
 
-    if (whaleSellersDay.length === 0) {
+    if (walletSellersDay.length === 0) {
       const apiRequest =
         api.topTraders +
         "?type=sellers" +
         queries.days +
         1 +
         queries.sortVolume;
-      const whales = axios.get(apiRequest).then((response) => {
-        const whaleList = response.data;
-        dispatch(setWhaleSellersDay(whaleList));
+      const wallets = axios.get(apiRequest).then((response) => {
+        const walletList = response.data;
+        dispatch(setWalletSellersDay(walletList));
       });
     }
   }, []);

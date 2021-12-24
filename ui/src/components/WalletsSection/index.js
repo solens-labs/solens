@@ -1,6 +1,6 @@
 import React from "react";
 import Loader from "../Loader";
-import WhaleCard from "../WhaleCard";
+import WalletCard from "../WalletCard";
 
 export default function WalletsSection(props) {
   const { buyers, sellers, volume } = props;
@@ -16,14 +16,14 @@ export default function WalletsSection(props) {
 
       <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
         {buyers.length === 0 && <Loader />}
-        {buyers.map((whale, i) => {
+        {buyers.map((wallet, i) => {
           if (i <= 7) {
             return (
               <div
                 key={i}
                 className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
               >
-                <WhaleCard data={whale} type={"BUYS"} volume={volume} />
+                <WalletCard data={wallet} type={"BUYS"} volume={volume} />
               </div>
             );
           }
@@ -41,14 +41,14 @@ export default function WalletsSection(props) {
 
       <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
         {sellers.length === 0 && <Loader />}
-        {sellers.map((whale, i) => {
+        {sellers.map((wallet, i) => {
           if (i <= 7) {
             return (
               <div
                 key={i}
                 className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
               >
-                <WhaleCard data={whale} type={"SALES"} volume={volume} />
+                <WalletCard data={wallet} type={"SALES"} volume={volume} />
               </div>
             );
           }

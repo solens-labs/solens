@@ -3,43 +3,43 @@ import { useSelector } from "react-redux";
 import {
   selectDailyVolume,
   selectWeeklyVolume,
-  selectWhaleBuyers,
-  selectWhaleBuyersDay,
-  selectWhaleSellers,
-  selectWhaleSellersDay,
+  selectWalletBuyers,
+  selectWalletBuyersDay,
+  selectWalletSellers,
+  selectWalletSellersDay,
 } from "../../redux/app";
 import Loader from "../Loader";
-import WhaleCard from "../WhaleCard";
+import WalletCard from "../WalletCard";
 import WalletsSection from "../WalletsSection";
 import "./style.css";
 
 export default function Wallets(props) {
-  const whaleBuyersWeek = useSelector(selectWhaleBuyers);
-  const whaleSellersWeek = useSelector(selectWhaleSellers);
-  const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
-  const whaleSellersDay = useSelector(selectWhaleSellersDay);
+  const walletBuyersWeek = useSelector(selectWalletBuyers);
+  const walletSellersWeek = useSelector(selectWalletSellers);
+  const walletBuyersDay = useSelector(selectWalletBuyersDay);
+  const walletSellersDay = useSelector(selectWalletSellersDay);
   const volumeDay = useSelector(selectDailyVolume);
   const volumeWeek = useSelector(selectWeeklyVolume);
 
   const [timeframe, setTimeframe] = useState(1);
   const [timeframeTitle, setTimeframeTitle] = useState("LAST 24 HOURS");
   const [volume, setVolume] = useState(volumeDay);
-  const [buyers, setBuyers] = useState(whaleBuyersDay);
-  const [sellers, setSellers] = useState(whaleSellersDay);
+  const [buyers, setBuyers] = useState(walletBuyersDay);
+  const [sellers, setSellers] = useState(walletSellersDay);
 
   useEffect(() => {
     switch (timeframe) {
       case 1:
         setTimeframeTitle("LAST 24 HOURS");
         setVolume(volumeDay);
-        setBuyers(whaleBuyersDay);
-        setSellers(whaleSellersDay);
+        setBuyers(walletBuyersDay);
+        setSellers(walletSellersDay);
         break;
       case 7:
         setTimeframeTitle("LAST 7 DAYS");
         setVolume(volumeWeek);
-        setBuyers(whaleBuyersWeek);
-        setSellers(whaleSellersWeek);
+        setBuyers(walletBuyersWeek);
+        setSellers(walletSellersWeek);
         break;
     }
   }, [timeframe]);

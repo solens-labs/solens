@@ -7,24 +7,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectAllCollections,
   selectSolPrice,
-  selectWhaleBuyers,
-  selectWhaleBuyersDay,
-  selectWhaleSellers,
-  selectWhaleSellersDay,
+  selectWalletBuyers,
+  selectWalletBuyersDay,
+  selectWalletSellers,
+  selectWalletSellersDay,
   setDailyVolume,
   selectDailyVolume,
   selectWeeklyVolume,
 } from "../../redux/app";
-import WhaleCard from "../WhaleCard";
+import WalletCard from "../WalletCard";
 import Loader from "../Loader";
 
 export default function LandingPage(props) {
   const dispatch = useDispatch();
   const collections = useSelector(selectAllCollections);
-  const whaleBuyers = useSelector(selectWhaleBuyers);
-  const whaleBuyersDay = useSelector(selectWhaleBuyersDay);
-  const whaleSellers = useSelector(selectWhaleSellers);
-  const whaleSellersDay = useSelector(selectWhaleSellersDay);
+  const walletBuyers = useSelector(selectWalletBuyers);
+  const walletBuyersDay = useSelector(selectWalletBuyersDay);
+  const walletSellers = useSelector(selectWalletSellers);
+  const walletSellersDay = useSelector(selectWalletSellersDay);
   const [trending, setTrending] = useState([]);
   const solPrice = useSelector(selectSolPrice);
   const volumeDay = useSelector(selectDailyVolume);
@@ -122,15 +122,19 @@ export default function LandingPage(props) {
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {whaleBuyersDay.length === 0 && <Loader />}
-              {whaleBuyersDay.map((whale, i) => {
+              {walletBuyersDay.length === 0 && <Loader />}
+              {walletBuyersDay.map((wallet, i) => {
                 if (i <= 1) {
                   return (
                     <div
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard data={whale} type="BUYS" volume={volumeDay} />
+                      <WalletCard
+                        data={wallet}
+                        type="BUYS"
+                        volume={volumeDay}
+                      />
                     </div>
                   );
                 }
@@ -147,16 +151,20 @@ export default function LandingPage(props) {
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {whaleSellersDay.length === 0 && <Loader />}
+              {walletSellersDay.length === 0 && <Loader />}
 
-              {whaleSellersDay.map((whale, i) => {
+              {walletSellersDay.map((wallet, i) => {
                 if (i <= 1) {
                   return (
                     <div
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard data={whale} type="SALES" volume={volumeDay} />
+                      <WalletCard
+                        data={wallet}
+                        type="SALES"
+                        volume={volumeDay}
+                      />
                     </div>
                   );
                 }
@@ -181,16 +189,16 @@ export default function LandingPage(props) {
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {whaleBuyers.length === 0 && <Loader />}
-              {whaleBuyers.map((whale, i) => {
+              {walletBuyers.length === 0 && <Loader />}
+              {walletBuyers.map((wallet, i) => {
                 if (i <= 1) {
                   return (
                     <div
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard
-                        data={whale}
+                      <WalletCard
+                        data={wallet}
                         type={"BUYS"}
                         volume={volumeWeek}
                       />
@@ -210,17 +218,17 @@ export default function LandingPage(props) {
             </h5>
 
             <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {whaleSellers.length === 0 && <Loader />}
+              {walletSellers.length === 0 && <Loader />}
 
-              {whaleSellers.map((whale, i) => {
+              {walletSellers.map((wallet, i) => {
                 if (i <= 1) {
                   return (
                     <div
                       key={i}
                       className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
                     >
-                      <WhaleCard
-                        data={whale}
+                      <WalletCard
+                        data={wallet}
                         type={"SALES"}
                         volume={volumeWeek}
                       />
