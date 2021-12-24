@@ -25,9 +25,6 @@ export default function CollectionPage(props) {
   const { name } = useParams();
   const debug = useSelector(selectDebugMode);
 
-  const [timeframeTrades, setTimeframeTrades] = useState(1000);
-  const [traderType, setTraderType] = useState("buyers");
-
   const [marketplacesData, setMarketplacesData] = useState([]); // needed for each MP's charts
   const [daysSinceCreated, setDaysSinceCreated] = useState(0); // needed for days launched
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
@@ -341,65 +338,50 @@ export default function CollectionPage(props) {
 
       <div className="top_tables d-flex flex-wrap flex-column align-items-center col-12">
         <div className="d-flex flex-wrap justify-content-around col-12">
-          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-3">
+          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
             {" "}
-            <h1>Top Trades </h1>
-            {/* <h5 className="collection_stats_days mb-2">ALL TIME</h5> */}
-            <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-4 mb-3">
-              <button
-                className={`btn_timeframe ${
-                  timeframeTrades === 7 && "btn_timeframe_selected"
-                }`}
-                onClick={() => setTimeframeTrades(7)}
-              >
-                WEEK
-              </button>
-              <button
-                className={`btn_timeframe ${
-                  timeframeTrades === 1000 && "btn_timeframe_selected"
-                }`}
-                onClick={() => setTimeframeTrades(1000)}
-              >
-                ALL TIME
-              </button>
-            </div>
+            <h1>Top {topSales.length || ""} Trades </h1>
+            <h5 className="collection_stats_days mb-2">ALL TIME</h5>
             <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-            {topSales.length !== 0 && topTrades.length !== 0 ? (
-              <TradesTable
-                data={timeframeTrades === 7 ? topTrades : topSales}
-              />
+            {topSales.length !== 0 ? (
+              <TradesTable data={topSales} />
             ) : (
               <div className="col-6">
                 <Loader />
               </div>
             )}
           </div>
-
-          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-3">
-            <h1>Top {traderType === "buyers" ? "Buyers" : "Sellers"}</h1>
-            <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-4 mb-3">
-              <button
-                className={`btn_timeframe ${
-                  traderType === "buyers" && "btn_timeframe_selected"
-                }`}
-                onClick={() => setTraderType("buyers")}
-              >
-                BUYERS
-              </button>
-              <button
-                className={`btn_timeframe ${
-                  traderType === "sellers" && "btn_timeframe_selected"
-                }`}
-                onClick={() => setTraderType("sellers")}
-              >
-                SELLERS
-              </button>
-            </div>
+          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
+            {" "}
+            <h1>Top {topTrades.length || ""} Trades</h1>
+            <h5 className="collection_stats_days mb-2">LAST 7 DAYS</h5>
             <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-            {topBuyers.length !== 0 && topSellers.length !== 0 ? (
-              <TradersTable
-                data={traderType === "buyers" ? topBuyers : topSellers}
-              />
+            {topTrades.length !== 0 ? (
+              <TradesTable data={topTrades} />
+            ) : (
+              <div className="col-6">
+                <Loader />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="d-flex flex-wrap justify-content-around col-12">
+          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
+            <h1>Top {topBuyers.length || ""} Buyers</h1>
+            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+            {topBuyers.length !== 0 ? (
+              <TradersTable data={topBuyers} />
+            ) : (
+              <div className="col-6">
+                <Loader />
+              </div>
+            )}
+          </div>
+          <div className="chartbox d-flex flex-column align-items-center col-12 col-md-5 mt-5">
+            <h1>Top {topSellers.length || ""} Sellers</h1>
+            <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+            {topSellers.length !== 0 ? (
+              <TradersTable data={topSellers} />
             ) : (
               <div className="col-6">
                 <Loader />
