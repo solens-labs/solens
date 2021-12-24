@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./style.css";
-import "../Buttons.css";
-import { connect_button, buy_button, sell_button } from "../Buttons";
+import "../Buttons/style.css";
+import { connect_button, buy_button, sell_button } from "../Buttons/index";
 
 export default function TradingModule(props) {
   const price = "2.33 SOL";

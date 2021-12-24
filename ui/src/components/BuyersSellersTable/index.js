@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
-import "../Buttons.css";
+import "../Buttons/style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 
 export default function BuysTable(props) {
