@@ -7,8 +7,9 @@
 .market_stat {
   /* border: 1px solid white; */
   /* background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%); */
-  background: rgb(53, 43, 87);
   /* box-shadow: inset 0px 0px 5px 0px black; */
+  /* background: rgb(53, 43, 87); */
+  background: rgb(18, 11, 37);
   border-radius: 15px;
   padding: 20px 20px;
   width: 450px;
@@ -18,8 +19,9 @@
 .landing_page_section {
   /* border: 1px solid white; */
   /* background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%); */
-  background: rgb(53, 43, 87);
   /* box-shadow: inset 0px 0px 5px 0px black; */
+  /* background: rgb(53, 43, 87); */
+  background: rgb(18, 11, 37);
   border-radius: 15px;
   padding: 20px 10px;
   /* min-width: 450px; */
