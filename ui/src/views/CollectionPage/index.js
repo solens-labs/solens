@@ -37,6 +37,7 @@ export default function CollectionPage(props) {
   const [stats, setStats] = useState([]); // needed to populate collection summary
   const [topTradesAll, setTopTradesAll] = useState([]); // needed for table
   const [topTradesWeek, setTopTradesWeek] = useState([]); // needed for table
+  const [topTradesDay, setTopTradesDay] = useState([]); // needed for table
   const [topBuyers, setTopBuyers] = useState([]); // needed for table
   const [topSellers, setTopSellers] = useState([]); // needed for table
   const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
@@ -99,6 +100,22 @@ export default function CollectionPage(props) {
         if (trades.length > 0) {
           const data = convertTradesData(trades);
           setTopTradesWeek(data);
+          debug && console.log(`received top trades -  ${name}`);
+        }
+      });
+    }
+  }, [name]);
+  useEffect(async () => {
+    if (topTradesDay.length === 0) {
+      debug && console.log(`fetching top weekly trades - ${name}`);
+      const apiRequest =
+        api.topTrades + queries.symbol + name + queries.days + 1;
+
+      const topTradesDay = await axios.get(apiRequest).then((response) => {
+        const trades = response.data;
+        if (trades.length > 0) {
+          const data = convertTradesData(trades);
+          setTopTradesDay(data);
           debug && console.log(`received top trades -  ${name}`);
         }
       });
@@ -246,6 +263,20 @@ export default function CollectionPage(props) {
     // setSelectedMarketplace(index);
   };
 
+  const topTradesTimeframe = () => {
+    switch (timeframeTrades) {
+      case 1:
+        return topTradesDay;
+        break;
+      case 7:
+        return topTradesWeek;
+        break;
+      case 1000:
+        return topTradesAll;
+        break;
+    }
+  };
+
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
       <div className="collection_details d-flex flex-wrap col-12 col-lg-8">
@@ -347,11 +378,19 @@ export default function CollectionPage(props) {
           <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
             <button
               className={`btn_timeframe ${
+                timeframeTrades === 1 && "btn_timeframe_selected"
+              }`}
+              onClick={() => setTimeframeTrades(1)}
+            >
+              24H
+            </button>
+            <button
+              className={`btn_timeframe ${
                 timeframeTrades === 7 && "btn_timeframe_selected"
               }`}
               onClick={() => setTimeframeTrades(7)}
             >
-              WEEK
+              7D
             </button>
             <button
               className={`btn_timeframe ${
@@ -359,14 +398,14 @@ export default function CollectionPage(props) {
               }`}
               onClick={() => setTimeframeTrades(1000)}
             >
-              ALL TIME
+              ALL
             </button>
           </div>
           <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-          {topTradesAll.length !== 0 && topTradesWeek.length !== 0 ? (
-            <TradesTable
-              data={timeframeTrades === 7 ? topTradesWeek : topTradesAll}
-            />
+          {topTradesAll.length !== 0 &&
+          topTradesWeek.length !== 0 &&
+          topTradesDay !== 0 ? (
+            <TradesTable data={topTradesTimeframe()} />
           ) : (
             <div className="col-6">
               <Loader />
