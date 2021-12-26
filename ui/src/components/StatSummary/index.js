@@ -28,14 +28,27 @@ export default function StatSummary(props) {
   };
 
   return (
-    <div className="col-12 col-lg-10">
+    <div className="col-12 ">
       <h1>{marketplaceSelect(marketplaceData.marketplace)}</h1>
       <h5 className="collection_stats_days">
         LAST {marketplaceData.dates.length} DAYS
       </h5>
       {/* <hr style={{ color: "white", margin: "10px 0px 10px 0px" }} /> */}
       <div className="collection_stats d-flex flex-wrap justify-content-center col-12">
-        <div className="collection_stat_container col-6">
+        <div className="collection_stat_container col-4">
+          <div className="collection_stat_secondary">
+            <h1 className="collection_info collection_info_large">
+              {marketplaceData.volume
+                ? marketplaceData.volume.toLocaleString("en", {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })
+                : 0}{" "}
+            </h1>
+            <h1 className="collection_info_header">Floor Price (SOL)</h1>
+          </div>
+        </div>
+        <div className="collection_stat_container col-4">
           <div className="collection_stat_secondary">
             <h1 className="collection_info collection_info_large">
               {marketplaceData.volume
@@ -48,7 +61,7 @@ export default function StatSummary(props) {
             <h1 className="collection_info_header">Volume (SOL)</h1>
           </div>
         </div>
-        <div className="collection_stat_container col-6">
+        <div className="collection_stat_container col-4">
           <div className="collection_stat_secondary">
             <h1 className="collection_info collection_info_large">
               {marketplaceData.transactions

@@ -265,6 +265,7 @@ export default function CollectionPage(props) {
     setSelectedMarketplace(index);
   };
 
+  // Use to show correct timeframe on Top Trades Table
   const topTradesTimeframe = () => {
     switch (timeframeTrades) {
       case 1:
@@ -362,7 +363,16 @@ export default function CollectionPage(props) {
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
-      <div className="d-flex flex-wrap flex-row col-4 justify-content-around mb-4">
+      <div className="market_stat mt-3 mb-3">
+        <h1>
+          {marketplaceSelect(marketplacesData[selectedMarketplace].marketplace)}
+        </h1>
+        <h5 className="collection_stats_days">
+          LAST {marketplacesData[selectedMarketplace].dates.length} DAYS
+        </h5>
+      </div>
+
+      <div className="d-flex flex-wrap flex-row col-12 col-lg-4 justify-content-around mb-4">
         {marketplacesData.length > 1 &&
           marketplacesData.map((marketplace, i) => {
             return (
