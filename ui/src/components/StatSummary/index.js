@@ -44,9 +44,8 @@ export default function StatSummary(props) {
                     maximumFractionDigits: 0,
                   })
                 : 0}{" "}
-              SOL
             </h1>
-            <h1 className="collection_info_header">Volume</h1>
+            <h1 className="collection_info_header">Volume (SOL)</h1>
           </div>
         </div>
         <div className="collection_stat_container col-6">

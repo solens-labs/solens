@@ -82,7 +82,9 @@ export default function LandingPage(props) {
           </h3>
         </div>
         <div className="market_stat mt-5">
-          <h1>Solana Price</h1>
+          <div className="d-flex col-12 justify-content-center">
+            <h1>Solana Price</h1>
+          </div>
           <h3>
             $
             {solPrice.toLocaleString("en", {

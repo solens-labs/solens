@@ -15,6 +15,7 @@ import {
   calculateAllTimeVolume,
   calculateLaunchDate,
   getMarketplaceData,
+  marketplaceSelect,
   splitMarketplaceData,
 } from "../../utils/collectionStats";
 import Loader from "../../components/Loader";
@@ -47,6 +48,7 @@ export default function CollectionPage(props) {
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
   const [floor, setFloor] = useState(0); // needed for collection summary
+  const [selectedMarketplace, setSelectedMarketplace] = useState(0);
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -260,7 +262,7 @@ export default function CollectionPage(props) {
 
   // Use to build multi-marketplace select
   const toggleMarketplace = (index) => {
-    // setSelectedMarketplace(index);
+    setSelectedMarketplace(index);
   };
 
   const topTradesTimeframe = () => {
@@ -358,9 +360,34 @@ export default function CollectionPage(props) {
           <h1 className="collection_info_header">Days Launched</h1>
         </div>
       </div>
-      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
+      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
+
+      <div className="d-flex flex-wrap flex-row col-4 justify-content-around mb-4">
+        {marketplacesData.length > 1 &&
+          marketplacesData.map((marketplace, i) => {
+            return (
+              <button
+                className={`btn-button btn_marketplace ${
+                  selectedMarketplace === i && "btn_marketplace_selected"
+                }`}
+                onClick={() => toggleMarketplace(i)}
+              >
+                {marketplaceSelect(marketplace.marketplace)}
+              </button>
+            );
+          })}
+      </div>
 
       {marketplacesData.length > 0 ? (
+        <MarketplaceCharts
+          marketplaceData={marketplacesData[selectedMarketplace]}
+          symbol={name}
+        />
+      ) : (
+        <Loader />
+      )}
+
+      {/* {marketplacesData.length > 0 ? (
         marketplacesData.map((marketplace, i) => {
           return (
             <MarketplaceCharts marketplaceData={marketplace} symbol={name} />
@@ -370,7 +397,7 @@ export default function CollectionPage(props) {
         <div className="mt-5 mb-5 d-flex justify-content-center">
           <Loader />
         </div>
-      )}
+      )} */}
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
         <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">

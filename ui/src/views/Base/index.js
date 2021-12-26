@@ -64,6 +64,7 @@ export default function Home(props) {
         .get(api.allCollections)
         .then((response) => {
           const collections = response.data;
+          console.log(collections);
           const collectionsAboveZero = collections.filter((collection) => {
             return collection.total_volume > 0;
           });
