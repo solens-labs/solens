@@ -9,6 +9,7 @@ import {
 } from "../../redux/app";
 import { useSelector } from "react-redux";
 import { explorerLink } from "../../constants/constants";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export default function WalletCard(props) {
   const { data, type, volume } = props;
@@ -34,7 +35,9 @@ export default function WalletCard(props) {
             type === "SALES" && "seller_image_container"
           }`}
         >
+          {/* <div className={`col-5  ${type === "SALES" && ""}`}> */}
           <img src={wallet_pic} alt="" className="wallet_image" />
+          {/* <AccountBalanceWalletIcon sx={{ fontSize: 60 }} /> */}
         </div>
 
         <div className="col-7 d-flex flex-column align-items-end justify-content-center">
