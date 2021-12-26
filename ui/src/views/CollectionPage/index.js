@@ -318,40 +318,42 @@ export default function CollectionPage(props) {
               ? collectionVolume.toLocaleString("en", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
-                }) || "Loading..."
-              : "Unavailable"}
+                })
+              : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Volume (SOL)</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {collectionTxCount.toLocaleString() || "Loading..."}
+            {collectionTxCount
+              ? collectionTxCount.toLocaleString()
+              : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Transactions</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {collectionAverage ? collectionAverage.toFixed(2) : "Unavailable"}
+            {collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Average (SOL)</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {floor > 0 ? floor + " SOL" : "Unavaialble"}
+            {floor > 0 ? floor : "Loading..."}
           </h1>
-          <h1 className="collection_info_header">Floor Price</h1>
+          <h1 className="collection_info_header">Floor Price (SOL)</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
             {collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
-              : "Unavailable"}
+              : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Supply</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {daysSinceCreated ? daysSinceCreated : "Unavailable"}
+            {daysSinceCreated ? daysSinceCreated : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Days Launched</h1>
         </div>
