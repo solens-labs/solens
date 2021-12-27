@@ -365,10 +365,16 @@ export default function CollectionPage(props) {
 
       <div className="market_stat mt-3 mb-3">
         <h1>
-          {marketplaceSelect(marketplacesData[selectedMarketplace].marketplace)}
+          {marketplacesData.length > 0 &&
+            marketplaceSelect(
+              marketplacesData[selectedMarketplace].marketplace
+            )}
         </h1>
         <h5 className="collection_stats_days">
-          LAST {marketplacesData[selectedMarketplace].dates.length} DAYS
+          LAST{" "}
+          {marketplacesData.length > 0 &&
+            marketplacesData[selectedMarketplace].dates.length}{" "}
+          DAYS
         </h5>
       </div>
 
