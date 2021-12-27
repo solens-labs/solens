@@ -43,10 +43,9 @@ export default function StatSummary(props) {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })
-                : 0}{" "}
-              SOL
+                : 0}
             </h1>
-            <h1 className="collection_info_header">Volume</h1>
+            <h1 className="collection_info_header">Volume (SOL)</h1>
           </div>
         </div>
         <div className="collection_stat_container col-6">
@@ -67,16 +66,14 @@ export default function StatSummary(props) {
             <h1 className="collection_info collection_info_large">
               {marketplaceData.minPrice
                 ? marketplaceData.minPrice.toFixed(2)
-                : 0}{" "}
-              SOL
+                : 0}
             </h1>
 
             <h1 className="collection_info_header">Lowest</h1>
           </div>
           <div>
             <h1 className="collection_info collection_info_large">
-              {marketplaceData.average ? marketplaceData.average.toFixed(2) : 0}{" "}
-              SOL
+              {marketplaceData.average ? marketplaceData.average.toFixed(2) : 0}
             </h1>
 
             <h1 className="collection_info_header">Average</h1>
@@ -85,8 +82,7 @@ export default function StatSummary(props) {
             <h1 className="collection_info collection_info_large">
               {marketplaceData.maxPrice
                 ? marketplaceData.maxPrice.toFixed(2)
-                : 0}{" "}
-              SOL
+                : 0}
             </h1>
 
             <h1 className="collection_info_header">Highest</h1>
