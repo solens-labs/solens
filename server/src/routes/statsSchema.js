@@ -66,6 +66,10 @@ exports.collection = {
     properties: {
       symbol: {
         type: 'string',
+      },
+      mint: {
+        type: 'boolean',
+        default: false
       }
     }
   }

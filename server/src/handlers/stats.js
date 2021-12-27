@@ -143,7 +143,20 @@ exports.allCollections = async (req, reply) => {
 
 exports.collection = async (req, reply) => {
   try {
-    console.log(req.query)
+    
+    let project = { 
+      $project: {
+        candyMachineIds: 0,
+        updateAuthorities: 0,
+        __v: 0,
+        _id: 0
+      }
+    }
+
+    if (!req.query.mint) {
+      project.$project.mint = 0
+    }
+
     const entries = await Collection.aggregate([
       { $match: {
         symbol: req.query.symbol,
@@ -152,14 +165,7 @@ exports.collection = async (req, reply) => {
       helpers.lookupAggregatedStats('alltimestats'),
       helpers.lookupAggregatedStats('dailystats', days = 14),
       helpers.lookupAggregatedStats('hourlystats', days = 2),
-
-      { $project: {
-        mint: 0,
-        candyMachineIds: 0,
-        updateAuthorities: 0,
-        __v: 0,
-        _id: 0
-      }}
+      project
     ])
     return entries
   } catch (err) {
