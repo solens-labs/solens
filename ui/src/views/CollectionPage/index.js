@@ -5,7 +5,12 @@ import "./style.css";
 import { useSelector } from "react-redux";
 import { selectCollection, selectDebugMode } from "../../redux/app";
 import axios from "axios";
-import { api, exchangeApi, queries } from "../../constants/constants";
+import {
+  api,
+  exchangeApi,
+  explorerLink,
+  queries,
+} from "../../constants/constants";
 import TradesTable from "../../components/TradesTable";
 import TradersTable from "../../components/TradersTable";
 import convertTradesData from "../../utils/convertTradesData";
@@ -20,6 +25,7 @@ import {
 import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
 import SocialLinks from "../../components/SocialLinks";
+import { getTokenMetadata } from "../../utils/getMetadata";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -47,6 +53,8 @@ export default function CollectionPage(props) {
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
   const [floor, setFloor] = useState(0); // needed for collection summary
+  const [topThree, setTopThree] = useState([]); // needed to show top 3 NFTs
+  const [topThreeMetadata, setTopThreeMetadata] = useState([]);
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -75,18 +83,18 @@ export default function CollectionPage(props) {
       const apiRequest =
         api.topTrades + queries.symbol + name + queries.days + 365;
 
-      const topTradesAll = await axios
-        // .get(`${api.getTopBuys}` + name) // NEED TO UPDATE API
-        .get(apiRequest)
-        .then((response) => {
-          const sales = response.data;
+      const topTradesAll = await axios.get(apiRequest).then((response) => {
+        const sales = response.data;
 
-          if (sales.length > 0) {
-            const data = convertTradesData(sales);
-            setTopTradesAll(data);
-            debug && console.log(`received top sales -  ${name}`);
-          }
-        });
+        if (sales.length > 0) {
+          const topThreeSales = sales.splice(0, 3);
+          setTopThree(topThreeSales);
+
+          const data = convertTradesData(sales);
+          setTopTradesAll(data);
+          debug && console.log(`received top sales -  ${name}`);
+        }
+      });
     }
   }, [name]);
   useEffect(async () => {
@@ -277,6 +285,22 @@ export default function CollectionPage(props) {
     }
   };
 
+  // Get top 3 metadata
+  useEffect(async () => {
+    if (topThreeMetadata.length === 0 && topThree.length !== 0) {
+      const topThreeMetadataPull = topThree.map(async (token, i) => {
+        const tokenMetadata = await getTokenMetadata(token.mint);
+        console.log(tokenMetadata);
+
+        setTopThreeMetadata((topThreeMetadata) => [
+          ...topThreeMetadata,
+          tokenMetadata,
+        ]);
+        // return tokenMetadata;
+      });
+    }
+  }, [topThree]);
+
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
       <div className="collection_details d-flex flex-wrap col-12 col-lg-8">
@@ -357,6 +381,41 @@ export default function CollectionPage(props) {
           </h1>
           <h1 className="collection_info_header">Days Launched</h1>
         </div>
+      </div>
+      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
+
+      <h1>Top Three Sales</h1>
+      <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
+        {topThreeMetadata.length === 3 ? (
+          topThreeMetadata.map((token, i) => {
+            return (
+              <a
+                href={topTradesAll[i].address.props.href}
+                target="_blank"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <div className="nft_card_sale d-flex flex-column justify-content-between">
+                  <img
+                    src={topThreeMetadata[i].image}
+                    className="nft_card_image"
+                    alt="nft_card"
+                  />
+
+                  <div className="d-flex flex-column align-items-center justify-content-around pb-2">
+                    <h5>{topThreeMetadata[i].name}</h5>
+
+                    <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
+                      <h5>{topTradesAll[i].price} SOL</h5>
+                      <h5>{topTradesAll[i].date}</h5>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
 
