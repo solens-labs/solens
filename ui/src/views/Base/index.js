@@ -110,6 +110,7 @@ export default function Home(props) {
       });
     }
   }, [solPrice]);
+
   // Generate Daily Volume
   useEffect(() => {
     if (allCollections.length > 0 && solPrice > 0 && dailyVolume === 0) {

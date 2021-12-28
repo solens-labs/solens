@@ -18,6 +18,7 @@ import {
 } from "../../redux/app";
 import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
+import { explorerLink } from "../../constants/constants";
 
 export default function HomePage(props) {
   const dispatch = useDispatch();
@@ -103,18 +104,24 @@ export default function HomePage(props) {
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
               return (
-                <div className="nft_card_sale d-flex flex-column justify-content-between">
-                  <img
-                    src={item.image}
-                    className="nft_card_image"
-                    alt="nft_card"
-                  />
+                <a
+                  href={explorerLink("token", item.mint)}
+                  target="_blank"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <div className="nft_card_sale d-flex flex-column justify-content-between">
+                    <img
+                      src={item.image}
+                      className="nft_card_image"
+                      alt="nft_card"
+                    />
 
-                  <div className="d-flex flex-column align-items-center justify-content-around">
-                    <h5>{item.name}</h5>
-                    <h4>{item.price} SOL</h4>
+                    <div className="d-flex flex-column align-items-center justify-content-around">
+                      <h5>{item.name}</h5>
+                      <h4>{item.price} SOL</h4>
+                    </div>
                   </div>
-                </div>
+                </a>
               );
             })
           ) : (

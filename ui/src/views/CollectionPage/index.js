@@ -392,7 +392,7 @@ export default function CollectionPage(props) {
           topFourMetadata.map((token, i) => {
             return (
               <a
-                href={explorerLink("account", token.mint)}
+                href={explorerLink("token", token.mint)}
                 target="_blank"
                 style={{ textDecoration: "none", color: "white" }}
               >
