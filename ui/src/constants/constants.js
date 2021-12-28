@@ -11,6 +11,7 @@ export const queries = {
   sortCount: "&sortBy=count",
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
+  mintList: "&mint=true",
 };
 
 export const api = {
