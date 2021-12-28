@@ -8,11 +8,15 @@ export const getTokenMetadata = async (mint) => {
   const metadataPDA = await Metadata.getPDA(mintKey);
   const tokenMetadata = await Metadata.load(connection, metadataPDA);
 
-  const fullData = await fetch(tokenMetadata.data.data.uri)
+  const fullData = tokenMetadata.data;
+
+  const detailedData = await fetch(tokenMetadata.data.data.uri)
     .then((response) => response.json())
     .then((data) => {
       return data;
     });
 
-  return fullData;
+  detailedData["mint"] = fullData.mint;
+
+  return detailedData;
 };

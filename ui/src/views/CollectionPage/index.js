@@ -87,7 +87,8 @@ export default function CollectionPage(props) {
         const sales = response.data;
 
         if (sales.length > 0) {
-          const topThreeSales = sales.splice(0, 3);
+          // set top sales to display
+          const topThreeSales = sales.slice(0, 4);
           setTopThree(topThreeSales);
 
           const data = convertTradesData(sales);
@@ -290,14 +291,15 @@ export default function CollectionPage(props) {
     if (topThreeMetadata.length === 0 && topThree.length !== 0) {
       const topThreeMetadataPull = topThree.map(async (token, i) => {
         const tokenMetadata = await getTokenMetadata(token.mint);
-        // console.log(tokenMetadata);
+        tokenMetadata["price"] = topThree[i].price;
+        const date = new Date(topThree[i].date);
+        tokenMetadata["date"] = date.toLocaleDateString();
 
-        setTopThreeMetadata((topThreeMetadata) => [
-          ...topThreeMetadata,
-          tokenMetadata,
-        ]);
-        // return tokenMetadata;
+        return tokenMetadata;
       });
+
+      const resolved = await Promise.all(topThreeMetadataPull);
+      setTopThreeMetadata(resolved);
     }
   }, [topThree]);
 
@@ -382,15 +384,15 @@ export default function CollectionPage(props) {
           <h1 className="collection_info_header">Days Launched</h1>
         </div>
       </div>
-      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
+      {/* <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" /> */}
 
-      <h1>Top Three Sales</h1>
+      <h1 className="mt-4">Top Sales</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
-        {topThreeMetadata.length === 3 ? (
+        {topThreeMetadata.length === 4 ? (
           topThreeMetadata.map((token, i) => {
             return (
               <a
-                href={topTradesAll[i].address.props.href}
+                href={explorerLink("account", token.mint)}
                 target="_blank"
                 style={{ textDecoration: "none", color: "white" }}
               >
@@ -405,8 +407,8 @@ export default function CollectionPage(props) {
                     <h5>{topThreeMetadata[i].name}</h5>
 
                     <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
-                      <h5>{topTradesAll[i].price} SOL</h5>
-                      <h5>{topTradesAll[i].date}</h5>
+                      <h5>{topThreeMetadata[i].price} SOL</h5>
+                      <h5>{topThreeMetadata[i].date}</h5>
                     </div>
                   </div>
                 </div>
