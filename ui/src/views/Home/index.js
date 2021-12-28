@@ -19,7 +19,7 @@ import {
 import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
 
-export default function LandingPage(props) {
+export default function HomePage(props) {
   const dispatch = useDispatch();
   const collections = useSelector(selectAllCollections);
   const walletBuyers = useSelector(selectWalletBuyers);
@@ -31,12 +31,6 @@ export default function LandingPage(props) {
   const volumeDay = useSelector(selectDailyVolume);
   const volumeWeek = useSelector(selectWeeklyVolume);
   const topNFTs = useSelector(selectTopNFTsDay);
-
-  // useEffect(() => {
-  //   if (topNFTs.length > 0 && topNFTsMet)
-  // }, [
-  //   topNFTs
-  // ])
 
   // Calculate Trending Collections
   useEffect(() => {
@@ -108,7 +102,6 @@ export default function LandingPage(props) {
         <div className="d-flex flex-row flex-wrap justify-content-around col-12">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
-              console.log(item);
               return (
                 <div className="nft_card_sale d-flex flex-column justify-content-between">
                   <img
@@ -117,13 +110,9 @@ export default function LandingPage(props) {
                     alt="nft_card"
                   />
 
-                  <div className="d-flex flex-column align-items-center justify-content-around pb-2">
+                  <div className="d-flex flex-column align-items-center justify-content-around">
                     <h5>{item.name}</h5>
-
-                    <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
-                      {/* <h5>{topTradesAll[i].price} SOL</h5> */}
-                      {/* <h5>{topTradesAll[i].date}</h5> */}
-                    </div>
+                    <h4>{item.price} SOL</h4>
                   </div>
                 </div>
               );

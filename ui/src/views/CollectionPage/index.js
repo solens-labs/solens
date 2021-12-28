@@ -53,8 +53,8 @@ export default function CollectionPage(props) {
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
   const [floor, setFloor] = useState(0); // needed for collection summary
-  const [topThree, setTopThree] = useState([]); // needed to show top 3 NFTs
-  const [topThreeMetadata, setTopThreeMetadata] = useState([]);
+  const [topFour, setTopFour] = useState([]); // needed to show top 3 NFTs
+  const [topFourMetadata, setTopFourMetadata] = useState([]);
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -88,8 +88,8 @@ export default function CollectionPage(props) {
 
         if (sales.length > 0) {
           // set top sales to display
-          const topThreeSales = sales.slice(0, 4);
-          setTopThree(topThreeSales);
+          const topFourSales = sales.slice(0, 4);
+          setTopFour(topFourSales);
 
           const data = convertTradesData(sales);
           setTopTradesAll(data);
@@ -288,20 +288,20 @@ export default function CollectionPage(props) {
 
   // Get top 3 metadata
   useEffect(async () => {
-    if (topThreeMetadata.length === 0 && topThree.length !== 0) {
-      const topThreeMetadataPull = topThree.map(async (token, i) => {
+    if (topFourMetadata.length === 0 && topFour.length !== 0) {
+      const topFourMetadataPull = topFour.map(async (token, i) => {
         const tokenMetadata = await getTokenMetadata(token.mint);
-        tokenMetadata["price"] = topThree[i].price;
-        const date = new Date(topThree[i].date);
+        tokenMetadata["price"] = topFour[i].price;
+        const date = new Date(topFour[i].date);
         tokenMetadata["date"] = date.toLocaleDateString();
 
         return tokenMetadata;
       });
 
-      const resolved = await Promise.all(topThreeMetadataPull);
-      setTopThreeMetadata(resolved);
+      const resolved = await Promise.all(topFourMetadataPull);
+      setTopFourMetadata(resolved);
     }
-  }, [topThree]);
+  }, [topFour]);
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
@@ -388,8 +388,8 @@ export default function CollectionPage(props) {
 
       <h1 className="mt-4">Top Sales</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
-        {topThreeMetadata.length === 4 ? (
-          topThreeMetadata.map((token, i) => {
+        {topFourMetadata.length === 4 ? (
+          topFourMetadata.map((token, i) => {
             return (
               <a
                 href={explorerLink("account", token.mint)}
@@ -398,17 +398,17 @@ export default function CollectionPage(props) {
               >
                 <div className="nft_card_sale d-flex flex-column justify-content-between">
                   <img
-                    src={topThreeMetadata[i].image}
+                    src={topFourMetadata[i].image}
                     className="nft_card_image"
                     alt="nft_card"
                   />
 
                   <div className="d-flex flex-column align-items-center justify-content-around pb-2">
-                    <h5>{topThreeMetadata[i].name}</h5>
+                    <h5>{topFourMetadata[i].name}</h5>
 
                     <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
-                      <h5>{topThreeMetadata[i].price} SOL</h5>
-                      <h5>{topThreeMetadata[i].date}</h5>
+                      <h5>{topFourMetadata[i].price} SOL</h5>
+                      <h5>{topFourMetadata[i].date}</h5>
                     </div>
                   </div>
                 </div>
