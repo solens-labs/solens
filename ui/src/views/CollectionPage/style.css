@@ -82,6 +82,7 @@
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
   margin: 5px;
   height: 400px;
+  width: 350px;
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;

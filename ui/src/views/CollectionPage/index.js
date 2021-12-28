@@ -290,7 +290,7 @@ export default function CollectionPage(props) {
     if (topThreeMetadata.length === 0 && topThree.length !== 0) {
       const topThreeMetadataPull = topThree.map(async (token, i) => {
         const tokenMetadata = await getTokenMetadata(token.mint);
-        console.log(tokenMetadata);
+        // console.log(tokenMetadata);
 
         setTopThreeMetadata((topThreeMetadata) => [
           ...topThreeMetadata,

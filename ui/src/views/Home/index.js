@@ -14,6 +14,7 @@ import {
   setDailyVolume,
   selectDailyVolume,
   selectWeeklyVolume,
+  selectTopNFTsDay,
 } from "../../redux/app";
 import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
@@ -29,6 +30,13 @@ export default function LandingPage(props) {
   const solPrice = useSelector(selectSolPrice);
   const volumeDay = useSelector(selectDailyVolume);
   const volumeWeek = useSelector(selectWeeklyVolume);
+  const topNFTs = useSelector(selectTopNFTsDay);
+
+  // useEffect(() => {
+  //   if (topNFTs.length > 0 && topNFTsMet)
+  // }, [
+  //   topNFTs
+  // ])
 
   // Calculate Trending Collections
   useEffect(() => {
@@ -90,6 +98,39 @@ export default function LandingPage(props) {
               maximumFractionDigits: 2,
             })}
           </h3>
+        </div>
+      </div>
+
+      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
+        <h1 className="mb-2">Top NFTs</h1>
+        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+        <div className="d-flex flex-row justify-content-center col-12">
+          {topNFTs.length !== 0 ? (
+            topNFTs.map((item, i) => {
+              console.log(item);
+              return (
+                <div className="nft_card_sale d-flex flex-column justify-content-between">
+                  <img
+                    src={item.image}
+                    className="nft_card_image"
+                    alt="nft_card"
+                  />
+
+                  <div className="d-flex flex-column align-items-center justify-content-around pb-2">
+                    <h5>{item.name}</h5>
+
+                    <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
+                      {/* <h5>{topTradesAll[i].price} SOL</h5> */}
+                      {/* <h5>{topTradesAll[i].date}</h5> */}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <Loader />
+          )}
         </div>
       </div>
 

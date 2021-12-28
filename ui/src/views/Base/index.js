@@ -20,6 +20,8 @@ import {
   setWalletBuyersDay,
   setWalletSellers,
   setWalletSellersDay,
+  setTopNFTsDay,
+  selectTopNFTsDay,
 } from "../../redux/app";
 import { useSelector, useDispatch } from "react-redux";
 import ItemPage from "../../components/ItemPage";
@@ -33,6 +35,7 @@ import { api, links, queries } from "../../constants/constants";
 import ReactGA from "react-ga";
 import Wallets from "../Wallets";
 import ScrollToTop from "../../utils/scrollToTop";
+import { getTokenMetadata } from "../../utils/getMetadata";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -56,6 +59,7 @@ export default function Home(props) {
   const volumeWeek = useSelector(selectWeeklyVolume);
   const solPrice = useSelector(selectSolPrice);
   const dailyVolume = useSelector(selectDailyVolume);
+  const topNFTsDay = useSelector(selectTopNFTsDay);
 
   // Fetch All Collections
   useEffect(async () => {
@@ -176,6 +180,31 @@ export default function Home(props) {
     }
   }, []);
 
+  // Fetch Top NFTs
+  useEffect(async () => {
+    if (topNFTsDay.length === 0) {
+      console.log("Fetching Top NFTs Day");
+      const apiRequest = api.topNFTs + "?days=" + 1;
+      const nfts = axios.get(apiRequest).then((response) => {
+        const nfts = response.data;
+        const topFour = nfts.slice(0, 4);
+
+        const topNFTs = [];
+
+        const tokenMetadata = topFour.map(async (item, i) => {
+          const tokemMD = await getTokenMetadata(item.mint);
+
+          topNFTs.push(tokemMD);
+
+          if (topNFTs.length === 4) {
+            // console.log(topNFTs);
+            dispatch(setTopNFTsDay(topNFTs));
+          }
+        });
+      });
+    }
+  }, []);
+
   return (
     <div className="App col-12">
       <div className="navigation d-flex flex-column align-items-center col-12">
@@ -187,8 +216,8 @@ export default function Home(props) {
         <Switch>
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
-          <Route path="/wallets" component={Wallets} />
           <Route path="/collection/:name" component={CollectionPage} />
+          <Route path="/wallets" component={Wallets} />
           <Route path="/item" component={ItemPage} />
           <Route path="*" component={HomePage} />
         </Switch>
