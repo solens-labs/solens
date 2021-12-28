@@ -105,7 +105,7 @@ export default function LandingPage(props) {
         <h1 className="mb-2">Top NFTs</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-        <div className="d-flex flex-row justify-content-center col-12">
+        <div className="d-flex flex-row flex-wrap justify-content-around col-12">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
               console.log(item);
