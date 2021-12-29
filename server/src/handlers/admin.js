@@ -11,16 +11,13 @@ const AllTimeStats = require('../models/AllTimeStats')
  * Updates transaction symbols based on all the
  * available collections.
  **/
-async function updateTransactions(symbol, startDate) {
+async function updateTransactions(symbol) {
   let txResults = []
   let mints = await Collection.findOne({symbol}, {mint: 1, _id: 0})
-  console.log('Updating transactions for: ', symbol)
+  console.log('Updating transactions: ', symbol)
   let updateResult = await Transaction.updateMany(
     {
-      $and: [
-        {date: {$gte: startDate}},
-        {mint: mints.mint}
-      ]
+      mint: mints.mint
     },
     [{$addFields: {symbol: symbol}}]
   )
@@ -33,71 +30,55 @@ async function updateTransactions(symbol, startDate) {
 /**
  * Updates hourlystats for the given symbol.
  **/
-async function updateHourlyStats(symbol, startDate) {
-  const end = new Date(startDate);
-  end.setUTCHours(1)
-  end.setUTCMinutes(0)
-  end.setUTCSeconds(0)
-  end.setUTCMilliseconds(0)
-  
-  for (end; end <= new Date(); end.setHours(end.getHours() + 1)) {
-    const start = new Date(end)
-    start.setUTCHours(end.getUTCHours() - 1)
-    start.setUTCMinutes(0)
-    start.setUTCSeconds(0)
-    start.setUTCMilliseconds(0)
-
-    console.log('Updating hourly stats between:', start, end, symbol);
-    await Transaction.aggregate([
-      { $match: {
-        symbol: symbol,
-        $and: [
-          {date: { $gte: start }},
-          {date: { $lt: end }}
-        ],
-        ...helpers.matchBuyTxs()
-      }},
-      { $project : {
-        _id: 0,
+async function updateHourlyStats(symbol) {
+  console.log('Updating hourly stats:', symbol);
+  await Transaction.aggregate([
+    { $match: {
+      symbol: symbol,
+      ...helpers.matchBuyTxs()
+    }},
+    {$addFields: {
+      hour: {$hour: "$date"},
+      day: {$dayOfMonth: "$date"},
+      month: {$month: "$date"},
+      year: {$year: "$date"}
+    }},
+    { $group:
+      {
+        _id : {symbol: '$symbol', marketplace: '$marketplace', hour: "$hour", day: "$day", month: "$month", year: "$year"},
+        volume: { $sum: "$price"},
+        min: { $min: "$price" },
+        max: { $max: "$price" },
+        avg: { $avg: "$price" },
+        tx: { $push: "$tx" },
+        count: { $sum: 1 },
+      }
+    },
+    {$addFields: {
+      endHour: {$add: ["$_id.hour", 1]}
+    }},
+    { $project:
+      {
+        symbol : "$_id.symbol",
+        marketplace: '$_id.marketplace',
+        start: {$dateFromParts: {hour: "$_id.hour", day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+        end: {$dateFromParts: {hour: "$endHour", day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+        volume: { $round: ["$volume", 2] },
+        min: { $round: ["$min", 2] },
+        max: { $round: ["$max", 2] },
+        avg: { $round: ["$avg", 2] },
         tx: 1,
-        price: 1,
-        marketplace: 1,
-        symbol: 1
-      }},
-      { $group:
-        {
-          _id : {symbol: '$symbol', marketplace: '$marketplace'},
-          volume: { $sum: "$price"},
-          min: { $min: "$price" },
-          max: { $max: "$price" },
-          avg: { $avg: "$price" },
-          tx: { $push: "$tx" },
-          count: { $sum: 1 },
-        }
-      },
-      { $project:
-        {
-          symbol : "$_id.symbol",
-          marketplace: '$_id.marketplace',
-          volume: { $round: ["$volume", 2] },
-          start: start,
-          end: end,
-          min: { $round: ["$min", 2] },
-          max: { $round: ["$max", 2] },
-          avg: { $round: ["$avg", 2] },
-          tx: '$tx',
-          count: 1,
-          _id: 0,
-        }
-      },
-      { $merge: {
-        into: "hourlystats",
-        on: [ "start", "symbol", "marketplace" ],
-        whenMatched: "replace",
-        whenNotMatched: "insert"
-      }}
-    ]);
-  }
+        count: 1,
+        _id: 0,
+      }
+    },
+    { $merge: {
+      into: "hourlystats",
+      on: [ "start", "symbol", "marketplace" ],
+      whenMatched: "replace",
+      whenNotMatched: "insert"
+    }}
+  ]);
 
   return {}
 }
@@ -105,72 +86,52 @@ async function updateHourlyStats(symbol, startDate) {
 /**
  * Updates dailystats for the given symbol.
  **/
-async function updateDailyStats(symbol, startDate) {
-  const end = new Date(startDate);
-  
-  for (end; end <= new Date(); end.setDate(end.getDate() + 1)) {
-    
-    end.setUTCHours(0)
-    end.setUTCMinutes(0)
-    end.setUTCSeconds(0)
-    end.setUTCMilliseconds(0)
-
-    const start = new Date(end)
-    start.setDate(end.getDate() - 1)
-    start.setUTCHours(0)
-    start.setUTCMinutes(0)
-    start.setUTCSeconds(0)
-    start.setUTCMilliseconds(0)
-
-    console.log('Updating daily stats between:', start, end, symbol);
-    await Transaction.aggregate([
-      { $match: {
-        symbol: symbol,
-        $and: [
-          {date: { $gte: start }},
-          {date: { $lt: end }}
-        ],
-        ...helpers.matchBuyTxs()
-      }},
-      { $project : {
+async function updateDailyStats(symbol) {
+  console.log('Updating daily stats:', symbol);
+  await Transaction.aggregate([
+    { $match: {
+      symbol: symbol,
+      ...helpers.matchBuyTxs()
+    }},
+    {$addFields: {
+      day: {$dayOfMonth: "$date"},
+      month: {$month: "$date"},
+      year: {$year: "$date"}
+    }},
+    { $group:
+      {
+        _id : {symbol: '$symbol', marketplace: '$marketplace', day: "$day", month: "$month", year: "$year"},
+        volume: { $sum: "$price"},
+        min: { $min: "$price" },
+        max: { $max: "$price" },
+        avg: { $avg: "$price" },
+        count: { $sum: 1 },
+      }
+    },
+    {$addFields: {
+      endDay: {$add: ["$_id.day", 1]}
+    }},
+    { $project:
+      {
+        symbol : "$_id.symbol",
+        marketplace: '$_id.marketplace',
+        start: {$dateFromParts: {day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+        end: {$dateFromParts: {day: "$endDay", month: "$_id.month", year: "$_id.year"}},
+        volume: { $round: ["$volume", 2] },
+        min: { $round: ["$min", 2] },
+        max: { $round: ["$max", 2] },
+        avg: { $round: ["$avg", 2] },
+        count: 1,
         _id: 0,
-        tx: 1,
-        price: 1,
-        marketplace: 1,
-        symbol: 1
-      }},
-      { $group:
-        {
-          _id : {symbol: '$symbol', marketplace: '$marketplace'},
-          volume: { $sum: "$price"},
-          min: { $min: "$price" },
-          max: { $max: "$price" },
-          avg: { $avg: "$price" },
-          count: { $sum: 1 },
-        }
-      },
-      { $project:
-        {
-          symbol : "$_id.symbol",
-          marketplace: '$_id.marketplace',
-          volume: { $round: ["$volume", 2] },
-          start: start,
-          end: end,
-          min: { $round: ["$min", 2] },
-          max: { $round: ["$max", 2] },
-          avg: { $round: ["$avg", 2] },
-          count: 1,
-          _id: 0,
-        }
-      },
-      { $merge: {
-        into: "dailystats",
-        on: [ "start", "symbol", "marketplace" ],
-        whenMatched: "replace",
-        whenNotMatched: "insert"
-      }}
-    ]);
-  }
+      }
+    },
+    { $merge: {
+      into: "dailystats",
+      on: [ "start", "symbol", "marketplace" ],
+      whenMatched: "replace",
+      whenNotMatched: "insert"
+    }}
+  ]);
 
   return {}
 }
@@ -219,33 +180,6 @@ async function updateAlltimeStats(symbol) {
   return {}
 }
 
-async function getFirstTxDate(symbols) {
-  let startDates = []
-  for (let i = 0; i < symbols.length; i++) {
-    const symbol = symbols[i]
-    const date = await Transaction.aggregate([
-      { $match: {
-        symbol: symbol,
-        ...helpers.matchBuyTxs()
-      }},
-      { $project : {
-        _id: 0,
-        date: 1
-      }},
-      {$sort: {date: 1}},
-      {$limit: 1}
-    ]);
-    if (date.length) {
-      startDates.push(new Date(date[0].date))
-    } else {
-      const newDate = new Date()
-      newDate.setHours(newDate.getHours() - 1)
-      startDates.push(newDate)
-    }
-  }
-  return startDates
-}
-
 /**
  * Updates everything in the database for the query
  * symbol.
@@ -256,55 +190,25 @@ async function getFirstTxDate(symbols) {
  * Lastly, updates the alltime stats.
  * 
  * This function will take a while to finish.
- * This is especially the case if startDate is not
- * specified.
+ * This is especially the case if symbols is a long list.
  * 
  * This function overrides the existing symbols in
  * transactions. It also overrides the values in the
  * aggregated databases.
  **/
- async function updateEverything(req, reply) {
+ exports.updateEverything = async (req, reply) => {
   // const symbols = await Collection.find({}, {symbol: 1, _id: 0})
   try {
     const symbols = req.body.symbols
-    const startDates = await getFirstTxDate(symbols)
     
     for (let i = 0; i < symbols.length; i++) {
-      let start = new Date(req.body.startDate)
-      await updateTransactions(symbols[i], start)
-
-      if (start < startDates[i]) {
-        start = startDates[i]
-      }
-      await updateHourlyStats(symbols[i], start)
-      await updateDailyStats(symbols[i], start)
+      await updateTransactions(symbols[i])
+      await updateHourlyStats(symbols[i])
+      await updateDailyStats(symbols[i])
       await updateAlltimeStats(symbols[i]) 
     }
     return true
   } catch (err) {
     throw boom.boomify(err)
   }
-}
-
-const getCollection = async (req, reply) => {
-  try {
-    console.log(req.query)
-    const entries = await Collection.aggregate([
-      { $match: {
-        symbol: req.query.symbol,
-      }}
-    ])
-    return entries
-  } catch (err) {
-    throw boom.boomify(err)
-  }
-}
-
-module.exports = {
-  updateEverything,
-  updateTransactions,
-  updateHourlyStats,
-  updateDailyStats,
-  updateAlltimeStats,
-  getCollection
 }

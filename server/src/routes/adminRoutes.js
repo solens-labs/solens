@@ -94,16 +94,6 @@ const routes = [
     url: '/admin/updateEverything',
     schema: schema.updateEverything,
     handler: adminHandlers.updateEverything
-  },
-  {
-    method: 'PUT',
-    url: '/admin/updateTransactions',
-    handler: adminHandlers.updateTransactions
-  },
-  {
-    method: 'GET',
-    url: '/admin/getCollection',
-    handler: adminHandlers.getCollection
   }
 ]
 

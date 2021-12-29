@@ -8,10 +8,6 @@ exports.updateEverything = {
         items: {
           type: 'string'
         }
-      },
-      startDate: {
-        type: 'string',
-        default: '2021-06-30'
       }
     }
   }
