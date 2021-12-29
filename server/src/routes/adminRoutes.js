@@ -3,6 +3,7 @@ const transactionController = require('../controllers/transactionController')
 const hourlyStatsController = require('../controllers/hourlyStatsController')
 const dailyStatsController = require('../controllers/dailyStatsController')
 const allTimeStatsController = require('../controllers/allTimeStatsController')
+const floorController = require('../controllers/floorController')
 const adminHandlers = require('../handlers/admin')
 
 const schema = require('./adminSchema')
@@ -54,6 +55,26 @@ const routes = [
     handler: transactionController.deleteTransaction
   },
   {
+    method: 'GET',
+    url: '/floor',
+    handler: floorController.getFloor
+  },
+  {
+    method: 'POST',
+    url: '/floor',
+    handler: floorController.addFloor
+  },
+  {
+    method: 'PUT',
+    url: '/floor',
+    handler: floorController.updateFloor
+  },
+  {
+    method: 'DELETE',
+    url: '/floor',
+    handler: floorController.deleteFloor
+  },
+  {
     method: 'POST',
     url: '/hourlyStats',
     handler: hourlyStatsController.addHourlyStats
@@ -73,16 +94,6 @@ const routes = [
     url: '/admin/updateEverything',
     schema: schema.updateEverything,
     handler: adminHandlers.updateEverything
-  },
-  {
-    method: 'PUT',
-    url: '/admin/updateTransactions',
-    handler: adminHandlers.updateTransactions
-  },
-  {
-    method: 'GET',
-    url: '/admin/getCollection',
-    handler: adminHandlers.getCollection
   }
 ]
 

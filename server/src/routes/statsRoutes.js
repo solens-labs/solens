@@ -48,6 +48,12 @@ const routes = [
     url: '/stats/marketStats',
     schema: schema.days,
     handler: statsHandlers.marketStats
+  },
+  {
+    method: 'GET',
+    url: '/stats/floor',
+    schema: schema.floor,
+    handler: statsHandlers.floor
   }
 ]
 

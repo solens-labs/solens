@@ -5,6 +5,7 @@ const Transaction = require('../models/Transaction')
 const Collection = require('../models/Collection')
 const HourlyStats = require('../models/HourlyStats')
 const DailyStats = require('../models/DailyStats')
+const Floor = require('../models/Floor')
 const AllTimeStats = require('../models/AllTimeStats')
 
 const helpers = require('./helpers')
@@ -196,6 +197,7 @@ exports.topTrades = async (req, reply) => {
           seller : "$owner",
           buyer: "$new_owner",
           date: 1,
+          symbol: 1,
           price: { $round: ["$price", 2] },
           mint: 1,
           _id: 0
@@ -268,173 +270,20 @@ exports.topNFTs = async (req, reply) => {
   }
 }
 
-// exports.test = async (req, reply) => {
-//   try {
-//     const symbol = req.params.symbol
+exports.floor = async (req, reply) => {
+  try {
+    const { ...query } = req.query
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - query.days);
 
-//     const end = new Date(2021, 7, 1);
-//     end.setUTCHours(0);
-//     end.setUTCMinutes(0);
-//     end.setUTCSeconds(0);
-//     end.setUTCMilliseconds(0);
-    
-    
-//     for (var endDate = end; endDate <= new Date(); endDate.setDate(endDate.getDate() + 1)) {
-//       const startDate = new Date(endDate);
-//       startDate.setDate(endDate.getDate() - 1);
-//       console.log(startDate, endDate);
-
-//       const entries = await Transaction.aggregate([
-//         { $match: {
-//           $or: [
-//             {type: { $eq: "buy"}},
-//             {type: { $eq: "accept_offer"}},
-//           ],
-//           $and: [
-//             {date: { $gte: new Date('2021-12-1') }},
-//             {date: { $lt: new Date('2021-12-1') }}
-//           ]
-//         }},
-//         { $group:
-//           {
-//             _id : {mint: '$owner'},
-//             volume: { $sum: "$price"},
-//             count: { $sum: 1 },
-//           }
-//         },
-//         { $sort: { volume: -1 } },
-//         { $limit: 10 },  
-//         { $project : {
-//           mint: '$_id.mint',
-//           volume: 1,
-//           count: 1
-//         }},
-//         { $project : {
-//           _id: 0,
-//           __v: 0,
-//         }}
-//       ])
-//     }
-//   } catch (err) {
-//     throw boom.boomify(err)
-//   }
-// }
-
-// exports.test = async (req, reply) => {
-//   try {
-
-//     const entries = Transaction.aggregate([
-//       { $match: {
-//         $or: [
-//           {type: { $eq: "buy"}},
-//           {type: { $eq: "accept_offer"}},
-//         ],
-//         $and: [
-//           {date: { $gte: new Date('2021-12-1') }},
-//           {date: { $lt: new Date('2021-12-2') }}
-//         ]
-//       }},
-//       { $group:
-//         {
-//           _id : {mint: '$mint' },
-//           volume: { $sum: "$price" },
-//           min: { $min: "$price" },
-//           max: { $max: "$price" },
-//           count: { $sum: 1 },
-//           marketplace: "$marketplace"
-//         }
-//       },
-//       { $sort: { volume: -1 } },
-//       { $limit: 100 },  
-//       { $project : {
-//         mint: '$_id.mint',
-//         volume: 1,
-//         count: 1
-//       }},
-//       { $project : {
-//         _id: 0,
-//         __v: 0,
-//       }}
-//     ])
-//     return entries
-//   } catch (err) {
-//     throw boom.boomify(err)
-//   }
-// }
-
-// exports.test = async (req, reply) => {
-//   try {
-
-//     const startDate = new Date();
-//   startDate.setUTCHours(0);
-//   startDate.setUTCMinutes(0);
-//   startDate.setUTCSeconds(0);
-//   startDate.setUTCMilliseconds(0);
-  
-//   const endDate = new Date(startDate);
-//   endDate.setDate(startDate.getDate() + 1);
-//   endDate.setUTCHours(0);
-//   endDate.setUTCMinutes(0);
-//   endDate.setUTCSeconds(0);
-//   endDate.setUTCMilliseconds(0);
-  
-//   console.log(startDate, endDate);
-  
-  
-//   return Transaction.aggregate([
-//     { $match: {
-//       $and: [
-//         {date: { $gte: startDate }},
-//         // {date: { $lt: endDate }}
-//       ],
-//       $or: [
-//         {type: { $eq: "buy"}},
-//         {type: { $eq: "accept_offer"}},
-//       ]
-//     }},
-//     { $lookup: {
-//       from: 'collections',
-//       localField: 'mint',
-//       foreignField: 'mint',
-//       as: 'collection',
-//     }},
-//     { $project : {
-//       _id: 0,
-//       price: 1,
-//       marketplace: 1,
-//       symbol: '$collection.symbol',
-//       tx: 1,
-//     }},
-//     { $unwind: '$symbol' },
-//     { $match: {symbol: "turtles"}},
-//     { $group:
-//       {
-//         _id : {symbol: '$symbol', marketplace: '$marketplace', price: "$price"},
-//         volume: { $sum: "$price"},
-//         min: { $min: "$price" },
-//         max: { $max: "$price" },
-//         avg: { $avg: "$price" },
-//         count: { $sum: 1 },
-//       }
-//     },
-//     { $project:
-//       {
-//         symbol : "$_id.symbol",
-//         marketplace: '$_id.marketplace',
-//         price: "$_id.price",
-//         tx: "$_id.tx",
-//         volume: { $round: ["$volume", 2] },
-//         start: startDate,
-//         end: endDate,
-//         min: { $round: ["$min", 2] },
-//         max: { $round: ["$max", 2] },
-//         avg: { $round: ["$avg", 2] },
-//         count: 1,
-//         _id: 0,
-//       }
-//     }
-//   ]);
-//   } catch (err) {
-//     throw boom.boomify(err)
-//   }
-// }
+    console.log(query)
+    return Floor.aggregate([
+      {$match: {
+        symbol: query.symbol,
+        date: { $gte: startDate }
+      }},
+    ])
+  } catch (err) {
+    throw boom.boomify(err)
+  }
+}

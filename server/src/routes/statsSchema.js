@@ -88,3 +88,21 @@ exports.days = {
     }
   }
 }
+
+exports.floor = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['symbol'],
+    properties: {
+      days: {
+        type: 'integer',
+        maximum: 365,
+        default: 1
+      },
+      symbol: {
+        type: 'string',
+      }
+    }
+  }
+}
