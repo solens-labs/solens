@@ -5,7 +5,12 @@ import "./style.css";
 import { useSelector } from "react-redux";
 import { selectCollection, selectDebugMode } from "../../redux/app";
 import axios from "axios";
-import { api, exchangeApi, queries } from "../../constants/constants";
+import {
+  api,
+  exchangeApi,
+  explorerLink,
+  queries,
+} from "../../constants/constants";
 import TradesTable from "../../components/TradesTable";
 import TradersTable from "../../components/TradersTable";
 import convertTradesData from "../../utils/convertTradesData";
@@ -20,6 +25,7 @@ import {
 import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
 import SocialLinks from "../../components/SocialLinks";
+import { getTokenMetadata } from "../../utils/getMetadata";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -37,6 +43,7 @@ export default function CollectionPage(props) {
   const [stats, setStats] = useState([]); // needed to populate collection summary
   const [topTradesAll, setTopTradesAll] = useState([]); // needed for table
   const [topTradesWeek, setTopTradesWeek] = useState([]); // needed for table
+  const [topTradesDay, setTopTradesDay] = useState([]); // needed for table
   const [topBuyers, setTopBuyers] = useState([]); // needed for table
   const [topSellers, setTopSellers] = useState([]); // needed for table
   const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
@@ -46,6 +53,8 @@ export default function CollectionPage(props) {
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
   const [floor, setFloor] = useState(0); // needed for collection summary
+  const [topFour, setTopFour] = useState([]); // needed to show top 3 NFTs
+  const [topFourMetadata, setTopFourMetadata] = useState([]);
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -74,18 +83,19 @@ export default function CollectionPage(props) {
       const apiRequest =
         api.topTrades + queries.symbol + name + queries.days + 365;
 
-      const topTradesAll = await axios
-        // .get(`${api.getTopBuys}` + name) // NEED TO UPDATE API
-        .get(apiRequest)
-        .then((response) => {
-          const sales = response.data;
+      const topTradesAll = await axios.get(apiRequest).then((response) => {
+        const sales = response.data;
 
-          if (sales.length > 0) {
-            const data = convertTradesData(sales);
-            setTopTradesAll(data);
-            debug && console.log(`received top sales -  ${name}`);
-          }
-        });
+        if (sales.length > 0) {
+          // set top sales to display
+          const topFourSales = sales.slice(0, 4);
+          setTopFour(topFourSales);
+
+          const data = convertTradesData(sales);
+          setTopTradesAll(data);
+          debug && console.log(`received top sales -  ${name}`);
+        }
+      });
     }
   }, [name]);
   useEffect(async () => {
@@ -99,6 +109,22 @@ export default function CollectionPage(props) {
         if (trades.length > 0) {
           const data = convertTradesData(trades);
           setTopTradesWeek(data);
+          debug && console.log(`received top trades -  ${name}`);
+        }
+      });
+    }
+  }, [name]);
+  useEffect(async () => {
+    if (topTradesDay.length === 0) {
+      debug && console.log(`fetching top weekly trades - ${name}`);
+      const apiRequest =
+        api.topTrades + queries.symbol + name + queries.days + 1;
+
+      const topTradesDay = await axios.get(apiRequest).then((response) => {
+        const trades = response.data;
+        if (trades.length > 0) {
+          const data = convertTradesData(trades);
+          setTopTradesDay(data);
           debug && console.log(`received top trades -  ${name}`);
         }
       });
@@ -246,6 +272,37 @@ export default function CollectionPage(props) {
     // setSelectedMarketplace(index);
   };
 
+  const topTradesTimeframe = () => {
+    switch (timeframeTrades) {
+      case 1:
+        return topTradesDay;
+        break;
+      case 7:
+        return topTradesWeek;
+        break;
+      case 1000:
+        return topTradesAll;
+        break;
+    }
+  };
+
+  // Get top 3 metadata
+  useEffect(async () => {
+    if (topFourMetadata.length === 0 && topFour.length !== 0) {
+      const topFourMetadataPull = topFour.map(async (token, i) => {
+        const tokenMetadata = await getTokenMetadata(token.mint);
+        tokenMetadata["price"] = topFour[i].price;
+        const date = new Date(topFour[i].date);
+        tokenMetadata["date"] = date.toLocaleDateString();
+
+        return tokenMetadata;
+      });
+
+      const resolved = await Promise.all(topFourMetadataPull);
+      setTopFourMetadata(resolved);
+    }
+  }, [topFour]);
+
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
       <div className="collection_details d-flex flex-wrap col-12 col-lg-8">
@@ -287,43 +344,80 @@ export default function CollectionPage(props) {
               ? collectionVolume.toLocaleString("en", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
-                }) || "Loading..."
-              : "Unavailable"}
+                })
+              : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Volume (SOL)</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {collectionTxCount.toLocaleString() || "Loading..."}
+            {collectionTxCount
+              ? collectionTxCount.toLocaleString()
+              : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Transactions</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {collectionAverage ? collectionAverage.toFixed(2) : "Unavailable"}
+            {collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Average (SOL)</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {floor > 0 ? floor + " SOL" : "Unavaialble"}
+            {floor > 0 ? floor : "Loading..."}
           </h1>
-          <h1 className="collection_info_header">Floor Price</h1>
+          <h1 className="collection_info_header">Floor Price (SOL)</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
             {collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
-              : "Unavailable"}
+              : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Supply</h1>
         </div>
         <div className="collection_stat">
           <h1 className="collection_info">
-            {daysSinceCreated ? daysSinceCreated : "Unavailable"}
+            {daysSinceCreated ? daysSinceCreated : "Loading..."}
           </h1>
           <h1 className="collection_info_header">Days Launched</h1>
         </div>
+      </div>
+      {/* <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" /> */}
+
+      <h1 className="mt-4">Top Sales</h1>
+      <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
+        {topFourMetadata.length === 4 ? (
+          topFourMetadata.map((token, i) => {
+            return (
+              <a
+                href={explorerLink("token", token.mint)}
+                target="_blank"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <div className="nft_card_sale d-flex flex-column justify-content-between">
+                  <img
+                    src={topFourMetadata[i].image}
+                    className="nft_card_image"
+                    alt="nft_card"
+                  />
+
+                  <div className="d-flex flex-column align-items-center justify-content-around pb-2">
+                    <h5>{topFourMetadata[i].name}</h5>
+
+                    <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
+                      <h5>{topFourMetadata[i].price} SOL</h5>
+                      <h5>{topFourMetadata[i].date}</h5>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
 
@@ -347,11 +441,19 @@ export default function CollectionPage(props) {
           <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
             <button
               className={`btn_timeframe ${
+                timeframeTrades === 1 && "btn_timeframe_selected"
+              }`}
+              onClick={() => setTimeframeTrades(1)}
+            >
+              24H
+            </button>
+            <button
+              className={`btn_timeframe ${
                 timeframeTrades === 7 && "btn_timeframe_selected"
               }`}
               onClick={() => setTimeframeTrades(7)}
             >
-              WEEK
+              7D
             </button>
             <button
               className={`btn_timeframe ${
@@ -359,14 +461,14 @@ export default function CollectionPage(props) {
               }`}
               onClick={() => setTimeframeTrades(1000)}
             >
-              ALL TIME
+              ALL
             </button>
           </div>
           <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-          {topTradesAll.length !== 0 && topTradesWeek.length !== 0 ? (
-            <TradesTable
-              data={timeframeTrades === 7 ? topTradesWeek : topTradesAll}
-            />
+          {topTradesAll.length !== 0 &&
+          topTradesWeek.length !== 0 &&
+          topTradesDay !== 0 ? (
+            <TradesTable data={topTradesTimeframe()} />
           ) : (
             <div className="col-6">
               <Loader />

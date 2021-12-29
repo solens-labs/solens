@@ -9,6 +9,7 @@ import {
 } from "../../redux/app";
 import { useSelector } from "react-redux";
 import { explorerLink } from "../../constants/constants";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export default function WalletCard(props) {
   const { data, type, volume } = props;
@@ -28,16 +29,18 @@ export default function WalletCard(props) {
         type === "SALES" && "seller"
       } d-flex flex-column align-items-center justify-content-around`}
     >
-      <div className="d-flex flex-row flex-wrap col-12 justify-content-center align-items-center p-3 pb-0 pt-0">
+      <div className="d-flex flex-row flex-wrap col-12 justify-content-center align-items-center p-lg-2 p-1 pb-0 pt-0">
         <div
-          className={`col-4 wallet_image_container ${
+          className={`col-5 wallet_image_container ${
             type === "SALES" && "seller_image_container"
           }`}
         >
+          {/* <div className={`col-5  ${type === "SALES" && ""}`}> */}
           <img src={wallet_pic} alt="" className="wallet_image" />
+          {/* <AccountBalanceWalletIcon sx={{ fontSize: 60 }} /> */}
         </div>
 
-        <div className="col-8 d-flex flex-column align-items-end justify-content-center">
+        <div className="col-7 d-flex flex-column align-items-end justify-content-center">
           <a
             href={explorerLink("account", data.account)}
             target="_blank"

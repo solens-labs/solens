@@ -22,6 +22,7 @@ const initialState = {
   walletSellers: [],
   walletBuyersDay: [],
   walletSellersDay: [],
+  topNFTsDay: [],
 };
 
 // Slice
@@ -89,6 +90,9 @@ const app = createSlice({
     setWalletSellersDay: (state, action) => {
       state.walletSellersDay = action.payload;
     },
+    setTopNFTsDay: (state, action) => {
+      state.topNFTsDay = action.payload;
+    },
   },
 });
 
@@ -114,6 +118,7 @@ export const {
   setWalletSellers,
   setWalletBuyersDay,
   setWalletSellersDay,
+  setTopNFTsDay,
 } = app.actions;
 
 // Selectors
@@ -137,6 +142,7 @@ export const selectWalletBuyers = (state) => state.app.walletBuyers;
 export const selectWalletSellers = (state) => state.app.walletSellers;
 export const selectWalletBuyersDay = (state) => state.app.walletBuyersDay;
 export const selectWalletSellersDay = (state) => state.app.walletSellersDay;
+export const selectTopNFTsDay = (state) => state.app.topNFTsDay;
 
 // Reducer
 export default app.reducer;
