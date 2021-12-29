@@ -5,6 +5,7 @@ const Transaction = require('../models/Transaction')
 const Collection = require('../models/Collection')
 const HourlyStats = require('../models/HourlyStats')
 const DailyStats = require('../models/DailyStats')
+const Floor = require('../models/Floor')
 const AllTimeStats = require('../models/AllTimeStats')
 
 const helpers = require('./helpers')
@@ -263,6 +264,24 @@ exports.topNFTs = async (req, reply) => {
       { $project : { _id: 0 } }
     ])
     return entries
+  } catch (err) {
+    throw boom.boomify(err)
+  }
+}
+
+exports.floor = async (req, reply) => {
+  try {
+    const { ...query } = req.query
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - query.days);
+
+    console.log(query)
+    return Floor.aggregate([
+      {$match: {
+        symbol: query.symbol,
+        date: { $gte: startDate }
+      }},
+    ])
   } catch (err) {
     throw boom.boomify(err)
   }
