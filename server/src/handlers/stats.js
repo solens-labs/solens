@@ -282,6 +282,27 @@ exports.floor = async (req, reply) => {
         symbol: query.symbol,
         date: { $gte: startDate }
       }},
+      {$addFields: {
+        day: {$dayOfMonth: "$date"},
+        month: {$month: "$date"},
+        year: {$year: "$date"}
+      }},
+      { $group:
+        {
+          _id : {day: "$day", month: "$month", year: "$year"},
+          floor: { $min: "$floor" }
+        }
+      },
+      { $project:
+        {
+          _id : 0,
+          date: {$dateFromParts: {day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+          floor: 1
+        }
+      },
+      {$sort: {
+        date: 1
+      }}
     ])
   } catch (err) {
     throw boom.boomify(err)
