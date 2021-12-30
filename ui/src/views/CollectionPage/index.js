@@ -455,21 +455,29 @@ export default function CollectionPage(props) {
         style={{ height: "600px" }}
       >
         <h2>Historical Floor</h2>
-        <div className="col-12 col-sm-8 col-md-4 mt-2 mb-3">
-          <Timeframe
-            currentTimeframe={timeframeFloor}
-            setTimeframe={setTimeframeFloor}
-            timeframes={["2W", "1M", "ALL TIME"]}
-            intervals={[14, 30, 1000]}
-          />
-        </div>
-        <LineChart
-          dates={floorChart.datesArray}
-          // legend={["SOL"]}
-          dataset={[floorChart.floorsArray]}
-          color={lineColors[2]}
-          tension={0.5}
-        />
+        {floorChart && floorChart.length !== 0 ? (
+          <>
+            <div className="col-12 col-sm-8 col-md-4 mt-2 mb-3">
+              <Timeframe
+                currentTimeframe={timeframeFloor}
+                setTimeframe={setTimeframeFloor}
+                timeframes={["2W", "1M", "ALL TIME"]}
+                intervals={[14, 30, 1000]}
+              />
+            </div>
+            <LineChart
+              dates={floorChart.datesArray}
+              // legend={["SOL"]}
+              dataset={[floorChart.floorsArray]}
+              color={lineColors[2]}
+              tension={0.5}
+            />
+          </>
+        ) : (
+          <div className="h-100 d-flex align-items-center">
+            <Loader />
+          </div>
+        )}
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
