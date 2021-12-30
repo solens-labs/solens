@@ -28,14 +28,17 @@ import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
 import SocialLinks from "../../components/SocialLinks";
 import { getTokenMetadata } from "../../utils/getMetadata";
+import { convertFloorDataDaily } from "../../utils/convertFloorDataDaily";
 import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
+import Timeframe from "../../components/Timeframe";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
   const debug = useSelector(selectDebugMode);
 
-  const [timeframeTrades, setTimeframeTrades] = useState(1000);
+  const [timeframeFloor, setTimeframeFloor] = useState(30); // default timeframe for historical floor chart
+  const [timeframeTrades, setTimeframeTrades] = useState(1000); // default timeframe for top trades table
   const [traderType, setTraderType] = useState("buyers");
 
   const [marketplacesData, setMarketplacesData] = useState([]); // needed for each MP's charts
@@ -54,19 +57,21 @@ export default function CollectionPage(props) {
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
   const [marketplaces, setMarketplaces] = useState(0); // needed to figure out how many datasets to show
   const [collectionLinks, setCollectionLinks] = useState({});
+  const [floor, setFloor] = useState(0); // needed for collection summary
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
-  const [floor, setFloor] = useState(0); // needed for collection summary
+  const [floorChart, setFloorChart] = useState([]); // needed for historical floor chart
+  const [floor2W, setFloor2W] = useState([]); // needed for historical floor chart
+  const [floor1M, setFloor1M] = useState([]); // needed for historical floor chart
+  const [floorAll, setFloorAll] = useState([]); // needed for historical floor chart
   const [topFour, setTopFour] = useState([]); // needed to show top 3 NFTs
   const [topFourMetadata, setTopFourMetadata] = useState([]);
-  const [floorChart, setFloorChart] = useState([]); // needed for floor chart
 
   // Fetch Collection Data
   useEffect(async () => {
     const apiRequest = api.collection + queries.symbol + name;
     const collectionInfo = await axios.get(apiRequest).then((response) => {
       const collectionInfo = response.data[0];
-      console.log(collectionInfo.alltimestats.length);
       setCollectionInfo(collectionInfo);
       setStats(collectionInfo.alltimestats);
       setMarketplaces(collectionInfo.alltimestats.length);
@@ -217,38 +222,6 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
-  // Request Collection Floors
-  useEffect(() => {
-    // Request ME Floor
-    const apiRequestME = exchangeApi.magiceden.floor + name;
-    const collectionFloorME = axios.get(apiRequestME).then((response) => {
-      const floorLamports = response.data;
-      if (Object.keys(floorLamports).length > 0) {
-        const floor = floorLamports.results.floorPrice * 10e-10;
-        setFloorME(floor.toFixed(2));
-      }
-    });
-
-    // Request SA Floor
-    const apiRequestSA = exchangeApi.solanart.floor + name;
-    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
-      const floor = response.data.floorPrice;
-      if (floor) {
-        setFloorSA(floor.toFixed(2));
-      }
-    });
-  }, [name]);
-  useEffect(() => {
-    if (floorSA !== 0 && floorME !== 0) {
-      const floor = Math.min(floorSA, floorME);
-      setFloor(floor);
-    } else if (floorSA === 0 && floorME !== 0) {
-      setFloor(floorME);
-    } else if (floorSA !== 0 && floorME === 0) {
-      setFloor(floorSA);
-    } else setFloor("Unavailable");
-  }, [floorSA, floorME]);
-
   // Split Marketplace Data Structures
   useEffect(() => {
     if (marketplaces > 1 && dailyStats.length > 0) {
@@ -280,35 +253,90 @@ export default function CollectionPage(props) {
 
   // Fetch Historical Floor
   useEffect(async () => {
-    if (floorChart.length === 0) {
-      debug && console.log(`fetching historical floor - ${name}`);
+    if (floor2W.length === 0) {
       const apiRequest = api.floor + queries.symbol + name + queries.days + 14;
 
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
         const floorData = convertFloorData(floor);
-        // console.log(floorData);
-        setFloorChart(floorData);
-        debug && console.log(`received & set historical floor - ${name}`);
+        setFloor(floorData.floorsArray.at(-1));
+        setFloor2W(floorData);
+      });
+    }
+
+    if (floor1M.length === 0) {
+      const apiRequest = api.floor + queries.symbol + name + queries.days + 30;
+
+      const historicalFloor = await axios.get(apiRequest).then((response) => {
+        const floor = response.data;
+        const floorData = convertFloorData(floor);
+        setFloor1M(floorData);
+      });
+    }
+
+    if (floorAll.length === 0) {
+      const apiRequest = api.floor + queries.symbol + name + queries.days + 365;
+
+      const historicalFloor = await axios.get(apiRequest).then((response) => {
+        const floor = response.data;
+        const floorData = convertFloorData(floor);
+        setFloorAll(floorData);
       });
     }
   }, [name]);
 
   useEffect(() => {
-    if (
-      floorChart.length !== 0 &&
-      marketplacesData.length !== 0 &&
-      !marketplacesData[0].floorsArray
-    ) {
-      const combinedMarketplaceData = marketplacesData;
-      combinedMarketplaceData[0]["floorDates"] = floorChart.datesArray;
-      combinedMarketplaceData[0]["floorsArray"] = floorChart.floorsArray;
-      // const newMarketplacesData = [combinedMarketplaceData[0]];
-      setMarketplacesData(combinedMarketplaceData);
+    switch (timeframeFloor) {
+      case 14:
+        setFloorChart(floor2W);
+        break;
+      case 30:
+        setFloorChart(floor1M);
+        break;
+      case 1000:
+        setFloorChart(floorAll);
+        break;
     }
-  }, [floorChart, marketplacesData]);
+  }, [floor2W, floor1M, floorAll, timeframeFloor]);
+
+  // Request Collection Floors Old Method
+  useEffect(() => {
+    // Request ME Floor
+    const apiRequestME = exchangeApi.magiceden.floor + name;
+    const collectionFloorME = axios.get(apiRequestME).then((response) => {
+      const floorLamports = response.data;
+      if (Object.keys(floorLamports).length > 0) {
+        const floor = floorLamports.results.floorPrice * 10e-10;
+        setFloorME(floor.toFixed(2));
+      }
+    });
+
+    // Request SA Floor
+    const apiRequestSA = exchangeApi.solanart.floor + name;
+    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
+      const floor = response.data.floorPrice;
+      if (floor) {
+        setFloorSA(floor.toFixed(2));
+      }
+    });
+  }, [name]);
+
+  // useEffect(() => {
+  //   if (
+  //     floorChart.length !== 0 &&
+  //     marketplacesData.length !== 0 &&
+  //     !marketplacesData[0].floorsArray
+  //   ) {
+  //     const combinedMarketplaceData = marketplacesData;
+  //     combinedMarketplaceData[0]["floorDates"] = floorChart.datesArray;
+  //     combinedMarketplaceData[0]["floorsArray"] = floorChart.floorsArray;
+  //     // const newMarketplacesData = [combinedMarketplaceData[0]];
+  //     setMarketplacesData(combinedMarketplaceData);
+  //   }
+  // }, [floorChart, marketplacesData]);
 
   // Toggle Top Trades Timeframe
+
   const topTradesTimeframe = () => {
     switch (timeframeTrades) {
       case 1:
@@ -342,7 +370,7 @@ export default function CollectionPage(props) {
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
-      <div className="collection_details d-flex flex-wrap col-12 col-lg-8">
+      <div className="collection_details d-flex flex-wrap col-12 col-lg-8 mb-5">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo.image ? (
             <img
@@ -368,10 +396,10 @@ export default function CollectionPage(props) {
           <p className="collection_description">{collectionInfo.description}</p>
         </div>
       </div>
-      <hr
+      {/* <hr
         style={{ color: "white", width: "50%" }}
         className="mt-lg-5 mt-0 mb-3"
-      />
+      /> */}
 
       <h1>Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3">
@@ -421,7 +449,29 @@ export default function CollectionPage(props) {
           <h1 className="collection_info_header">Days Launched</h1>
         </div>
       </div>
-      {/* <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" /> */}
+
+      <div
+        className="chartbox d-flex flex-column align-items-center col-10 col-md-6 col-lg-10 mt-lg-5"
+        style={{ height: "600px" }}
+      >
+        <h2>Historical Floor</h2>
+        <div className="col-12 col-sm-8 col-md-4 mt-2 mb-3">
+          <Timeframe
+            currentTimeframe={timeframeFloor}
+            setTimeframe={setTimeframeFloor}
+            timeframes={["2W", "1M", "ALL TIME"]}
+            intervals={[14, 30, 1000]}
+          />
+        </div>
+        <LineChart
+          dates={floorChart.datesArray}
+          // legend={["SOL"]}
+          dataset={[floorChart.floorsArray]}
+          color={lineColors[2]}
+          tension={0.5}
+        />
+      </div>
+      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
       <h1 className="mt-4">Top Sales</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
@@ -474,32 +524,13 @@ export default function CollectionPage(props) {
         <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
-          {/* <h5 className="collection_stats_days mb-2">ALL TIME</h5> */}
-          <div className="d-flex flex-wrap flex-row justify-content-around col-12 col-sm-10 col-md-6 mb-3">
-            <button
-              className={`btn_timeframe ${
-                timeframeTrades === 1 && "btn_timeframe_selected"
-              }`}
-              onClick={() => setTimeframeTrades(1)}
-            >
-              24H
-            </button>
-            <button
-              className={`btn_timeframe ${
-                timeframeTrades === 7 && "btn_timeframe_selected"
-              }`}
-              onClick={() => setTimeframeTrades(7)}
-            >
-              7D
-            </button>
-            <button
-              className={`btn_timeframe ${
-                timeframeTrades === 1000 && "btn_timeframe_selected"
-              }`}
-              onClick={() => setTimeframeTrades(1000)}
-            >
-              ALL
-            </button>
+          <div className="col-12 col-sm-10 col-md-6 mb-3">
+            <Timeframe
+              currentTimeframe={timeframeTrades}
+              setTimeframe={setTimeframeTrades}
+              timeframes={["24H", "7D", "ALL TIME"]}
+              intervals={[1, 7, 1000]}
+            />
           </div>
           <hr style={{ color: "white", width: "100%" }} className="mt-0" />
           {topTradesAll.length !== 0 &&

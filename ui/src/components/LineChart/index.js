@@ -24,14 +24,23 @@ ChartJS.register(
 );
 
 export default function LineChart(props) {
-  const { chartTitle, dates, legend, dataset, color } = props;
+  const {
+    chartTitle,
+    dates,
+    legend,
+    dataset,
+    color,
+    pointRadius,
+    tension,
+    pointHighlightStroke,
+  } = props;
 
   const options = {
     // responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true,
+        display: legend ? true : false,
         position: "bottom",
         labels: {
           color: "white",
@@ -39,10 +48,12 @@ export default function LineChart(props) {
             size: 15,
             family: "main",
           },
+          boxWidth: 15,
         },
+        maxWidth: 30,
       },
       title: {
-        display: true,
+        display: chartTitle ? true : false,
         color: "white",
         text: `${chartTitle}`,
         font: {
@@ -85,7 +96,8 @@ export default function LineChart(props) {
       },
     },
     interaction: {
-      mode: "x",
+      mode: "index",
+      axis: "y",
     },
   };
 
@@ -93,7 +105,7 @@ export default function LineChart(props) {
     labels: dates,
     datasets: dataset.map((set, i) => {
       const styledSet = {
-        label: legend[i],
+        label: (legend && legend[i]) || "",
         data: set,
         fill: true,
         borderCapStyle: "round",
@@ -102,11 +114,11 @@ export default function LineChart(props) {
         backgroundColor: color || lineColors[i],
         pointBackgroundColor: color || lineColors[i],
         pointBorderColor: "#fff",
-        pointRadius: 5,
+        pointRadius: pointRadius || 0,
         pointHitRadius: 30,
         pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgba(151,187,205,1)",
-        tension: 0.15,
+        pointHighlightStroke: pointHighlightStroke || "rgba(151,187,205,1)",
+        tension: tension || 0.15,
       };
 
       return styledSet;

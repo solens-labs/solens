@@ -59,6 +59,10 @@
   min-height: 350px;
 }
 
+.chartbox_tall {
+  min-height: 600px;
+}
+
 .marketplace {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);

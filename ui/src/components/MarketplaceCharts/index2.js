@@ -11,10 +11,17 @@ export default function MarketplaceCharts(props) {
 
   return (
     <>
-      <div className="d-flex flex-row flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0">
+      {marketplaceData.floorsArray && (
+        <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0 mb-5">
           <StatSummary marketplaceData={marketplaceData} symbol={symbol} />
         </div>
+      )}
+      <div className="d-flex flex-row flex-wrap justify-content-around col-12 col-lg-10">
+        {!marketplaceData.floorsArray && (
+          <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0 mb-5">
+            <StatSummary marketplaceData={marketplaceData} symbol={symbol} />
+          </div>
+        )}
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
           <LineChart
             chartTitle={`${marketplaceSelect(
@@ -26,12 +33,25 @@ export default function MarketplaceCharts(props) {
               marketplaceData.maxArray,
               marketplaceData.averageArray,
               marketplaceData.minArray,
+              // marketplaceData.floorsArray,
             ]}
-            pointRadius={5}
           />
         </div>
+        {marketplaceData.floorsArray && (
+          <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0">
+            <LineChart
+              chartTitle={`${marketplaceSelect(
+                marketplaceData.marketplace
+              )} Floor`}
+              dates={marketplaceData.floorDates}
+              legend={["Floor (SOL)"]}
+              dataset={[marketplaceData.floorsArray]}
+              color={lineColors[2]}
+            />
+          </div>
+        )}
       </div>
-      <div className="d-flex flex-row flex-wrap justify-content-around col-12 mt-lg-5">
+      <div className="d-flex flex-row flex-wrap justify-content-around col-12 col-lg-10 mt-lg-5">
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
           <LineChart
             chartTitle={`${marketplaceSelect(
@@ -41,7 +61,6 @@ export default function MarketplaceCharts(props) {
             legend={["Volume (SOL)"]}
             dataset={[marketplaceData.volumeArray]}
             color={lineColors[0]}
-            pointRadius={5}
           />
         </div>
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
@@ -53,7 +72,6 @@ export default function MarketplaceCharts(props) {
             legend={["Transactions (Count)"]}
             dataset={[marketplaceData.transactionsArray]}
             color={lineColors[1]}
-            pointRadius={5}
           />
         </div>
       </div>

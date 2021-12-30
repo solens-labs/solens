@@ -68,9 +68,9 @@ export const contractInfo = {
 
 export const lineColors = [
   "rgb(134, 64, 117)",
-  "rgb(57, 184, 223)",
   "rgb(87, 51, 207)",
-  "rgb(255,255,255",
+  "rgb(57, 184, 223)",
+  "rgb(255, 255, 255)",
 ];
 
 export const links = {
