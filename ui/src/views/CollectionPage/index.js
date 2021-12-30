@@ -257,9 +257,11 @@ export default function CollectionPage(props) {
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
 
+        const currentFloor = floor[floor.length - 1].floor.toFixed(2);
+        setFloor(currentFloor);
+
         const floorData = convertFloorData(floor);
         setFloor2W(floorData);
-        setFloor(floorData.floorsArray.at(-1));
 
         const split = splitMarketplaceData(floor);
         if (split["magiceden"] && split["magiceden"].length > 0) {

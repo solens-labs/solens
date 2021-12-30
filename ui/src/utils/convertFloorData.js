@@ -1,10 +1,10 @@
 export const convertFloorData = (data) => {
-  const dataReversed = data.reverse();
+  // const dataReversed = data.reverse();
 
   const datesArray = [];
   const floorsArray = [];
 
-  dataReversed.map((record, i) => {
+  data.map((record, i) => {
     const dateFull = new Date(record.date);
     const dateDay = dateFull.toLocaleDateString().slice(0, -5);
     // record["date"] = dateDay;
@@ -27,8 +27,6 @@ export const convertFloorData = (data) => {
   // return {
   //   date: entry[0],
   //   floor: Number(floor.toFixed(2)),
-  //   symbol: data[0].symbol,
-  //   marketplace: data[0].marketplace,
   // };
   // });
 
