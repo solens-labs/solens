@@ -28,7 +28,6 @@ import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
 import SocialLinks from "../../components/SocialLinks";
 import { getTokenMetadata } from "../../utils/getMetadata";
-import { convertFloorDataDaily } from "../../utils/convertFloorDataDaily";
 import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
@@ -255,18 +254,27 @@ export default function CollectionPage(props) {
   useEffect(async () => {
     if (floor2W.length === 0) {
       const apiRequest = api.floor + queries.symbol + name + queries.days + 14;
-
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
+
         const floorData = convertFloorData(floor);
-        setFloor(floorData.floorsArray.at(-1));
         setFloor2W(floorData);
+        setFloor(floorData.floorsArray.at(-1));
+
+        const split = splitMarketplaceData(floor);
+        if (split["magiceden"] && split["magiceden"].length > 0) {
+          const floorME = split["magiceden"][0].floor;
+          setFloorME(floorME);
+        }
+        if (split["solanart"] && split["solanart"].length > 0) {
+          const floorSA = split["solanart"][0].floor;
+          setFloorSA(floorSA);
+        }
       });
     }
 
     if (floor1M.length === 0) {
       const apiRequest = api.floor + queries.symbol + name + queries.days + 30;
-
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
         const floorData = convertFloorData(floor);
@@ -276,7 +284,6 @@ export default function CollectionPage(props) {
 
     if (floorAll.length === 0) {
       const apiRequest = api.floor + queries.symbol + name + queries.days + 365;
-
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
         const floorData = convertFloorData(floor);
@@ -297,30 +304,9 @@ export default function CollectionPage(props) {
         setFloorChart(floorAll);
         break;
     }
-  }, [floor2W, floor1M, floorAll, timeframeFloor]);
+  }, [floor1M, timeframeFloor]);
 
-  // Request Collection Floors Old Method
-  useEffect(() => {
-    // Request ME Floor
-    const apiRequestME = exchangeApi.magiceden.floor + name;
-    const collectionFloorME = axios.get(apiRequestME).then((response) => {
-      const floorLamports = response.data;
-      if (Object.keys(floorLamports).length > 0) {
-        const floor = floorLamports.results.floorPrice * 10e-10;
-        setFloorME(floor.toFixed(2));
-      }
-    });
-
-    // Request SA Floor
-    const apiRequestSA = exchangeApi.solanart.floor + name;
-    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
-      const floor = response.data.floorPrice;
-      if (floor) {
-        setFloorSA(floor.toFixed(2));
-      }
-    });
-  }, [name]);
-
+  // Add multiple MP floor data for line chart to component MP data
   // useEffect(() => {
   //   if (
   //     floorChart.length !== 0 &&
@@ -401,7 +387,7 @@ export default function CollectionPage(props) {
         style={{ color: "white", width: "50%" }}
         className="mt-lg-5 mt-0 mb-3"
       /> */}
-      <h1>Collection Summary</h1>
+      <h1 className="mt-lg-3">Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3">
         <div className="collection_stat">
           <h1 className="collection_info">
