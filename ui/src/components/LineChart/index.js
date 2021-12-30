@@ -84,6 +84,9 @@ export default function LineChart(props) {
         label: (item) => `${item.yLabel} GB`,
       },
     },
+    interaction: {
+      mode: "x",
+    },
   };
 
   const data = {

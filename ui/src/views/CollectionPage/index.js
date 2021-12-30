@@ -66,6 +66,7 @@ export default function CollectionPage(props) {
     const apiRequest = api.collection + queries.symbol + name;
     const collectionInfo = await axios.get(apiRequest).then((response) => {
       const collectionInfo = response.data[0];
+      console.log(collectionInfo.alltimestats.length);
       setCollectionInfo(collectionInfo);
       setStats(collectionInfo.alltimestats);
       setMarketplaces(collectionInfo.alltimestats.length);
@@ -302,10 +303,8 @@ export default function CollectionPage(props) {
       const combinedMarketplaceData = marketplacesData;
       combinedMarketplaceData[0]["floorDates"] = floorChart.datesArray;
       combinedMarketplaceData[0]["floorsArray"] = floorChart.floorsArray;
-
-      console.log(combinedMarketplaceData[0]);
-      const newMarketplacesData = [combinedMarketplaceData[0]];
-      setMarketplacesData(newMarketplacesData);
+      // const newMarketplacesData = [combinedMarketplaceData[0]];
+      setMarketplacesData(combinedMarketplaceData);
     }
   }, [floorChart, marketplacesData]);
 
