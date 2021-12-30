@@ -308,6 +308,7 @@ export default function CollectionPage(props) {
     }
   }, [floorChart, marketplacesData]);
 
+  // Toggle Top Trades Timeframe
   const topTradesTimeframe = () => {
     switch (timeframeTrades) {
       case 1:
@@ -456,16 +457,6 @@ export default function CollectionPage(props) {
         )}
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
-
-      {/* <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
-        <LineChart
-          chartTitle={`${marketplaceSelect(floorChart.marketplace)} Floor`}
-          dates={floorChart.datesArray}
-          legend={["Floor (SOL)"]}
-          dataset={[floorChart.floorsArray]}
-          color={lineColors[0]}
-        />
-      </div> */}
 
       {marketplacesData.length > 0 ? (
         marketplacesData.map((marketplace, i) => {

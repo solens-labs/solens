@@ -46,6 +46,7 @@ export default function MarketplaceCharts(props) {
               dates={marketplaceData.floorDates}
               legend={["Floor (SOL)"]}
               dataset={[marketplaceData.floorsArray]}
+              color={lineColors[2]}
             />
           </div>
         )}
