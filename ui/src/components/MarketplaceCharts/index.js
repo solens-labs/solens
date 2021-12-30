@@ -11,9 +11,21 @@ export default function MarketplaceCharts(props) {
 
   return (
     <>
+      <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0 mb-5">
+        <StatSummary marketplaceData={marketplaceData} symbol={symbol} />
+      </div>
       <div className="d-flex flex-row flex-wrap justify-content-around col-12 col-lg-10">
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0">
-          <StatSummary marketplaceData={marketplaceData} symbol={symbol} />
+          {marketplaceData.floorsArray && (
+            <LineChart
+              chartTitle={`${marketplaceSelect(
+                marketplaceData.marketplace
+              )} Floor`}
+              dates={marketplaceData.floorDates}
+              legend={["Floor (SOL)"]}
+              dataset={[marketplaceData.floorsArray]}
+            />
+          )}
         </div>
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
           <LineChart
@@ -21,11 +33,12 @@ export default function MarketplaceCharts(props) {
               marketplaceData.marketplace
             )} Price`}
             dates={marketplaceData.dates}
-            legend={["Min Price", "Max Price", "Average Price"]}
+            legend={["Min Price", "Max Price", "Average Price", "Floor Price"]}
             dataset={[
               marketplaceData.minArray,
               marketplaceData.maxArray,
               marketplaceData.averageArray,
+              marketplaceData.floorsArray,
             ]}
           />
         </div>

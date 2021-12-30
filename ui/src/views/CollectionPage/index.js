@@ -9,6 +9,7 @@ import {
   api,
   exchangeApi,
   explorerLink,
+  lineColors,
   queries,
 } from "../../constants/constants";
 import TradesTable from "../../components/TradesTable";
@@ -20,12 +21,15 @@ import {
   calculateAllTimeVolume,
   calculateLaunchDate,
   getMarketplaceData,
+  marketplaceSelect,
   splitMarketplaceData,
 } from "../../utils/collectionStats";
 import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
 import SocialLinks from "../../components/SocialLinks";
 import { getTokenMetadata } from "../../utils/getMetadata";
+import { convertFloorData } from "../../utils/convertFloorData";
+import LineChart from "../../components/LineChart";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -55,6 +59,7 @@ export default function CollectionPage(props) {
   const [floor, setFloor] = useState(0); // needed for collection summary
   const [topFour, setTopFour] = useState([]); // needed to show top 3 NFTs
   const [topFourMetadata, setTopFourMetadata] = useState([]);
+  const [floorChart, setFloorChart] = useState([]); // needed for floor chart
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -272,6 +277,38 @@ export default function CollectionPage(props) {
     // setSelectedMarketplace(index);
   };
 
+  // Fetch Historical Floor
+  useEffect(async () => {
+    if (floorChart.length === 0) {
+      debug && console.log(`fetching historical floor - ${name}`);
+      const apiRequest = api.floor + queries.symbol + name + queries.days + 14;
+
+      const historicalFloor = await axios.get(apiRequest).then((response) => {
+        const floor = response.data;
+        const floorData = convertFloorData(floor);
+        // console.log(floorData);
+        setFloorChart(floorData);
+        debug && console.log(`received & set historical floor - ${name}`);
+      });
+    }
+  }, [name]);
+
+  useEffect(() => {
+    if (
+      floorChart.length !== 0 &&
+      marketplacesData.length !== 0 &&
+      !marketplacesData[0].floorsArray
+    ) {
+      const combinedMarketplaceData = marketplacesData;
+      combinedMarketplaceData[0]["floorDates"] = floorChart.datesArray;
+      combinedMarketplaceData[0]["floorsArray"] = floorChart.floorsArray;
+
+      console.log(combinedMarketplaceData[0]);
+      const newMarketplacesData = [combinedMarketplaceData[0]];
+      setMarketplacesData(newMarketplacesData);
+    }
+  }, [floorChart, marketplacesData]);
+
   const topTradesTimeframe = () => {
     switch (timeframeTrades) {
       case 1:
@@ -286,7 +323,7 @@ export default function CollectionPage(props) {
     }
   };
 
-  // Get top 3 metadata
+  // Get Top 4 NFT Sales Metadata
   useEffect(async () => {
     if (topFourMetadata.length === 0 && topFour.length !== 0) {
       const topFourMetadataPull = topFour.map(async (token, i) => {
@@ -420,6 +457,16 @@ export default function CollectionPage(props) {
         )}
       </div>
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
+
+      {/* <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
+        <LineChart
+          chartTitle={`${marketplaceSelect(floorChart.marketplace)} Floor`}
+          dates={floorChart.datesArray}
+          legend={["Floor (SOL)"]}
+          dataset={[floorChart.floorsArray]}
+          color={lineColors[0]}
+        />
+      </div> */}
 
       {marketplacesData.length > 0 ? (
         marketplacesData.map((marketplace, i) => {

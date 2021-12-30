@@ -21,6 +21,7 @@ export const api = {
   collection: `${server + "collection"}`,
   topTraders: `${server + "topTraders"}`,
   marketStats: `${server + "marketStats"}`,
+  floor: `${server + "floor"}`, // need symbol, days
 
   getAllCollections: `${server + "getAllCollections"}`,
   getCollection: `${server + "getCollection/"}`,
@@ -69,6 +70,7 @@ export const lineColors = [
   "rgb(134, 64, 117)",
   "rgb(57, 184, 223)",
   "rgb(87, 51, 207)",
+  "rgb(255,255,255",
 ];
 
 export const links = {
