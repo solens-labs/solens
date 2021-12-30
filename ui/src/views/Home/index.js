@@ -109,7 +109,7 @@ export default function HomePage(props) {
                   target="_blank"
                   style={{ textDecoration: "none", color: "white" }}
                 >
-                  <div className="nft_card_sale d-flex flex-column justify-content-between">
+                  <div className="nft_card_sale d-flex flex-column justify-content-between mt-4 mt-lg-0">
                     <img
                       src={item.image}
                       className="nft_card_image"

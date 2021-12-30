@@ -370,7 +370,7 @@ export default function CollectionPage(props) {
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
-      <div className="collection_details d-flex flex-wrap col-12 col-lg-8 mb-5">
+      <div className="collection_details d-flex flex-wrap col-12 col-lg-8 mb-3 mb-lg-5">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo.image ? (
             <img
@@ -396,11 +396,11 @@ export default function CollectionPage(props) {
           <p className="collection_description">{collectionInfo.description}</p>
         </div>
       </div>
+
       {/* <hr
         style={{ color: "white", width: "50%" }}
         className="mt-lg-5 mt-0 mb-3"
       /> */}
-
       <h1>Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3">
         <div className="collection_stat">
@@ -450,10 +450,7 @@ export default function CollectionPage(props) {
         </div>
       </div>
 
-      <div
-        className="chartbox d-flex flex-column align-items-center col-10 col-md-6 col-lg-10 mt-lg-5"
-        style={{ height: "600px" }}
-      >
+      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-md-6 col-lg-10 mt-5">
         <h2>Historical Floor</h2>
         {floorChart && floorChart.length !== 0 ? (
           <>
@@ -479,6 +476,7 @@ export default function CollectionPage(props) {
           </div>
         )}
       </div>
+
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
       <h1 className="mt-4">Top Sales</h1>
@@ -491,7 +489,7 @@ export default function CollectionPage(props) {
                 target="_blank"
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <div className="nft_card_sale d-flex flex-column justify-content-between">
+                <div className="nft_card_sale d-flex flex-column justify-content-between mt-4 mt-lg-0">
                   <img
                     src={topFourMetadata[i].image}
                     className="nft_card_image"
@@ -514,19 +512,22 @@ export default function CollectionPage(props) {
           <Loader />
         )}
       </div>
+
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
 
-      {marketplacesData.length > 0 ? (
-        marketplacesData.map((marketplace, i) => {
-          return (
-            <MarketplaceCharts marketplaceData={marketplace} symbol={name} />
-          );
-        })
-      ) : (
-        <div className="mt-5 mb-5 d-flex justify-content-center">
-          <Loader />
-        </div>
-      )}
+      <>
+        {marketplacesData.length > 0 ? (
+          marketplacesData.map((marketplace, i) => {
+            return (
+              <MarketplaceCharts marketplaceData={marketplace} symbol={name} />
+            );
+          })
+        ) : (
+          <div className="mt-5 mb-5 d-flex justify-content-center">
+            <Loader />
+          </div>
+        )}
+      </>
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
         <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">

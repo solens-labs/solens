@@ -52,6 +52,10 @@
   /* min-width: 100%; */
 }
 
+.collection_floor {
+  height: 600px;
+}
+
 .chartbox {
   background: rgb(18, 11, 37);
   padding: 20px 10px 20px 20px;
@@ -86,7 +90,7 @@
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
   margin: 5px;
   height: 400px;
-  width: 350px;
+  width: 325px;
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;
