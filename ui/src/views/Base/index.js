@@ -36,6 +36,7 @@ import ReactGA from "react-ga";
 import Wallets from "../Wallets";
 import ScrollToTop from "../../utils/scrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
+import { calculateLaunchDate } from "../../utils/collectionStats";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -84,8 +85,13 @@ export default function Home(props) {
             return addedStat;
           });
 
-          // console.log(dailyChangeAdded);
-          dispatch(setAllCollections(dailyChangeAdded));
+          const daysLaunchedAdded = dailyChangeAdded.map((collection) => {
+            const daysSinceLaunch = calculateLaunchDate(collection);
+            const addedStat = { ...collection, days_launched: daysSinceLaunch };
+            return addedStat;
+          });
+
+          dispatch(setAllCollections(daysLaunchedAdded));
         })
         .catch((error) => console.log(error));
     }

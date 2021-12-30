@@ -25,6 +25,10 @@ export default function CollectionCardMobile(props) {
       caption: "24H Volume",
       unit: "%",
     },
+    "days_launched": {
+      caption: "Launched On",
+      unit: "",
+    },
   };
 
   return (

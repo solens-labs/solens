@@ -456,6 +456,7 @@ export default function CollectionPage(props) {
               dataset={[floorChart.floorsArray]}
               color={lineColors[2]}
               tension={0.5}
+              pointRadius={timeframeFloor === 1000 ? 3 : 5}
             />
           </>
         ) : (

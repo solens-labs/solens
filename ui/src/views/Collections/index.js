@@ -115,6 +115,7 @@ export default function CollectionList(props) {
           <option value="past_day_volume">Volume - Yesterday</option>
           <option value="daily_volume">Volume - Today</option>
           <option value="daily_change">Volume - 24H Change</option>
+          <option value="days_launched">Date - Released (Newest)</option>
         </select>
 
         <input
