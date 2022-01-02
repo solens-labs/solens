@@ -221,6 +221,37 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
+  useEffect(() => {
+    // Request ME Floor
+    const apiRequestME = exchangeApi.magiceden.floor + name;
+    const collectionFloorME = axios.get(apiRequestME).then((response) => {
+      const floorLamports = response.data;
+      if (Object.keys(floorLamports).length > 0) {
+        const floor = floorLamports.results.floorPrice * 10e-10;
+        setFloorME(floor.toFixed(2));
+      }
+    });
+
+    // Request SA Floor
+    const apiRequestSA = exchangeApi.solanart.floor + name;
+    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
+      const floor = response.data.floorPrice;
+      if (floor) {
+        setFloorSA(floor.toFixed(2));
+      }
+    });
+  }, [name]);
+  useEffect(() => {
+    if (floorSA !== 0 && floorME !== 0) {
+      const floor = Math.min(floorSA, floorME);
+      setFloor(floor);
+    } else if (floorSA === 0 && floorME !== 0) {
+      setFloor(floorME);
+    } else if (floorSA !== 0 && floorME === 0) {
+      setFloor(floorSA);
+    } else setFloor("Unavailable");
+  }, [floorSA, floorME]);
+
   // Split Marketplace Data Structures
   useEffect(() => {
     if (marketplaces > 1 && dailyStats.length > 0) {
@@ -257,8 +288,8 @@ export default function CollectionPage(props) {
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
 
-        const currentFloor = floor[floor.length - 1].floor.toFixed(2);
-        setFloor(currentFloor);
+        // const currentFloor = floor[floor.length - 1].floor.toFixed(2);
+        // setFloor(currentFloor);
 
         const floorData = convertFloorData(floor);
         setFloor2W(floorData);
