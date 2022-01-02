@@ -96,29 +96,32 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
+      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Top NFTs</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-        <div className="d-flex flex-row flex-wrap justify-content-around col-12">
+
+        <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
               return (
-                <div className="nft_card_sale d-flex flex-column justify-content-between mt-4 mt-lg-0">
+                <div className="nft_card_container col-10 col-sm-8 col-md-5 col-xxl-3 mb-4">
                   <a
                     href={explorerLink("token", item.mint)}
                     target="_blank"
                     style={{ textDecoration: "none", color: "white" }}
                   >
-                    <img
-                      src={item.image}
-                      className="nft_card_image"
-                      alt="nft_card"
-                    />
+                    <div className="nft_card d-flex flex-column align-items-center">
+                      <img
+                        src={item.image}
+                        className="nft_card_image"
+                        alt="nft_card"
+                      />
 
-                    <div className="d-flex flex-column align-items-center mt-2">
-                      <h5>{item.name}</h5>
-                      <h4>{item.price} SOL</h4>
+                      <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
+                        <h5>{item.name}</h5>
+                        <h4>{item.price} SOL</h4>
+                      </div>
                     </div>
                   </a>
                 </div>
