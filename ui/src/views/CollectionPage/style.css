@@ -87,7 +87,7 @@
 }
 
 .nft_card_container {
-  padding: 15px;
+  padding: 15px 30px;
 }
 
 .nft_card {
@@ -123,7 +123,19 @@
 
 .nft_card_details {
   height: 100%;
+  width: 100%;
   padding: 0px 5px;
+}
+
+.price_logo_sm {
+  height: 20px;
+  margin: 0px 5px 0px 0px;
+}
+
+.price_logo_lg {
+  height: 30px;
+  margin: 0px 10px 0px 0px;
+  padding-bottom: 3px;
 }
 
 @media screen and (max-width: 1500px) {

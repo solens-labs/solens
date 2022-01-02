@@ -19,6 +19,7 @@ import {
 import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
 import { explorerLink } from "../../constants/constants";
+import sol_logo from "../../assets/images/sol_logo.png";
 
 export default function HomePage(props) {
   const dispatch = useDispatch();
@@ -120,7 +121,14 @@ export default function HomePage(props) {
 
                       <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
                         <h5>{item.name}</h5>
-                        <h4>{item.price} SOL</h4>
+                        <h4>
+                          <img
+                            src={sol_logo}
+                            alt="sol logo"
+                            className="price_logo_lg"
+                          />
+                          {item.price}
+                        </h4>
                       </div>
                     </div>
                   </a>

@@ -31,6 +31,7 @@ import { getTokenMetadata } from "../../utils/getMetadata";
 import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
+import sol_logo from "../../assets/images/sol_logo.png";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -507,36 +508,49 @@ export default function CollectionPage(props) {
 
       <h1 className="mt-4">Top Sales</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
-        {topFourMetadata.length === 4 ? (
-          topFourMetadata.map((token, i) => {
-            return (
-              <a
-                href={explorerLink("token", token.mint)}
-                target="_blank"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                <div className="nft_card_sale d-flex flex-column justify-content-between mt-4 mt-lg-0">
-                  <img
-                    src={topFourMetadata[i].image}
-                    className="nft_card_image"
-                    alt="nft_card"
-                  />
+        <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
+          {topFourMetadata.length === 4 ? (
+            topFourMetadata.map((token, i) => {
+              return (
+                <div className="nft_card_container col-10 col-sm-8 col-md-5 col-xxl-3 mb-4">
+                  <a
+                    href={explorerLink("token", token.mint)}
+                    target="_blank"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    <div className="nft_card d-flex flex-column align-items-center">
+                      <img
+                        src={topFourMetadata[i].image}
+                        className="nft_card_image"
+                        alt="nft_card"
+                      />
 
-                  <div className="d-flex flex-column align-items-center justify-content-around pb-2">
-                    <h5>{topFourMetadata[i].name}</h5>
+                      <div className="nft_card_details d-flex align-items-center">
+                        <div className="col-12">
+                          <h5>{topFourMetadata[i].name}</h5>
 
-                    <div className="d-flex flex-row col-10 justify-content-between p-2 pt-0 pb-0">
-                      <h5>{topFourMetadata[i].price} SOL</h5>
-                      <h5>{topFourMetadata[i].date}</h5>
+                          <div className="d-flex flex-row col-12 justify-content-around">
+                            <h5>
+                              <img
+                                src={sol_logo}
+                                alt="sol logo"
+                                className="price_logo_sm"
+                              />
+                              {topFourMetadata[i].price}
+                            </h5>
+                            <h5>{topFourMetadata[i].date}</h5>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </div>
-              </a>
-            );
-          })
-        ) : (
-          <Loader />
-        )}
+              );
+            })
+          ) : (
+            <Loader />
+          )}
+        </div>
       </div>
 
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
