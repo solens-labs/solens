@@ -230,7 +230,7 @@ exports.topTraders = async (req, reply) => {
 
     const entries = Transaction.aggregate([
       match,
-      { $limit: 10000 },
+      { $limit: 1000 },
       helpers.groupTxStats(id = key),
       { $sort: { [query.sortBy]: -1} },
       { $limit: 100 },
@@ -259,7 +259,7 @@ exports.topNFTs = async (req, reply) => {
 
     const entries = await Transaction.aggregate([
       match,
-      { $limit: 10000 },
+      { $limit: 1000 },
       helpers.groupTxStats(id = 'mint'),
       { $sort: { [query.sortBy]: -1} },
       { $limit: 100 },
