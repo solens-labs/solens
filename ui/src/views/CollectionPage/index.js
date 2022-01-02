@@ -291,17 +291,19 @@ export default function CollectionPage(props) {
         // const currentFloor = floor[floor.length - 1].floor.toFixed(2);
         // setFloor(currentFloor);
 
-        const floorData = convertFloorData(floor);
-        setFloor2W(floorData);
+        if (floor.length > 0) {
+          const floorData = convertFloorData(floor);
+          setFloor2W(floorData);
 
-        const split = splitMarketplaceData(floor);
-        if (split["magiceden"] && split["magiceden"].length > 0) {
-          const floorME = split["magiceden"][0].floor;
-          setFloorME(floorME);
-        }
-        if (split["solanart"] && split["solanart"].length > 0) {
-          const floorSA = split["solanart"][0].floor;
-          setFloorSA(floorSA);
+          const split = splitMarketplaceData(floor);
+          if (split["magiceden"] && split["magiceden"].length > 0) {
+            const floorME = split["magiceden"][0].floor;
+            setFloorME(floorME);
+          }
+          if (split["solanart"] && split["solanart"].length > 0) {
+            const floorSA = split["solanart"][0].floor;
+            setFloorSA(floorSA);
+          }
         }
       });
     }
@@ -310,8 +312,10 @@ export default function CollectionPage(props) {
       const apiRequest = api.floor + queries.symbol + name + queries.days + 30;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
-        const floorData = convertFloorData(floor);
-        setFloor1M(floorData);
+        if (floor.length > 0) {
+          const floorData = convertFloorData(floor);
+          setFloor1M(floorData);
+        }
       });
     }
 
@@ -319,8 +323,10 @@ export default function CollectionPage(props) {
       const apiRequest = api.floor + queries.symbol + name + queries.days + 365;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
-        const floorData = convertFloorData(floor);
-        setFloorAll(floorData);
+        if (floor.length > 0) {
+          const floorData = convertFloorData(floor);
+          setFloorAll(floorData);
+        }
       });
     }
   }, [name]);

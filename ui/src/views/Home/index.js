@@ -104,24 +104,24 @@ export default function HomePage(props) {
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
               return (
-                <a
-                  href={explorerLink("token", item.mint)}
-                  target="_blank"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  <div className="nft_card_sale d-flex flex-column justify-content-between mt-4 mt-lg-0">
+                <div className="nft_card_sale d-flex flex-column justify-content-between mt-4 mt-lg-0">
+                  <a
+                    href={explorerLink("token", item.mint)}
+                    target="_blank"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
                     <img
                       src={item.image}
                       className="nft_card_image"
                       alt="nft_card"
                     />
 
-                    <div className="d-flex flex-column align-items-center justify-content-around">
+                    <div className="d-flex flex-column align-items-center mt-2">
                       <h5>{item.name}</h5>
                       <h4>{item.price} SOL</h4>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               );
             })
           ) : (
