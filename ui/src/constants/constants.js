@@ -39,6 +39,9 @@ export const exchangeApi = {
   solanart: {
     floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
   },
+  smb: {
+    items: `https://market.solanamonkey.business/api/items`,
+  },
 };
 
 export const explorerLink = (type, hash) => {

@@ -241,6 +241,24 @@ export default function CollectionPage(props) {
         setFloorSA(floor.toFixed(2));
       }
     });
+
+    // Request SMB Floor
+    if (name === "solana_monkey_business") {
+      const apiRequestSMB = exchangeApi.smb.items;
+      const collectionFloorSMB = axios.get(apiRequestSMB).then((response) => {
+        const fullSMBData = response.data.items;
+        const listed = fullSMBData.filter((item) => {
+          if (item.price && item.price > 0) {
+            return item.price;
+          }
+        });
+        const prices = listed.map((item) => {
+          return item.price / 1000000000;
+        });
+        const smbFloor = Math.min(...prices);
+        setFloor(smbFloor.toFixed(2));
+      });
+    }
   }, [name]);
   useEffect(() => {
     if (floorSA !== 0 && floorME !== 0) {
@@ -258,14 +276,14 @@ export default function CollectionPage(props) {
     if (marketplaces > 1 && dailyStats.length > 0) {
       const splitData = splitMarketplaceData(dailyStats);
 
+      const smbData = getMarketplaceData(splitData.smb);
       const solanartData = getMarketplaceData(splitData.solanart);
       const magicedenData = getMarketplaceData(splitData.magiceden);
-      const smbData = getMarketplaceData(splitData.smb);
 
       const allMarketplaceData = [];
+      smbData && allMarketplaceData.push(smbData);
       solanartData && allMarketplaceData.push(solanartData);
       magicedenData && allMarketplaceData.push(magicedenData);
-      smbData && allMarketplaceData.push(smbData);
 
       setMarketplacesData(allMarketplaceData);
     } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
