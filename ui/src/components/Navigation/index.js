@@ -57,11 +57,11 @@ const Header = (props) => {
             <h1 className="nav_link">wallets</h1>
           </div>
         </Link>
-        <Link to="/launch" style={{ textDecoration: "none" }}>
+        {/* <Link to="/launch" style={{ textDecoration: "none" }}>
           <div className="nav_link_container">
             <h1 className="nav_link">launchzone</h1>
           </div>
-        </Link>
+        </Link> */}
       </div>
 
       <div className="col-2 d-none d-lg-flex justify-content-end">
@@ -137,11 +137,11 @@ const Header = (props) => {
                 wallets
               </h1>
             </Link>
-            <Link to="/launch" style={{ textDecoration: "none" }}>
+            {/* <Link to="/launch" style={{ textDecoration: "none" }}>
               <h1 className="nav_link" onClick={() => showMenu()}>
                 launchzone
               </h1>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

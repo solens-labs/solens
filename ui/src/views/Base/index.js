@@ -227,7 +227,7 @@ export default function Home(props) {
           <Route path="/collections" component={Collections} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/wallets" component={Wallets} />
-          <Route path="/launch" component={Launch} />
+          {/* <Route path="/launch" component={Launch} /> */}
           {/* <Route path="/item" component={ItemPage} /> */}
           <Route path="*" component={HomePage} />
         </Switch>

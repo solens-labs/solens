@@ -25,15 +25,15 @@ html {
   height: 100%;
   overflow: auto;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   z-index: -1;
-  width: 8px; /* Remove scrollbar space */
+  width: 0px;
   height: 5px;
-  background: transparent; /* Optional: just make scrollbar invisible */
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: white;
-}
+} */
 
 body {
   height: 100%;

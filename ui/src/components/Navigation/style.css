@@ -76,6 +76,13 @@
   /* background: rgba(255, 255, 255, 0.5); */
   cursor: pointer;
   color: rgb(134, 64, 117);
+  background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav-link:visited {

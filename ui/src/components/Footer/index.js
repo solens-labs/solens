@@ -45,7 +45,9 @@ export default function Footer(props) {
               <a
                 href={links.twitter.url}
                 target="_blank"
-                style={{ textDecoration: "none" }}
+                style={{
+                  textDecoration: "none",
+                }}
               >
                 {/* <h1 className="nav_link">twitter</h1> */}
                 <TwitterIcon style={{ fill: "white" }} />

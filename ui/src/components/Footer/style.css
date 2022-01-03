@@ -20,6 +20,13 @@
 
 .footer_title {
   color: white;
+  background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-size: 1.3rem;
   letter-spacing: 3px;
   margin: 0px;
@@ -36,6 +43,13 @@
 .footer_link:hover {
   cursor: pointer;
   color: rgb(134, 64, 117);
+  background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .copyright {
@@ -43,10 +57,18 @@
   line-height: 1rem;
   margin-bottom: 20px;
   color: rgb(156, 156, 156);
+  cursor: pointer;
+  background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .copyright_icon {
-  color: "white";
+  color: rgb(79, 48, 102);
   font-size: 0.9rem !important;
   margin: 0px 5px 2px 0px;
 }
