@@ -260,13 +260,12 @@ export default function CollectionPage(props) {
 
       const solanartData = getMarketplaceData(splitData.solanart);
       const magicedenData = getMarketplaceData(splitData.magiceden);
+      const smbData = getMarketplaceData(splitData.smb);
+
       const allMarketplaceData = [];
-      if (Object.keys(solanartData).length > 0) {
-        allMarketplaceData.push(solanartData);
-      }
-      if (Object.keys(magicedenData).length > 0) {
-        allMarketplaceData.push(magicedenData);
-      }
+      solanartData && allMarketplaceData.push(solanartData);
+      magicedenData && allMarketplaceData.push(magicedenData);
+      smbData && allMarketplaceData.push(smbData);
 
       setMarketplacesData(allMarketplaceData);
     } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
