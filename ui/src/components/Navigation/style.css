@@ -15,14 +15,23 @@
   /* min-height: 7vh; */
 }
 
-.nav_page {
+.nav_link_container {
+  width: 180px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin: 0px 15px;
+}
+
+.nav_link {
   color: white;
   font-size: 1.3rem;
   padding: 0px 20px 0px 20px;
   text-align: end;
   letter-spacing: 1.5px;
   text-decoration: none !important;
-  margin: 0;
+  margin: 0px;
+  /* background: red; */
 }
 
 .logo_container {
@@ -50,33 +59,12 @@
   text-decoration: none !important;
 }
 
-.social_links {
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-  align-items: center;
+.icon_link {
+  margin: 0px 15px;
 }
-
-.nav-links {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.nav-link {
-  border-top: none;
-  border-bottom: none;
-  border-left: none;
-  border-right: none;
-  background: transparent;
-  text-transform: uppercase;
-  color: rgb(250, 163, 64) !important;
-  font-size: 1.35rem;
-  min-width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none !important;
+.icon_link:hover {
+  cursor: pointer;
+  fill: rgb(134, 64, 117);
 }
 
 .social_icon {
@@ -84,10 +72,17 @@
   margin: 0px 30px;
 }
 
-.nav_page:hover {
+.nav_link:hover {
   /* background: rgba(255, 255, 255, 0.5); */
   cursor: pointer;
   color: rgb(134, 64, 117);
+  background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav-link:visited {
@@ -160,10 +155,11 @@
   }
   .mobile_menu {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
-    padding-top: 70px;
+    margin-top: 70px;
   }
+
   .mobile_menu a {
     margin: 1vh 1.5vw;
     color: white;

@@ -11,6 +11,8 @@ export default function StatSummary(props) {
       return `https://solanart.io/collections/${symbol}`;
     } else if (marketplaceData.marketplace === "magiceden") {
       return `https://magiceden.io/marketplace/${symbol}`;
+    } else if (marketplaceData.marketplace === "smb") {
+      return `https://market.solanamonkey.business/`;
     }
   };
 

@@ -11,6 +11,7 @@ export const queries = {
   sortCount: "&sortBy=count",
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
+  mintList: "&mint=true",
 };
 
 export const api = {
@@ -20,6 +21,7 @@ export const api = {
   collection: `${server + "collection"}`,
   topTraders: `${server + "topTraders"}`,
   marketStats: `${server + "marketStats"}`,
+  floor: `${server + "floor"}`, // need symbol, days
 
   getAllCollections: `${server + "getAllCollections"}`,
   getCollection: `${server + "getCollection/"}`,
@@ -36,6 +38,9 @@ export const exchangeApi = {
   },
   solanart: {
     floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
+  },
+  smb: {
+    items: `https://market.solanamonkey.business/api/items`,
   },
 };
 
@@ -66,11 +71,17 @@ export const contractInfo = {
 
 export const lineColors = [
   "rgb(134, 64, 117)",
-  "rgb(57, 184, 223)",
   "rgb(87, 51, 207)",
+  "rgb(57, 184, 223)",
+  "rgb(255, 255, 255)",
 ];
 
 export const links = {
+  getListed: `https://airtable.com/shrTjju7GiwVTZgtW`,
+  email: {
+    contact: `mailto: contact@solens.io`,
+    admin: `mailto: admin@solens.io`,
+  },
   twitter: {
     url: "https://twitter.com/Solens_io",
     text: "Twitter",

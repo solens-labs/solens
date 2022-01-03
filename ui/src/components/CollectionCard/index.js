@@ -25,6 +25,10 @@ export default function CollectionCard(props) {
       caption: "24H Volume",
       unit: "%",
     },
+    "days_launched": {
+      caption: "Released",
+      unit: " Days",
+    },
   };
 
   return (

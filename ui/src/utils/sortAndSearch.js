@@ -1,7 +1,13 @@
 export const sortData = (array, sort) => {
   const needToSort = [...array];
   const sorted = needToSort.sort((a, b) => b[sort] - a[sort]);
+
+  if (sort === "days_launched") {
+    return sorted.reverse();
+  }
+
   return sorted;
+  // return needToSort;
 };
 
 export const filterData = (array, term) => {

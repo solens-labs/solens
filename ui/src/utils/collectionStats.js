@@ -36,34 +36,39 @@ export const calculateLaunchDate = (data) => {
 export const splitMarketplaceData = (data) => {
   const solanart = [];
   const magiceden = [];
+  const smb = [];
 
   data.map((dailyStat) => {
     if (dailyStat.marketplace === "solanart") {
       solanart.push(dailyStat);
     } else if (dailyStat.marketplace === "magiceden") {
       magiceden.push(dailyStat);
+    } else if (dailyStat.marketplace === "smb") {
+      smb.push(dailyStat);
     }
   });
 
-  return { solanart, magiceden };
+  return { solanart, magiceden, smb };
 };
 export const getMarketplaceData = (dailyData) => {
-  const marketplace = dailyData[0].marketplace;
+  if (dailyData.length > 0) {
+    const marketplace = dailyData[0].marketplace;
 
-  const dates = getDates(dailyData);
-  const minMax = getMinMax(dailyData);
-  const transactions = getTransactions(dailyData);
-  const volume = getVolume(dailyData);
-  const average = getAverage(dailyData);
+    const dates = getDates(dailyData);
+    const minMax = getMinMax(dailyData);
+    const transactions = getTransactions(dailyData);
+    const volume = getVolume(dailyData);
+    const average = getAverage(dailyData);
 
-  return {
-    marketplace: marketplace,
-    ...dates,
-    ...minMax,
-    ...transactions,
-    ...volume,
-    ...average,
-  };
+    return {
+      marketplace: marketplace,
+      ...dates,
+      ...minMax,
+      ...transactions,
+      ...volume,
+      ...average,
+    };
+  }
 };
 
 export const getDates = (data) => {
@@ -149,7 +154,20 @@ export const marketplaceSelect = (unstylized) => {
     case "solanart":
       marketplace = "Solanart";
       break;
+    case "smb":
+      marketplace = "SMB Market";
+      break;
   }
 
   return marketplace;
+};
+
+export const compareVolume = (a, b) => {
+  if (a.volume > b.volume) {
+    return -1;
+  }
+  if (a.volume < b.volume) {
+    return 1;
+  }
+  return 0;
 };
