@@ -10,18 +10,34 @@ import solens_logo from "../../assets/images/logo2.png";
 export default function Footer(props) {
   const year = new Date().getFullYear();
 
+  let windowWidth = window.innerWidth;
+
+  const footerAlign = () => {
+    return windowWidth < 800 ? "align-items-center" : "align-items-start";
+  };
+
+  const footerJustify = () => {
+    return windowWidth < 800 ? "justify-content-center" : "";
+  };
+
   return (
     <div className="footer col-12 d-flex flex-column justify-content-between align-items-center">
-      <div className="col-12 d-flex justify-content-center pt-3">
-        <img src={solens_logo} className="footer_logo" />
-      </div>
+      {/* <div className="col-12 d-flex d-lg-none justify-content-center pt-3"></div> */}
 
-      <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-center mb-4">
+      <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-center align-items-start">
+        <div
+          className={`footer_section col-12 col-md-4 d-flex align-items-center ${footerJustify()}`}
+        >
+          <img src={solens_logo} className="footer_logo" />
+        </div>
+
         <div className="d-flex d-md-none justify-content-center col-12">
           <hr style={{ color: "white", width: "50%" }} className="" />
         </div>
 
-        <div className="footer_section col-12 col-md-3 d-flex flex-column align-items-center justify-content-around mb-2 mb-lg-0">
+        <div
+          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
+        >
           <h4 className="footer_title">SITEMAP</h4>
           <Link to="/" style={{ textDecoration: "none" }}>
             <h4 className="footer_link">home</h4>
@@ -38,31 +54,29 @@ export default function Footer(props) {
           <hr style={{ color: "white", width: "50%" }} className="" />
         </div>
 
-        <div className="footer_section col-12 col-md-3 d-flex flex-column align-items-center justify-content-around mb-2 mb-lg-0">
+        <div
+          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
+        >
           <h4 className="footer_title">CONNECT</h4>
-          <div className="d-flex flex-row">
-            <div className="icon_link">
-              <a
-                href={links.twitter.url}
-                target="_blank"
-                style={{
-                  textDecoration: "none",
-                }}
-              >
-                {/* <h1 className="nav_link">twitter</h1> */}
-                <TwitterIcon style={{ fill: "white" }} />
-              </a>
-            </div>
-            <div className="icon_link">
-              <a
-                href={links.email.contact}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <EmailIcon style={{ fill: "white" }} />
-              </a>
-            </div>
-          </div>
+
+          <a
+            href={links.twitter.url}
+            target="_blank"
+            style={{
+              textDecoration: "none",
+            }}
+          >
+            <h1 className="footer_link">twitter</h1>
+            {/* <TwitterIcon style={{ fill: "white" }} /> */}
+          </a>
+          {/* <a
+            href={links.email.contact}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <EmailIcon style={{ fill: "white" }} />
+          </a> */}
+
           <a
             href={links.getListed}
             target="_blank"
