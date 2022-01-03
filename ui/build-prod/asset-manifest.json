@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c5e51328.chunk.css",
+    "main.js": "/static/js/main.11cc5917.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.3fd7a03a.js",
+    "static/css/2.e4adce4a.chunk.css": "/static/css/2.e4adce4a.chunk.css",
+    "static/js/2.2f1f1ea0.chunk.js": "/static/js/2.2f1f1ea0.chunk.js",
+    "index.html": "/index.html",
+    "static/js/2.2f1f1ea0.chunk.js.LICENSE.txt": "/static/js/2.2f1f1ea0.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/Rajdhani.955ad2c7.ttf",
+    "static/media/close.3721b02e.svg": "/static/media/close.3721b02e.svg",
+    "static/media/discord.b97c1875.svg": "/static/media/discord.b97c1875.svg",
+    "static/media/style.css": "/static/media/down_arrow.56797b0b.svg",
+    "static/media/logo2.38089387.png": "/static/media/logo2.38089387.png",
+    "static/media/menu.b778cb17.svg": "/static/media/menu.b778cb17.svg",
+    "static/media/sol_logo.192dd3bc.png": "/static/media/sol_logo.192dd3bc.png",
+    "static/media/twitter.5b98954f.svg": "/static/media/twitter.5b98954f.svg",
+    "static/media/whale.4ab25126.png": "/static/media/whale.4ab25126.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3fd7a03a.js",
+    "static/css/2.e4adce4a.chunk.css",
+    "static/js/2.2f1f1ea0.chunk.js",
+    "static/css/main.c5e51328.chunk.css",
+    "static/js/main.11cc5917.chunk.js"
+  ]
+}

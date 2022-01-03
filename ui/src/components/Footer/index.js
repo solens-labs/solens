@@ -39,6 +39,7 @@ export default function Footer(props) {
           className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
         >
           <h4 className="footer_title">SITEMAP</h4>
+
           <Link to="/" style={{ textDecoration: "none" }}>
             <h4 className="footer_link">home</h4>
           </Link>
@@ -67,16 +68,7 @@ export default function Footer(props) {
             }}
           >
             <h1 className="footer_link">twitter</h1>
-            {/* <TwitterIcon style={{ fill: "white" }} /> */}
           </a>
-          {/* <a
-            href={links.email.contact}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <EmailIcon style={{ fill: "white" }} />
-          </a> */}
-
           <a
             href={links.getListed}
             target="_blank"
@@ -92,6 +84,17 @@ export default function Footer(props) {
             <h4 className="footer_link">inquiries</h4>
           </a>
         </div>
+
+        {/* <div
+          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
+        >
+          <h4 className="footer_title">CONNECT</h4>
+        </div>
+        <div
+          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
+        >
+          <h4 className="footer_title">CONNECT</h4>
+        </div> */}
 
         <div className="d-flex d-md-none justify-content-center col-12 mb-3">
           <hr style={{ color: "white", width: "50%" }} className="" />
