@@ -1,0 +1,47 @@
+.footer {
+  padding: 0px 20px;
+  min-height: 350px;
+  background: rgb(18, 11, 37);
+}
+
+.footer_content {
+  min-height: 300px;
+  padding-top: 50px;
+}
+
+.footer_section {
+  min-height: 200px;
+}
+
+.footer_title {
+  color: white;
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  margin: 0px;
+  font-weight: bold;
+}
+
+.footer_link {
+  color: white;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  margin: 0px;
+}
+
+.footer_link:hover {
+  cursor: pointer;
+  color: rgb(134, 64, 117);
+}
+
+.copyright {
+  font-size: 1rem;
+  line-height: 1rem;
+  margin-bottom: 20px;
+  color: rgb(156, 156, 156);
+}
+
+.copyright_icon {
+  color: "white";
+  font-size: 0.9rem !important;
+  margin: 0px 5px 2px 0px;
+}

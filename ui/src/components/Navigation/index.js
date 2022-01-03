@@ -70,12 +70,12 @@ const Header = (props) => {
             style={{ textDecoration: "none" }}
           >
             {/* <h1 className="nav_link">twitter</h1> */}
-            <TwitterIcon style={{ fill: "white" }} />
+            <TwitterIcon style={{ fill: "white" }} className="icon_link" />
           </a>
         </div>
         <div className="icon_link">
           <a
-            href={links.email.admin}
+            href={links.email.contact}
             target="_blank"
             style={{ textDecoration: "none" }}
           >
@@ -101,7 +101,7 @@ const Header = (props) => {
           <div className="col-6 d-flex flex-row justify-content-center">
             <div className="icon_link">
               <a
-                href={links.email.admin}
+                href={links.email.contact}
                 target="_blank"
                 style={{ textDecoration: "none" }}
               >

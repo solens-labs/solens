@@ -38,6 +38,7 @@ import ScrollToTop from "../../utils/scrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
 import Launch from "../Launch/index.tsx";
+import Footer from "../../components/Footer";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -211,8 +212,8 @@ export default function Home(props) {
   }, []);
 
   return (
-    <div className="App col-12">
-      <div className="navigation d-flex flex-column align-items-center col-12">
+    <div className="app col-12">
+      <div className="navigation col-12">
         <Navigation />
       </div>
 
@@ -232,6 +233,10 @@ export default function Home(props) {
       {/* <button className="scroll_top" onClick={scrollToTop}>
         Top
       </button> */}
+
+      <div className="col-12">
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -62,6 +62,10 @@
 .icon_link {
   margin: 0px 15px;
 }
+.icon_link:hover {
+  cursor: pointer;
+  fill: rgb(134, 64, 117);
+}
 
 .social_icon {
   width: 50px;
