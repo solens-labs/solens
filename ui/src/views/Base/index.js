@@ -93,10 +93,7 @@ export default function Home(props) {
             return addedStat;
           });
 
-          const removeSMB = daysLaunchedAdded.filter((collection) => {
-            return collection.symbol !== "solana_monkey_business";
-          });
-          dispatch(setAllCollections(removeSMB));
+          dispatch(setAllCollections(daysLaunchedAdded));
         })
         .catch((error) => console.log(error));
     }
