@@ -164,7 +164,7 @@ exports.collection = async (req, reply) => {
       }},
 
       helpers.lookupAggregatedStats('alltimestats'),
-      helpers.lookupAggregatedStats('dailystats', days = 365),
+      helpers.lookupAggregatedStats('dailystats', days = 30),
       project
     ])
     return entries
@@ -277,10 +277,10 @@ exports.topNFTs = async (req, reply) => {
       match,
       { $sort: {price: -1} },
       { $limit: 10000 },
-      helpers.groupTxStats(id = 'mint'),
+      helpers.groupTxStatsWithSymbol(id = 'mint'),
       { $sort: { [query.sortBy]: -1} },
       { $limit: 100 },
-      helpers.projectTxStats(id = 'mint', idProjection = 'mint'),
+      helpers.projectTxStatsWithSymbol(id = 'mint', idProjection = 'mint'),
       { $project : { _id: 0 } }
     ])
     return entries

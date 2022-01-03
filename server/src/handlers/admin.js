@@ -202,7 +202,7 @@ async function updateAlltimeStats(symbol) {
     const symbols = req.body.symbols
     
     for (let i = 0; i < symbols.length; i++) {
-      await updateTransactions(symbols[i])
+      // await updateTransactions(symbols[i])
       await updateHourlyStats(symbols[i])
       await updateDailyStats(symbols[i])
       await updateAlltimeStats(symbols[i]) 
@@ -211,4 +211,132 @@ async function updateAlltimeStats(symbol) {
   } catch (err) {
     throw boom.boomify(err)
   }
+}
+
+// HOURLY
+// exports.test = async (req, reply) => {
+//   try {
+//     const startDate = new Date();
+//     startDate.setDate(startDate.getDate() - 7);
+//     startDate.setUTCHours(0)
+//     startDate.setUTCMinutes(0)
+//     startDate.setUTCSeconds(0)
+//     startDate.setUTCMilliseconds(0)
+//     console.log(startDate)
+
+//     const entries = await Transaction.aggregate([
+//       { $match: {
+//         ...helpers.matchBuyTxs(),
+//         // date: { $gte: startDate },
+//       }},
+//       {$addFields: {
+//         // hour: {$hour: "$date"},
+//         day: {$dayOfMonth: "$date"},
+//         month: {$month: "$date"},
+//         year: {$year: "$date"}
+//       }},
+//       { $group:
+//         {
+//           _id : {mint: '$mint', day: "$day", month: "$month", year: "$year"},
+//           volume: { $sum: "$price"},
+//           min: { $min: "$price" },
+//           max: { $max: "$price" },
+//           avg: { $avg: "$price" },
+//           count: { $sum: 1 },
+//           symbol: {$first: "$symbol"},
+//         }
+//       },
+//       { $project:
+//         {
+//           mint: '$_id.mint',
+//           date: {$dateFromParts: {day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//           volume: { $round: ["$volume", 2] },
+//           min: { $round: ["$min", 2] },
+//           max: { $round: ["$max", 2] },
+//           avg: { $round: ["$avg", 2] },
+//           symbol: 1,
+//           count: 1,
+//           _id: 0,
+//         }
+//       },
+//       { $merge: {
+//         into: "hourlymints",
+//         on: [ "mint", "date" ],
+//         whenMatched: "replace",
+//         whenNotMatched: "insert"
+//       }}
+//     ],
+//     {allowDiskUse: true})
+//     return entries
+
+//   } catch (err) {
+//     throw boom.boomify(err)
+//   }
+// }
+
+// exports.test = async (req, reply) => {
+//   try {
+//     const startDate = new Date();
+//     startDate.setUTCHours(startDate.getUTCHours() - 1)
+//     startDate.setUTCMinutes(0)
+//     startDate.setUTCSeconds(0)
+//     startDate.setUTCMilliseconds(0)
+//     console.log(startDate)
+
+//     const endDate = new Date();
+//     endDate.setUTCMinutes(0)
+//     endDate.setUTCSeconds(0)
+//     endDate.setUTCMilliseconds(0)
+//     console.log(endDate)
+
+//     const entries = await Transaction.aggregate([
+//       { $match: {
+//         ...helpers.matchBuyTxs(),
+//         $and: [
+//           {date: { $gte: startDate }},
+//           {date: { $lt: endDate }},
+//         ]
+//       }},
+//       { $group:
+//         {
+//           _id : {mint: '$mint'},
+//           volume: { $sum: "$price"},
+//           min: { $min: "$price" },
+//           max: { $max: "$price" },
+//           avg: { $avg: "$price" },
+//           count: { $sum: 1 },
+//           symbol: {$first: "$symbol"},
+//         }
+//       },
+//       { $project:
+//         {
+//           mint: '$_id.mint',
+//           volume: { $round: ["$volume", 2] },
+//           min: { $round: ["$min", 2] },
+//           max: { $round: ["$max", 2] },
+//           avg: { $round: ["$avg", 2] },
+//           date: startDate,
+//           symbol: 1,
+//           count: 1,
+//           _id: 0,
+//         }
+//       },
+//       // { $merge: {
+//       //   into: "hourlymints",
+//       //   on: [ "mint", "date" ],
+//       //   whenMatched: "replace",
+//       //   whenNotMatched: "insert"
+//       // }}
+//     ],
+//     {allowDiskUse: true})
+//     return entries
+
+//   } catch (err) {
+//     throw boom.boomify(err)
+//   }
+// }
+
+exports.test = async (req, reply) => {
+  const entries = await Collection.find({}, {_id: 0, symbol: 1})
+  return entries.map(e => e.symbol)
 }
