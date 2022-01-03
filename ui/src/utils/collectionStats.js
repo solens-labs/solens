@@ -161,3 +161,13 @@ export const marketplaceSelect = (unstylized) => {
 
   return marketplace;
 };
+
+export const compareVolume = (a, b) => {
+  if (a.volume > b.volume) {
+    return -1;
+  }
+  if (a.volume < b.volume) {
+    return 1;
+  }
+  return 0;
+};

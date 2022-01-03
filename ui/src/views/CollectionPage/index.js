@@ -23,6 +23,7 @@ import {
   getMarketplaceData,
   marketplaceSelect,
   splitMarketplaceData,
+  compareVolume,
 } from "../../utils/collectionStats";
 import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
@@ -285,6 +286,7 @@ export default function CollectionPage(props) {
       solanartData && allMarketplaceData.push(solanartData);
       magicedenData && allMarketplaceData.push(magicedenData);
 
+      allMarketplaceData.sort(compareVolume);
       setMarketplacesData(allMarketplaceData);
     } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
       const allMarketplaceData = [];

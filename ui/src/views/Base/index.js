@@ -37,6 +37,7 @@ import Wallets from "../Wallets";
 import ScrollToTop from "../../utils/scrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
+import Launch from "../Launch/index.tsx";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -222,6 +223,7 @@ export default function Home(props) {
           <Route path="/collections" component={Collections} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/wallets" component={Wallets} />
+          <Route path="/launch" component={Launch} />
           {/* <Route path="/item" component={ItemPage} /> */}
           <Route path="*" component={HomePage} />
         </Switch>

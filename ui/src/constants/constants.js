@@ -77,6 +77,10 @@ export const lineColors = [
 ];
 
 export const links = {
+  email: {
+    contact: `mailto: contact@solens.io`,
+    admin: `mailto: admin@solens.io`,
+  },
   twitter: {
     url: "https://twitter.com/Solens_io",
     text: "Twitter",
