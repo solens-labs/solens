@@ -503,7 +503,7 @@ export default function CollectionPage(props) {
               <Timeframe
                 currentTimeframe={timeframeFloor}
                 setTimeframe={setTimeframeFloor}
-                timeframes={["2W", "1M", "ALL TIME"]}
+                timeframes={["2W", "1M", "ALL"]}
                 intervals={[14, 30, 1000]}
               />
             </div>
@@ -596,7 +596,7 @@ export default function CollectionPage(props) {
             <Timeframe
               currentTimeframe={timeframeTrades}
               setTimeframe={setTimeframeTrades}
-              timeframes={["24H", "7D", "ALL TIME"]}
+              timeframes={["24H", "7D", "ALL"]}
               intervals={[1, 7, 1000]}
             />
           </div>

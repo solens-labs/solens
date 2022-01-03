@@ -57,9 +57,11 @@ const Header = (props) => {
             <h1 className="nav_link">wallets</h1>
           </div>
         </Link>
-        {/* <Link to="/launch" style={{ textDecoration: "none" }}>
-          <h1 className="nav_link">launchzone</h1>
-        </Link> */}
+        <Link to="/launch" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <h1 className="nav_link">launchzone</h1>
+          </div>
+        </Link>
       </div>
 
       <div className="col-2 d-none d-lg-flex justify-content-end">
@@ -69,7 +71,6 @@ const Header = (props) => {
             target="_blank"
             style={{ textDecoration: "none" }}
           >
-            {/* <h1 className="nav_link">twitter</h1> */}
             <TwitterIcon style={{ fill: "white" }} className="icon_link" />
           </a>
         </div>
@@ -136,13 +137,11 @@ const Header = (props) => {
                 wallets
               </h1>
             </Link>
-            {/* <a
-              href={links.twitter.url}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <h1 className="nav_link">twitter</h1>
-            </a> */}
+            <Link to="/launch" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                launchzone
+              </h1>
+            </Link>
           </div>
         </div>
       </div>
