@@ -164,8 +164,7 @@ exports.collection = async (req, reply) => {
       }},
 
       helpers.lookupAggregatedStats('alltimestats'),
-      helpers.lookupAggregatedStats('dailystats', days = 14),
-      helpers.lookupAggregatedStats('hourlystats', days = 2),
+      helpers.lookupAggregatedStats('dailystats', days = 365),
       project
     ])
     return entries
