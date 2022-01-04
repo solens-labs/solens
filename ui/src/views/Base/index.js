@@ -196,7 +196,6 @@ export default function Home(props) {
       const apiRequest = api.topNFTs + "?days=" + 1;
       const topFourNFTs = await axios.get(apiRequest).then((response) => {
         const nfts = response.data;
-        console.log(nfts);
         const topFour = nfts.slice(0, 4);
         return topFour;
       });

@@ -20,6 +20,8 @@ import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
 import { explorerLink } from "../../constants/constants";
 import sol_logo from "../../assets/images/sol_logo.png";
+import Timeframe from "../../components/Timeframe";
+import WalletsHomeSection from "../../components/WalletsHomeSection";
 
 export default function HomePage(props) {
   const dispatch = useDispatch();
@@ -33,6 +35,25 @@ export default function HomePage(props) {
   const volumeDay = useSelector(selectDailyVolume);
   const volumeWeek = useSelector(selectWeeklyVolume);
   const topNFTs = useSelector(selectTopNFTsDay);
+
+  const [walletsTimeframe, setWalletsTimeframe] = useState(1);
+  const [volume, setVolume] = useState(volumeDay);
+  const [buyers, setBuyers] = useState(walletBuyersDay);
+  const [sellers, setSellers] = useState(walletSellersDay);
+  useEffect(() => {
+    switch (walletsTimeframe) {
+      case 1:
+        setVolume(volumeDay);
+        setBuyers(walletBuyersDay);
+        setSellers(walletSellersDay);
+        break;
+      case 7:
+        setVolume(volumeWeek);
+        setBuyers(walletBuyers);
+        setSellers(walletSellers);
+        break;
+    }
+  }, [walletsTimeframe]);
 
   // Calculate Trending Collections
   useEffect(() => {
@@ -54,20 +75,19 @@ export default function HomePage(props) {
     }
   }, [collections, solPrice]);
 
+  // Top NFTs deeplink or explorer link
   const nftLink = (item) => {
     let internalLink = "";
-
     if (item.internal_symbol) {
       internalLink = `/collection/` + item.internal_symbol;
     }
-
     const externalLink = explorerLink("token", item.mint);
     return internalLink ? internalLink : externalLink;
   };
 
   return (
     <div className="landing_page d-flex flex-column align-items-center justify-content-center">
-      <div>
+      <div className="main_header">
         <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
         <h3 className="homepage_tagline mb-2">
           Solana's Premiere NFT Data Platform
@@ -87,7 +107,7 @@ export default function HomePage(props) {
         </Link>
       </div>
 
-      <div className="d-flex flex-row flex-wrap col-12 col-xxl-8 justify-content-around">
+      <div className="main_stats d-flex flex-row flex-wrap col-12 col-xxl-8 justify-content-around">
         <div className="market_stat mt-5">
           <h1>Market Volume</h1>
 
@@ -108,7 +128,7 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+      <div className="top_nfts landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Top NFTs</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
@@ -151,7 +171,7 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
+      <div className="trending_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
         <h1 className="mb-2">Trending Collections</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
@@ -161,155 +181,51 @@ export default function HomePage(props) {
         ) : (
           <Loader />
         )}
+
+        <Link to="/collections">
+          <button
+            className="explore_all_button mt-3 mb-3"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              marginTop: "20px",
+              fontSize: "1.5rem",
+            }}
+          >
+            Explore Collections
+          </button>
+        </Link>
       </div>
 
-      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+      <div className="top_wallets landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Top Wallets</h1>
-        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
+        <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-2 mb-3">
+          <Timeframe
+            currentTimeframe={walletsTimeframe}
+            setTimeframe={setWalletsTimeframe}
+            timeframes={["DAY", "WEEK"]}
+            intervals={[1, 7]}
+          />
+        </div>
+
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
-        <div className="d-flex flex-row flex-wrap justify-content-center col-12">
-          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
-            <h5
-              className="collection_stats_days font_white mt-2 mb-3"
-              style={{ fontSize: "1.5rem" }}
-            >
-              TOP BUYERS
-            </h5>
+        <WalletsHomeSection buyers={buyers} sellers={sellers} volume={volume} />
 
-            <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {walletBuyersDay.length === 0 && <Loader />}
-              {walletBuyersDay.map((wallet, i) => {
-                if (i <= 1) {
-                  return (
-                    <div
-                      key={i}
-                      className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
-                    >
-                      <WalletCard
-                        data={wallet}
-                        type="BUYS"
-                        volume={volumeDay}
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
-
-          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
-            <h5
-              className="collection_stats_days font_white mt-2 mb-3"
-              style={{ fontSize: "1.5rem" }}
-            >
-              TOP SELLERS
-            </h5>
-
-            <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {walletSellersDay.length === 0 && <Loader />}
-
-              {walletSellersDay.map((wallet, i) => {
-                if (i <= 1) {
-                  return (
-                    <div
-                      key={i}
-                      className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
-                    >
-                      <WalletCard
-                        data={wallet}
-                        type="SALES"
-                        volume={volumeDay}
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
-        </div>
+        <Link to="/wallets">
+          <button
+            className="explore_all_button mt-3 mb-3"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              marginTop: "20px",
+              fontSize: "1.5rem",
+            }}
+          >
+            Explore Wallets
+          </button>
+        </Link>
       </div>
-
-      <div className="landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
-        <h1 className="mb-2">Top Wallets</h1>
-        <h5 className="collection_stats_days">LAST 7 DAYS</h5>
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-
-        <div className="d-flex flex-row flex-wrap justify-content-center col-12">
-          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
-            <h5
-              className="collection_stats_days font_white mt-2 mb-3"
-              style={{ fontSize: "1.5rem" }}
-            >
-              TOP BUYERS
-            </h5>
-
-            <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {walletBuyers.length === 0 && <Loader />}
-              {walletBuyers.map((wallet, i) => {
-                if (i <= 1) {
-                  return (
-                    <div
-                      key={i}
-                      className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
-                    >
-                      <WalletCard
-                        data={wallet}
-                        type={"BUYS"}
-                        volume={volumeWeek}
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
-
-          <div className="d-flex flex-column align-items-center col-12 col-lg-6">
-            <h5
-              className="collection_stats_days font_white mt-2 mb-3"
-              style={{ fontSize: "1.5rem" }}
-            >
-              TOP SELLERS
-            </h5>
-
-            <div className="d-flex flex-row flex-wrap col-12 justify-content-center mb-4">
-              {walletSellers.length === 0 && <Loader />}
-
-              {walletSellers.map((wallet, i) => {
-                if (i <= 1) {
-                  return (
-                    <div
-                      key={i}
-                      className="col-12 col-md-6 d-flex flex-wrap justify-content-center mb-4"
-                    >
-                      <WalletCard
-                        data={wallet}
-                        type={"SALES"}
-                        volume={volumeWeek}
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Link to="/collections">
-        <button
-          className="explore_all_button mt-5 mb-5"
-          style={{
-            border: "1px solid black",
-            color: "white",
-            marginTop: "20px",
-            fontSize: "1.5rem",
-          }}
-        >
-          All Collections
-        </button>
-      </Link>
     </div>
   );
 }
