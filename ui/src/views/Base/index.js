@@ -202,6 +202,9 @@ export default function Home(props) {
       const tokenMetadata = topFourNFTs.map(async (item, i) => {
         const tokenMD = await getTokenMetadata(item.mint);
         tokenMD["price"] = topFourNFTs[i].max;
+        tokenMD["internal_symbol"] = topFourNFTs[i].symbol
+          ? topFourNFTs[i].symbol
+          : "";
 
         return tokenMD;
       });

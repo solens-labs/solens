@@ -54,6 +54,17 @@ export default function HomePage(props) {
     }
   }, [collections, solPrice]);
 
+  const nftLink = (item) => {
+    let internalLink = "";
+
+    if (item.internal_symbol) {
+      internalLink = `/collection/` + item.internal_symbol;
+    }
+
+    const externalLink = explorerLink("token", item.mint);
+    return internalLink ? internalLink : externalLink;
+  };
+
   return (
     <div className="landing_page d-flex flex-column align-items-center justify-content-center">
       <div>
@@ -108,8 +119,7 @@ export default function HomePage(props) {
               return (
                 <div className="nft_card_container col-10 col-sm-8 col-md-5 col-xxl-3 mb-4">
                   <a
-                    href={explorerLink("token", item.mint)}
-                    target="_blank"
+                    href={nftLink(item)}
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <div className="nft_card d-flex flex-column align-items-center">
