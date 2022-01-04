@@ -34,6 +34,18 @@
   margin: 0px;
   /* background: red; */
 }
+.nav_link:hover {
+  /* background: rgba(255, 255, 255, 0.5); */
+  cursor: pointer;
+  color: rgb(134, 64, 117);
+  background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .logo_container {
   display: flex;
@@ -61,7 +73,9 @@
 }
 
 .icon_link {
-  margin: 0px 15px;
+  /* margin: 0px 15px; */
+  max-height: 35px;
+  /* background: red; */
 }
 .icon_link:hover {
   cursor: pointer;
@@ -71,32 +85,6 @@
 .social_icon {
   width: 50px;
   margin: 0px 30px;
-}
-
-.nav_link:hover {
-  /* background: rgba(255, 255, 255, 0.5); */
-  cursor: pointer;
-  color: rgb(134, 64, 117);
-  background-image: linear-gradient(
-    -45deg,
-    rgb(65, 37, 156),
-    rgb(134, 64, 117) 120%
-  );
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.nav-link:visited {
-  background: rgba(250, 163, 64, 1);
-  color: white;
-}
-
-.nav-link-active {
-  box-shadow: 0px 0px 10px -2px rgb(37, 37, 37);
-  background: rgba(250, 163, 64, 1);
-  color: black !important;
-  z-index: 5;
-  height: 100px;
 }
 
 .slide-menu {

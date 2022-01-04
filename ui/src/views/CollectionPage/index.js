@@ -526,7 +526,7 @@ export default function CollectionPage(props) {
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
       <h1 className="mt-4">Top Sales</h1>
-      <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
+      <div className=" d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topFourMetadata.length === 4 ? (
             topFourMetadata.map((token, i) => {

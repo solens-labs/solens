@@ -95,7 +95,7 @@ export const links = {
     text: "Opensea",
   },
   medium: {
-    url: "https://medium.com/@nftblockheadz/560fca36a96",
+    url: "https://medium.com/@contact_94841",
     text: "Medium",
   },
   contract: {
