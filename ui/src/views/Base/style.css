@@ -43,6 +43,7 @@
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 5%;
+  min-height: 75vh;
 }
 
 .page_box {

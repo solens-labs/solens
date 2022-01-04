@@ -16,11 +16,12 @@
 }
 
 .nav_link_container {
-  width: 180px;
+  /* width: 180px; */
   overflow: hidden;
   display: flex;
   justify-content: center;
   margin: 0px 15px;
+  /* background: red; */
 }
 
 .nav_link {
@@ -28,7 +29,7 @@
   font-size: 1.3rem;
   padding: 0px 20px 0px 20px;
   text-align: end;
-  letter-spacing: 1.5px;
+  letter-spacing: 0px;
   text-decoration: none !important;
   margin: 0px;
   /* background: red; */

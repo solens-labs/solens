@@ -62,6 +62,11 @@ const Header = (props) => {
             <h1 className="nav_link">launchzone</h1>
           </div>
         </Link> */}
+        <Link to="/apply" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <h1 className="nav_link">apply</h1>
+          </div>
+        </Link>
       </div>
 
       <div className="col-2 d-none d-lg-flex justify-content-end">
@@ -142,6 +147,11 @@ const Header = (props) => {
                 launchzone
               </h1>
             </Link> */}
+            <Link to="/apply" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                apply
+              </h1>
+            </Link>
           </div>
         </div>
       </div>
