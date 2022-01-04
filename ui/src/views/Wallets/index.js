@@ -21,7 +21,6 @@ export default function Wallets(props) {
   const volumeWeek = useSelector(selectWeeklyVolume);
 
   const [timeframe, setTimeframe] = useState(1);
-
   const [volume, setVolume] = useState(volumeDay);
   const [buyers, setBuyers] = useState(walletBuyersDay);
   const [sellers, setSellers] = useState(walletSellersDay);

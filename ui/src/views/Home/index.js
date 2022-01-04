@@ -54,6 +54,11 @@ export default function HomePage(props) {
         break;
     }
   }, [walletsTimeframe]);
+  useEffect(() => {
+    setVolume(volumeDay);
+    setBuyers(walletBuyersDay);
+    setSellers(walletSellersDay);
+  }, [walletBuyersDay, walletSellersDay, volumeDay]);
 
   // Calculate Trending Collections
   useEffect(() => {
