@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import CollectionStats from "../../components/CollectionStats";
 import Loader from "../../components/Loader";
 import "./style.css";
 import Table from "../../components/Table";

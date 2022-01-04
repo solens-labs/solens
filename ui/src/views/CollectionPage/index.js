@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../../components/CollectionStats/style.css";
+import "../../components/CollectionStat/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { selectCollection, selectDebugMode } from "../../redux/app";
@@ -33,6 +33,7 @@ import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
+import CollectionStat from "../../components/CollectionStat";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -439,6 +440,9 @@ export default function CollectionPage(props) {
             ""
           )}
           <p className="collection_description">{collectionInfo.description}</p>
+          {/* <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
+            View Listed NFTs
+          </div> */}
         </div>
       </div>
 
@@ -447,52 +451,46 @@ export default function CollectionPage(props) {
         className="mt-lg-5 mt-0 mb-3"
       /> */}
       <h1 className="mt-lg-3">Collection Summary</h1>
-      <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3">
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionVolume
+      <div className="collection_stats d-flex flex-wrap justify-content-around col-12 col-xxl-10 p-lg-2 pt-lg-0 pb-lg-0 mt-lg-3">
+        <CollectionStat
+          stat={
+            collectionVolume
               ? collectionVolume.toLocaleString("en", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })
-              : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Volume (SOL)</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionTxCount
+              : "Loading..."
+          }
+          label={"Volume (SOL)"}
+        />
+        <CollectionStat
+          stat={
+            collectionTxCount
               ? collectionTxCount.toLocaleString()
-              : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Transactions</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Average (SOL)</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {floor > 0 ? floor : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Floor Price (SOL)</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionInfo.supply
+              : "Loading..."
+          }
+          label={"Transactions"}
+        />
+        <CollectionStat
+          stat={collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
+          label={"Average (SOL)"}
+        />
+        <CollectionStat
+          stat={floor > 0 ? floor : "Loading..."}
+          label={"Floor (SOL)"}
+        />
+        <CollectionStat
+          stat={
+            collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
-              : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Supply</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {daysSinceCreated ? daysSinceCreated : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Days Launched</h1>
-        </div>
+              : "Loading..."
+          }
+          label={"Supply"}
+        />
+        <CollectionStat
+          stat={daysSinceCreated ? daysSinceCreated : "Loading..."}
+          label={"Days Launched"}
+        />
       </div>
 
       <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-md-6 col-lg-10 mt-5">
@@ -526,7 +524,7 @@ export default function CollectionPage(props) {
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
       <h1 className="mt-4">Top Sales</h1>
-      <div className=" d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
+      <div className="d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topFourMetadata.length === 4 ? (
             topFourMetadata.map((token, i) => {

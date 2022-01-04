@@ -69,12 +69,12 @@ export default function HomePage(props) {
     <div className="landing_page d-flex flex-column align-items-center justify-content-center">
       <div>
         <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
-        <h3 className="homepage_tagline mb-3 mb-lg-0">
+        <h3 className="homepage_tagline mb-2">
           Solana's Premiere NFT Data Platform
         </h3>
         <Link to="/collections">
           <button
-            className="collection_stat mt-5 mt-lg-4"
+            className="explore_all_button"
             style={{
               border: "1px solid black",
               color: "white",

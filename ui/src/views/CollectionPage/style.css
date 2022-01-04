@@ -27,16 +27,24 @@
   font-size: 1.2rem;
 }
 
+.collection_stat_container {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
 .collection_stat {
   /* border: 1px solid white; */
   /* background-color: rgb(196, 185, 173); */
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
   border-radius: 15px;
-  padding: 5px 30px;
-  min-width: 200px;
+  padding: 5px 0px;
+  /* min-width: 200px; */
+  max-width: 250px;
+  width: 100%;
 }
 
-.collection_stat_container {
+.summary_stat_container {
   padding: 3px;
 }
 
@@ -153,6 +161,9 @@
 }
 
 @media screen and (max-width: 800px) {
+  .collection_info {
+    font-size: 1rem;
+  }
   .collection_info_large {
     font-size: 1rem;
   }
