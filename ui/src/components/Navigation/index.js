@@ -114,7 +114,7 @@ const Header = (props) => {
         } slide-menu d-flex justify-content-between`}
       >
         <div className="mobile_menu">
-          <div className="col-6 d-flex flex-row flex-wrap justify-content-around p-2 pb-0 pt-0">
+          <div className="col-6 d-flex flex-row justify-content-around p-2 pb-0 pt-0">
             <a
               href={links.twitter.url}
               target="_blank"

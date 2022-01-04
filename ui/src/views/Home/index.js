@@ -299,7 +299,7 @@ export default function HomePage(props) {
 
       <Link to="/collections">
         <button
-          className="collection_stat mt-5 mb-5"
+          className="explore_all_button mt-5 mb-5"
           style={{
             border: "1px solid black",
             color: "white",

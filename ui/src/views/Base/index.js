@@ -196,13 +196,14 @@ export default function Home(props) {
       const apiRequest = api.topNFTs + "?days=" + 1;
       const topFourNFTs = await axios.get(apiRequest).then((response) => {
         const nfts = response.data;
+        console.log(nfts);
         const topFour = nfts.slice(0, 4);
         return topFour;
       });
 
       const tokenMetadata = topFourNFTs.map(async (item, i) => {
         const tokenMD = await getTokenMetadata(item.mint);
-        tokenMD["price"] = topFourNFTs[i].max;
+        tokenMD["price"] = topFourNFTs[i].volume;
         tokenMD["internal_symbol"] = topFourNFTs[i].symbol
           ? topFourNFTs[i].symbol
           : "";
