@@ -134,7 +134,7 @@ export default function HomePage(props) {
       </div>
 
       <div className="top_nfts landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Top NFTs</h1>
+        <h1 className="mb-2">Top Traded NFTs</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
@@ -203,7 +203,7 @@ export default function HomePage(props) {
       </div>
 
       <div className="top_wallets landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Top Wallets</h1>
+        <h1 className="mb-2">Top Wallet Activity</h1>
         <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-2 mb-3">
           <Timeframe
             currentTimeframe={walletsTimeframe}

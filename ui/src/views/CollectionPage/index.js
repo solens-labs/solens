@@ -74,6 +74,7 @@ export default function CollectionPage(props) {
     const apiRequest = api.collection + queries.symbol + name;
     const collectionInfo = await axios.get(apiRequest).then((response) => {
       const collectionInfo = response.data[0];
+      console.log(collectionInfo);
       setCollectionInfo(collectionInfo);
       setStats(collectionInfo.alltimestats);
       setMarketplaces(collectionInfo.alltimestats.length);
@@ -440,9 +441,9 @@ export default function CollectionPage(props) {
             ""
           )}
           <p className="collection_description">{collectionInfo.description}</p>
-          {/* <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
+          <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
             View Listed NFTs
-          </div> */}
+          </div>
         </div>
       </div>
 
