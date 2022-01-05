@@ -34,9 +34,10 @@ export const faqs = [
     question: "What about security?",
     answer: `Security is our top priority at Solens. Our developers are well versed in 
     modern blockchain languages and best security practices. For example, when creating 
-    our Launchzone service we uncovered a major bug in the CMv2 contract, reported it to 
-    Metaplex, and got it patched immediately. We want to help the entire Solana NFT 
-    ecosystem become more secure and mitigate the risk of scams, hacks, or errors.`,
+    our Launchzone service we uncovered a major bug in the CMv2 contract with potentially 
+    severe consequences for the entire Solana NFT ecosystem. We reported it to Metaplex, the 
+    creators of the CMv2 program and got it patched immediately. Our goal is to help the 
+    Solana ecosystem become more secure and mitigate the risk of scams, hacks, or errors.`,
   },
   {
     question: "When can we launch?",
