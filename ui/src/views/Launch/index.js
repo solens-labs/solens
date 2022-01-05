@@ -3,12 +3,14 @@ import "./style.css";
 import { useDispatch } from "react-redux";
 import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
+import FAQ from "../../components/FAQ";
+import { links } from "../../constants/constants";
 
 export default function Launch() {
   const dispatch = useDispatch();
 
   return (
-    <div className="col-12 d-flex flex-column align-items-center overflow-hidden">
+    <div className="col-12 d-flex flex-column align-items-center overflow-hidden mb-5">
       <div className="launchzone_image_bg col-12 d-flex justify-content-center align-items-center">
         <div className="col-12 d-flex flex-column align-items-center">
           <img
@@ -79,13 +81,25 @@ export default function Launch() {
             </h2>
             <hr style={{ color: "white", width: "70%" }} className="mt-0" />
             <h5>
-              Gain exposure to your collection by being featured in our
-              Launchzone, and get listed on our site immediately after minting
-              out.
+              Gain exposure for your collection by being featured in our
+              Launchzone collection of the day. Solensians will get to explore
+              your community!
             </h5>
           </div>
         </div>
         <div className="launch_detail_container col-12 col-md-6 col-xxl-3 d-flex justify-content-center p-2">
+          <div className="launch_detail_box d-flex flex-column align-items-center">
+            <h2 className="mb-1" style={{ fontWeight: "bold" }}>
+              Analytics
+            </h2>
+            <hr style={{ color: "white", width: "70%" }} className="mt-0" />
+            <h5>
+              Solens will provide analytics for your community as soon as
+              minting completes. We make data easy-to-read and actionable.
+            </h5>
+          </div>
+        </div>
+        {/* <div className="launch_detail_container col-12 col-md-6 col-xxl-3 d-flex justify-content-center p-2">
           <div className="launch_detail_box d-flex flex-column align-items-center">
             <h2 className="mb-1" style={{ fontWeight: "bold" }}>
               Trustless
@@ -96,8 +110,22 @@ export default function Launch() {
               underway, sent to you via open-source payment splitters.
             </h5>
           </div>
-        </div>
+        </div> */}
       </div>
+
+      <FAQ />
+
+      <a href={links.getListed} target="_blank">
+        <button
+          className="apply_launchzone explore_all_button mt-5"
+          style={{
+            border: "1px solid black",
+            color: "white",
+          }}
+        >
+          Apply for Launchpad
+        </button>
+      </a>
     </div>
   );
 }

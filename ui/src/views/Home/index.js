@@ -91,7 +91,7 @@ export default function HomePage(props) {
   };
 
   return (
-    <div className="landing_page d-flex flex-column align-items-center justify-content-center">
+    <div className="landing_page d-flex flex-column align-items-center justify-content-center mb-5">
       <div className="main_header">
         <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
         <h3 className="homepage_tagline mb-2">

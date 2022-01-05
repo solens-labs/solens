@@ -6,7 +6,7 @@ export default function WalletsSection(props) {
   const { buyers, sellers, volume } = props;
 
   return (
-    <div className="d-flex flex-column align-items-center col-12 col-xxl-10 mb-5">
+    <div className="d-flex flex-column align-items-center col-12 col-xxl-10">
       <div className="chartbox d-flex flex-row flex-wrap col-12 justify-content-center mb-0 pb-0">
         <h5
           className="collection_stats_days font_white mt-4 mb-4"
