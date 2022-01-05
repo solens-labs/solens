@@ -441,9 +441,9 @@ export default function CollectionPage(props) {
             ""
           )}
           <p className="collection_description">{collectionInfo.description}</p>
-          <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
+          {/* <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
             View Listed NFTs
-          </div>
+          </div> */}
         </div>
       </div>
 
