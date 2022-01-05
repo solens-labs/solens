@@ -22,7 +22,7 @@ export default function Launch() {
 
           {/* <hr style={{ color: "white", width: "50%" }} className="mb-3" /> */}
 
-          <div className="blackground col-11 col-md-9 col-xxl-6 mt-4 mb-5">
+          <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
             <h5>
               Looking to launch your own NFT collection on{" "}
               <span>

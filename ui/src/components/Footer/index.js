@@ -26,7 +26,7 @@ export default function Footer(props) {
 
       <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-center align-items-start">
         <div
-          className={`footer_section col-12 col-md-4 d-flex align-items-center ${footerJustify()}`}
+          className={`footer_logo_section col-12 col-md-4 d-flex align-items-center ${footerJustify()}`}
         >
           <img src={solens_logo} className="footer_logo" />
         </div>
@@ -49,6 +49,9 @@ export default function Footer(props) {
           <Link to="/wallets" style={{ textDecoration: "none" }}>
             <h4 className="footer_link">wallets</h4>
           </Link>
+          <Link to="/launch" style={{ textDecoration: "none" }}>
+            <h4 className="footer_link">launchzone</h4>
+          </Link>
         </div>
 
         <div className="d-flex d-md-none justify-content-center col-12">
@@ -68,6 +71,15 @@ export default function Footer(props) {
             }}
           >
             <h1 className="footer_link">twitter</h1>
+          </a>
+          <a
+            href={links.medium.url}
+            target="_blank"
+            style={{
+              textDecoration: "none",
+            }}
+          >
+            <h1 className="footer_link">medium</h1>
           </a>
           <a
             href={links.getListed}

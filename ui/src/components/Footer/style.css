@@ -10,6 +10,11 @@
   max-width: 300px;
 }
 
+.footer_logo_section {
+  height: 100px;
+  overflow: hidden;
+}
+
 .footer_content {
   min-height: 300px;
   padding-top: 30px;
@@ -72,4 +77,10 @@
   color: rgb(79, 48, 102);
   font-size: 0.9rem !important;
   margin: 0px 5px 2px 0px;
+}
+
+@media screen and (min-width: 990px) {
+  .footer_logo_section {
+    min-height: 200px;
+  }
 }
