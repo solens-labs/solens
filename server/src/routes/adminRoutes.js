@@ -1,5 +1,5 @@
-const collectionController = require('../controllers/collectionController') 
-const transactionController = require('../controllers/transactionController') 
+const collectionController = require('../controllers/collectionController')
+const transactionController = require('../controllers/transactionController')
 const hourlyStatsController = require('../controllers/hourlyStatsController')
 const dailyStatsController = require('../controllers/dailyStatsController')
 const allTimeStatsController = require('../controllers/allTimeStatsController')
@@ -94,6 +94,11 @@ const routes = [
     url: '/admin/updateEverything',
     schema: schema.updateEverything,
     handler: adminHandlers.updateEverything
+  },
+  {
+    method: 'GET',
+    url: '/admin/test',
+    handler: adminHandlers.test
   }
 ]
 

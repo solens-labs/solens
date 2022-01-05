@@ -165,7 +165,6 @@ exports.collection = async (req, reply) => {
 
       helpers.lookupAggregatedStats('alltimestats'),
       helpers.lookupAggregatedStats('dailystats', days = 14),
-      helpers.lookupAggregatedStats('hourlystats', days = 2),
       project
     ])
     return entries
@@ -228,14 +227,32 @@ exports.topTraders = async (req, reply) => {
       key = 'owner'
     }
 
+    let accounts = await Transaction.aggregate([
+      match,
+      { $sort: {price: -1} },
+      { $limit: 1000 },
+      { $group: {
+        _id: {account: `$${key}`}
+      } },
+      { $project: {
+        account: "$_id.account",
+        _id: 0,
+      } }
+    ])
+    accounts = accounts.map(acc => acc.account)
+
     const entries = Transaction.aggregate([
       match,
+      {$match: {
+        [key]: {$in: accounts}
+      }},
       helpers.groupTxStats(id = key),
       { $sort: { [query.sortBy]: -1} },
-      { $limit: 100 },
+      { $limit: 25 },
       helpers.projectTxStats(id = key, idProjection = 'account'),
       { $project : { _id: 0 } }
-    ])
+    ],
+    {allowDiskUse: true})
     return entries
   } catch (err) {
     throw boom.boomify(err)
@@ -258,10 +275,12 @@ exports.topNFTs = async (req, reply) => {
 
     const entries = await Transaction.aggregate([
       match,
-      helpers.groupTxStats(id = 'mint'),
+      { $sort: {price: -1} },
+      { $limit: 10000 },
+      helpers.groupTxStatsWithSymbol(id = 'mint'),
       { $sort: { [query.sortBy]: -1} },
       { $limit: 100 },
-      helpers.projectTxStats(id = 'mint', idProjection = 'mint'),
+      helpers.projectTxStatsWithSymbol(id = 'mint', idProjection = 'mint'),
       { $project : { _id: 0 } }
     ])
     return entries

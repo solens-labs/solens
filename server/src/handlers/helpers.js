@@ -27,6 +27,35 @@ exports.projectTxStats = (id, idProjection) => {
   }
 }
 
+exports.groupTxStatsWithSymbol = (id) => {
+  return { $group:
+    {
+      '_id': {[id]: `$${id}`},
+      volume: { $sum: "$price"},
+      min: { $min: "$price" },
+      max: { $max: "$price" },
+      avg: { $avg: "$price" },
+      symbol: { $first: "$symbol" },
+      count: { $sum: 1 },
+    },
+  }
+}
+
+exports.projectTxStatsWithSymbol = (id, idProjection) => {
+  return { $project:
+    {
+      [idProjection]: `$_id.${id}`,
+      volume: { $round: ["$volume", 2] },
+      min: { $round: ["$min", 2] },
+      max: { $round: ["$max", 2] },
+      avg: { $round: ["$avg", 2] },
+      symbol: 1,
+      count: 1,
+      _id: 0,
+    }
+  }
+}
+
 exports.matchBuyTxs = () => {
   return { $or: [
       {type: { $eq: "buy"}},
