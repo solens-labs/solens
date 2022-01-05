@@ -54,6 +54,16 @@ export default function Home(props) {
     ReactGA.pageview(location.pathname + location.search);
   }, [location]);
 
+  const [pageContentStyle, setPageContentStyle] = useState("page_content");
+
+  useEffect(() => {
+    if (location.pathname === "/launch") {
+      setPageContentStyle("page_content_launch");
+    } else {
+      setPageContentStyle("page_content");
+    }
+  }, [location]);
+
   // Get Global State Collections List
   const allCollections = useSelector(selectAllCollections);
   const walletBuyersWeek = useSelector(selectWalletBuyers);
@@ -221,7 +231,7 @@ export default function Home(props) {
         <Navigation />
       </div>
 
-      <div className="page_content col-12">
+      <div className={`${pageContentStyle} col-12`}>
         <ScrollToTop />
         <Switch>
           <Route path exact="/" component={HomePage} />

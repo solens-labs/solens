@@ -78,7 +78,7 @@ export const lineColors = [
 
 export const links = {
   getListed: `https://airtable.com/shrTjju7GiwVTZgtW`,
-  launchZone: `https://airtable.com/shrTjju7GiwVTZgtW`,
+  launchZone: `https://airtable.com/shrTsUaX9A7M30Qw0`,
   email: {
     contact: `mailto: contact@solens.io`,
     admin: `mailto: admin@solens.io`,

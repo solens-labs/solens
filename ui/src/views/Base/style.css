@@ -96,4 +96,8 @@
     padding-left: 10px;
     padding-right: 10px;
   }
+  .page_content_launch {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
