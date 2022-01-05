@@ -39,9 +39,9 @@
   /* overflow-y: scroll; */
   /* position: fixed; */
   /* height: 100%; */
-  margin-top: 2%;
-  padding-left: 10px;
-  padding-right: 10px;
+  /* margin-top: 2%; */
+  /* padding-left: 10px; */
+  /* padding-right: 10px; */
   padding-bottom: 5%;
   min-height: 75vh;
 }
@@ -91,5 +91,9 @@
 @media screen and (max-width: 1250px) {
   .scroll_top {
     bottom: 10px;
+  }
+  .page_content {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }

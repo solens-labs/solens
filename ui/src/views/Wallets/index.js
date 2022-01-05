@@ -47,7 +47,7 @@ export default function Wallets(props) {
   }, [walletBuyersDay, walletSellersDay, volumeDay]);
 
   return (
-    <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-2">
+    <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-4">
       <h1 className="mb-2">Top Wallets</h1>
       <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-2 mb-3">
         <Timeframe

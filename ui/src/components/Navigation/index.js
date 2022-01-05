@@ -33,44 +33,41 @@ const Header = (props) => {
 
   return (
     <nav className="navbar">
-      <div className="col-1">
+      <div className="col-4 col-lg-2 col-xxl-1 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="logo_container">
-            <img src={logo2} className="nav_logo" alt="logo" />
-            {/* <h1 className="app_title">SOLENS</h1> */}
-          </div>
+          <img src={logo2} className="nav_logo" alt="logo" />
         </Link>
       </div>
 
-      <div className="d-none d-lg-flex col-lg-8 flex-wrap justify-content-center align-items-center">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+      <div className="d-none d-lg-flex col-lg-7 col-xl-6 col-xxl-5 flex-wrap justify-content-around align-items-center">
+        <div className="nav_link_container">
+          <Link to="/" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">home</h1>
-          </div>
-        </Link>
-        <Link to="/collections" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/collections" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">collections</h1>
-          </div>
-        </Link>
-        <Link to="/wallets" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/wallets" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">wallets</h1>
-          </div>
-        </Link>
-        {/* <Link to="/launch" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/launch" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">launchzone</h1>
-          </div>
-        </Link> */}
-        <Link to="/apply" style={{ textDecoration: "none" }}>
+          </Link>
+        </div>
+        {/* <Link to="/apply" style={{ textDecoration: "none" }}>
           <div className="nav_link_container">
             <h1 className="nav_link">apply</h1>
           </div>
-        </Link>
+        </Link> */}
       </div>
 
-      <div className="col-lg-1 d-none d-lg-flex justify-content-between">
+      <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
         <div className="icon_link">
           <a
             href={links.medium.url}
@@ -156,16 +153,16 @@ const Header = (props) => {
                 wallets
               </h1>
             </Link>
-            {/* <Link to="/launch" style={{ textDecoration: "none" }}>
+            <Link to="/launch" style={{ textDecoration: "none" }}>
               <h1 className="nav_link" onClick={() => showMenu()}>
                 launchzone
               </h1>
-            </Link> */}
-            <Link to="/apply" style={{ textDecoration: "none" }}>
+            </Link>
+            {/* <Link to="/apply" style={{ textDecoration: "none" }}>
               <h1 className="nav_link" onClick={() => showMenu()}>
                 apply
               </h1>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
