@@ -62,9 +62,9 @@ export default function Launch() {
                     <img
                       src={logo}
                       style={{
-                        height: "1.5rem",
+                        height: "1.4rem",
                         paddingLeft: 3,
-                        paddingBottom: 7,
+                        paddingBottom: 6,
                       }}
                     />
                   </span>

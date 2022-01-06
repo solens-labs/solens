@@ -46,7 +46,7 @@
   );
   border: 1px solid black;
   border-radius: 15px;
-  padding: 30px 50px;
+  padding: 30px 0px;
 }
 
 .launch_detail_box {
