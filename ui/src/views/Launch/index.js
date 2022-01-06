@@ -35,15 +35,17 @@ export default function Launch() {
             </h5>
 
             <h3 className="mt-3">Apply for our NFT launchpad</h3>
-            <button
-              className="apply_launchzone explore_all_button mt-2 mb-2"
-              style={{
-                border: "1px solid black",
-                color: "white",
-              }}
-            >
-              Initiate Launch
-            </button>
+            <a href={links.getListed} target="_blank">
+              <button
+                className="apply_launchzone explore_all_button mt-2 mb-2"
+                style={{
+                  border: "1px solid black",
+                  color: "white",
+                }}
+              >
+                Initiate Launch
+              </button>
+            </a>
           </div>
         </div>
       </div>
