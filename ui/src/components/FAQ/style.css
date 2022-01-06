@@ -2,19 +2,19 @@
   /* margin-bottom: 5%; */
 }
 
-.arrow {
+/* .arrow {
   position: absolute;
   right: 15px;
   top: 35%;
   transition: all 0.5s;
   transform: rotate(-90deg);
-  /* padding-right: 15px; */
+
   height: 35%;
   width: auto;
 }
 .arrow.active {
   transform: rotate(0deg);
-}
+} */
 .minus {
   display: none;
 }

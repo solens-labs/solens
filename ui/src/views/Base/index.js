@@ -240,7 +240,7 @@ export default function Home(props) {
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Listing} />
           <Route path="/launch" component={Launch} />
-          {/* <Route path="/item" component={ItemPage} /> */}
+          <Route path="/item" component={ItemPage} />
           <Route path="*" component={HomePage} />
         </Switch>
       </div>

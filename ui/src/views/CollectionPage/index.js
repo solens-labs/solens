@@ -417,7 +417,7 @@ export default function CollectionPage(props) {
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12">
-      <div className="collection_details d-flex flex-wrap col-12 col-lg-8 mb-3 mb-lg-5">
+      <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo.image ? (
             <img
