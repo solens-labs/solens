@@ -21,7 +21,7 @@ const Accordion = withStyles({
     textAlign: "left",
     borderRadius: "15px",
     boxShadow: "0px 0px 0px 0px transparent",
-    fontWeight: "bolder",
+    // fontWeight: "bolder",
     backgroundColor: "transparent",
     "&:not(:last-child)": {
       borderBottom: 0,
@@ -68,6 +68,7 @@ const AccordionDetails = withStyles((theme) => ({
     borderRadius: "15px",
     color: textColor,
     margin: "3vh 2vh 1vh 2vh",
+    fontWeight: 100,
 
     border: `1px solid black`,
     // boxShadow: `0px 0px 15px 2px ${bgColor}`,
@@ -114,7 +115,9 @@ const CustomizedAccordions = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography className="answer-styles">
-                    <span className="font_main">{item.answer}</span>
+                    <span className="font_main" style={{ fontWeight: 100 }}>
+                      {item.answer}
+                    </span>
                   </Typography>
                 </AccordionDetails>
               </Accordion>
