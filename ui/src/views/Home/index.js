@@ -138,11 +138,11 @@ export default function HomePage(props) {
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
-        <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
+        <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
               return (
-                <div className="nft_card_container col-10 col-sm-8 col-md-5 col-xxl-3 mb-4">
+                <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mb-4 p-2 pb-0 pt-0">
                   <a
                     href={nftLink(item)}
                     style={{ textDecoration: "none", color: "white" }}
@@ -203,8 +203,8 @@ export default function HomePage(props) {
       </div>
 
       <div className="top_wallets landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Top Wallet Activity</h1>
-        <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-2 mb-3">
+        <h1 className="mb-2">Wallet Analysis</h1>
+        <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-3 mb-3">
           <Timeframe
             currentTimeframe={walletsTimeframe}
             setTimeframe={setWalletsTimeframe}

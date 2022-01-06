@@ -87,9 +87,9 @@ const CustomizedAccordions = (props) => {
       id="faq"
       className="faq_container col-12 d-flex justify-content-center mt-4"
     >
-      <div className="col-12 col-md-10 col-lg-6 d-flex flex-column align-items-center">
+      <div className="col-12 col-md-10 col-lg-7 col-xxl-6 d-flex flex-column align-items-center">
         <h1 className="page_header">LaunchZone FAQs</h1>
-        <div className="mx-auto col-10 pb-3">
+        <div className="mx-auto col-10 col-md-12 pb-3">
           {faqs.map((item, i) => {
             return (
               <Accordion

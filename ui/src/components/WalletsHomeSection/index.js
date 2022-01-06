@@ -7,7 +7,7 @@ export default function WalletsHomeSection(props) {
 
   return (
     <div className="d-flex flex-row flex-wrap justify-content-center col-12">
-      <div className="d-flex flex-column align-items-center col-12 col-lg-6">
+      <div className="d-flex flex-column align-items-center col-12 col-xl-6">
         <h5
           className="collection_stats_days font_white mt-2 mb-3"
           style={{ fontSize: "1.5rem" }}
@@ -32,7 +32,7 @@ export default function WalletsHomeSection(props) {
         </div>
       </div>
 
-      <div className="d-flex flex-column align-items-center col-12 col-lg-6">
+      <div className="d-flex flex-column align-items-center col-12 col-xl-6">
         <h5
           className="collection_stats_days font_white mt-2 mb-3"
           style={{ fontSize: "1.5rem" }}

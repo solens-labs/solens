@@ -416,8 +416,8 @@ export default function CollectionPage(props) {
   }, [topFour]);
 
   return (
-    <div className="collection_page d-flex flex-column align-items-center col-12">
-      <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
+    <div className="collection_page d-flex flex-column align-items-center col-12 mt-4">
+      <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 align-items-center">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo.image ? (
             <img
@@ -451,7 +451,7 @@ export default function CollectionPage(props) {
         style={{ color: "white", width: "50%" }}
         className="mt-lg-5 mt-0 mb-3"
       /> */}
-      <h1 className="mt-lg-3">Collection Summary</h1>
+      <h1 className="mt-0 mt-xxl-3">Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-12 col-xxl-10 p-lg-2 pt-lg-0 pb-lg-0 mt-lg-3">
         <CollectionStat
           stat={
@@ -494,11 +494,11 @@ export default function CollectionPage(props) {
         />
       </div>
 
-      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-md-6 col-lg-10 mt-5">
+      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-lg-10 mt-5">
         <h2>Historical Floor</h2>
         {floorChart && floorChart.length !== 0 ? (
           <>
-            <div className="col-12 col-sm-8 col-md-4 mt-2 mb-3">
+            <div className="col-12 col-sm-10 col-md-8 col-xl-6 col-xxl-4 mt-2 mb-3">
               <Timeframe
                 currentTimeframe={timeframeFloor}
                 setTimeframe={setTimeframeFloor}
@@ -525,12 +525,12 @@ export default function CollectionPage(props) {
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
 
       <h1 className="mt-4">Top Sales</h1>
-      <div className="d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
+      <div className="d-flex flex-wrap justify-content-around col-12 col-xl-10 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topFourMetadata.length === 4 ? (
             topFourMetadata.map((token, i) => {
               return (
-                <div className="nft_card_container col-10 col-sm-8 col-md-5 col-xxl-3 mb-4">
+                <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xxl-3 mb-4 p-2 pb-0 pt-0">
                   <a
                     href={explorerLink("token", token.mint)}
                     target="_blank"
@@ -588,10 +588,10 @@ export default function CollectionPage(props) {
       </>
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-8 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
-          <div className="col-12 col-sm-10 col-md-6 mb-3">
+          <div className="col-12 col-sm-10 col-md-8 col-xxl-7 mb-3">
             <Timeframe
               currentTimeframe={timeframeTrades}
               setTimeframe={setTimeframeTrades}
@@ -611,7 +611,7 @@ export default function CollectionPage(props) {
           )}
         </div>
 
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-5 mt-lg-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-8 col-xxl-5 mt-5 mt-lg-3">
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>
