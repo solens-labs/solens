@@ -109,7 +109,7 @@ export default function CollectionMint(props) {
         </div>
       </div>
 
-      <div className="col-10">
+      <div className="col-12 col-lg-10">
         <InfiniteScroll
           dataLength={items.length}
           next={fetchMoreData}
@@ -137,6 +137,12 @@ export default function CollectionMint(props) {
           </div>
         </InfiniteScroll>
       </div>
+
+      <Link to={`/collection/${name}`} style={{ textDecoration: "none" }}>
+        <div className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2">
+          View Insights
+        </div>
+      </Link>
 
       <button className="scroll_top" onClick={scrollToTop}>
         Top
