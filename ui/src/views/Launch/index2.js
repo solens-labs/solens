@@ -25,30 +25,66 @@ export default function Launch() {
             style={{ maxHeight: "150px", margin: 0, padding: 0 }}
           />
 
-          <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
-            <h5>
-              Looking to launch your own NFT collection on{" "}
-              <span>
-                <img
-                  src={solana}
-                  style={{ height: "1rem", paddingBottom: 4 }}
-                />
-              </span>
-              ?
-            </h5>
+          <div className="col-12 d-flex flex-row flex-wrap justify-content-around align-items-start mb-4">
+            <div className="col-12 col-sm-11 col-md-9 col-xxl-5 mt-4 mb-3 p-1 pb-0 pt-0">
+              <div className="blackground">
+                <h5>
+                  Looking to launch your own NFT collection on{" "}
+                  <span>
+                    <img
+                      src={solana}
+                      style={{ height: "1rem", paddingBottom: 4 }}
+                    />
+                  </span>
+                  ?
+                </h5>
 
-            <h3 className="mt-3">Apply for our NFT launchpad</h3>
-            <a href={links.launchZone} target="_blank">
-              <button
-                className="apply_launchzone explore_all_button mt-2 mb-2"
-                style={{
-                  border: "1px solid black",
-                  color: "white",
-                }}
-              >
-                Initiate Launch
-              </button>
-            </a>
+                <h3 className="mt-3">Apply for our NFT launchpad</h3>
+                <a href={links.launchZone} target="_blank">
+                  <button
+                    className="apply_launchzone explore_all_button mt-2 mb-2"
+                    style={{
+                      border: "1px solid black",
+                      color: "white",
+                    }}
+                  >
+                    Initiate Launch
+                  </button>
+                </a>
+              </div>
+            </div>
+
+            <div className="col-12 col-sm-11 col-md-9 col-xxl-5 mt-4 mb-3 p-1 pb-0 pt-0">
+              <div className="blackground">
+                <h5>
+                  Looking to get your NFT collection listed on{" "}
+                  <span>
+                    <img
+                      src={logo}
+                      style={{
+                        height: "1.4rem",
+                        paddingLeft: 3,
+                        paddingBottom: 6,
+                      }}
+                    />
+                  </span>
+                  ?
+                </h5>
+
+                <h3 className="mt-3">Submit your collection</h3>
+                <a href={links.getListed} target="_blank">
+                  <button
+                    className="apply_launchzone explore_all_button mt-2 mb-2"
+                    style={{
+                      border: "1px solid black",
+                      color: "white",
+                    }}
+                  >
+                    Sign Up
+                  </button>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

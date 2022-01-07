@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "../../components/CollectionStat/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
@@ -55,7 +55,6 @@ export default function CollectionPage(props) {
   const [topTradesDay, setTopTradesDay] = useState([]); // needed for table
   const [topBuyers, setTopBuyers] = useState([]); // needed for table
   const [topSellers, setTopSellers] = useState([]); // needed for table
-  const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
   const [marketplaces, setMarketplaces] = useState(0); // needed to figure out how many datasets to show
   const [collectionLinks, setCollectionLinks] = useState({});
@@ -66,7 +65,7 @@ export default function CollectionPage(props) {
   const [floor2W, setFloor2W] = useState([]); // needed for historical floor chart
   const [floor1M, setFloor1M] = useState([]); // needed for historical floor chart
   const [floorAll, setFloorAll] = useState([]); // needed for historical floor chart
-  const [topFour, setTopFour] = useState([]); // needed to show top 3 NFTs
+  const [topFour, setTopFour] = useState([]); // needed to show top sales section
   const [topFourMetadata, setTopFourMetadata] = useState([]);
 
   // Fetch Collection Data
@@ -74,7 +73,6 @@ export default function CollectionPage(props) {
     const apiRequest = api.collection + queries.symbol + name;
     const collectionInfo = await axios.get(apiRequest).then((response) => {
       const collectionInfo = response.data[0];
-      console.log(collectionInfo);
       setCollectionInfo(collectionInfo);
       setStats(collectionInfo.alltimestats);
       setMarketplaces(collectionInfo.alltimestats.length);
@@ -90,7 +88,7 @@ export default function CollectionPage(props) {
     });
   }, [name]);
 
-  // Fetch Top Data (top sales, trades, buyers, sellers)
+  // Fetch Top Trades All-Time
   useEffect(async () => {
     if (topTradesAll.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
@@ -112,6 +110,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Trades Week
   useEffect(async () => {
     if (topTradesWeek.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
@@ -128,6 +127,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Trades Day
   useEffect(async () => {
     if (topTradesDay.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
@@ -144,6 +144,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Buyers
   useEffect(async () => {
     if (topBuyers.length === 0) {
       debug && console.log(`fetching top buyers - ${name}`);
@@ -166,6 +167,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Sellers
   useEffect(async () => {
     if (topSellers.length === 0) {
       debug && console.log(`fetching top sellers - ${name}`);
@@ -188,28 +190,6 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
-  useEffect(async () => {
-    if (topNFTsWeek.length === 0) {
-      debug && console.log(`fetching top NFTs week - ${name}`);
-      const apiRequest =
-        api.topNFTs +
-        queries.symbol +
-        name +
-        queries.days +
-        7 +
-        queries.sortVolume;
-
-      const topSellers = await axios.get(apiRequest).then((response) => {
-        const nfts = response.data.splice(0, 4);
-        // console.log(nfts);
-
-        if (nfts.length > 0) {
-          setTopNFTsWeek(nfts);
-          debug && console.log(`received top NFTs week-  ${name}`);
-        }
-      });
-    }
-  }, [name]);
 
   // Calculate Collection Summary Stats
   useEffect(() => {
@@ -225,6 +205,7 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
+  // Fetch floors from MPs
   useEffect(() => {
     // Request ME Floor
     const apiRequestME = exchangeApi.magiceden.floor + name;
@@ -263,6 +244,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Determine absolute floor
   useEffect(() => {
     if (floorSA !== 0 && floorME !== 0) {
       const floor = Math.min(floorSA, floorME);
@@ -353,6 +335,7 @@ export default function CollectionPage(props) {
     }
   }, [name]);
 
+  // Toggle Historical Floor Timeframe
   useEffect(() => {
     switch (timeframeFloor) {
       case 14:
@@ -366,6 +349,21 @@ export default function CollectionPage(props) {
         break;
     }
   }, [floor1M, timeframeFloor]);
+
+  // Toggle Top Trades Timeframe
+  const topTradesTimeframe = () => {
+    switch (timeframeTrades) {
+      case 1:
+        return topTradesDay;
+        break;
+      case 7:
+        return topTradesWeek;
+        break;
+      case 1000:
+        return topTradesAll;
+        break;
+    }
+  };
 
   // Add multiple MP floor data for line chart to component MP data
   // useEffect(() => {
@@ -381,22 +379,6 @@ export default function CollectionPage(props) {
   //     setMarketplacesData(combinedMarketplaceData);
   //   }
   // }, [floorChart, marketplacesData]);
-
-  // Toggle Top Trades Timeframe
-
-  const topTradesTimeframe = () => {
-    switch (timeframeTrades) {
-      case 1:
-        return topTradesDay;
-        break;
-      case 7:
-        return topTradesWeek;
-        break;
-      case 1000:
-        return topTradesAll;
-        break;
-    }
-  };
 
   // Get Top 4 NFT Sales Metadata
   useEffect(async () => {
@@ -441,9 +423,11 @@ export default function CollectionPage(props) {
             ""
           )}
           <p className="collection_description">{collectionInfo.description}</p>
-          {/* <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
-            View Listed NFTs
-          </div> */}
+          <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
+            <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
+              View NFTs
+            </div>
+          </Link>
         </div>
       </div>
 

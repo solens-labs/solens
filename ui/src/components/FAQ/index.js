@@ -11,8 +11,8 @@ import { faqs } from "../../constants/faqs";
 const textColor = "#FFFFFF"; // white
 const questionBgColor = `linear-gradient(
   -45deg,
-  rgb(65, 37, 156),
-  rgb(134, 64, 117) 120%
+  rgba(65, 37, 156, 0.85),
+  rgba(134, 64, 117, 0.85) 120%
 ) !important`;
 const bgColor = "rgb(18, 11, 37)"; // dark purple
 
@@ -45,8 +45,8 @@ const AccordionSummary = withStyles({
     color: textColor,
     paddingRight: "60px",
     margin: "2vh 0 0 0",
-    // border: `1px solid black`,
-    boxShadow: `0px 0px 15px 2px black`,
+    border: `1px solid black`,
+    // boxShadow: `0px 0px 15px 2px black`,
 
     minHeight: 79,
     "&$expanded": {
@@ -67,7 +67,7 @@ const AccordionDetails = withStyles((theme) => ({
     backdropFilter: "blur(50px)",
     borderRadius: "15px",
     color: textColor,
-    margin: "3vh 2vh 1vh 2vh",
+    margin: "3vh 1vh 1vh 1vh",
     fontWeight: 100,
 
     border: `1px solid black`,
