@@ -90,14 +90,22 @@ export default function CollectionMint(props) {
     });
   };
 
-  const getItemLink = (mint) => {
+  const getItemLinks = (mint) => {
+    const links = {};
+
     if (marketplaces.includes("smb")) {
-      return exchangeApi.smb.itemDetails + mint;
-    } else if (marketplaces.includes("magiceden")) {
-      return exchangeApi.magiceden.itemDetails + mint;
-    } else if (marketplaces.includes("solanart")) {
-      return exchangeApi.solanart.itemDetails + mint;
+      links["smb"] = exchangeApi.smb.itemDetails + mint;
     }
+
+    if (marketplaces.includes("magiceden")) {
+      links["magiceden"] = exchangeApi.magiceden.itemDetails + mint;
+    }
+
+    if (marketplaces.includes("solanart")) {
+      links["solanart"] = exchangeApi.solanart.itemDetails + mint;
+    }
+
+    return links;
   };
 
   return (
@@ -156,7 +164,7 @@ export default function CollectionMint(props) {
                   className="col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                   key={i}
                 >
-                  <NftCard item={item} link={getItemLink(item.mint)} />
+                  <NftCard item={item} links={getItemLinks(item.mint)} />
                 </div>
               );
             })}
@@ -164,14 +172,16 @@ export default function CollectionMint(props) {
         </InfiniteScroll>
       </div>
 
-      {hasMore ? (
+      {items.length > 0 && hasMore && (
         <div
           className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2"
           onClick={fetchMoreData}
         >
           Load More
         </div>
-      ) : (
+      )}
+
+      {!hasMore && (
         <Link to={`/collection/${name}`} style={{ textDecoration: "none" }}>
           <div className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2">
             View Insights

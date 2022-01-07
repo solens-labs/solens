@@ -510,10 +510,10 @@ export default function CollectionPage(props) {
         )}
       </div>
 
-      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
+      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-3" />
 
       <h1 className="mt-4">Top Sales</h1>
-      <div className="d-flex flex-wrap justify-content-around col-12 col-xl-10 mt-lg-3 mb-4">
+      <div className="d-flex flex-column align-items-center col-12 col-xl-10 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topFourMetadata.length === 4 ? (
             topFourMetadata.map((token, i) => {
@@ -557,6 +557,12 @@ export default function CollectionPage(props) {
             <Loader />
           )}
         </div>
+
+        <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
+          <div className="col-12 btn-button btn-main btn-large d-flex mt-2">
+            View NFTs
+          </div>
+        </Link>
       </div>
 
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
