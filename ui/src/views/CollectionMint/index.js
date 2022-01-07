@@ -124,7 +124,7 @@ export default function CollectionMint(props) {
             {items.map((item, i) => {
               return (
                 <div
-                  className="col-12 col-sm-6 col-md-4 col-lg-3 p-1 p-md-2 p-lg-3"
+                  className="col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                   key={i}
                 >
                   <NftCard

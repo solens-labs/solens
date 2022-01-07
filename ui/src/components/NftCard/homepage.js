@@ -9,7 +9,11 @@ export default function NftCard(props) {
     <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mb-4 p-2 pb-0 pt-0">
       <a href={link} style={{ textDecoration: "none", color: "white" }}>
         <div className="nft_card d-flex flex-column align-items-center">
-          <img src={item.image} className="nft_card_image" alt="nft_card" />
+          <img
+            src={item.image}
+            className="nft_card_image_home"
+            alt="nft_card"
+          />
 
           <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
             <h5>{item.name}</h5>
