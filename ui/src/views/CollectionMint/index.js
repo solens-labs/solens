@@ -3,16 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./style.css";
 import Loader from "../../components/Loader";
-import { api, queries } from "../../constants/constants";
+import { api, explorerLink, queries } from "../../constants/constants";
 import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
 import NftCard from "../../components/NftCard";
 import { getTokenMetadata } from "../../utils/getMetadata";
-
-const style = {
-  height: 150,
-  border: "1px solid purple",
-};
 
 export default function CollectionMint(props) {
   const { name } = useParams();
@@ -45,13 +40,12 @@ export default function CollectionMint(props) {
   // Set Initial Items
   useEffect(async () => {
     if (collectionMintList.length > 0) {
-      const initialItems = collectionMintList.slice(0, 16);
+      const initialItems = collectionMintList.slice(0, 20);
       const initialMetadata = initialItems.map(async (item, i) => {
         const tokenMD = await getTokenMetadata(item);
         return tokenMD;
       });
       const initialResolved = await Promise.all(initialMetadata);
-      console.log(initialResolved);
       setItems(initialResolved);
     }
   }, [collectionMintList]);
@@ -63,15 +57,22 @@ export default function CollectionMint(props) {
       return;
     }
 
-    const newMints = collectionMintList.slice(items.length, items.length + 16);
+    const newMints = collectionMintList.slice(items.length, items.length + 20);
     const newMetadata = newMints.map(async (item, i) => {
       const tokenMD = await getTokenMetadata(item);
       return tokenMD;
     });
     const newResolved = await Promise.all(newMetadata);
-    console.log(newResolved);
     const fullItems = [...items, ...newResolved];
     setItems(fullItems);
+  };
+
+  // Scroll to Top Button
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -120,17 +121,26 @@ export default function CollectionMint(props) {
           }
         >
           <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-            {items.map((item, i) => (
-              <div
-                className="col-12 col-sm-6 col-md-4 col-lg-3 p-1 p-md-2 p-lg-3"
-                key={i}
-              >
-                <NftCard item={item} />
-              </div>
-            ))}
+            {items.map((item, i) => {
+              return (
+                <div
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 p-1 p-md-2 p-lg-3"
+                  key={i}
+                >
+                  <NftCard
+                    item={item}
+                    link={explorerLink("token", item.mint)}
+                  />
+                </div>
+              );
+            })}
           </div>
         </InfiniteScroll>
       </div>
+
+      <button className="scroll_top" onClick={scrollToTop}>
+        Top
+      </button>
     </div>
   );
 }

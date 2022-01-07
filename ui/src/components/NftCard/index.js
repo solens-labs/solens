@@ -2,17 +2,19 @@ import React from "react";
 import "./style.css";
 
 export default function NftCard(props) {
-  const { item } = props;
+  const { link, item } = props;
 
   return (
     <div className="nft_card_container col-12">
-      <div className="nft_card d-flex flex-column align-items-center">
-        <img src={item.image} className="nft_card_image" alt="nft_card" />
+      <a href={link} style={{ textDecoration: "none", color: "white" }}>
+        <div className="nft_card d-flex flex-column align-items-center">
+          <img src={item.image} className="nft_card_image" alt="nft_card" />
 
-        <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
-          <h5>{item.name}</h5>
+          <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
+            <h5>{item.name}</h5>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   );
 }
