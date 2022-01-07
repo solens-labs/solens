@@ -22,6 +22,7 @@ import { explorerLink } from "../../constants/constants";
 import sol_logo from "../../assets/images/sol_logo.png";
 import Timeframe from "../../components/Timeframe";
 import WalletsHomeSection from "../../components/WalletsHomeSection";
+import NftCard from "../../components/NftCard/homepage";
 
 export default function HomePage(props) {
   const dispatch = useDispatch();
@@ -141,34 +142,7 @@ export default function HomePage(props) {
         <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
-              return (
-                <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mb-4 p-2 pb-0 pt-0">
-                  <a
-                    href={nftLink(item)}
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    <div className="nft_card d-flex flex-column align-items-center">
-                      <img
-                        src={item.image}
-                        className="nft_card_image"
-                        alt="nft_card"
-                      />
-
-                      <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
-                        <h5>{item.name}</h5>
-                        <h4>
-                          <img
-                            src={sol_logo}
-                            alt="sol logo"
-                            className="price_logo_lg"
-                          />
-                          {item.price}
-                        </h4>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              );
+              return <NftCard link={nftLink(item)} item={item} />;
             })
           ) : (
             <Loader />

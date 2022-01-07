@@ -6,13 +6,12 @@ import Loader from "../../components/Loader";
 import { api, queries } from "../../constants/constants";
 import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
+import NftCard from "../../components/NftCard";
+import { getTokenMetadata } from "../../utils/getMetadata";
 
 const style = {
-  height: 30,
-  border: "1px solid green",
-  // width: "50%",
-  // margin: 6,
-  // padding: 8,
+  height: 150,
+  border: "1px solid purple",
 };
 
 export default function CollectionMint(props) {
@@ -20,21 +19,10 @@ export default function CollectionMint(props) {
 
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
-  const [collectionMintList, setCollectionMintList] = useState([]); // needed on API pull
+  const [collectionMintList, setCollectionMintList] = useState([]); // needed to request metadata
 
-  const [items, setItems] = useState(Array.from({ length: 200 }));
-  const [hasMore, setHasMore] = useState(true);
-
-  const fetchMoreData = () => {
-    if (items.length >= 1000) {
-      setHasMore(false);
-      return;
-    }
-
-    const newItems = Array.from({ length: 20 });
-    const fullItems = [...items, ...newItems];
-    setItems(fullItems);
-  };
+  const [items, setItems] = useState([]); // needed for collection nft grid items
+  const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -53,6 +41,38 @@ export default function CollectionMint(props) {
       setCollectionLinks(links);
     });
   }, [name]);
+
+  // Set Initial Items
+  useEffect(async () => {
+    if (collectionMintList.length > 0) {
+      const initialItems = collectionMintList.slice(0, 16);
+      const initialMetadata = initialItems.map(async (item, i) => {
+        const tokenMD = await getTokenMetadata(item);
+        return tokenMD;
+      });
+      const initialResolved = await Promise.all(initialMetadata);
+      console.log(initialResolved);
+      setItems(initialResolved);
+    }
+  }, [collectionMintList]);
+
+  // Add more mint addresses to items
+  const fetchMoreData = async () => {
+    if (items.length >= collectionMintList.length) {
+      setHasMore(false);
+      return;
+    }
+
+    const newMints = collectionMintList.slice(items.length, items.length + 16);
+    const newMetadata = newMints.map(async (item, i) => {
+      const tokenMD = await getTokenMetadata(item);
+      return tokenMD;
+    });
+    const newResolved = await Promise.all(newMetadata);
+    console.log(newResolved);
+    const fullItems = [...items, ...newResolved];
+    setItems(fullItems);
+  };
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
@@ -100,9 +120,12 @@ export default function CollectionMint(props) {
           }
         >
           <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-            {items.map((i, index) => (
-              <div className="col-12 col-lg-3" style={style} key={index}>
-                div - #{index}
+            {items.map((item, i) => (
+              <div
+                className="col-12 col-sm-6 col-md-4 col-lg-3 p-1 p-md-2 p-lg-3"
+                key={i}
+              >
+                <NftCard item={item} />
               </div>
             ))}
           </div>
