@@ -41,7 +41,6 @@ export default function CollectionMint(props) {
           marketplacesArray.push(item.marketplace);
         });
       }
-      console.log(marketplacesArray);
       setMarketplaces(marketplacesArray);
 
       const links = {
@@ -165,11 +164,20 @@ export default function CollectionMint(props) {
         </InfiniteScroll>
       </div>
 
-      <Link to={`/collection/${name}`} style={{ textDecoration: "none" }}>
-        <div className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2">
-          View Insights
+      {hasMore ? (
+        <div
+          className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2"
+          onClick={fetchMoreData}
+        >
+          Load More
         </div>
-      </Link>
+      ) : (
+        <Link to={`/collection/${name}`} style={{ textDecoration: "none" }}>
+          <div className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2">
+            View Insights
+          </div>
+        </Link>
+      )}
 
       <button className="scroll_top" onClick={scrollToTop}>
         Top
