@@ -414,7 +414,11 @@ export default function CollectionPage(props) {
           )}
         </div>
         <div className="collection_header col-12 col-lg-7 d-flex flex-column align-items-center justify-content-around">
-          <h1 className="collection_name_large">{collectionInfo.name}</h1>
+          {collectionInfo.name ? (
+            <h1 className="collection_name_large">{collectionInfo.name}</h1>
+          ) : (
+            <Loader />
+          )}
           {collectionLinks.website ||
           collectionLinks.twitter ||
           collectionLinks.discord ? (

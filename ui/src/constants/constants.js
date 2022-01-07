@@ -35,12 +35,15 @@ export const api = {
 export const exchangeApi = {
   magiceden: {
     floor: `https://api-mainnet.magiceden.io/rpc/getCollectionEscrowStats/`,
+    itemDetails: `https://magiceden.io/item-details/`,
   },
   solanart: {
     floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
+    itemDetails: `https://solanart.io/search/?token=`,
   },
   smb: {
     items: `https://market.solanamonkey.business/api/items`,
+    itemDetails: `https://market.solanamonkey.business/item/`,
   },
 };
 

@@ -3,7 +3,12 @@ import { Link, useParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./style.css";
 import Loader from "../../components/Loader";
-import { api, explorerLink, queries } from "../../constants/constants";
+import {
+  api,
+  exchangeApi,
+  explorerLink,
+  queries,
+} from "../../constants/constants";
 import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
 import NftCard from "../../components/NftCard";
@@ -15,6 +20,7 @@ export default function CollectionMint(props) {
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
   const [collectionMintList, setCollectionMintList] = useState([]); // needed to request metadata
+  const [marketplaces, setMarketplaces] = useState([]);
 
   const [items, setItems] = useState([]); // needed for collection nft grid items
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
@@ -25,8 +31,18 @@ export default function CollectionMint(props) {
       api.collection + queries.symbol + name + queries.mintList;
     const collectionInfo = await axios.get(apiRequest).then((response) => {
       const collectionInfo = response.data[0];
+
       setCollectionInfo(collectionInfo);
       setCollectionMintList(collectionInfo.mint);
+
+      const marketplacesArray = [];
+      if (collectionInfo) {
+        collectionInfo.alltimestats.map((item, i) => {
+          marketplacesArray.push(item.marketplace);
+        });
+      }
+      console.log(marketplacesArray);
+      setMarketplaces(marketplacesArray);
 
       const links = {
         website: collectionInfo.website,
@@ -75,6 +91,16 @@ export default function CollectionMint(props) {
     });
   };
 
+  const getItemLink = (mint) => {
+    if (marketplaces.includes("smb")) {
+      return exchangeApi.smb.itemDetails + mint;
+    } else if (marketplaces.includes("magiceden")) {
+      return exchangeApi.magiceden.itemDetails + mint;
+    } else if (marketplaces.includes("solanart")) {
+      return exchangeApi.solanart.itemDetails + mint;
+    }
+  };
+
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
       <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
@@ -92,7 +118,11 @@ export default function CollectionMint(props) {
           )}
         </div>
         <div className="collection_header col-12 col-lg-7 d-flex flex-column align-items-center justify-content-around">
-          <h1 className="collection_name_large">{collectionInfo.name}</h1>
+          {collectionInfo.name ? (
+            <h1 className="collection_name_large">{collectionInfo.name}</h1>
+          ) : (
+            <Loader />
+          )}
           {collectionLinks.website ||
           collectionLinks.twitter ||
           collectionLinks.discord ? (
@@ -127,10 +157,7 @@ export default function CollectionMint(props) {
                   className="col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                   key={i}
                 >
-                  <NftCard
-                    item={item}
-                    link={explorerLink("token", item.mint)}
-                  />
+                  <NftCard item={item} link={getItemLink(item.mint)} />
                 </div>
               );
             })}
