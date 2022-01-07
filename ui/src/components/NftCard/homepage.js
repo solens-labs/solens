@@ -15,7 +15,7 @@ export default function NftCard(props) {
             alt="nft_card"
           />
 
-          <div className="nft_card_details d-flex flex-column align-items-center justify-content-center">
+          <div className="nft_card_details_home d-flex flex-column align-items-center justify-content-center">
             <h5>{item.name}</h5>
             <h4>
               <img src={sol_logo} alt="sol logo" className="price_logo_lg" />

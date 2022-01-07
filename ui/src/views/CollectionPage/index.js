@@ -531,7 +531,7 @@ export default function CollectionPage(props) {
                         alt="nft_card"
                       />
 
-                      <div className="nft_card_details d-flex align-items-center">
+                      <div className="nft_card_details_home d-flex align-items-center">
                         <div className="col-12">
                           <h5>{topFourMetadata[i].name}</h5>
 

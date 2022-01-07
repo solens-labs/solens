@@ -55,6 +55,12 @@
   padding: 0px 5px;
 }
 
+.nft_card_details_home {
+  height: 100%;
+  width: 100%;
+  padding: 0px 5px;
+}
+
 @media screen and (max-width: 800px) {
   .collection_info {
     font-size: 1rem;
