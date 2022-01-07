@@ -4,7 +4,7 @@
 }
 
 .collection_name_large {
-  font-size: 4rem;
+  font-size: 3.5rem;
 }
 
 .collection_image_large {
@@ -111,7 +111,7 @@
     max-height: 300px;
   }
   .collection_name_large {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
   .collection_stat {
     margin-top: 15px !important;
