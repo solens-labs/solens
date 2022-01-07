@@ -3,19 +3,14 @@ import "./style.css";
 import sa_logo from "../../assets/images/sa_logo.png";
 import me_logo from "../../assets/images/me_logo_white.png";
 import smb_logo from "../../assets/images/smb_logo.png";
+import ss_logo from "../../assets/images/ss_logo.png";
 import { explorerLink } from "../../constants/constants";
-import ExploreIcon from "@mui/icons-material/Explore";
 
 export default function NftCard(props) {
   const { links, item } = props;
 
   return (
     <div className="nft_card_container col-12">
-      {/* <a
-        href={explorerLink("token", item.mint)}
-        style={{ textDecoration: "none", color: "white" }}
-        target="_blank"
-      > */}
       <div className="nft_card col-12 d-flex flex-column align-items-center">
         <img src={item.image} className="nft_card_image" alt="nft_card" />
 
@@ -34,7 +29,7 @@ export default function NftCard(props) {
                 <img
                   src={smb_logo}
                   className=""
-                  style={{ height: 33, width: "auto" }}
+                  style={{ height: 33, width: "auto", marginRight: 5 }}
                   alt=""
                 />
               </a>
@@ -75,14 +70,16 @@ export default function NftCard(props) {
               style={{ textDecoration: "none", color: "white" }}
               target="_blank"
             >
-              <ExploreIcon
-                style={{ fill: "white", fontSize: 25, marginLeft: 7 }}
+              <img
+                src={ss_logo}
+                className=""
+                style={{ height: 30, width: "auto", marginRight: -10 }}
+                alt=""
               />
             </a>
           </div>
         </div>
       </div>
-      {/* </a> */}
     </div>
   );
 }
