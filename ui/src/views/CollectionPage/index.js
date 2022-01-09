@@ -76,7 +76,7 @@ export default function CollectionPage(props) {
 
   // Fetch Collection Data
   useEffect(async () => {
-    if (allCollections.length > 0) {
+    if (name && allCollections.length > 0) {
       const filterCheck = allCollections.filter((item) => item.symbol === name);
       const result = filterCheck.length > 0;
       if (!result) {

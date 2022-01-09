@@ -24,7 +24,7 @@ import {
   selectTopNFTsDay,
 } from "../../redux/app";
 import { useSelector, useDispatch } from "react-redux";
-import ItemPage from "../../components/ItemPage";
+import MintPage from "../MintPage";
 import Collections from "../Collections";
 import CollectionPage from "../CollectionPage";
 import { selectAllCollections, setAllCollections } from "../../redux/app";
@@ -242,7 +242,7 @@ export default function Home(props) {
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
           <Route path="/launch" component={Launch} />
-          {/* <Route path="/item" component={ItemPage} /> */}
+          <Route path="/mint/:address" component={MintPage} />
           <Route path="*" component={HomePage} />
         </Switch>
       </div>

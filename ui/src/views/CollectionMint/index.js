@@ -24,14 +24,14 @@ export default function CollectionMint(props) {
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
   const [collectionMintList, setCollectionMintList] = useState([]); // needed to request metadata
   const [marketplaces, setMarketplaces] = useState([]);
-  const [noCollection, setNoCollection] = useState(false);
+  const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
 
   const [items, setItems] = useState([]); // needed for collection nft grid items
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
   // Fetch Collection Data
   useEffect(async () => {
-    if (allCollections.length > 0) {
+    if (name && allCollections.length > 0) {
       const filterCheck = allCollections.filter((item) => item.symbol === name);
       const result = filterCheck.length > 0;
       if (!result) {
