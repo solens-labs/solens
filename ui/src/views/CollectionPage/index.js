@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Redirect, useParams } from "react-router-dom";
 import "../../components/CollectionStat/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
-import { selectCollection, selectDebugMode } from "../../redux/app";
+import {
+  selectAllCollections,
+  selectCollection,
+  selectDebugMode,
+} from "../../redux/app";
 import axios from "axios";
 import {
   api,
@@ -38,6 +42,7 @@ import CollectionStat from "../../components/CollectionStat";
 export default function CollectionPage(props) {
   const { name } = useParams();
   const debug = useSelector(selectDebugMode);
+  const allCollections = useSelector(selectAllCollections);
 
   const [timeframeFloor, setTimeframeFloor] = useState(30); // default timeframe for historical floor chart
   const [timeframeTrades, setTimeframeTrades] = useState(1000); // default timeframe for top trades table
@@ -67,26 +72,38 @@ export default function CollectionPage(props) {
   const [floorAll, setFloorAll] = useState([]); // needed for historical floor chart
   const [topFour, setTopFour] = useState([]); // needed to show top sales section
   const [topFourMetadata, setTopFourMetadata] = useState([]);
+  const [noCollection, setNoCollection] = useState(false); //redirect user on incorrect symbol
 
   // Fetch Collection Data
   useEffect(async () => {
-    const apiRequest = api.collection + queries.symbol + name;
-    const collectionInfo = await axios.get(apiRequest).then((response) => {
-      const collectionInfo = response.data[0];
-      setCollectionInfo(collectionInfo);
-      setStats(collectionInfo.alltimestats);
-      setMarketplaces(collectionInfo.alltimestats.length);
-      setDaysSinceCreated(calculateLaunchDate(collectionInfo));
-      setDailyStats(collectionInfo.dailystats);
+    if (allCollections.length > 0) {
+      const filterCheck = allCollections.filter((item) => item.symbol === name);
+      const result = filterCheck.length > 0;
+      if (!result) {
+        setNoCollection(true);
+        return;
+      }
 
-      const links = {
-        website: collectionInfo.website,
-        twitter: collectionInfo.twitter,
-        discord: collectionInfo.discord,
-      };
-      setCollectionLinks(links);
-    });
-  }, [name]);
+      if (result) {
+        const apiRequest = api.collection + queries.symbol + name;
+        const collectionInfo = await axios.get(apiRequest).then((response) => {
+          const collectionInfo = response.data[0];
+          setCollectionInfo(collectionInfo);
+          setStats(collectionInfo.alltimestats);
+          setMarketplaces(collectionInfo.alltimestats.length);
+          setDaysSinceCreated(calculateLaunchDate(collectionInfo));
+          setDailyStats(collectionInfo.dailystats);
+
+          const links = {
+            website: collectionInfo.website,
+            twitter: collectionInfo.twitter,
+            discord: collectionInfo.discord,
+          };
+          setCollectionLinks(links);
+        });
+      }
+    }
+  }, [name, allCollections]);
 
   // Fetch Top Trades All-Time
   useEffect(async () => {
@@ -399,6 +416,8 @@ export default function CollectionPage(props) {
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
+      {noCollection && <Redirect to="/" />}
+
       <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo.image ? (
@@ -560,7 +579,7 @@ export default function CollectionPage(props) {
 
         <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
           <div className="col-12 btn-button btn-main btn-large d-flex mt-2">
-            View NFTs
+            View All NFTs
           </div>
         </Link>
       </div>
