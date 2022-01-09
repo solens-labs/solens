@@ -63,7 +63,7 @@ const routes = [
   },
   {
     method: 'GET',
-    url: '/stats/symbol',
+    url: '/symbol',
     schema: schema.mintHistory,
     handler: statsHandlers.symbol
   }
