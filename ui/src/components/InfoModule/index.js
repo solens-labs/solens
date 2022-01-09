@@ -10,7 +10,7 @@ export default function InfoModule(props) {
       <h4>Token Details</h4>
 
       <div className="d-flex flex-row col-12">
-        <div className="col-7 d-flex flex-column align-items-start justify-content-between">
+        <div className="col-6 col-lg-7 d-flex flex-column align-items-start justify-content-between">
           <h5 className="mint_info">
             Mint:{" "}
             {received && (
@@ -55,16 +55,16 @@ export default function InfoModule(props) {
           </h5>
         </div>
 
-        <div className="col-5 d-flex flex-column align-items-start justify-content-between">
+        <div className="col-6 col-lg-5 d-flex flex-column align-items-start justify-content-between">
           <h5 className="mint_info">
             Royalty:{" "}
             <span className="mint_info_value">{royalty.toFixed(2)}%</span>
           </h5>
           <h5 className="mint_info">
-            Magic Eden Fee: <span className="mint_info_value">2%</span>
+            Solanart Fee: <span className="mint_info_value">3%</span>
           </h5>
           <h5 className="mint_info">
-            Solanart Fee: <span className="mint_info_value">3%</span>
+            Magic Eden Fee: <span className="mint_info_value">2%</span>
           </h5>
         </div>
       </div>

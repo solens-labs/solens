@@ -4,33 +4,34 @@
   background: rgb(18, 11, 37);
   background-image: linear-gradient(
     -45deg,
-    rgba(65, 37, 156, 0.85),
-    rgba(134, 64, 117, 0.85) 120%
+    rgba(65, 37, 156, 0.75),
+    rgba(134, 64, 117, 0.75) 120%
   );
-  padding: 2px;
+  padding: 1px;
 
   color: white;
   /* margin: 10px 10px; */
   /* padding: 10px; */
   width: 100%;
   height: 100%;
+  box-shadow: 0px 0px 2px 2px black;
 }
 
-.attribute_box div {
+.attribute_box_inner {
   background: rgb(18, 11, 37);
   width: 100%;
-  border-radius: 15px;
+  border-radius: 13px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.attribute_box p {
+.attribute_box_inner p {
   font-size: 1.2rem;
   margin-bottom: 3px;
 }
 
-.attribute_box h5 {
+.attribute_box_inner h5 {
   margin: 3px 0px;
   font-size: 0.8rem;
   font-weight: bold;
@@ -38,10 +39,10 @@
 }
 
 @media screen and (max-width: 990px) {
-  .attribute_box p {
-    font-size: rem;
+  .attribute_box_inner p {
+    font-size: 1rem;
   }
-  .attribute_box h5 {
+  .attribute_box_inner h5 {
     font-size: 0.7rem;
   }
 }

@@ -61,7 +61,8 @@ export const AccordionSummary = withStyles({
 export const AccordionDetails = withStyles((theme) => ({
   root: {
     // background: bgColor,
-    background: "rgba(0,0,0,0.2)",
+    // background: "rgba(0,0,0,0.2)",
+    background: "rgba(18, 11, 37, 0.7)",
     backdropFilter: "blur(50px)",
     borderRadius: "0px 0px 15px 15px",
     color: textColor,

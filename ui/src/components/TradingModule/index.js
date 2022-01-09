@@ -16,42 +16,48 @@ export default function TradingModule(props) {
       <h5>item_listed_price_or_unlisted</h5>
 
       <div className="trading_buttons d-flex flex-wrap justify-content-around col-12 mt-3">
-        <div className="col-4 col-md-4 p-md-2">
+        <div className="col-4 col-md-4 p-1 p-md-2">
           <a
             href={exchangeApi.magiceden.itemDetails + item.mint}
             target="_blank"
           >
-            <button className="btn-button btn_trade">
-              <img
-                src={me_logo}
-                alt=""
-                style={{ height: 42, background: "transparent", margin: -8 }}
-              />
+            <button className="btn_trade">
+              <div>
+                <img
+                  src={me_logo}
+                  alt=""
+                  style={{ height: 42, background: "transparent", margin: -8 }}
+                />
+              </div>
             </button>
           </a>
         </div>
-        <div className="col-4 col-md-4 p-md-2">
+        <div className="col-4 col-md-4 p-1 p-md-2">
           <a
             href={exchangeApi.solanart.itemDetails + item.mint}
             target="_blank"
           >
-            <button className="btn-button btn_trade">
-              <img
-                src={sa_logo}
-                alt=""
-                style={{ height: 50, background: "transparent", margin: -8 }}
-              />
+            <button className="btn_trade">
+              <div>
+                <img
+                  src={sa_logo}
+                  alt=""
+                  style={{ height: 50, background: "transparent", margin: -8 }}
+                />
+              </div>
             </button>
           </a>
         </div>
-        <div className="col-4 col-md-4 p-md-2">
+        <div className="col-4 col-md-4 p-1 p-md-2">
           <a href={explorerLink("token", item.mint)} target="_blank">
-            <button className="btn-button btn_trade">
-              <img
-                src={ss_logo}
-                alt=""
-                style={{ height: 50, background: "transparent", margin: -8 }}
-              />
+            <button className="btn_trade">
+              <div>
+                <img
+                  src={ss_logo}
+                  alt=""
+                  style={{ height: 50, background: "transparent", margin: -8 }}
+                />
+              </div>
             </button>
           </a>
         </div>

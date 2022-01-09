@@ -20,7 +20,7 @@ export default function Attribute(props) {
 
   return (
     <div className="attribute_box">
-      <div>
+      <div className="attribute_box_inner">
         <h5>{traitShort}</h5>
 
         <p>{valueShort}</p>

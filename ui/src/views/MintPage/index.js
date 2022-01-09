@@ -77,7 +77,7 @@ export default function MintPage(props) {
         </div>
       </div>
 
-      <div className="attributes col-8">
+      <div className="attributes col-12 xol-lg-10 col-xl-8 mb-3">
         <Accordion
           square
           expanded={attributesExpanded}
@@ -117,7 +117,7 @@ export default function MintPage(props) {
         </Accordion>
       </div>
 
-      <div className="transactions col-8">
+      <div className="transactions col-12 xol-lg-10 col-xl-8">
         <Accordion
           square
           expanded={transactionsExpanded}
