@@ -12,6 +12,7 @@ const initialState = {
   allCollections: [],
   allStats: [],
   collection: undefined,
+  collectionName: "",
   sort: "",
   solPrice: 0,
   debug: false,
@@ -23,6 +24,7 @@ const initialState = {
   walletBuyersDay: [],
   walletSellersDay: [],
   topNFTsDay: [],
+  collectionMints: [],
 };
 
 // Slice
@@ -60,6 +62,9 @@ const app = createSlice({
     setCollection: (state, action) => {
       state.collection = action.payload;
     },
+    setCollectionName: (state, action) => {
+      state.collectionName = action.payload;
+    },
     setSort: (state, action) => {
       state.sort = action.payload;
     },
@@ -93,6 +98,9 @@ const app = createSlice({
     setTopNFTsDay: (state, action) => {
       state.topNFTsDay = action.payload;
     },
+    setCollectionMints: (state, action) => {
+      state.collectionMints = action.payload;
+    },
   },
 });
 
@@ -108,6 +116,7 @@ export const {
   setAllCollections,
   setAllStats,
   setCollection,
+  setCollectionName,
   setSort,
   setSolPrice,
   setDebugMode,
@@ -119,6 +128,7 @@ export const {
   setWalletBuyersDay,
   setWalletSellersDay,
   setTopNFTsDay,
+  setCollectionMints,
 } = app.actions;
 
 // Selectors
@@ -132,6 +142,7 @@ export const selectRemaining = (state) => state.app.remaining;
 export const selectAllCollections = (state) => state.app.allCollections;
 export const selectAllStats = (state) => state.app.allStats;
 export const selectCollection = (state) => state.app.collection;
+export const selectCollectionName = (state) => state.app.collectionName;
 export const selectSort = (state) => state.app.sort;
 export const selectSolPrice = (state) => state.app.solPrice;
 export const selectDebugMode = (state) => state.app.debug;
@@ -143,6 +154,7 @@ export const selectWalletSellers = (state) => state.app.walletSellers;
 export const selectWalletBuyersDay = (state) => state.app.walletBuyersDay;
 export const selectWalletSellersDay = (state) => state.app.walletSellersDay;
 export const selectTopNFTsDay = (state) => state.app.topNFTsDay;
+export const selectCollectionMints = (state) => state.app.collectionMints;
 
 // Reducer
 export default app.reducer;

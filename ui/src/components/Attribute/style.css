@@ -1,0 +1,34 @@
+.attribute_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 15px;
+  background: rgb(18, 11, 37);
+  color: white;
+  /* margin: 10px 10px; */
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.attribute_box p {
+  font-size: 1.2rem;
+  margin-bottom: 3px;
+}
+
+.attribute_box h5 {
+  margin: 3px 0px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: rgb(134, 64, 117);
+}
+
+@media screen and (max-width: 990px) {
+  .attribute_box p {
+    font-size: rem;
+  }
+  .attribute_box h5 {
+    font-size: 0.7rem;
+  }
+}

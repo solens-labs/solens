@@ -1,8 +1,8 @@
 .trading_module {
-  border: 2px solid white;
+  border: 1px solid black;
   border-radius: 15px;
-  background-color: rgb(10, 5, 27);
-  height: 50%;
+  background: rgb(18, 11, 37);
+  /* height: 50%; */
   overflow: hidden;
 }
 

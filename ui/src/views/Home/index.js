@@ -81,14 +81,24 @@ export default function HomePage(props) {
     }
   }, [collections, solPrice]);
 
-  // Top NFTs deeplink or explorer link
-  const nftLink = (item) => {
+  // Top NFTs collection deeplink or explorer link
+  const nftCollectionLink = (item) => {
     let internalLink = "";
     if (item.internal_symbol) {
       internalLink = `/collection/` + item.internal_symbol;
     }
     const externalLink = explorerLink("token", item.mint);
     return internalLink ? internalLink : externalLink;
+  };
+
+  // Top NFTs nft detail page link
+  const nftPageLink = (item) => {
+    let detailPageLink = "";
+    if (item.mint) {
+      detailPageLink = `/mint/` + item.mint;
+    }
+    const externalLink = explorerLink("token", item.mint);
+    return detailPageLink ? detailPageLink : externalLink;
   };
 
   return (
@@ -142,7 +152,7 @@ export default function HomePage(props) {
         <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
-              return <NftCard link={nftLink(item)} item={item} />;
+              return <NftCard link={nftPageLink(item)} item={item} />;
             })
           ) : (
             <Loader />

@@ -14,7 +14,7 @@ import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 
-const Header = (props) => {
+const Navigation = (props) => {
   //   const connected = useSelector(selectConnected);
   //   const address = useSelector(selectAddress);
   //   const address_short = "0x..." + address.slice(-4);
@@ -170,4 +170,4 @@ const Header = (props) => {
   );
 };
 
-export default Header;
+export default Navigation;
