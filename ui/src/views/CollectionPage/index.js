@@ -539,8 +539,7 @@ export default function CollectionPage(props) {
               return (
                 <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xxl-3 mb-4 p-2 pb-0 pt-0">
                   <a
-                    href={explorerLink("token", token.mint)}
-                    target="_blank"
+                    href={`/mint/${token.mint}`}
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <div className="nft_card d-flex flex-column align-items-center">

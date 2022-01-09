@@ -29,6 +29,7 @@ export default function CollectionMint(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const allCollections = useSelector(selectAllCollections);
+  const storedCollection = useSelector(selectCollection);
   const storedCollectionName = useSelector(selectCollectionName);
   const items = useSelector(selectCollectionMints);
 
@@ -40,6 +41,7 @@ export default function CollectionMint(props) {
   // const [items, setItems] = useState([]); // needed for collection nft grid items
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
+  // Store collection name in redux
   useEffect(() => {
     if (storedCollectionName !== name) {
       dispatch(setCollectionMints([]));

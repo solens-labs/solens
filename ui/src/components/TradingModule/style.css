@@ -9,3 +9,19 @@
 .connect_button {
   height: 70%;
 }
+
+.mint_info {
+  /* color: rgb(134, 64, 117); */
+  font-size: 0.9rem;
+  color: white;
+}
+
+.mint_info_value {
+  color: rgb(134, 64, 117);
+  font-size: 0.9rem;
+}
+
+.btn_trade {
+  width: 100%;
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+}

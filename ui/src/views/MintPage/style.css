@@ -1,18 +1,22 @@
+.nft_image_container {
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px 1px black;
+}
+
 .nft_image {
-  /* min-height: 300px; */
-  /* max-height: 600px; */
-  height: 500px;
-  max-width: 500px;
-  width: auto;
+  max-height: 450px;
+  /* max-width: 500px; */
+  width: 100%;
+  height: auto;
   object-fit: cover;
   /* max-width: 80%; */
-  border-radius: 15px;
   /* border: 1px solid white; */
-  box-shadow: 0px 0px 15px 1px black;
+  /* box-shadow: 0px 0px 15px 1px black; */
 }
 
 @media screen and (max-width: 900px) {
   .nft_image {
-    height: 350px;
+    /* height: 350px; */
   }
 }
