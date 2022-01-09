@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import logo from "../../assets/images/logo2.png";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import CollectionSection from "../../components/CollectionSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,14 +18,17 @@ import {
 } from "../../redux/app";
 import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
-import { explorerLink } from "../../constants/constants";
+import { explorerLink, links } from "../../constants/constants";
 import sol_logo from "../../assets/images/sol_logo.png";
 import Timeframe from "../../components/Timeframe";
 import WalletsHomeSection from "../../components/WalletsHomeSection";
 import NftCard from "../../components/NftCard/homepage";
+import launchzone from "../../assets/images/launchzone.png";
+import solana from "../../assets/images/solana.svg";
 
 export default function HomePage(props) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const collections = useSelector(selectAllCollections);
   const walletBuyers = useSelector(selectWalletBuyers);
   const walletBuyersDay = useSelector(selectWalletBuyersDay);
@@ -99,6 +102,10 @@ export default function HomePage(props) {
     }
     const externalLink = explorerLink("token", item.mint);
     return detailPageLink ? detailPageLink : externalLink;
+  };
+
+  const visitLaunchzone = () => {
+    history.push("/launch");
   };
 
   return (
@@ -214,6 +221,38 @@ export default function HomePage(props) {
             Explore Wallets
           </button>
         </Link>
+      </div>
+
+      <div className="launchzone_section landing_page_section launchzone_image_bg d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <img
+          src={launchzone}
+          alt="launchzone_logo"
+          className="img-fluid"
+          style={{ maxHeight: "150px", margin: 0, padding: 0 }}
+        />
+
+        <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
+          <h5>
+            Looking to launch your own NFT collection on{" "}
+            <span>
+              <img src={solana} style={{ height: "1rem", paddingBottom: 4 }} />
+            </span>
+            ?
+          </h5>
+
+          <h3 className="mt-3">Apply for our NFT launchpad</h3>
+
+          <button
+            className="apply_launchzone explore_all_button mt-2 mb-2"
+            style={{
+              border: "1px solid black",
+              color: "white",
+            }}
+            onClick={visitLaunchzone}
+          >
+            More Info
+          </button>
+        </div>
       </div>
     </div>
   );
