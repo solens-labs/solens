@@ -82,7 +82,7 @@ export default function CollectionMint(props) {
 
   // Add more mint addresses to items
   const fetchMoreData = async () => {
-    if (items.length >= collectionMintList.length) {
+    if (items.length > 0 && items.length >= collectionMintList.length) {
       setHasMore(false);
       return;
     }
