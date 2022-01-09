@@ -24,7 +24,7 @@ import {
   selectTopNFTsDay,
 } from "../../redux/app";
 import { useSelector, useDispatch } from "react-redux";
-import ItemPage from "../../components/ItemPage";
+import MintPage from "../MintPage";
 import Collections from "../Collections";
 import CollectionPage from "../CollectionPage";
 import { selectAllCollections, setAllCollections } from "../../redux/app";
@@ -37,8 +37,10 @@ import Wallets from "../Wallets";
 import ScrollToTop from "../../utils/scrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
-import Launch from "../Launch/index.tsx";
+import Launch from "../Launch";
 import Footer from "../../components/Footer";
+import Apply from "../Apply";
+import CollectionMint from "../CollectionMint";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -51,6 +53,16 @@ export default function Home(props) {
 
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
+  }, [location]);
+
+  const [pageContentStyle, setPageContentStyle] = useState("page_content");
+
+  useEffect(() => {
+    if (location.pathname === "/launch") {
+      setPageContentStyle("page_content_launch");
+    } else {
+      setPageContentStyle("page_content");
+    }
   }, [location]);
 
   // Get Global State Collections List
@@ -93,10 +105,7 @@ export default function Home(props) {
             return addedStat;
           });
 
-          const removeSMB = daysLaunchedAdded.filter((collection) => {
-            return collection.symbol !== "solana_monkey_business";
-          });
-          dispatch(setAllCollections(removeSMB));
+          dispatch(setAllCollections(daysLaunchedAdded));
         })
         .catch((error) => console.log(error));
     }
@@ -204,7 +213,10 @@ export default function Home(props) {
 
       const tokenMetadata = topFourNFTs.map(async (item, i) => {
         const tokenMD = await getTokenMetadata(item.mint);
-        tokenMD["price"] = topFourNFTs[i].max;
+        tokenMD["price"] = topFourNFTs[i].volume;
+        tokenMD["internal_symbol"] = topFourNFTs[i].symbol
+          ? topFourNFTs[i].symbol
+          : "";
 
         return tokenMD;
       });
@@ -220,15 +232,17 @@ export default function Home(props) {
         <Navigation />
       </div>
 
-      <div className="page_content col-12">
+      <div className={`${pageContentStyle} col-12`}>
         <ScrollToTop />
         <Switch>
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
           <Route path="/collection/:name" component={CollectionPage} />
+          <Route path="/nfts/:name" component={CollectionMint} />
           <Route path="/wallets" component={Wallets} />
-          {/* <Route path="/launch" component={Launch} /> */}
-          {/* <Route path="/item" component={ItemPage} /> */}
+          <Route path="/apply" component={Apply} />
+          <Route path="/launch" component={Launch} />
+          <Route path="/mint/:address" component={MintPage} />
           <Route path="*" component={HomePage} />
         </Switch>
       </div>

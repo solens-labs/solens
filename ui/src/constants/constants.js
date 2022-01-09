@@ -35,12 +35,15 @@ export const api = {
 export const exchangeApi = {
   magiceden: {
     floor: `https://api-mainnet.magiceden.io/rpc/getCollectionEscrowStats/`,
+    itemDetails: `https://magiceden.io/item-details/`,
   },
   solanart: {
     floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
+    itemDetails: `https://solanart.io/search/?token=`,
   },
   smb: {
     items: `https://market.solanamonkey.business/api/items`,
+    itemDetails: `https://market.solanamonkey.business/item/`,
   },
 };
 
@@ -78,6 +81,7 @@ export const lineColors = [
 
 export const links = {
   getListed: `https://airtable.com/shrTjju7GiwVTZgtW`,
+  launchZone: `https://airtable.com/shrTsUaX9A7M30Qw0`,
   email: {
     contact: `mailto: contact@solens.io`,
     admin: `mailto: admin@solens.io`,
@@ -95,7 +99,7 @@ export const links = {
     text: "Opensea",
   },
   medium: {
-    url: "https://medium.com/@nftblockheadz/560fca36a96",
+    url: "https://medium.com/@contact_94841",
     text: "Medium",
   },
   contract: {

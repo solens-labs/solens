@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import "../../components/CollectionStats/style.css";
+import { Link, Redirect, useParams } from "react-router-dom";
+import "../../components/CollectionStat/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
-import { selectCollection, selectDebugMode } from "../../redux/app";
+import {
+  selectAllCollections,
+  selectCollection,
+  selectDebugMode,
+} from "../../redux/app";
 import axios from "axios";
 import {
   api,
@@ -33,10 +37,12 @@ import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
+import CollectionStat from "../../components/CollectionStat";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
   const debug = useSelector(selectDebugMode);
+  const allCollections = useSelector(selectAllCollections);
 
   const [timeframeFloor, setTimeframeFloor] = useState(30); // default timeframe for historical floor chart
   const [timeframeTrades, setTimeframeTrades] = useState(1000); // default timeframe for top trades table
@@ -54,7 +60,6 @@ export default function CollectionPage(props) {
   const [topTradesDay, setTopTradesDay] = useState([]); // needed for table
   const [topBuyers, setTopBuyers] = useState([]); // needed for table
   const [topSellers, setTopSellers] = useState([]); // needed for table
-  const [topNFTsWeek, setTopNFTsWeek] = useState([]); // needed for section
   const [dailyStats, setDailyStats] = useState([]); // needed to populate charts
   const [marketplaces, setMarketplaces] = useState(0); // needed to figure out how many datasets to show
   const [collectionLinks, setCollectionLinks] = useState({});
@@ -65,30 +70,42 @@ export default function CollectionPage(props) {
   const [floor2W, setFloor2W] = useState([]); // needed for historical floor chart
   const [floor1M, setFloor1M] = useState([]); // needed for historical floor chart
   const [floorAll, setFloorAll] = useState([]); // needed for historical floor chart
-  const [topFour, setTopFour] = useState([]); // needed to show top 3 NFTs
+  const [topFour, setTopFour] = useState([]); // needed to show top sales section
   const [topFourMetadata, setTopFourMetadata] = useState([]);
+  const [noCollection, setNoCollection] = useState(false); //redirect user on incorrect symbol
 
   // Fetch Collection Data
   useEffect(async () => {
-    const apiRequest = api.collection + queries.symbol + name;
-    const collectionInfo = await axios.get(apiRequest).then((response) => {
-      const collectionInfo = response.data[0];
-      setCollectionInfo(collectionInfo);
-      setStats(collectionInfo.alltimestats);
-      setMarketplaces(collectionInfo.alltimestats.length);
-      setDaysSinceCreated(calculateLaunchDate(collectionInfo));
-      setDailyStats(collectionInfo.dailystats);
+    if (name && allCollections.length > 0) {
+      const filterCheck = allCollections.filter((item) => item.symbol === name);
+      const result = filterCheck.length > 0;
+      if (!result) {
+        setNoCollection(true);
+        return;
+      }
 
-      const links = {
-        website: collectionInfo.website,
-        twitter: collectionInfo.twitter,
-        discord: collectionInfo.discord,
-      };
-      setCollectionLinks(links);
-    });
-  }, [name]);
+      if (result) {
+        const apiRequest = api.collection + queries.symbol + name;
+        const collectionInfo = await axios.get(apiRequest).then((response) => {
+          const collectionInfo = response.data[0];
+          setCollectionInfo(collectionInfo);
+          setStats(collectionInfo.alltimestats);
+          setMarketplaces(collectionInfo.alltimestats.length);
+          setDaysSinceCreated(calculateLaunchDate(collectionInfo));
+          setDailyStats(collectionInfo.dailystats);
 
-  // Fetch Top Data (top sales, trades, buyers, sellers)
+          const links = {
+            website: collectionInfo.website,
+            twitter: collectionInfo.twitter,
+            discord: collectionInfo.discord,
+          };
+          setCollectionLinks(links);
+        });
+      }
+    }
+  }, [name, allCollections]);
+
+  // Fetch Top Trades All-Time
   useEffect(async () => {
     if (topTradesAll.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
@@ -110,6 +127,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Trades Week
   useEffect(async () => {
     if (topTradesWeek.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
@@ -126,6 +144,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Trades Day
   useEffect(async () => {
     if (topTradesDay.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
@@ -142,6 +161,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Buyers
   useEffect(async () => {
     if (topBuyers.length === 0) {
       debug && console.log(`fetching top buyers - ${name}`);
@@ -164,6 +184,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Fetch Top Sellers
   useEffect(async () => {
     if (topSellers.length === 0) {
       debug && console.log(`fetching top sellers - ${name}`);
@@ -186,28 +207,6 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
-  useEffect(async () => {
-    if (topNFTsWeek.length === 0) {
-      debug && console.log(`fetching top NFTs week - ${name}`);
-      const apiRequest =
-        api.topNFTs +
-        queries.symbol +
-        name +
-        queries.days +
-        7 +
-        queries.sortVolume;
-
-      const topSellers = await axios.get(apiRequest).then((response) => {
-        const nfts = response.data.splice(0, 4);
-        // console.log(nfts);
-
-        if (nfts.length > 0) {
-          setTopNFTsWeek(nfts);
-          debug && console.log(`received top NFTs week-  ${name}`);
-        }
-      });
-    }
-  }, [name]);
 
   // Calculate Collection Summary Stats
   useEffect(() => {
@@ -223,6 +222,7 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
+  // Fetch floors from MPs
   useEffect(() => {
     // Request ME Floor
     const apiRequestME = exchangeApi.magiceden.floor + name;
@@ -261,6 +261,7 @@ export default function CollectionPage(props) {
       });
     }
   }, [name]);
+  // Determine absolute floor
   useEffect(() => {
     if (floorSA !== 0 && floorME !== 0) {
       const floor = Math.min(floorSA, floorME);
@@ -351,6 +352,7 @@ export default function CollectionPage(props) {
     }
   }, [name]);
 
+  // Toggle Historical Floor Timeframe
   useEffect(() => {
     switch (timeframeFloor) {
       case 14:
@@ -364,6 +366,21 @@ export default function CollectionPage(props) {
         break;
     }
   }, [floor1M, timeframeFloor]);
+
+  // Toggle Top Trades Timeframe
+  const topTradesTimeframe = () => {
+    switch (timeframeTrades) {
+      case 1:
+        return topTradesDay;
+        break;
+      case 7:
+        return topTradesWeek;
+        break;
+      case 1000:
+        return topTradesAll;
+        break;
+    }
+  };
 
   // Add multiple MP floor data for line chart to component MP data
   // useEffect(() => {
@@ -379,22 +396,6 @@ export default function CollectionPage(props) {
   //     setMarketplacesData(combinedMarketplaceData);
   //   }
   // }, [floorChart, marketplacesData]);
-
-  // Toggle Top Trades Timeframe
-
-  const topTradesTimeframe = () => {
-    switch (timeframeTrades) {
-      case 1:
-        return topTradesDay;
-        break;
-      case 7:
-        return topTradesWeek;
-        break;
-      case 1000:
-        return topTradesAll;
-        break;
-    }
-  };
 
   // Get Top 4 NFT Sales Metadata
   useEffect(async () => {
@@ -414,8 +415,10 @@ export default function CollectionPage(props) {
   }, [topFour]);
 
   return (
-    <div className="collection_page d-flex flex-column align-items-center col-12">
-      <div className="collection_details d-flex flex-wrap col-12 col-lg-8 mb-3 mb-lg-5">
+    <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
+      {noCollection && <Redirect to="/" />}
+
+      <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo.image ? (
             <img
@@ -430,7 +433,11 @@ export default function CollectionPage(props) {
           )}
         </div>
         <div className="collection_header col-12 col-lg-7 d-flex flex-column align-items-center justify-content-around">
-          <h1 className="collection_name_large">{collectionInfo.name}</h1>
+          {collectionInfo.name ? (
+            <h1 className="collection_name_large">{collectionInfo.name}</h1>
+          ) : (
+            <Loader />
+          )}
           {collectionLinks.website ||
           collectionLinks.twitter ||
           collectionLinks.discord ? (
@@ -439,6 +446,11 @@ export default function CollectionPage(props) {
             ""
           )}
           <p className="collection_description">{collectionInfo.description}</p>
+          <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
+            <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
+              View NFTs
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -446,60 +458,54 @@ export default function CollectionPage(props) {
         style={{ color: "white", width: "50%" }}
         className="mt-lg-5 mt-0 mb-3"
       /> */}
-      <h1 className="mt-lg-3">Collection Summary</h1>
-      <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3">
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionVolume
+      <h1 className="mt-0 mt-xxl-3">Collection Summary</h1>
+      <div className="collection_stats d-flex flex-wrap justify-content-around col-12 col-xxl-10 p-lg-2 pt-lg-0 pb-lg-0 mt-lg-3">
+        <CollectionStat
+          stat={
+            collectionVolume
               ? collectionVolume.toLocaleString("en", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })
-              : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Volume (SOL)</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionTxCount
+              : "Loading..."
+          }
+          label={"Volume (SOL)"}
+        />
+        <CollectionStat
+          stat={
+            collectionTxCount
               ? collectionTxCount.toLocaleString()
-              : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Transactions</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Average (SOL)</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {floor > 0 ? floor : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Floor Price (SOL)</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {collectionInfo.supply
+              : "Loading..."
+          }
+          label={"Transactions"}
+        />
+        <CollectionStat
+          stat={collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
+          label={"Average (SOL)"}
+        />
+        <CollectionStat
+          stat={floor > 0 ? floor : "Loading..."}
+          label={"Floor (SOL)"}
+        />
+        <CollectionStat
+          stat={
+            collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
-              : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Supply</h1>
-        </div>
-        <div className="collection_stat">
-          <h1 className="collection_info">
-            {daysSinceCreated ? daysSinceCreated : "Loading..."}
-          </h1>
-          <h1 className="collection_info_header">Days Launched</h1>
-        </div>
+              : "Loading..."
+          }
+          label={"Supply"}
+        />
+        <CollectionStat
+          stat={daysSinceCreated ? daysSinceCreated : "Loading..."}
+          label={"Days Launched"}
+        />
       </div>
 
-      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-md-6 col-lg-10 mt-5">
+      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-lg-10 mt-5">
         <h2>Historical Floor</h2>
         {floorChart && floorChart.length !== 0 ? (
           <>
-            <div className="col-12 col-sm-8 col-md-4 mt-2 mb-3">
+            <div className="col-12 col-sm-10 col-md-8 col-xl-6 col-xxl-4 mt-2 mb-3">
               <Timeframe
                 currentTimeframe={timeframeFloor}
                 setTimeframe={setTimeframeFloor}
@@ -523,15 +529,15 @@ export default function CollectionPage(props) {
         )}
       </div>
 
-      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-4" />
+      <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-3" />
 
       <h1 className="mt-4">Top Sales</h1>
-      <div className="collection_stats d-flex flex-wrap justify-content-around col-10 col-md-6 col-lg-10 mt-lg-3 mb-4">
+      <div className="d-flex flex-column align-items-center col-12 col-xl-10 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topFourMetadata.length === 4 ? (
             topFourMetadata.map((token, i) => {
               return (
-                <div className="nft_card_container col-10 col-sm-8 col-md-5 col-xxl-3 mb-4">
+                <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xxl-3 mb-4 p-2 pb-0 pt-0">
                   <a
                     href={explorerLink("token", token.mint)}
                     target="_blank"
@@ -544,7 +550,7 @@ export default function CollectionPage(props) {
                         alt="nft_card"
                       />
 
-                      <div className="nft_card_details d-flex align-items-center">
+                      <div className="nft_card_details_home d-flex align-items-center">
                         <div className="col-12">
                           <h5>{topFourMetadata[i].name}</h5>
 
@@ -570,6 +576,12 @@ export default function CollectionPage(props) {
             <Loader />
           )}
         </div>
+
+        <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
+          <div className="col-12 btn-button btn-main btn-large d-flex mt-2">
+            View All NFTs
+          </div>
+        </Link>
       </div>
 
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
@@ -589,10 +601,10 @@ export default function CollectionPage(props) {
       </>
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-8 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
-          <div className="col-12 col-sm-10 col-md-6 mb-3">
+          <div className="col-12 col-sm-10 col-md-8 col-xxl-7 mb-3">
             <Timeframe
               currentTimeframe={timeframeTrades}
               setTimeframe={setTimeframeTrades}
@@ -612,7 +624,7 @@ export default function CollectionPage(props) {
           )}
         </div>
 
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xxl-5 mt-5 mt-lg-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-8 col-xxl-5 mt-5 mt-lg-3">
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>

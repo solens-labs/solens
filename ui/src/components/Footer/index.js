@@ -10,34 +10,22 @@ import solens_logo from "../../assets/images/logo2.png";
 export default function Footer(props) {
   const year = new Date().getFullYear();
 
-  let windowWidth = window.innerWidth;
-
-  const footerAlign = () => {
-    return windowWidth < 800 ? "align-items-center" : "align-items-start";
-  };
-
-  const footerJustify = () => {
-    return windowWidth < 800 ? "justify-content-center" : "";
-  };
+  const pg_break = (
+    <div className="d-flex d-lg-none justify-content-center col-12">
+      <hr style={{ color: "white", width: "50%" }} className="" />
+    </div>
+  );
 
   return (
     <div className="footer col-12 d-flex flex-column justify-content-between align-items-center">
-      {/* <div className="col-12 d-flex d-lg-none justify-content-center pt-3"></div> */}
-
-      <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-center align-items-start">
-        <div
-          className={`footer_section col-12 col-md-4 d-flex align-items-center ${footerJustify()}`}
-        >
+      <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-around justify-content-lg-center align-items-start">
+        <div className="footer_logo_section col-12 col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-start justify-content-xxl-center">
           <img src={solens_logo} className="footer_logo" />
         </div>
 
-        <div className="d-flex d-md-none justify-content-center col-12">
-          <hr style={{ color: "white", width: "50%" }} className="" />
-        </div>
+        {pg_break}
 
-        <div
-          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
-        >
+        <div className="footer_section col-12 col-lg-2 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-2 mb-lg-0">
           <h4 className="footer_title">SITEMAP</h4>
 
           <Link to="/" style={{ textDecoration: "none" }}>
@@ -49,15 +37,14 @@ export default function Footer(props) {
           <Link to="/wallets" style={{ textDecoration: "none" }}>
             <h4 className="footer_link">wallets</h4>
           </Link>
+          <Link to="/launch" style={{ textDecoration: "none" }}>
+            <h4 className="footer_link">launchzone</h4>
+          </Link>
         </div>
 
-        <div className="d-flex d-md-none justify-content-center col-12">
-          <hr style={{ color: "white", width: "50%" }} className="" />
-        </div>
+        {pg_break}
 
-        <div
-          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
-        >
+        <div className="footer_section col-12 col-lg-2 d-flex flex-column justify-content-around align-items-center align-items-lg-start mb-2 mb-lg-0">
           <h4 className="footer_title">CONNECT</h4>
 
           <a
@@ -70,11 +57,13 @@ export default function Footer(props) {
             <h1 className="footer_link">twitter</h1>
           </a>
           <a
-            href={links.getListed}
+            href={links.medium.url}
             target="_blank"
-            style={{ textDecoration: "none" }}
+            style={{
+              textDecoration: "none",
+            }}
           >
-            <h4 className="footer_link">get listed</h4>
+            <h1 className="footer_link">medium</h1>
           </a>
           <a
             href={links.email.contact}
@@ -83,22 +72,16 @@ export default function Footer(props) {
           >
             <h4 className="footer_link">inquiries</h4>
           </a>
+          <a
+            href={links.getListed}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <h4 className="footer_link">get listed</h4>
+          </a>
         </div>
 
-        {/* <div
-          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
-        >
-          <h4 className="footer_title">CONNECT</h4>
-        </div>
-        <div
-          className={`footer_section col-12 col-md-2 d-flex flex-column justify-content-around ${footerAlign()} mb-2 mb-lg-0`}
-        >
-          <h4 className="footer_title">CONNECT</h4>
-        </div> */}
-
-        <div className="d-flex d-md-none justify-content-center col-12 mb-3">
-          <hr style={{ color: "white", width: "50%" }} className="" />
-        </div>
+        {pg_break}
       </div>
 
       <div className="copyright col-12 d-flex align-items-end justify-content-center">

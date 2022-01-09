@@ -144,6 +144,7 @@ export const getMinMax = (data) => {
     maxArray: maxArray,
   };
 };
+
 export const marketplaceSelect = (unstylized) => {
   let marketplace = "";
   switch (unstylized) {

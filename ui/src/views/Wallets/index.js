@@ -10,6 +10,7 @@ import {
   selectWalletSellersDay,
 } from "../../redux/app";
 import WalletsSection from "../../components/WalletsSection";
+import Timeframe from "../../components/Timeframe";
 
 export default function Wallets(props) {
   const walletBuyersWeek = useSelector(selectWalletBuyers);
@@ -20,7 +21,6 @@ export default function Wallets(props) {
   const volumeWeek = useSelector(selectWeeklyVolume);
 
   const [timeframe, setTimeframe] = useState(1);
-  const [timeframeTitle, setTimeframeTitle] = useState("LAST 24 HOURS");
   const [volume, setVolume] = useState(volumeDay);
   const [buyers, setBuyers] = useState(walletBuyersDay);
   const [sellers, setSellers] = useState(walletSellersDay);
@@ -28,13 +28,11 @@ export default function Wallets(props) {
   useEffect(() => {
     switch (timeframe) {
       case 1:
-        setTimeframeTitle("LAST 24 HOURS");
         setVolume(volumeDay);
         setBuyers(walletBuyersDay);
         setSellers(walletSellersDay);
         break;
       case 7:
-        setTimeframeTitle("LAST 7 DAYS");
         setVolume(volumeWeek);
         setBuyers(walletBuyersWeek);
         setSellers(walletSellersWeek);
@@ -49,35 +47,20 @@ export default function Wallets(props) {
   }, [walletBuyersDay, walletSellersDay, volumeDay]);
 
   return (
-    <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-2">
-      <h1 className="mb-2">Top Wallets</h1>
+    <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-4 mb-5">
+      <h1 className="mb-2">Wallet Analysis</h1>
       <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-2 mb-3">
-        <button
-          className={`btn_timeframe ${
-            timeframe === 1 && "btn_timeframe_selected"
-          }`}
-          onClick={() => setTimeframe(1)}
-        >
-          DAY
-        </button>
-        <button
-          className={`btn_timeframe ${
-            timeframe === 7 && "btn_timeframe_selected"
-          }`}
-          onClick={() => setTimeframe(7)}
-        >
-          WEEK
-        </button>
+        <Timeframe
+          currentTimeframe={timeframe}
+          setTimeframe={setTimeframe}
+          timeframes={["DAY", "WEEK"]}
+          intervals={[1, 7]}
+        />
       </div>
 
       <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
 
-      <WalletsSection
-        buyers={buyers}
-        sellers={sellers}
-        timeframe={timeframeTitle}
-        volume={volume}
-      />
+      <WalletsSection buyers={buyers} sellers={sellers} volume={volume} />
     </div>
   );
 }

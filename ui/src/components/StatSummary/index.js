@@ -37,7 +37,7 @@ export default function StatSummary(props) {
       </h5>
       {/* <hr style={{ color: "white", margin: "10px 0px 10px 0px" }} /> */}
       <div className="collection_stats d-flex flex-wrap justify-content-center col-12">
-        <div className="collection_stat_container col-6">
+        <div className="summary_stat_container col-6">
           <div className="collection_stat_secondary">
             <h1 className="collection_info collection_info_large">
               {marketplaceData.volume
@@ -50,7 +50,7 @@ export default function StatSummary(props) {
             <h1 className="collection_info_header">Volume (SOL)</h1>
           </div>
         </div>
-        <div className="collection_stat_container col-6">
+        <div className="summary_stat_container col-6">
           <div className="collection_stat_secondary">
             <h1 className="collection_info collection_info_large">
               {marketplaceData.transactions
@@ -62,7 +62,7 @@ export default function StatSummary(props) {
           </div>
         </div>
       </div>
-      <div className="collection_stat_container col-12">
+      <div className="summary_stat_container col-12">
         <div className="collection_stat_secondary d-flex flex-wrap justify-content-around">
           <div>
             <h1 className="collection_info collection_info_large">

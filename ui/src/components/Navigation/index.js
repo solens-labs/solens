@@ -12,6 +12,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
+import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 
 const Header = (props) => {
   //   const connected = useSelector(selectConnected);
@@ -32,39 +33,50 @@ const Header = (props) => {
 
   return (
     <nav className="navbar">
-      <div className="col-2">
+      <div className="col-4 col-lg-2 col-xxl-1 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="logo_container">
-            <img src={logo2} className="nav_logo" alt="logo" />
-            {/* <h1 className="app_title">SOLENS</h1> */}
-          </div>
+          <img src={logo2} className="nav_logo" alt="logo" />
         </Link>
       </div>
 
-      <div className="d-none d-lg-flex col-lg-8 flex-wrap justify-content-center align-items-center">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+      <div className="d-none d-lg-flex col-lg-7 col-xl-6 col-xxl-5 flex-wrap justify-content-around align-items-center">
+        <div className="nav_link_container">
+          <Link to="/" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">home</h1>
-          </div>
-        </Link>
-        <Link to="/collections" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/collections" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">collections</h1>
-          </div>
-        </Link>
-        <Link to="/wallets" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/wallets" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">wallets</h1>
-          </div>
-        </Link>
-        {/* <Link to="/launch" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/launch" style={{ textDecoration: "none" }}>
             <h1 className="nav_link">launchzone</h1>
+          </Link>
+        </div>
+        {/* <Link to="/apply" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <h1 className="nav_link">apply</h1>
           </div>
         </Link> */}
       </div>
 
-      <div className="col-2 d-none d-lg-flex justify-content-end">
+      <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
+        <div className="icon_link">
+          <a
+            href={links.medium.url}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <MediumIcon style={{ fill: "white" }} className="icon_link" />
+          </a>
+        </div>
         <div className="icon_link">
           <a
             href={links.twitter.url}
@@ -99,26 +111,30 @@ const Header = (props) => {
         } slide-menu d-flex justify-content-between`}
       >
         <div className="mobile_menu">
-          <div className="col-6 d-flex flex-row justify-content-center">
-            <div className="icon_link">
-              <a
-                href={links.email.contact}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <EmailIcon style={{ fill: "white" }} />
-              </a>
-            </div>
-            <div className="icon_link">
-              <a
-                href={links.twitter.url}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                {/* <h1 className="nav_link">twitter</h1> */}
-                <TwitterIcon style={{ fill: "white" }} />
-              </a>
-            </div>
+          <div className="col-6 d-flex flex-row justify-content-around p-2 pb-0 pt-0">
+            <a
+              href={links.twitter.url}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+            </a>
+
+            <a
+              href={links.medium.url}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <MediumIcon style={{ fill: "white" }} className="icon_link" />
+            </a>
+
+            <a
+              href={links.email.contact}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <EmailIcon style={{ fill: "white" }} className="icon_link" />
+            </a>
           </div>
 
           <div className="col-6 d-flex flex-column justify-content-between">
@@ -137,9 +153,14 @@ const Header = (props) => {
                 wallets
               </h1>
             </Link>
-            {/* <Link to="/launch" style={{ textDecoration: "none" }}>
+            <Link to="/launch" style={{ textDecoration: "none" }}>
               <h1 className="nav_link" onClick={() => showMenu()}>
                 launchzone
+              </h1>
+            </Link>
+            {/* <Link to="/apply" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                apply
               </h1>
             </Link> */}
           </div>
