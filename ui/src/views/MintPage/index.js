@@ -8,6 +8,15 @@ import Loader from "../../components/Loader";
 import { explorerLink } from "../../constants/constants";
 import { shortenAddress } from "../../candy-machine";
 import InfoModule from "../../components/InfoModule";
+import MuiAccordion from "@material-ui/core/Accordion";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "../../components/Accordion";
+import { Typography } from "@material-ui/core";
 
 export default function MintPage(props) {
   const { address } = useParams();
@@ -19,20 +28,25 @@ export default function MintPage(props) {
 
   const received = Object.keys(tokenMetadata).length > 0;
 
+  // Fetch mint address metadata
   useEffect(async () => {
     if (address && Object.keys(tokenMetadata).length === 0) {
       const metadata = getTokenMetadata(address);
       const resolved = await Promise.resolve(metadata);
-      console.log(resolved);
+      // console.log(resolved);
       setTokenMetadata(resolved);
     }
   }, [address]);
 
+  // Calculate Royalty into State
   useEffect(() => {
     if (Object.keys(tokenMetadata).length > 0) {
       setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
     }
   }, [tokenMetadata]);
+
+  const [attributesExpanded, setAttributesExpanded] = useState(false);
+  const [transactionsExpanded, setTransactionsExpanded] = useState(false);
 
   return (
     <div className="col-12 d-flex flex-column align-items-center pt-5">
@@ -62,15 +76,84 @@ export default function MintPage(props) {
           />
         </div>
       </div>
-      <div className="col-12 col-lg-7 d-flex flex-wrap justify-content-start">
-        {received &&
-          tokenMetadata.attributes?.map((item, i) => {
-            return (
-              <div className="col-6 col-md-4 col-xl-3 p-1">
-                <Attribute trait={item.trait_type} value={item.value} key={i} />
-              </div>
-            );
-          })}
+
+      <div className="attributes col-8">
+        <Accordion
+          square
+          expanded={attributesExpanded}
+          onChange={() => setAttributesExpanded(!attributesExpanded)}
+        >
+          <AccordionSummary
+            aria-controls={`attributes_content`}
+            id={`attributes_header`}
+            // className="border_gradient border_gradient_purple"
+          >
+            <Typography
+              className={
+                attributesExpanded
+                  ? "question-styles active"
+                  : "question-styles"
+              }
+            >
+              <span className="font_main">Attributes</span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className="col-12 d-flex flex-wrap justify-content-start">
+              {received &&
+                tokenMetadata.attributes?.map((item, i) => {
+                  return (
+                    <div className="col-6 col-md-4 col-xl-3 col-xxl-2 p-1">
+                      <Attribute
+                        trait={item.trait_type}
+                        value={item.value}
+                        key={i}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+
+      <div className="transactions col-8">
+        <Accordion
+          square
+          expanded={transactionsExpanded}
+          onChange={() => setTransactionsExpanded(!transactionsExpanded)}
+        >
+          <AccordionSummary
+            aria-controls={`attributes_content`}
+            id={`attributes_header`}
+          >
+            <Typography
+              className={
+                transactionsExpanded
+                  ? "question-styles active"
+                  : "question-styles"
+              }
+            >
+              <span className="font_main">Transactions</span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* <div className="col-12 d-flex flex-wrap justify-content-start">
+              {received &&
+                tokenMetadata.attributes?.map((item, i) => {
+                  return (
+                    <div className="col-6 col-md-4 col-xl-3 col-xxl-2 p-1">
+                      <Attribute
+                        trait={item.trait_type}
+                        value={item.value}
+                        key={i}
+                      />
+                    </div>
+                  );
+                })}
+            </div> */}
+          </AccordionDetails>
+        </Accordion>
       </div>
     </div>
   );
