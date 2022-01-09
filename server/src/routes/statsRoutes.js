@@ -15,12 +15,6 @@ const routes = [
   },
   {
     method: 'GET',
-    url: '/stats/topTrades',
-    schema: schema.topTrades,
-    handler: statsHandlers.topTrades
-  },
-  {
-    method: 'GET',
     url: '/stats/topTraders',
     schema: schema.topTraders,
     handler: statsHandlers.topTraders
@@ -30,6 +24,18 @@ const routes = [
     url: '/stats/topNFTs',
     schema: schema.topNFTs,
     handler: statsHandlers.topNFTs
+  },
+  {
+    method: 'GET',
+    url: '/stats/mintHistory',
+    schema: schema.mintHistory,
+    handler: statsHandlers.mintHistory
+  },
+  {
+    method: 'GET',
+    url: '/stats/walletHistory',
+    schema: schema.walletHistory,
+    handler: statsHandlers.walletHistory
   },
   {
     method: 'GET',

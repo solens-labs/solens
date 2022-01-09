@@ -5,6 +5,8 @@ const Transaction = require('../models/Transaction')
 const Collection = require('../models/Collection')
 const HourlyStats = require('../models/HourlyStats')
 const DailyStats = require('../models/DailyStats')
+const Wallets = require('../models/Wallets')
+const DailyWallets = require('../models/DailyWallets')
 const Floor = require('../models/Floor')
 const AllTimeStats = require('../models/AllTimeStats')
 
@@ -173,7 +175,7 @@ exports.collection = async (req, reply) => {
   }
 }
 
-exports.topTrades = async (req, reply) => {
+exports.topNFTs = async (req, reply) => {
   try {
     const { ...query } = req.query
     const startDate = new Date();
@@ -209,81 +211,109 @@ exports.topTrades = async (req, reply) => {
   }
 }
 
-exports.topTraders = async (req, reply) => {
+exports.mintHistory = async (req, reply) => {
   try {
-    const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
-
-    let match = { $match: {
-      date: { $gte: startDate },
-      ...helpers.matchBuyTxs(),
-    } }
-    if (query.symbol) {
-      match.$match.symbol = query.symbol
-    }
-    let key = 'new_owner'
-    if (query.type == 'sellers') {
-      key = 'owner'
-    }
-
-    let accounts = await Transaction.aggregate([
-      match,
-      { $sort: {price: -1} },
-      { $limit: 1000 },
-      { $group: {
-        _id: {account: `$${key}`}
-      } },
-      { $project: {
-        account: "$_id.account",
-        _id: 0,
-      } }
-    ])
-    accounts = accounts.map(acc => acc.account)
-
     const entries = Transaction.aggregate([
-      match,
-      {$match: {
-        [key]: {$in: accounts}
-      }},
-      helpers.groupTxStats(id = key),
-      { $sort: { [query.sortBy]: -1} },
-      { $limit: 25 },
-      helpers.projectTxStats(id = key, idProjection = 'account'),
-      { $project : { _id: 0 } }
-    ],
-    {allowDiskUse: true})
+      { $match: {
+        mint: req.query.mint,
+        ...helpers.matchBuyTxs(),
+      } },
+      { $sort: { date: -1} },
+      { $limit: 10 },
+      { $project:
+        {
+          seller : "$owner",
+          buyer: "$new_owner",
+          date: 1,
+          symbol: 1,
+          price: { $round: ["$price", 2] },
+          _id: 0
+        }
+      }
+    ])
     return entries
   } catch (err) {
     throw boom.boomify(err)
   }
 }
 
-exports.topNFTs = async (req, reply) => {
+exports.walletHistory = async (req, reply) => {
   try {
-    const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
-
-    let match = { $match: {
-      date: { $gte: startDate },
-      ...helpers.matchBuyTxs(),
-    } }
-    if (query.symbol) {
-      match.$match.symbol = query.symbol
-    }
-
-    const entries = await Transaction.aggregate([
-      match,
-      { $sort: {price: -1} },
-      { $limit: 10000 },
-      helpers.groupTxStatsWithSymbol(id = 'mint'),
-      { $sort: { [query.sortBy]: -1} },
-      { $limit: 100 },
-      helpers.projectTxStatsWithSymbol(id = 'mint', idProjection = 'mint'),
-      { $project : { _id: 0 } }
+    console.log(req.query)
+    const entries = Transaction.aggregate([
+      { $match: {
+        $and: [
+          {$or: [
+            {owner: req.query.wallet},
+            {new_owner: req.query.wallet}
+          ]},
+          helpers.matchBuyTxs(),
+        ]
+      } },
+      { $sort: { date: -1} },
+      { $limit: 10 },
+      { $project:
+        {
+          seller : "$owner",
+          buyer: "$new_owner",
+          date: 1,
+          symbol: 1,
+          price: { $round: ["$price", 2] },
+          _id: 0
+        }
+      }
     ])
     return entries
+  } catch (err) {
+    throw boom.boomify(err)
+  }
+}
+
+exports.topTraders = async (req, reply) => {
+  try {
+    const { ...query } = req.query
+    const startDate = new Date()
+    startDate.setUTCHours(0)
+    startDate.setUTCMinutes(0)
+    startDate.setUTCSeconds(0)
+    startDate.setUTCMilliseconds(0)
+
+    let DBCollection = Wallets
+
+    let match = { $match: {
+    } }
+    if (!query.all_time) {
+      DBCollection = DailyWallets
+      match.$match.start = startDate
+    }
+    if (query.symbol) {
+      match.$match.symbol = query.symbol
+    } else {
+      match.$match.symbol = 'all'
+    }
+    if (query.type == 'buyers') {
+      match.$match.type = 'buyer'
+    } else {
+      match.$match.type = 'seller'
+    }
+    console.log(match)
+    return DBCollection.aggregate([
+      match,
+      { $sort: { [query.sortBy]: -1} },
+      { $limit: 25 },
+      { $project:
+        {
+          volume: { $round: ["$volume", 2] },
+          min: { $round: ["$min", 2] },
+          max: { $round: ["$max", 2] },
+          avg: { $round: ["$avg", 2] },
+          wallet: 1,
+          symbol: 1,
+          count: 1,
+          _id: 0,
+        }
+      }
+    ])
   } catch (err) {
     throw boom.boomify(err)
   }
