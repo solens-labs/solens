@@ -60,6 +60,12 @@ const routes = [
     url: '/stats/floor',
     schema: schema.floor,
     handler: statsHandlers.floor
+  },
+  {
+    method: 'GET',
+    url: '/stats/symbol',
+    schema: schema.mintHistory,
+    handler: statsHandlers.symbol
   }
 ]
 

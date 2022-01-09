@@ -211,6 +211,17 @@ exports.topNFTs = async (req, reply) => {
   }
 }
 
+exports.symbol = async (req, reply) => {
+  try {
+    return Collection.findOne(
+      {mint: req.query.mint},
+      {symbol: 1, _id: 0}
+    )
+  } catch (err) {
+    throw boom.boomify(err)
+  }
+}
+
 exports.mintHistory = async (req, reply) => {
   try {
     const entries = Transaction.aggregate([
@@ -258,6 +269,7 @@ exports.walletHistory = async (req, reply) => {
           buyer: "$new_owner",
           date: 1,
           symbol: 1,
+          mint: 1,
           price: { $round: ["$price", 2] },
           _id: 0
         }
