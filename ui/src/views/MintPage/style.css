@@ -2,6 +2,8 @@
   overflow: hidden;
   border-radius: 15px;
   box-shadow: 0px 0px 15px 1px black;
+  min-height: 450px;
+  max-width: 450px;
 }
 
 .nft_image {
@@ -16,6 +18,9 @@
 }
 
 @media screen and (max-width: 900px) {
+  .nft_image_container {
+    min-height: 400px;
+  }
   .nft_image {
     height: 400px;
   }

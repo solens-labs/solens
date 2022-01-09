@@ -5,27 +5,27 @@ import { useParams } from "react-router-dom";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import Attribute from "../../components/Attribute";
 import Loader from "../../components/Loader";
-import { explorerLink } from "../../constants/constants";
+import { api, explorerLink } from "../../constants/constants";
 import { shortenAddress } from "../../candy-machine";
 import InfoModule from "../../components/InfoModule";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
 } from "../../components/Accordion";
 import { Typography } from "@material-ui/core";
+import axios from "axios";
 
 export default function MintPage(props) {
   const { address } = useParams();
   const { links } = props;
 
+  // Token Detials State
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [royalty, setRoyalty] = useState(0);
   const [attributes, setAttributes] = useState([]);
   const [marketplaces, setMarketplaces] = useState([]);
+  const [image, setImage] = useState("");
 
   // Accordions Expansion State
   const [attributesExpanded, setAttributesExpanded] = useState(true);
@@ -39,19 +39,25 @@ export default function MintPage(props) {
     if (address && !received) {
       const metadata = getTokenMetadata(address);
       const resolved = await Promise.resolve(metadata);
-      console.log(resolved);
       setTokenMetadata(resolved);
     }
   }, [address]);
 
   // Fetch mint's collection data
   useEffect(async () => {
-    // if ()
-  });
+    if (address) {
+      // const apiRequest = api.marketStats + "?days=" + 365;
+      // const marketData = axios.get(apiRequest).then((response) => {
+      //   const data = response.data
+      //   console.log(data);
+      // });
+    }
+  }, [address]);
 
   // Calculate Royalty into State
   useEffect(() => {
     if (received) {
+      setImage(tokenMetadata.image);
       setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
       setAttributes(tokenMetadata.attributes);
     }
@@ -63,11 +69,7 @@ export default function MintPage(props) {
         <div className="col-12 col-lg-6 d-flex justify-content-center align-items-start p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
-              <img
-                src={tokenMetadata && tokenMetadata.image}
-                className="nft_image"
-                alt=""
-              />
+              <img src={image} className="nft_image" alt="" />
             </div>
           ) : (
             <div className="nft_image_container d-flex justify-content-center overflow-hidden">

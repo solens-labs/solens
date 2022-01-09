@@ -1,8 +1,7 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
-const serverOld = "https://api-mainnet.arnori.io/api/stats/";
-const server = "https://api.arnori.io/stats/";
-const devServer = "http://3.19.58.245:3000/stats/";
+const server = "https://api.arnori.io/stats/"; // mainnet production
+const devServer = "http://18.217.246.3:3000/stats/"; // developer
 
 export const queries = {
   symbol: "?symbol=",
