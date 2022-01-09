@@ -22,7 +22,7 @@ export default function TradingModule(props) {
             target="_blank"
           >
             <button className="btn_trade">
-              <div>
+              <div className="btn_trade_inner">
                 <img
                   src={me_logo}
                   alt=""
@@ -38,7 +38,7 @@ export default function TradingModule(props) {
             target="_blank"
           >
             <button className="btn_trade">
-              <div>
+              <div className="btn_trade_inner">
                 <img
                   src={sa_logo}
                   alt=""
@@ -51,7 +51,7 @@ export default function TradingModule(props) {
         <div className="col-4 col-md-4 p-1 p-md-2">
           <a href={explorerLink("token", item.mint)} target="_blank">
             <button className="btn_trade">
-              <div>
+              <div className="btn_trade_inner">
                 <img
                   src={ss_logo}
                   alt=""

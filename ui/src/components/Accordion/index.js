@@ -37,13 +37,13 @@ export const AccordionSummary = withStyles({
     // backgroundColor: `${bgColor}`,
     background: questionBgColor,
     backdropFilter: "blur(50px)",
+    border: `1px solid black`,
     borderRadius: "15px 15px 15px 15px",
     color: textColor,
-    paddingRight: "60px",
     margin: "1vh 0 0 0",
-    border: `1px solid black`,
-    // boxShadow: `0px 0px 15px 2px black`,
     minHeight: 79,
+    // paddingRight: "60px",
+    // boxShadow: `0px 0px 15px 2px black`,
 
     "&$expanded": {
       minHeight: 79,
@@ -64,13 +64,13 @@ export const AccordionDetails = withStyles((theme) => ({
     // background: "rgba(0,0,0,0.2)",
     background: "rgba(18, 11, 37, 0.7)",
     backdropFilter: "blur(50px)",
+    border: `1px solid black`,
     borderRadius: "0px 0px 15px 15px",
     color: textColor,
-    // margin: "1vh 0vh",
     fontWeight: 100,
 
-    border: `1px solid black`,
+    // margin: "1vh 0vh",
     // boxShadow: `0px 0px 15px 2px ${bgColor}`,
-    padding: theme.spacing(2.5),
+    // padding: theme.spacing(1),
   },
 }))(MuiAccordionDetails);

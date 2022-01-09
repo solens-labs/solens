@@ -25,33 +25,42 @@ export default function MintPage(props) {
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [royalty, setRoyalty] = useState(0);
   const [attributes, setAttributes] = useState([]);
+  const [marketplaces, setMarketplaces] = useState([]);
+
+  // Accordions Expansion State
+  const [attributesExpanded, setAttributesExpanded] = useState(true);
+  const [transactionsExpanded, setTransactionsExpanded] = useState(false);
+  const [detailsExpanded, setDetailsExpanded] = useState(true);
 
   const received = Object.keys(tokenMetadata).length > 0;
 
   // Fetch mint address metadata
   useEffect(async () => {
-    if (address && Object.keys(tokenMetadata).length === 0) {
+    if (address && !received) {
       const metadata = getTokenMetadata(address);
       const resolved = await Promise.resolve(metadata);
-      // console.log(resolved);
+      console.log(resolved);
       setTokenMetadata(resolved);
     }
   }, [address]);
 
+  // Fetch mint's collection data
+  useEffect(async () => {
+    // if ()
+  });
+
   // Calculate Royalty into State
   useEffect(() => {
-    if (Object.keys(tokenMetadata).length > 0) {
+    if (received) {
       setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
+      setAttributes(tokenMetadata.attributes);
     }
   }, [tokenMetadata]);
 
-  const [attributesExpanded, setAttributesExpanded] = useState(false);
-  const [transactionsExpanded, setTransactionsExpanded] = useState(false);
-
   return (
-    <div className="col-12 d-flex flex-column align-items-center pt-5">
-      <div className="d-flex flex-row flex-wrap col-12 col-xxl-10 justify-content-center mb-4">
-        <div className="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4 col-xxl-5 d-flex justify-content-center align-items-start p-lg-2 p-xxl-1">
+    <div className="col-12 d-flex flex-column align-items-center mt-4 mt-lg-5">
+      <div className="details_header col-12 col-xl-10 col-xxl-8 d-flex flex-row flex-wrap justify-content-center mb-3">
+        <div className="col-12 col-lg-6 d-flex justify-content-center align-items-start p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
               <img
@@ -67,17 +76,43 @@ export default function MintPage(props) {
           )}
         </div>
 
-        <div className="d-flex flex-column col-12 col-lg-5 mt-4 mt-lg-0 p-lg-2 p-xxl-1">
+        <div className="col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
           <TradingModule item={tokenMetadata} links={links} />
-          <InfoModule
-            item={tokenMetadata}
-            royalty={royalty}
-            received={received}
-          />
+
+          <div className="details col-12 mt-3 mt-lg-0">
+            <Accordion
+              square
+              expanded={detailsExpanded}
+              onChange={() => setDetailsExpanded(!detailsExpanded)}
+            >
+              <AccordionSummary
+                aria-controls={`details_content`}
+                id={`details_header`}
+                // className="border_gradient border_gradient_purple"
+              >
+                <Typography
+                  className={
+                    attributesExpanded
+                      ? "question-styles active"
+                      : "question-styles"
+                  }
+                >
+                  <span className="font_main">Item Details</span>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <InfoModule
+                  item={tokenMetadata}
+                  royalty={royalty}
+                  received={received}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </div>
         </div>
       </div>
 
-      <div className="attributes col-12 xol-lg-10 col-xl-8 mb-3">
+      <div className="attributes col-12 col-xl-10 col-xxl-8 mb-3">
         <Accordion
           square
           expanded={attributesExpanded}
@@ -101,7 +136,7 @@ export default function MintPage(props) {
           <AccordionDetails>
             <div className="col-12 d-flex flex-wrap justify-content-start">
               {received &&
-                tokenMetadata.attributes?.map((item, i) => {
+                attributes.map((item, i) => {
                   return (
                     <div className="col-6 col-md-4 col-xl-3 col-xxl-2 p-1">
                       <Attribute
@@ -117,7 +152,7 @@ export default function MintPage(props) {
         </Accordion>
       </div>
 
-      <div className="transactions col-12 xol-lg-10 col-xl-8">
+      <div className="transactions col-12 col-xl-10 col-xxl-8 mb-3">
         <Accordion
           square
           expanded={transactionsExpanded}
