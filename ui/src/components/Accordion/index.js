@@ -14,10 +14,10 @@ const bgColor = "rgb(18, 11, 37)"; // dark purple
 
 export const Accordion = withStyles({
   root: {
-    textAlign: "left",
-    // borderRadius: "15px",
-    boxShadow: "0px 0px 0px 0px transparent",
     // fontWeight: "bolder",
+    // borderRadius: "15px",
+    textAlign: "left",
+    boxShadow: "0px 0px 0px 0px transparent",
     backgroundColor: "transparent",
     "&:not(:last-child)": {
       borderBottom: 0,

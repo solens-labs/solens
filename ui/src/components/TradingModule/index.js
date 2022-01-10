@@ -25,13 +25,13 @@ export default function TradingModule(props) {
         {collection?.name}
       </h4>
 
-      <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
+      {/* <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
         <h4 className="m-0 p-0">Status: Listed</h4>
         <h4 className="m-0 p-0">
           Price: <img src={sol_logo} alt="sol logo" className="price_logo_lg" />
           {item.price || 200}
         </h4>
-      </div>
+      </div> */}
 
       <div className="trading_buttons d-flex flex-wrap justify-content-around col-12 mt-3">
         {marketplaces.map((mp, i) => {
