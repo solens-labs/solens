@@ -85,7 +85,7 @@ export default function CollectionPage(props) {
       }
 
       if (result) {
-        const apiRequest = api.collection + queries.symbol + name;
+        const apiRequest = api.server.collection + queries.symbol + name;
         const collectionInfo = await axios.get(apiRequest).then((response) => {
           const collectionInfo = response.data[0];
           setCollectionInfo(collectionInfo);
@@ -110,7 +110,7 @@ export default function CollectionPage(props) {
     if (topTradesAll.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
       const apiRequest =
-        api.topTrades + queries.symbol + name + queries.days + 365;
+        api.server.topTrades + queries.symbol + name + queries.days + 365;
 
       const topTradesAll = await axios.get(apiRequest).then((response) => {
         const sales = response.data;
@@ -132,7 +132,7 @@ export default function CollectionPage(props) {
     if (topTradesWeek.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
-        api.topTrades + queries.symbol + name + queries.days + 7;
+        api.server.topTrades + queries.symbol + name + queries.days + 7;
 
       const topTradesWeek = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
@@ -149,7 +149,7 @@ export default function CollectionPage(props) {
     if (topTradesDay.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
-        api.topTrades + queries.symbol + name + queries.days + 1;
+        api.server.topTrades + queries.symbol + name + queries.days + 1;
 
       const topTradesDay = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
@@ -166,7 +166,7 @@ export default function CollectionPage(props) {
     if (topBuyers.length === 0) {
       debug && console.log(`fetching top buyers - ${name}`);
       const apiRequest =
-        api.topTraders +
+        api.server.topTraders +
         queries.symbol +
         name +
         queries.typeBuyers +
@@ -189,7 +189,7 @@ export default function CollectionPage(props) {
     if (topSellers.length === 0) {
       debug && console.log(`fetching top sellers - ${name}`);
       const apiRequest =
-        api.topTraders +
+        api.server.topTraders +
         queries.symbol +
         name +
         queries.typeSellers +
@@ -305,7 +305,8 @@ export default function CollectionPage(props) {
   // Fetch Historical Floor
   useEffect(async () => {
     if (floor2W.length === 0) {
-      const apiRequest = api.floor + queries.symbol + name + queries.days + 14;
+      const apiRequest =
+        api.server.floor + queries.symbol + name + queries.days + 14;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
 
@@ -330,7 +331,8 @@ export default function CollectionPage(props) {
     }
 
     if (floor1M.length === 0) {
-      const apiRequest = api.floor + queries.symbol + name + queries.days + 30;
+      const apiRequest =
+        api.server.floor + queries.symbol + name + queries.days + 30;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
         if (floor.length > 0) {
@@ -341,7 +343,8 @@ export default function CollectionPage(props) {
     }
 
     if (floorAll.length === 0) {
-      const apiRequest = api.floor + queries.symbol + name + queries.days + 365;
+      const apiRequest =
+        api.server.floor + queries.symbol + name + queries.days + 365;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
         const floor = response.data;
         if (floor.length > 0) {

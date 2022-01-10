@@ -11,11 +11,6 @@ const range = (len) => {
 
 const addTransaction = (transaction) => {
   const date = new Date(transaction["date"]);
-  const mintAddress = (
-    <a href={`/mint/${transaction["mint"]}`} style={{ textDecoration: "none" }}>
-      {shortenAddress(transaction["mint"])}
-    </a>
-  );
   const price = Number(transaction["price"]).toFixed(2);
   const buyerAddress = (
     <a
@@ -38,7 +33,6 @@ const addTransaction = (transaction) => {
 
   return {
     date: date.toLocaleDateString(),
-    address: mintAddress,
     price: price,
     buyer: buyerAddress,
     seller: sellerAddress,

@@ -16,6 +16,14 @@ export default function Attribute(props) {
     if (value.length > 11) {
       valueShort = value.slice(0, 11) + "...";
     }
+  } else {
+    if (trait.length > 20) {
+      traitShort = trait.slice(0, 20) + "...";
+    }
+
+    if (value.length > 15) {
+      valueShort = value.slice(0, 15) + "...";
+    }
   }
 
   return (

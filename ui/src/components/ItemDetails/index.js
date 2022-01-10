@@ -2,12 +2,12 @@ import React from "react";
 import { shortenAddress } from "../../candy-machine";
 import { explorerLink } from "../../constants/constants";
 
-export default function InfoModule(props) {
+export default function ItemDetails(props) {
   const { item, royalty, received } = props;
 
   return (
-    <div className="d-flex flex-row col-12">
-      <div className="col-6 col-lg-7 d-flex flex-column align-items-start justify-content-between">
+    <div className="d-flex flex-row flex-wrap col-12">
+      <div className="col-12 col-lg-6 d-flex flex-column align-items-start justify-content-between">
         <h5 className="mint_info">
           Mint:{" "}
           {received && (
@@ -52,7 +52,7 @@ export default function InfoModule(props) {
         </h5>
       </div>
 
-      <div className="col-6 col-lg-5 d-flex flex-column align-items-start justify-content-between">
+      <div className="col-12 col-lg-6 d-flex flex-column align-items-start justify-content-between">
         <h5 className="mint_info">
           Royalty:{" "}
           <span className="mint_info_value">{royalty.toFixed(2)}%</span>

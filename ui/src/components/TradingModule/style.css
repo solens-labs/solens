@@ -11,15 +11,21 @@
   height: 70%;
 }
 
-.mint_info {
+.mint_info,
+.mint_info a {
   /* color: rgb(134, 64, 117); */
   font-size: 0.9rem;
+  height: 25px;
+  padding: 0;
+  margin: 8px 0px;
   color: white;
 }
 
 .mint_info_value {
-  color: rgb(134, 64, 117);
   font-size: 0.9rem;
+  padding: 0;
+  margin: 0;
+  color: rgb(134, 64, 117);
 }
 
 /* .btn_trade {
@@ -61,4 +67,9 @@
 
 .btn_trade_inner:hover {
   background: transparent;
+}
+
+.item_collection {
+  color: rgb(134, 64, 117);
+  cursor: pointer;
 }

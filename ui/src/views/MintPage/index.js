@@ -5,32 +5,35 @@ import { useParams } from "react-router-dom";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import Attribute from "../../components/Attribute";
 import Loader from "../../components/Loader";
-import { api, explorerLink } from "../../constants/constants";
+import { api, explorerLink, queries } from "../../constants/constants";
 import { shortenAddress } from "../../candy-machine";
-import InfoModule from "../../components/InfoModule";
+import ItemDetails from "../../components/ItemDetails";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
 } from "../../components/Accordion";
 import { Typography } from "@material-ui/core";
+import convertActivityData from "../../utils/convertActivityData";
 import axios from "axios";
+import ActivityTable from "../../components/ActivityTable";
 
 export default function MintPage(props) {
   const { address } = useParams();
-  const { links } = props;
 
   // Token Detials State
+  const [collectionInfo, setCollectionInfo] = useState("");
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [royalty, setRoyalty] = useState(0);
   const [attributes, setAttributes] = useState([]);
-  const [marketplaces, setMarketplaces] = useState([]);
   const [image, setImage] = useState("");
+  const [marketplaces, setMarketplaces] = useState([]);
+  const [activity, setActivity] = useState([]);
 
   // Accordions Expansion State
-  const [attributesExpanded, setAttributesExpanded] = useState(true);
+  const [attributesExpanded, setAttributesExpanded] = useState(false);
   const [transactionsExpanded, setTransactionsExpanded] = useState(false);
-  const [detailsExpanded, setDetailsExpanded] = useState(true);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
 
   const received = Object.keys(tokenMetadata).length > 0;
 
@@ -43,14 +46,40 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint's collection data
+  // Fetch mint's collection symbol & data
   useEffect(async () => {
-    if (address) {
-      // const apiRequest = api.marketStats + "?days=" + 365;
-      // const marketData = axios.get(apiRequest).then((response) => {
-      //   const data = response.data
-      //   console.log(data);
-      // });
+    if (address && collectionInfo.length === 0) {
+      const apiRequest = api.devServer.symbol + address;
+      const request = axios.get(apiRequest).then((response) => {
+        const symbol = response.data.symbol;
+        if (symbol) {
+          const apiRequest2 = api.server.collection + queries.symbol + symbol;
+          const request2 = axios.get(apiRequest2).then((response) => {
+            const info = response.data[0];
+            setCollectionInfo(info);
+
+            const marketplacesArray = info.alltimestats?.map((mp, i) => {
+              return mp.marketplace;
+            });
+            setMarketplaces(marketplacesArray);
+          });
+        }
+      });
+    }
+  }, [address]);
+
+  // Fetch mint history
+  useEffect(async () => {
+    if (address && activity.length === 0) {
+      const apiRequest = api.devServer.mintHistory + address;
+      const request = axios.get(apiRequest).then((response) => {
+        const history = response.data;
+
+        if (history.length > 0) {
+          const data = convertActivityData(history);
+          setActivity(data);
+        }
+      });
     }
   }, [address]);
 
@@ -79,7 +108,12 @@ export default function MintPage(props) {
         </div>
 
         <div className="col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
-          <TradingModule item={tokenMetadata} links={links} />
+          <TradingModule
+            item={tokenMetadata}
+            mint={address}
+            collection={collectionInfo}
+            marketplaces={marketplaces}
+          />
 
           <div className="details col-12 mt-3 mt-lg-0">
             <Accordion
@@ -103,7 +137,7 @@ export default function MintPage(props) {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <InfoModule
+                <ItemDetails
                   item={tokenMetadata}
                   royalty={royalty}
                   received={received}
@@ -175,20 +209,9 @@ export default function MintPage(props) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {/* <div className="col-12 d-flex flex-wrap justify-content-start">
-              {received &&
-                tokenMetadata.attributes?.map((item, i) => {
-                  return (
-                    <div className="col-6 col-md-4 col-xl-3 col-xxl-2 p-1">
-                      <Attribute
-                        trait={item.trait_type}
-                        value={item.value}
-                        key={i}
-                      />
-                    </div>
-                  );
-                })}
-            </div> */}
+            <div className="col-12">
+              <ActivityTable data={activity} />
+            </div>
           </AccordionDetails>
         </Accordion>
       </div>

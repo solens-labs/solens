@@ -1,7 +1,7 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
-const server = "https://api.arnori.io/stats/"; // mainnet production
-const devServer = "http://18.217.246.3:3000/stats/"; // developer
+const server = "https://api.arnori.io/"; // mainnet production
+const devServer = "http://18.217.246.3:3000/"; // developer
 
 export const queries = {
   symbol: "?symbol=",
@@ -14,21 +14,19 @@ export const queries = {
 };
 
 export const api = {
-  allCollections: `${server + "allCollections"}`,
-  topTrades: `${server + "topTrades"}`,
-  topNFTs: `${server + "topNFTs"}`,
-  collection: `${server + "collection"}`,
-  topTraders: `${server + "topTraders"}`,
-  marketStats: `${server + "marketStats"}`,
-  floor: `${server + "floor"}`, // need symbol, days
-
-  getAllCollections: `${server + "getAllCollections"}`,
-  getCollection: `${server + "getCollection/"}`,
-  getDailyStats: `${server + "getDailyStats/"}`,
-  getHourlyStats: `${server + "getHourlyStats/"}`,
-  getTopBuys: `${server + "getTopBuys/"}`,
-  getTopBuyers: `${server + "getTopBuyers/"}`,
-  getTopSellers: `${server + "getTopSellers/"}`,
+  server: {
+    allCollections: server + "stats/allCollections",
+    collection: server + "stats/collection",
+    topTraders: server + "stats/topTraders",
+    topNFTs: server + "stats/topNFTs",
+    topTrades: server + "stats/topTrades",
+    marketStats: server + "stats/marketStats",
+    floor: server + "stats/floor", // need symbol, days
+  },
+  devServer: {
+    symbol: devServer + "symbol?mint=",
+    mintHistory: devServer + "stats/mintHistory?mint=",
+  },
 };
 
 export const exchangeApi = {
