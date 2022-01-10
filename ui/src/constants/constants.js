@@ -27,8 +27,6 @@ export const api = {
   devServer: {
     allCollections: devServer + "stats/allCollections",
     collection: devServer + "stats/collection",
-    topNFTs: devServer + "stats/topNFTs",
-    topTrades: devServer + "stats/topTrades",
     marketStats: devServer + "stats/marketStats",
     floor: devServer + "stats/floor", // need symbol, days
 
@@ -36,6 +34,7 @@ export const api = {
     symbol: devServer + "symbol?mint=", // working & complete
     mintHistory: devServer + "stats/mintHistory?mint=", // working & complete
     topTraders: devServer + "stats/topTraders", // working & complete
+    topNFTs: devServer + "stats/topNFTs", // replaced topTrades from previous
   },
 };
 

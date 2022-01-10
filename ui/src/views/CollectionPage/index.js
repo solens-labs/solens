@@ -110,8 +110,7 @@ export default function CollectionPage(props) {
     if (topTradesAll.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
       const apiRequest =
-        api.server.topTrades + queries.symbol + name + queries.days + 365;
-      console.log(apiRequest);
+        api.devServer.topNFTs + queries.symbol + name + queries.days + 365;
 
       const topTradesAll = await axios.get(apiRequest).then((response) => {
         const sales = response.data;
@@ -133,7 +132,7 @@ export default function CollectionPage(props) {
     if (topTradesWeek.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
-        api.server.topTrades + queries.symbol + name + queries.days + 7;
+        api.devServer.topNFTs + queries.symbol + name + queries.days + 7;
 
       const topTradesWeek = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
@@ -150,7 +149,7 @@ export default function CollectionPage(props) {
     if (topTradesDay.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
-        api.server.topTrades + queries.symbol + name + queries.days + 1;
+        api.devServer.topNFTs + queries.symbol + name + queries.days + 1;
 
       const topTradesDay = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
