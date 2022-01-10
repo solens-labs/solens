@@ -31,9 +31,9 @@ export default function MintPage(props) {
   const [activity, setActivity] = useState([]);
 
   // Accordions Expansion State
-  const [attributesExpanded, setAttributesExpanded] = useState(false);
-  const [transactionsExpanded, setTransactionsExpanded] = useState(false);
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [attributesExpanded, setAttributesExpanded] = useState(true);
+  const [transactionsExpanded, setTransactionsExpanded] = useState(false);
 
   const received = Object.keys(tokenMetadata).length > 0;
 
@@ -78,6 +78,7 @@ export default function MintPage(props) {
         if (history.length > 0) {
           const data = convertActivityData(history);
           setActivity(data);
+          setTransactionsExpanded(true);
         }
       });
     }
@@ -141,6 +142,7 @@ export default function MintPage(props) {
                   item={tokenMetadata}
                   royalty={royalty}
                   received={received}
+                  marketplaces={marketplaces}
                 />
               </AccordionDetails>
             </Accordion>

@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import "./style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 
 export default function ActivityTable(props) {
   const { data } = props;
@@ -83,17 +86,23 @@ export default function ActivityTable(props) {
                             : "activity_header"
                         }
                       >
-                        {
-                          // Render the header
-                          column.render("Header")
-                        }
-                        {/* <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span> */}
+                        <div className="header_inner d-flex flex-row p-0 m-0 justify-content-center">
+                          {
+                            // Render the header
+                            column.render("Header")
+                          }
+                          <div className="sort_arrow">
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <ArrowDropDownIcon />
+                              ) : (
+                                <ArrowDropUpIcon />
+                              )
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       </th>
                     ))
                   }
