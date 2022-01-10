@@ -25,6 +25,21 @@ export default function ItemDetails(props) {
           )}
         </h5>
         <h5 className="mint_info">
+          Royalty:{" "}
+          <span className="mint_info_value">{royalty.toFixed(2)}%</span>
+        </h5>
+        {solanart > 0 && (
+          <h5 className="mint_info">
+            Solanart Fee: <span className="mint_info_value">3%</span>
+          </h5>
+        )}
+        {magiceden > 0 && (
+          <h5 className="mint_info">
+            Magic Eden Fee: <span className="mint_info_value">2%</span>
+          </h5>
+        )}
+
+        {/* <h5 className="mint_info">
           Token:{" "}
           {received && (
             <a
@@ -51,10 +66,10 @@ export default function ItemDetails(props) {
               </span>{" "}
             </a>
           )}
-        </h5>
+        </h5> */}
       </div>
 
-      <div className="col-12 col-lg-6 d-flex flex-column align-items-start justify-content-start">
+      {/* <div className="col-12 col-lg-6 d-flex flex-column align-items-start justify-content-start">
         <h5 className="mint_info">
           Royalty:{" "}
           <span className="mint_info_value">{royalty.toFixed(2)}%</span>
@@ -69,7 +84,7 @@ export default function ItemDetails(props) {
             Magic Eden Fee: <span className="mint_info_value">2%</span>
           </h5>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
