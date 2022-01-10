@@ -38,9 +38,15 @@
   /* padding-top: 20px; */
 }
 
-.collection_info {
+.collection_info_stat {
   font-size: 1.3rem;
   font-weight: bold;
   padding-bottom: 0;
   margin-bottom: 0px;
+}
+
+@media screen and (max-width: 990px) {
+  .collection_info_stat {
+    font-size: 0.9rem;
+  }
 }

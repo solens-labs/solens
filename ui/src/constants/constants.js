@@ -30,11 +30,11 @@ export const api = {
     marketStats: server + "stats/marketStats",
     floor: server + "stats/floor",
 
-    // new endpoints -- NEED TO CHANGE "devServer" to "server" and turn on GA before deploy
-    symbol: devServer + "symbol?mint=", // working & complete
-    mintHistory: devServer + "stats/mintHistory?mint=", // working & complete
-    topTraders: devServer + "stats/topTraders", // working & complete
-    topNFTs: devServer + "stats/topNFTs", // replaced topTrades from previous
+    // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
+    mintSymbol: devServer + "symbol?mint=",
+    mintHistory: devServer + "stats/mintHistory?mint=",
+    topTraders: devServer + "stats/topTraders",
+    topNFTs: devServer + "stats/topNFTs",
   },
 };
 

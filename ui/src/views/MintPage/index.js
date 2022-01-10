@@ -50,7 +50,7 @@ export default function MintPage(props) {
   // Fetch mint's collection symbol & data
   useEffect(async () => {
     if (address && collectionInfo.length === 0) {
-      const apiRequest = api.server.symbol + address;
+      const apiRequest = api.server.mintSymbol + address;
       const request = axios.get(apiRequest).then((response) => {
         const symbol = response.data.symbol;
         if (symbol) {
