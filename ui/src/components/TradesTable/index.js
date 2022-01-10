@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import styled from "styled-components";
 import "./style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 
@@ -7,10 +8,6 @@ export default function TradesTable(props) {
 
   const columns = React.useMemo(
     () => [
-      {
-        Header: "DATE",
-        accessor: "date",
-      },
       {
         Header: "MINT",
         accessor: "address",
@@ -26,6 +23,18 @@ export default function TradesTable(props) {
       {
         Header: "SELLER",
         accessor: "seller",
+      },
+      {
+        Header: "DATE",
+        accessor: "date",
+        className: "test_width",
+        sortMethod: (a, b) => {
+          var a1 = new Date(a).getTime();
+          var b1 = new Date(b).getTime();
+          if (a1 < b1) return 1;
+          else if (a1 > b1) return -1;
+          else return 0;
+        },
       },
     ],
     []
@@ -142,7 +151,7 @@ export default function TradesTable(props) {
           </tbody>
         </table>
       </div>
-      <div className="d-flex flex-row flex-wrap col-12 justify-content-center align-items-center mt-2 mb-2">
+      <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-3 mb-2">
         <button
           className="btn-button btn-main pagination_button"
           onClick={() => previousPage()}

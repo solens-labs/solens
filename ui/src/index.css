@@ -2,7 +2,18 @@
   box-sizing: border-box;
 } */
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap"); */
+
+/* @font-face {
+  font-family: "alt";
+  src: local("alt"),
+    url("./assets/fonts/MidnightMinutes.otf") format("opentype");
+} */
+
+@font-face {
+  font-family: "main";
+  src: local("main"), url("./assets/fonts/Rajdhani.ttf") format("truetype");
+}
 
 * {
   box-sizing: border-box;
@@ -14,15 +25,15 @@ html {
   height: 100%;
   overflow: auto;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   z-index: -1;
-  width: 8px; /* Remove scrollbar space */
+  width: 0px;
   height: 5px;
-  background: transparent; /* Optional: just make scrollbar invisible */
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: white;
-}
+} */
 
 body {
   height: 100%;
@@ -48,16 +59,24 @@ code {
     monospace;
 }
 
-@font-face {
-  font-family: "alt";
-  src: local("alt"),
-    url("./assets/fonts/MidnightMinutes.otf") format("opentype");
-}
+/* .material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
 
-@font-face {
-  font-family: "main";
-  src: local("main"), url("./assets/fonts/Rajdhani.ttf") format("truetype");
-}
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+} */
 
 /* .MuiDialogTitle-root {
   color: white !important;

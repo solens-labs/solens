@@ -8,8 +8,11 @@ import { useSelector } from "react-redux";
 import { links } from "../../constants/constants";
 import logo2 from "../../assets/images/logo2.png";
 import { selectCurrentPage } from "../../redux/app";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
+import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 
 const Header = (props) => {
   //   const connected = useSelector(selectConnected);
@@ -30,46 +33,69 @@ const Header = (props) => {
 
   return (
     <nav className="navbar">
-      <div className="col-3">
+      <div className="col-4 col-lg-2 col-xxl-1 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="logo_container">
-            <img src={logo2} className="nav_logo" alt="logo" />
-            {/* <h1 className="app_title">SOLENS</h1> */}
+          <img src={logo2} className="nav_logo" alt="logo" />
+        </Link>
+      </div>
+
+      <div className="d-none d-lg-flex col-lg-7 col-xl-6 col-xxl-5 flex-wrap justify-content-around align-items-center">
+        <div className="nav_link_container">
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <h1 className="nav_link">home</h1>
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/collections" style={{ textDecoration: "none" }}>
+            <h1 className="nav_link">collections</h1>
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/wallets" style={{ textDecoration: "none" }}>
+            <h1 className="nav_link">wallets</h1>
+          </Link>
+        </div>
+        <div className="nav_link_container">
+          <Link to="/launch" style={{ textDecoration: "none" }}>
+            <h1 className="nav_link">launchzone</h1>
+          </Link>
+        </div>
+        {/* <Link to="/apply" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <h1 className="nav_link">apply</h1>
           </div>
-        </Link>
+        </Link> */}
       </div>
 
-      <div className="d-none d-lg-flex col-lg-9 flex-wrap justify-content-end align-items-center">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">home</h1>
-        </Link>
-        <Link to="/collections" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">collections</h1>
-        </Link>
-        <Link to="/wallets" style={{ textDecoration: "none" }}>
-          <h1 className="nav_page">wallets</h1>
-        </Link>
-        <a
-          href={links.twitter.url}
-          target="_blank"
-          style={{ textDecoration: "none" }}
-        >
-          <h1 className="nav_page">twitter</h1>
-        </a>
+      <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
+        <div className="icon_link">
+          <a
+            href={links.medium.url}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <MediumIcon style={{ fill: "white" }} className="icon_link" />
+          </a>
+        </div>
+        <div className="icon_link">
+          <a
+            href={links.twitter.url}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+          </a>
+        </div>
+        <div className="icon_link">
+          <a
+            href={links.email.contact}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <EmailIcon style={{ fill: "white" }} />
+          </a>
+        </div>
       </div>
-
-      {/* <div className="d-none d-lg-block col-2 social_links">
-        <button
-          className="collection_stat"
-          style={{
-            border: "1px solid black",
-            color: "white",
-            marginLeft: "20px",
-          }}
-        >
-          Connect Wallet
-        </button>
-      </div> */}
 
       {!menu && (
         <div onClick={showMenu} className="menu_icon">
@@ -85,39 +111,59 @@ const Header = (props) => {
         } slide-menu d-flex justify-content-between`}
       >
         <div className="mobile_menu">
-          {/* <Link to="/" style={{ textDecoration: "none" }}>
-            <img
-              src={logo2}
-              className="nav_logo nav_logo_mobile"
-              alt="logo"
-              onClick={() => showMenu()}
-            />
-          </Link> */}
+          <div className="col-6 d-flex flex-row justify-content-around p-2 pb-0 pt-0">
+            <a
+              href={links.twitter.url}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+            </a>
 
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <h1 className="nav_page" onClick={() => showMenu()}>
-              home
-            </h1>
-          </Link>
-          <Link to="/collections" style={{ textDecoration: "none" }}>
-            <h1 className="nav_page" onClick={() => showMenu()}>
-              collections
-            </h1>
-          </Link>
-          <Link to="/wallets" style={{ textDecoration: "none" }}>
-            <h1 className="nav_page" onClick={() => showMenu()}>
-              wallets
-            </h1>
-          </Link>
-          <a
-            href={links.twitter.url}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <h1 className="nav_page" onClick={() => showMenu()}>
-              twitter
-            </h1>
-          </a>
+            <a
+              href={links.medium.url}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <MediumIcon style={{ fill: "white" }} className="icon_link" />
+            </a>
+
+            <a
+              href={links.email.contact}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <EmailIcon style={{ fill: "white" }} className="icon_link" />
+            </a>
+          </div>
+
+          <div className="col-6 d-flex flex-column justify-content-between">
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                home
+              </h1>
+            </Link>
+            <Link to="/collections" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                collections
+              </h1>
+            </Link>
+            <Link to="/wallets" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                wallets
+              </h1>
+            </Link>
+            <Link to="/launch" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                launchzone
+              </h1>
+            </Link>
+            {/* <Link to="/apply" style={{ textDecoration: "none" }}>
+              <h1 className="nav_link" onClick={() => showMenu()}>
+                apply
+              </h1>
+            </Link> */}
+          </div>
         </div>
       </div>
     </nav>

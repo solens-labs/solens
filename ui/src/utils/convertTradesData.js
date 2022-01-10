@@ -49,7 +49,7 @@ const addTransaction = (transaction) => {
   };
 };
 
-export default function convertData(transactions, lens) {
+export default function convertData(transactions, lens = 100) {
   const makeDataLevel = () => {
     const requestedLength = Math.min(transactions.length, lens);
 

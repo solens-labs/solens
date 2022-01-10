@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useMemo } from "react";
 
-import Home from "./views/Home";
+import Base from "./views/Base/index.js";
 
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
@@ -21,7 +21,7 @@ import { WalletDialogProvider } from "@solana/wallet-adapter-material-ui";
 import { BrowserRouter as Router } from "react-router-dom";
 import ReactGA from "react-ga";
 
-ReactGA.initialize("UA-215619609-1");
+// ReactGA.initialize("UA-215619609-1");
 const network = process.env.REACT_APP_SOLANA_NETWORK as WalletAdapterNetwork;
 
 const App = () => {
@@ -36,7 +36,7 @@ const App = () => {
       <WalletProvider wallets={wallets} autoConnect>
         <WalletDialogProvider>
           <Router>
-            <Home />
+            <Base />
           </Router>
         </WalletDialogProvider>
       </WalletProvider>

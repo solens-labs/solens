@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const collectionSchema = new mongoose.Schema({
-  symbol: {type: String, require: true, index: true},
+  symbol: {type: String, require: true, index: true, unique: true},
   name: {type: String, require: true},
   image: {type: String, require: true},
   description: {type: String, require: true},

@@ -127,10 +127,10 @@ def add_new_me_collections_to_database(dump_file, symbols = None):
   if not symbols:
     symbols = get_me_symbols()
 
-  symbols = get_non_existent_symbols(symbols)
+  # symbols = get_non_existent_symbols(symbols)
   print('Found', len(symbols), 'new collections.')
   
-  dump_me_collections(dump_file, symbols)
+  # dump_me_collections(dump_file, symbols)
 
   collections = filter_me_collections(dump_file)
   collections = sanitized_me_collections(collections)
@@ -140,4 +140,4 @@ def add_new_me_collections_to_database(dump_file, symbols = None):
 
 
 
-add_new_me_collections_to_database("outfile.json")
+add_new_me_collections_to_database("solgods.json", ["solgods"])

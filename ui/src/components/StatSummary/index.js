@@ -1,6 +1,5 @@
 import React from "react";
 import "./style.css";
-import { default_button } from "../Buttons";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import ReactGA from "react-ga";
 
@@ -12,6 +11,8 @@ export default function StatSummary(props) {
       return `https://solanart.io/collections/${symbol}`;
     } else if (marketplaceData.marketplace === "magiceden") {
       return `https://magiceden.io/marketplace/${symbol}`;
+    } else if (marketplaceData.marketplace === "smb") {
+      return `https://market.solanamonkey.business/`;
     }
   };
 
@@ -36,7 +37,7 @@ export default function StatSummary(props) {
       </h5>
       {/* <hr style={{ color: "white", margin: "10px 0px 10px 0px" }} /> */}
       <div className="collection_stats d-flex flex-wrap justify-content-center col-12">
-        <div className="collection_stat_container col-6">
+        <div className="summary_stat_container col-6">
           <div className="collection_stat_secondary">
             <h1 className="collection_info collection_info_large">
               {marketplaceData.volume
@@ -44,13 +45,12 @@ export default function StatSummary(props) {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })
-                : 0}{" "}
-              SOL
+                : 0}
             </h1>
-            <h1 className="collection_info_header">Volume</h1>
+            <h1 className="collection_info_header">Volume (SOL)</h1>
           </div>
         </div>
-        <div className="collection_stat_container col-6">
+        <div className="summary_stat_container col-6">
           <div className="collection_stat_secondary">
             <h1 className="collection_info collection_info_large">
               {marketplaceData.transactions
@@ -62,22 +62,20 @@ export default function StatSummary(props) {
           </div>
         </div>
       </div>
-      <div className="collection_stat_container col-12">
+      <div className="summary_stat_container col-12">
         <div className="collection_stat_secondary d-flex flex-wrap justify-content-around">
           <div>
             <h1 className="collection_info collection_info_large">
               {marketplaceData.minPrice
                 ? marketplaceData.minPrice.toFixed(2)
-                : 0}{" "}
-              SOL
+                : 0}
             </h1>
 
             <h1 className="collection_info_header">Lowest</h1>
           </div>
           <div>
             <h1 className="collection_info collection_info_large">
-              {marketplaceData.average ? marketplaceData.average.toFixed(2) : 0}{" "}
-              SOL
+              {marketplaceData.average ? marketplaceData.average.toFixed(2) : 0}
             </h1>
 
             <h1 className="collection_info_header">Average</h1>
@@ -86,8 +84,7 @@ export default function StatSummary(props) {
             <h1 className="collection_info collection_info_large">
               {marketplaceData.maxPrice
                 ? marketplaceData.maxPrice.toFixed(2)
-                : 0}{" "}
-              SOL
+                : 0}
             </h1>
 
             <h1 className="collection_info_header">Highest</h1>

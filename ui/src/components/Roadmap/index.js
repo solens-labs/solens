@@ -6,7 +6,7 @@ import roadmap1 from "../../assets/images/roadmap1.png";
 import roadmap2 from "../../assets/images/roadmap2.png";
 import roadmap3 from "../../assets/images/roadmap3.png";
 import roadmap4 from "../../assets/images/roadmap4.png";
-import "../Buttons.css";
+import "../Buttons/style.css";
 
 export default function Roadmap(props) {
   const dispatch = useDispatch();

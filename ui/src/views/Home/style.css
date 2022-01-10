@@ -1,0 +1,51 @@
+.homepage_logo {
+  max-height: 175px;
+  /* margin-bottom: 20px; */
+  margin-top: 20px;
+}
+
+.market_stat {
+  /* border: 1px solid white; */
+  /* background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%); */
+  /* box-shadow: inset 0px 0px 5px 0px black; */
+  /* background: rgb(53, 43, 87); */
+  background: rgb(18, 11, 37);
+  border-radius: 15px;
+  padding: 20px 20px;
+  width: 450px;
+  /* min-width: 100%; */
+}
+
+.landing_page_section {
+  /* border: 1px solid white; */
+  /* background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%); */
+  /* box-shadow: inset 0px 0px 5px 0px black; */
+  /* background: rgb(53, 43, 87); */
+  background: rgb(18, 11, 37);
+  border-radius: 15px;
+  padding: 20px 10px;
+  /* min-width: 450px; */
+  /* min-width: 100%; */
+}
+
+.test_select {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.explore_all_button {
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+  border-radius: 15px;
+  padding: 5px 30px;
+  min-width: 200px;
+  /* max-height: 70px; */
+}
+
+@media screen and (max-width: 1250px) {
+  .homepage_tagline {
+    font-size: 24px;
+  }
+}

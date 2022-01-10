@@ -7,10 +7,11 @@ import { marketplaceSelect } from "../../utils/collectionStats";
 
 export default function MarketplaceCharts(props) {
   const { marketplaceData, symbol } = props;
+  // console.log(marketplaceData);
 
   return (
     <>
-      <div className="d-flex flex-row flex-wrap justify-content-around col-12 col-lg-10">
+      <div className="d-flex flex-row flex-wrap justify-content-around col-12">
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-lg-0">
           <StatSummary marketplaceData={marketplaceData} symbol={symbol} />
         </div>
@@ -20,16 +21,17 @@ export default function MarketplaceCharts(props) {
               marketplaceData.marketplace
             )} Price`}
             dates={marketplaceData.dates}
-            legend={["Min Price", "Max Price", "Average Price"]}
+            legend={["Max Price", "Avg Price", "Min Price"]}
             dataset={[
-              marketplaceData.minArray,
               marketplaceData.maxArray,
               marketplaceData.averageArray,
+              marketplaceData.minArray,
             ]}
+            pointRadius={5}
           />
         </div>
       </div>
-      <div className="d-flex flex-row flex-wrap justify-content-around col-12 col-lg-10 mt-lg-5">
+      <div className="d-flex flex-row flex-wrap justify-content-around col-12 mt-lg-5">
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
           <LineChart
             chartTitle={`${marketplaceSelect(
@@ -39,6 +41,7 @@ export default function MarketplaceCharts(props) {
             legend={["Volume (SOL)"]}
             dataset={[marketplaceData.volumeArray]}
             color={lineColors[0]}
+            pointRadius={5}
           />
         </div>
         <div className="chartbox d-flex justify-content-center col-12 col-lg-5 mt-5 mt-lg-0">
@@ -50,6 +53,7 @@ export default function MarketplaceCharts(props) {
             legend={["Transactions (Count)"]}
             dataset={[marketplaceData.transactionsArray]}
             color={lineColors[1]}
+            pointRadius={5}
           />
         </div>
       </div>
