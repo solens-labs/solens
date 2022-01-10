@@ -74,5 +74,7 @@ export const AccordionDetails = withStyles((theme) => ({
     // margin: "1vh 0vh",
     // boxShadow: `0px 0px 15px 2px ${bgColor}`,
     // padding: theme.spacing(1),
+    padding: 0,
+    overflow: "hidden",
   },
 }))(MuiAccordionDetails);
