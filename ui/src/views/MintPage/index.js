@@ -50,7 +50,7 @@ export default function MintPage(props) {
   // Fetch mint's collection symbol & data
   useEffect(async () => {
     if (address && collectionInfo.length === 0) {
-      const apiRequest = api.devServer.symbol + address;
+      const apiRequest = api.server.symbol + address;
       const request = axios.get(apiRequest).then((response) => {
         const symbol = response.data.symbol;
         if (symbol) {
@@ -72,7 +72,7 @@ export default function MintPage(props) {
   // Fetch mint history
   useEffect(async () => {
     if (address && activity.length === 0) {
-      const apiRequest = api.devServer.mintHistory + address;
+      const apiRequest = api.server.mintHistory + address;
       const request = axios.get(apiRequest).then((response) => {
         const history = response.data;
 

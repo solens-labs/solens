@@ -15,22 +15,22 @@ export const queries = {
 };
 
 export const api = {
-  server: {
+  prodServer: {
     allCollections: server + "stats/allCollections",
     collection: server + "stats/collection",
     topTraders: server + "stats/topTraders",
     topNFTs: server + "stats/topNFTs",
     topTrades: server + "stats/topTrades",
     marketStats: server + "stats/marketStats",
-    floor: server + "stats/floor", // need symbol, days
+    floor: server + "stats/floor",
   },
-  devServer: {
-    allCollections: devServer + "stats/allCollections",
-    collection: devServer + "stats/collection",
-    marketStats: devServer + "stats/marketStats",
-    floor: devServer + "stats/floor", // need symbol, days
+  server: {
+    allCollections: server + "stats/allCollections",
+    collection: server + "stats/collection",
+    marketStats: server + "stats/marketStats",
+    floor: server + "stats/floor",
 
-    // new endpoints
+    // new endpoints -- NEED TO CHANGE "devServer" to "server" and turn on GA before deploy
     symbol: devServer + "symbol?mint=", // working & complete
     mintHistory: devServer + "stats/mintHistory?mint=", // working & complete
     topTraders: devServer + "stats/topTraders", // working & complete

@@ -148,7 +148,7 @@ export default function Home(props) {
   useEffect(async () => {
     if (walletBuyersWeek.length === 0) {
       const apiRequest =
-        api.devServer.topTraders +
+        api.server.topTraders +
         "?all_time=true" +
         "&type=buyers" +
         queries.sortVolume;
@@ -160,7 +160,7 @@ export default function Home(props) {
 
     if (walletSellersWeek.length === 0) {
       const apiRequest =
-        api.devServer.topTraders +
+        api.server.topTraders +
         "?all_time=true" +
         "&type=sellers" +
         queries.sortVolume;
@@ -172,7 +172,7 @@ export default function Home(props) {
 
     if (walletBuyersDay.length === 0) {
       const apiRequest =
-        api.devServer.topTraders +
+        api.server.topTraders +
         "?all_time=false" +
         "&type=buyers" +
         queries.sortVolume;
@@ -184,7 +184,7 @@ export default function Home(props) {
 
     if (walletSellersDay.length === 0) {
       const apiRequest =
-        api.devServer.topTraders +
+        api.server.topTraders +
         "?all_time=false" +
         "&type=sellers" +
         queries.sortVolume;
@@ -208,7 +208,7 @@ export default function Home(props) {
   // Fetch Top NFTs
   useEffect(async () => {
     if (topNFTsDay.length === 0) {
-      const apiRequest = api.devServer.topNFTs + "?days=" + 1;
+      const apiRequest = api.server.topNFTs + "?days=" + 1;
       const topFourNFTs = await axios.get(apiRequest).then((response) => {
         const nfts = response.data;
         const topFour = nfts.slice(0, 4);

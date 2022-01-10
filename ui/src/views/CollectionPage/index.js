@@ -110,7 +110,7 @@ export default function CollectionPage(props) {
     if (topTradesAll.length === 0) {
       debug && console.log(`fetching top sales - ${name}`);
       const apiRequest =
-        api.devServer.topNFTs + queries.symbol + name + queries.days + 365;
+        api.server.topNFTs + queries.symbol + name + queries.days + 365;
 
       const topTradesAll = await axios.get(apiRequest).then((response) => {
         const sales = response.data;
@@ -132,7 +132,7 @@ export default function CollectionPage(props) {
     if (topTradesWeek.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
-        api.devServer.topNFTs + queries.symbol + name + queries.days + 7;
+        api.server.topNFTs + queries.symbol + name + queries.days + 7;
 
       const topTradesWeek = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
@@ -149,7 +149,7 @@ export default function CollectionPage(props) {
     if (topTradesDay.length === 0) {
       debug && console.log(`fetching top weekly trades - ${name}`);
       const apiRequest =
-        api.devServer.topNFTs + queries.symbol + name + queries.days + 1;
+        api.server.topNFTs + queries.symbol + name + queries.days + 1;
 
       const topTradesDay = await axios.get(apiRequest).then((response) => {
         const trades = response.data;
@@ -166,7 +166,7 @@ export default function CollectionPage(props) {
     if (topBuyers.length === 0) {
       debug && console.log(`fetching top buyers - ${name}`);
       const apiRequest =
-        api.devServer.topTraders +
+        api.server.topTraders +
         queries.symbol +
         name +
         queries.typeBuyers +
@@ -189,7 +189,7 @@ export default function CollectionPage(props) {
     if (topSellers.length === 0) {
       debug && console.log(`fetching top sellers - ${name}`);
       const apiRequest =
-        api.devServer.topTraders +
+        api.server.topTraders +
         queries.symbol +
         name +
         queries.typeSellers +
