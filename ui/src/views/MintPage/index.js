@@ -17,6 +17,7 @@ import { Typography } from "@material-ui/core";
 import convertActivityData from "../../utils/convertActivityData";
 import axios from "axios";
 import ActivityTable from "../../components/ActivityTable";
+import sol_logo from "../../assets/images/sol_logo.png";
 
 export default function MintPage(props) {
   const { address } = useParams();
@@ -96,7 +97,7 @@ export default function MintPage(props) {
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4 mt-lg-5">
       <div className="details_header col-12 col-xl-10 col-xxl-8 d-flex flex-row flex-wrap justify-content-center mb-3">
-        <div className="col-12 col-lg-6 d-flex justify-content-center align-items-start p-1 pt-0 pb-0">
+        <div className="col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
               <img src={image} className="nft_image" alt="" />
@@ -106,6 +107,14 @@ export default function MintPage(props) {
               <Loader />
             </div>
           )}
+          {/* <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
+            <h4 className="m-0 p-0">Status: Listed</h4>
+            <h4 className="m-0 p-0">
+              Price:{" "}
+              <img src={sol_logo} alt="sol logo" className="price_logo_lg" />
+              {200}
+            </h4>
+          </div> */}
         </div>
 
         <div className="col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">

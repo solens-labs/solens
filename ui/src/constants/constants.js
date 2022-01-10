@@ -11,6 +11,7 @@ export const queries = {
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
   mintList: "&mint=true",
+  allTime: "&all_time=",
 };
 
 export const api = {
@@ -24,8 +25,17 @@ export const api = {
     floor: server + "stats/floor", // need symbol, days
   },
   devServer: {
-    symbol: devServer + "symbol?mint=",
-    mintHistory: devServer + "stats/mintHistory?mint=",
+    allCollections: devServer + "stats/allCollections",
+    collection: devServer + "stats/collection",
+    topNFTs: devServer + "stats/topNFTs",
+    topTrades: devServer + "stats/topTrades",
+    marketStats: devServer + "stats/marketStats",
+    floor: devServer + "stats/floor", // need symbol, days
+
+    // new endpoints
+    symbol: devServer + "symbol?mint=", // working & complete
+    mintHistory: devServer + "stats/mintHistory?mint=", // working & complete
+    topTraders: devServer + "stats/topTraders", // working & complete
   },
 };
 

@@ -111,6 +111,7 @@ export default function CollectionPage(props) {
       debug && console.log(`fetching top sales - ${name}`);
       const apiRequest =
         api.server.topTrades + queries.symbol + name + queries.days + 365;
+      console.log(apiRequest);
 
       const topTradesAll = await axios.get(apiRequest).then((response) => {
         const sales = response.data;
@@ -166,12 +167,12 @@ export default function CollectionPage(props) {
     if (topBuyers.length === 0) {
       debug && console.log(`fetching top buyers - ${name}`);
       const apiRequest =
-        api.server.topTraders +
+        api.devServer.topTraders +
         queries.symbol +
         name +
         queries.typeBuyers +
-        queries.days +
-        365 +
+        queries.allTime +
+        true +
         queries.sortVolume;
 
       const topBuyers = await axios.get(apiRequest).then((response) => {
@@ -189,12 +190,12 @@ export default function CollectionPage(props) {
     if (topSellers.length === 0) {
       debug && console.log(`fetching top sellers - ${name}`);
       const apiRequest =
-        api.server.topTraders +
+        api.devServer.topTraders +
         queries.symbol +
         name +
         queries.typeSellers +
-        queries.days +
-        365 +
+        queries.allTime +
+        true +
         queries.sortVolume;
 
       const topSellers = await axios.get(apiRequest).then((response) => {

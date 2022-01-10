@@ -30,9 +30,9 @@ export default function HomePage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const collections = useSelector(selectAllCollections);
-  const walletBuyers = useSelector(selectWalletBuyers);
+  const walletBuyersAll = useSelector(selectWalletBuyers);
   const walletBuyersDay = useSelector(selectWalletBuyersDay);
-  const walletSellers = useSelector(selectWalletSellers);
+  const walletSellersAll = useSelector(selectWalletSellers);
   const walletSellersDay = useSelector(selectWalletSellersDay);
   const [trending, setTrending] = useState([]);
   const solPrice = useSelector(selectSolPrice);
@@ -44,6 +44,7 @@ export default function HomePage(props) {
   const [volume, setVolume] = useState(volumeDay);
   const [buyers, setBuyers] = useState(walletBuyersDay);
   const [sellers, setSellers] = useState(walletSellersDay);
+
   useEffect(() => {
     switch (walletsTimeframe) {
       case 1:
@@ -51,13 +52,15 @@ export default function HomePage(props) {
         setBuyers(walletBuyersDay);
         setSellers(walletSellersDay);
         break;
-      case 7:
+      case 10000:
         setVolume(volumeWeek);
-        setBuyers(walletBuyers);
-        setSellers(walletSellers);
+        setBuyers(walletBuyersAll);
+        setSellers(walletSellersAll);
         break;
     }
   }, [walletsTimeframe]);
+
+  // Set the default wallets timeframe
   useEffect(() => {
     setVolume(volumeDay);
     setBuyers(walletBuyersDay);
@@ -199,8 +202,8 @@ export default function HomePage(props) {
           <Timeframe
             currentTimeframe={walletsTimeframe}
             setTimeframe={setWalletsTimeframe}
-            timeframes={["DAY", "WEEK"]}
-            intervals={[1, 7]}
+            timeframes={["DAY", "ALL"]}
+            intervals={[1, 10000]}
           />
         </div>
 

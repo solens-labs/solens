@@ -34,7 +34,7 @@ import HomePage from "../Home";
 import { api, links, queries } from "../../constants/constants";
 import ReactGA from "react-ga";
 import Wallets from "../Wallets";
-import ScrollToTop from "../../utils/ScrollToTop";
+import ScrollToTop from "../../utils/scrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
 import Launch from "../Launch";
@@ -148,10 +148,9 @@ export default function Home(props) {
   useEffect(async () => {
     if (walletBuyersWeek.length === 0) {
       const apiRequest =
-        api.server.topTraders +
-        "?type=buyers" +
-        queries.days +
-        7 +
+        api.devServer.topTraders +
+        "?all_time=true" +
+        "&type=buyers" +
         queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
@@ -161,10 +160,9 @@ export default function Home(props) {
 
     if (walletSellersWeek.length === 0) {
       const apiRequest =
-        api.server.topTraders +
-        "?type=sellers" +
-        queries.days +
-        7 +
+        api.devServer.topTraders +
+        "?all_time=true" +
+        "&type=sellers" +
         queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
@@ -174,10 +172,9 @@ export default function Home(props) {
 
     if (walletBuyersDay.length === 0) {
       const apiRequest =
-        api.server.topTraders +
-        "?type=buyers" +
-        queries.days +
-        1 +
+        api.devServer.topTraders +
+        "?all_time=false" +
+        "&type=buyers" +
         queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
@@ -187,10 +184,9 @@ export default function Home(props) {
 
     if (walletSellersDay.length === 0) {
       const apiRequest =
-        api.server.topTraders +
-        "?type=sellers" +
-        queries.days +
-        1 +
+        api.devServer.topTraders +
+        "?all_time=false" +
+        "&type=sellers" +
         queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
