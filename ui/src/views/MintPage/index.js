@@ -206,8 +206,8 @@ export default function MintPage(props) {
           onChange={() => setTransactionsExpanded(!transactionsExpanded)}
         >
           <AccordionSummary
-            aria-controls={`attributes_content`}
-            id={`attributes_header`}
+            aria-controls={`transactions_content`}
+            id={`transactions_header`}
           >
             <Typography
               className={

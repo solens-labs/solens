@@ -8,6 +8,30 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 
 export default function ActivityTable(props) {
   const { data } = props;
+  const emptyObject = [
+    {
+      buyer: "--",
+      date: "--",
+      price: "--",
+      seller: "--",
+    },
+    {
+      buyer: "--",
+      date: "--",
+      price: "--",
+      seller: "--",
+    },
+  ];
+
+  const [tableData, setTableData] = useState(emptyObject);
+
+  useEffect(() => {
+    if (Object.keys(data).length === 0) {
+      setTableData(emptyObject);
+    } else {
+      setTableData(data);
+    }
+  }, [data]);
 
   const columns = React.useMemo(
     () => [
@@ -55,7 +79,11 @@ export default function ActivityTable(props) {
     canPreviousPage,
     canNextPage,
   } = useTable(
-    { columns: columns, data: data, initialState: { pageSize: 10 } },
+    {
+      columns: columns,
+      data: tableData,
+      initialState: { pageSize: 10 },
+    },
     useSortBy,
     usePagination
   );
