@@ -49,7 +49,6 @@ export default function MintPage(props) {
       const resolved = await Promise.resolve(metadata);
 
       if (resolved["invalid"]) {
-        console.log("setting invalid true");
         setInvalidToken(true);
         return;
       }

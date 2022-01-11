@@ -27,8 +27,9 @@ export default function TradingModule(props) {
         {invalid ? "Invalid Token" : item.name}
       </h1>
       <h4 className="item_collection m-0 p-0" onClick={collectionInsights}>
-        {collection?.name} {invalid && "Please check the address"}{" "}
-        {invalidCollection && "Unsupported Collection"}
+        {collection?.name}
+        {invalid && "Please check the Mint Address"}
+        {!invalid && invalidCollection && "Unsupported Collection"}
       </h4>
 
       {/* <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">

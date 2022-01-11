@@ -66,14 +66,20 @@ export default function User(props) {
   return (
     <div className="col-12 d-flex flex-column align-items-center">
       <div className="col-12 d-flex justify-content-center mt-2">
-        {(wallet.connected && (
+        {wallet.connected && (
           <Walletinfo
             address={walletAddress}
             balance={walletBalance}
             nfts={nfts.length}
           />
-        )) ||
-          connectButton()}
+        )}
+
+        {!wallet.connected && (
+          <div className="d-flex flex-column align-items-center">
+            <h2 className="mt-5">Connect to view your profile</h2>
+            {connectButton()}
+          </div>
+        )}
       </div>
 
       <div className="col-12 col-xl-10 d-flex flex-row flex-wrap justify-content-center">
