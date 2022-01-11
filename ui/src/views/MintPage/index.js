@@ -18,6 +18,7 @@ import convertActivityData from "../../utils/convertActivityData";
 import axios from "axios";
 import ActivityTable from "../../components/ActivityTable";
 import sol_logo from "../../assets/images/sol_logo.png";
+import ErrorIcon from "@mui/icons-material/Error";
 
 export default function MintPage(props) {
   const { address } = useParams();
@@ -36,13 +37,22 @@ export default function MintPage(props) {
   const [attributesExpanded, setAttributesExpanded] = useState(true);
   const [transactionsExpanded, setTransactionsExpanded] = useState(false);
 
+  // Logic to populate page if token is valid
   const received = Object.keys(tokenMetadata).length > 0;
+  const [invalidToken, setInvalidToken] = useState(false);
+  const [invalidCollection, setInvalidCollection] = useState(false);
 
   // Fetch mint address metadata
   useEffect(async () => {
     if (address && !received) {
       const metadata = getTokenMetadata(address);
       const resolved = await Promise.resolve(metadata);
+
+      if (resolved["invalid"]) {
+        console.log("setting invalid true");
+        setInvalidToken(true);
+        return;
+      }
       setTokenMetadata(resolved);
     }
   }, [address]);
@@ -52,7 +62,12 @@ export default function MintPage(props) {
     if (address && collectionInfo.length === 0) {
       const apiRequest = api.server.mintSymbol + address;
       const request = axios.get(apiRequest).then((response) => {
-        const symbol = response.data.symbol;
+        const symbol = response.data?.symbol;
+
+        if (!symbol) {
+          setInvalidCollection(true);
+        }
+
         if (symbol) {
           const apiRequest2 = api.server.collection + queries.symbol + symbol;
           const request2 = axios.get(apiRequest2).then((response) => {
@@ -69,7 +84,7 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint history
+  // Fetch mint activity
   useEffect(async () => {
     if (address && activity.length === 0) {
       const apiRequest = api.server.mintHistory + address;
@@ -85,9 +100,9 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Calculate Royalty into State
+  // Calculate Royalty
   useEffect(() => {
-    if (received) {
+    if (received && !invalidToken) {
       setImage(tokenMetadata.image);
       setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
       setAttributes(tokenMetadata.attributes);
@@ -104,7 +119,13 @@ export default function MintPage(props) {
             </div>
           ) : (
             <div className="nft_image_container d-flex justify-content-center overflow-hidden">
-              <Loader />
+              {invalidToken ? (
+                <div className="col-12 d-flex justify-content-center align-items-center">
+                  <ErrorIcon fontSize="large" />
+                </div>
+              ) : (
+                <Loader />
+              )}
             </div>
           )}
           {/* <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
@@ -119,6 +140,8 @@ export default function MintPage(props) {
 
         <div className="col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
           <TradingModule
+            invalid={invalidToken}
+            invalidCollection={invalidCollection}
             item={tokenMetadata}
             mint={address}
             collection={collectionInfo}
@@ -148,6 +171,7 @@ export default function MintPage(props) {
               </AccordionSummary>
               <AccordionDetails>
                 <ItemDetails
+                  invalid={invalidToken}
                   item={tokenMetadata}
                   royalty={royalty}
                   received={received}

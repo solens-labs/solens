@@ -30,6 +30,7 @@ import {
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import solens_symbol from "../../assets/images//logo3.png";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 const Navigation = (props) => {
   const { connection } = useConnection();
@@ -45,11 +46,9 @@ const Navigation = (props) => {
   // Get address & balance on wallet connect
   useEffect(() => {
     if (wallet.connected && wallet.publicKey && !wallet.disconnecting) {
-      console.log(wallet);
       dispatch(setAddress(wallet.publicKey.toString()));
       dispatch(setConnected(true));
       const solBalance = getSolBalance(wallet).then((result) => {
-        console.log(result);
         dispatch(setBalance(result));
       });
     } else {
@@ -76,7 +75,7 @@ const Navigation = (props) => {
 
   return (
     <nav className="navbar d-flex flex-row justify-content-between">
-      <div className="col-4 col-lg-2  d-flex justify-content-start">
+      <div className="col-4 col-lg-2 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
           <img src={logo2} className="nav_logo" alt="logo" />
         </Link>
@@ -135,8 +134,11 @@ const Navigation = (props) => {
         </div>
       </div> */}
 
-      <div className="col-lg-2  d-none d-lg-flex justify-content-end">
-        {/* {connect_button} */}
+      <div className="col-lg-3 col-xxl-2 d-none d-lg-flex justify-content-end align-items-center">
+        <Link to="/user" style={{ textDecoration: "none", color: "white" }}>
+          <AccountCircleOutlinedIcon style={{ marginRight: 20 }} />
+        </Link>
+
         <WalletModalProvider className="wallet_modal" logo={solens_symbol}>
           <WalletMultiButton
             className="connect_button"

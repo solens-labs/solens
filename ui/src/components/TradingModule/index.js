@@ -10,8 +10,11 @@ import { exchangeApi, explorerLink } from "../../constants/constants";
 import { useHistory } from "react-router-dom";
 
 export default function TradingModule(props) {
-  const { item, mint, collection, marketplaces } = props;
+  const { invalid, invalidCollection, item, mint, collection, marketplaces } =
+    props;
   const history = useHistory();
+
+  const [selectedMarketplace, setSelectedMarketplace] = useState("");
 
   const collectionInsights = () => {
     history.push(`/collection/${collection.symbol}`);
@@ -20,9 +23,12 @@ export default function TradingModule(props) {
 
   return (
     <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-between p-2 pb-3">
-      <h1 className="item_title m-0 p-0">{item ? item.name : "Loading..."}</h1>
+      <h1 className="item_title m-0 p-0">
+        {invalid ? "Invalid Token" : item.name}
+      </h1>
       <h4 className="item_collection m-0 p-0" onClick={collectionInsights}>
-        {collection?.name}
+        {collection?.name} {invalid && "Please check the address"}{" "}
+        {invalidCollection && "Unsupported Collection"}
       </h4>
 
       {/* <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
@@ -34,48 +40,54 @@ export default function TradingModule(props) {
       </div> */}
 
       <div className="trading_buttons d-flex flex-wrap justify-content-around col-12 mt-3">
-        {marketplaces.map((mp, i) => {
-          return (
-            <div className="col col-md-4 p-1 p-md-2">
-              <a href={exchangeApi[mp].itemDetails + item.mint} target="_blank">
-                <button className="btn_trade">
-                  <div className="btn_trade_inner">
-                    <img
-                      src={
-                        mp === "magiceden"
-                          ? me_logo
-                          : mp === "solanart"
-                          ? sa_logo
-                          : mp === "smb"
-                          ? smb_logo
-                          : ""
-                      }
-                      alt=""
-                      style={{
-                        height: 45,
-                        background: "transparent",
-                        margin: -8,
-                      }}
-                    />
-                  </div>
-                </button>
-              </a>
-            </div>
-          );
-        })}
-        <div className="col col-md-4 p-1 p-md-2">
-          <a href={explorerLink("token", mint)} target="_blank">
-            <button className="btn_trade">
-              <div className="btn_trade_inner">
+        {!invalid && (
+          <div className="col col-md-4 p-1 p-md-2">
+            <button className="btn_mp">
+              <div
+                className={
+                  selectedMarketplace === "magiceden"
+                    ? "btn_mp_inner_selected"
+                    : "btn_mp_inner"
+                }
+                onClick={() => setSelectedMarketplace("magiceden")}
+              >
                 <img
-                  src={ss_logo}
+                  src={me_logo}
                   alt=""
-                  style={{ height: 50, background: "transparent", margin: -8 }}
+                  style={{
+                    height: 45,
+                    background: "transparent",
+                    margin: -8,
+                  }}
                 />
               </div>
             </button>
-          </a>
-        </div>
+          </div>
+        )}
+        {!invalid && (
+          <div className="col col-md-4 p-1 p-md-2">
+            <button className="btn_mp">
+              <div
+                className={
+                  selectedMarketplace === "solanart"
+                    ? "btn_mp_inner_selected"
+                    : "btn_mp_inner"
+                }
+                onClick={() => setSelectedMarketplace("solanart")}
+              >
+                <img
+                  src={sa_logo}
+                  alt=""
+                  style={{
+                    height: 45,
+                    background: "transparent",
+                    margin: -8,
+                  }}
+                />
+              </div>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

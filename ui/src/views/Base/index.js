@@ -40,6 +40,7 @@ import { calculateLaunchDate } from "../../utils/collectionStats";
 import Launch from "../Launch";
 import Footer from "../../components/Footer";
 import Apply from "../Apply";
+import User from "../User";
 import CollectionMint from "../CollectionMint";
 
 export default function Home(props) {
@@ -245,6 +246,7 @@ export default function Home(props) {
           <Route path="/nfts/:name" component={CollectionMint} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
+          <Route path="/user" component={User} />
           <Route path="/launch" component={Launch} />
           <Route path="/mint/:address" component={MintPage} />
           <Route path="*" component={HomePage} />

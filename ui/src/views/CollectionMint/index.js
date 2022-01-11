@@ -148,7 +148,7 @@ export default function CollectionMint(props) {
     return links;
   };
 
-  const selectNft = (mint) => {
+  const goToNFTDetailPage = (mint) => {
     history.push("/mint/" + mint);
   };
 
@@ -221,7 +221,7 @@ export default function CollectionMint(props) {
                   <div
                     className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                     key={i}
-                    onClick={() => selectNft(item.mint)}
+                    onClick={() => goToNFTDetailPage(item.mint)}
                   >
                     {/* <a
                       href={nftPageLink(item)}

@@ -35,7 +35,6 @@ export default function Launch() {
   // Get address, balance, and token accounts on wallet connect
   useEffect(() => {
     if (wallet.connected && wallet.publicKey && !wallet.disconnecting) {
-      console.log(wallet);
       dispatch(setAddress(wallet.publicKey.toString()));
       dispatch(setConnected(true));
       const solBalance = getSolBalance(wallet).then((result) => {
