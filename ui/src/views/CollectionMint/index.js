@@ -87,10 +87,6 @@ export default function CollectionMint(props) {
     }
   }, [name, allCollections]);
 
-  // useEffect(() => {
-  //   setItems(storedItems);
-  // }, [storedItems]);
-
   // Set Initial Items
   useEffect(async () => {
     if (items.length > 0 && storedCollectionName === name) {

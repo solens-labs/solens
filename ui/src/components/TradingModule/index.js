@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./style.css";
 import "../Buttons/style.css";
-import sa_logo from "../../assets/images/sa_logo.png";
+import sa_logo from "../../assets/images/sa_logo_dark.png";
 import me_logo from "../../assets/images/me_logo_white.png";
 import smb_logo from "../../assets/images/smb_logo.png";
 import ss_logo from "../../assets/images/ss_logo.png";

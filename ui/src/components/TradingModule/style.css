@@ -7,8 +7,11 @@
   overflow: hidden;
 }
 
-.connect_button {
-  height: 70%;
+.wallet-adapter-button.connect_button {
+  /* height: 70%; */
+  font-family: "main" !important;
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
 }
 
 .mint_info,

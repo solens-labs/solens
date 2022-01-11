@@ -35,6 +35,7 @@ export const api = {
     mintHistory: devServer + "stats/mintHistory?mint=",
     topTraders: devServer + "stats/topTraders",
     topNFTs: devServer + "stats/topNFTs",
+    listings: devServer + "listings",
   },
 };
 

@@ -125,6 +125,56 @@
   /* margin-left: 3vw; */
 }
 
+.wallet-adapter-modal-wrapper {
+  /* background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 1),
+    rgba(134, 64, 117, 1) 120%
+  ) !important; */
+  /* background: black !important; */
+  background: rgb(18, 11, 37) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.wallet-adapter-modal-overlay {
+  /* background: rgba(18, 11, 37, 0.4) !important; */
+}
+
+.wallet-adapter-modal-logo-wrapper {
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 100% !important;
+}
+
+.wallet-adapter-modal-title {
+  color: white !important;
+}
+
+.wallet-adapter-button {
+  font-family: "main" !important;
+  font-size: 1rem !important;
+  background: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  ) !important;
+}
+
+.wallet-adapter-dropdown-list {
+  background: rgb(18, 11, 37) !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  font-family: "main" !important;
+  font-size: 0.8rem !important;
+  font-weight: 100 !important;
+  /* font-size: 0.65rem !important; */
+  background: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  ) !important;
+}
+
 @media screen and (max-width: 991px) {
   .nav_logo {
     padding-left: 0px;
