@@ -1,5 +1,6 @@
 import { shortenAddress } from "../candy-machine";
 import { explorerLink } from "../constants/constants";
+import { themeColors } from "../constants/constants";
 
 const range = (len) => {
   const arr = [];
@@ -15,7 +16,7 @@ const addTransaction = (wallet) => {
     <a
       href={explorerLink("account", wallet["wallet"])}
       target="_blank"
-      style={{ textDecoration: "none" }}
+      style={{ textDecoration: "none", color: themeColors[0] }}
     >
       {shortenAddress(wallet["wallet"])}
     </a>

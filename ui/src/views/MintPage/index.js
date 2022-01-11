@@ -19,11 +19,13 @@ import axios from "axios";
 import ActivityTable from "../../components/ActivityTable";
 import sol_logo from "../../assets/images/sol_logo.png";
 import ErrorIcon from "@mui/icons-material/Error";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 
 export default function MintPage(props) {
   const { address } = useParams();
 
-  // Token Detials State
+  // Token Details State
   const [collectionInfo, setCollectionInfo] = useState("");
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [royalty, setRoyalty] = useState(0);
@@ -99,7 +101,7 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Calculate Royalty
+  // Calculate project royalty
   useEffect(() => {
     if (received && !invalidToken) {
       setImage(tokenMetadata.image);

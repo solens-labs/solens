@@ -1,5 +1,6 @@
 import { shortenAddress } from "../candy-machine";
 import { explorerLink } from "../constants/constants";
+import { themeColors } from "../constants/constants";
 
 const range = (len) => {
   const arr = [];
@@ -12,7 +13,10 @@ const range = (len) => {
 const addTransaction = (transaction) => {
   const date = new Date(transaction["date"]);
   const mintAddress = (
-    <a href={`/mint/${transaction["mint"]}`} style={{ textDecoration: "none" }}>
+    <a
+      href={`/mint/${transaction["mint"]}`}
+      style={{ textDecoration: "none", color: themeColors[0] }}
+    >
       {shortenAddress(transaction["mint"])}
     </a>
   );
@@ -21,7 +25,7 @@ const addTransaction = (transaction) => {
     <a
       href={explorerLink("account", transaction["buyer"])}
       target="_blank"
-      style={{ textDecoration: "none" }}
+      style={{ textDecoration: "none", color: themeColors[0] }}
     >
       {shortenAddress(transaction["buyer"])}
     </a>
@@ -30,7 +34,7 @@ const addTransaction = (transaction) => {
     <a
       href={explorerLink("account", transaction["seller"])}
       target="_blank"
-      style={{ textDecoration: "none" }}
+      style={{ textDecoration: "none", color: themeColors[0] }}
     >
       {shortenAddress(transaction["seller"])}
     </a>

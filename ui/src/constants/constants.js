@@ -86,6 +86,12 @@ export const lineColors = [
   "rgb(255, 255, 255)",
 ];
 
+export const themeColors = [
+  "rgb(179, 87, 156)", // Bright Pink
+  "rgb(65, 37, 156)", // Gradient Purple
+  "rgb(134, 64, 117)", // Gradient Pink
+];
+
 export const links = {
   getListed: `https://airtable.com/shrTjju7GiwVTZgtW`,
   launchZone: `https://airtable.com/shrTsUaX9A7M30Qw0`,
