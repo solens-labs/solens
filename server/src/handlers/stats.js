@@ -369,3 +369,43 @@ exports.floor = async (req, reply) => {
     throw boom.boomify(err)
   }
 }
+
+exports.listings = async (req, reply) => {
+  return Transaction.aggregate([
+    {$match: {
+      symbol: req.query.symbol,
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+        {type: { $eq: "buy"}},
+        {type: { $eq: "cancel"}},
+        {type: { $eq: "accept_offer"}}
+      ]
+    }},
+    {$sort: {date: -1}},
+    {$group : {
+      _id: {mint: '$mint'},
+      owner: {$first: '$owner'},
+      price: {$first: '$price'},
+      type: {$first: '$type'}
+    }},
+    {$project : {
+      mint: '$_id.mint',
+      owner: 1,
+      price: 1,
+      type: 1,
+      _id: 0
+    }},
+    {$match: {
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+      ]
+    }},
+    {$project : {
+      mint: 1,
+      owner: 1,
+      price: 1,
+    }}
+  ])
+}

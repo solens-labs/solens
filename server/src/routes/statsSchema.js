@@ -48,6 +48,17 @@ exports.mintHistory = {
   }
 }
 
+exports.listings = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['symbol'],
+    properties: {
+      symbol: { type: 'string' },
+    }
+  }
+}
+
 exports.walletHistory = {
   querystring: {
     type: 'object',

@@ -66,6 +66,12 @@ const routes = [
     url: '/symbol',
     schema: schema.mintHistory,
     handler: statsHandlers.symbol
+  },
+  {
+    method: 'GET',
+    url: '/listings',
+    schema: schema.listings,
+    handler: statsHandlers.listings
   }
 ]
 
