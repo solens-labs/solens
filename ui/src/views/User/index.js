@@ -13,6 +13,7 @@ import {
   selectAddress,
   selectBalance,
   selectUserNFTs,
+  setAddress,
   setUserNFTs,
 } from "../../redux/app";
 import getTokenAccounts from "../../utils/getTokenAccounts";
@@ -45,6 +46,7 @@ export default function User(props) {
 
     if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
       dispatch(setUserNFTs([]));
+      dispatch(setAddress(""));
     }
   }, [wallet]);
 

@@ -3,7 +3,7 @@
   border-radius: 15px;
   background: rgb(18, 11, 37);
   /* height: 50%; */
-  /* min-height: 300px; */
+  min-height: 250px;
   overflow: hidden;
 }
 
@@ -27,4 +27,19 @@
 .item_collection {
   color: rgb(179, 87, 156);
   cursor: pointer;
+}
+
+.trading_connect {
+  /* height: 100%; */
+}
+
+.connect_button_large {
+  width: 70% !important;
+}
+
+.item_price {
+  color: rgb(179, 87, 156);
+  /* color: rgb(65, 37, 156); */
+  font-weight: 800;
+  font-size: 2rem;
 }

@@ -147,7 +147,7 @@ export default function MintPage(props) {
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4 mt-lg-5">
       <div className="details_header col-12 col-xl-10 col-xxl-8 d-flex flex-row flex-wrap justify-content-center mb-3">
-        <div className="col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
+        <div className="mint_item_image col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
               <img src={image} className="nft_image" alt="" />
@@ -173,7 +173,7 @@ export default function MintPage(props) {
           </div> */}
         </div>
 
-        <div className="col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
+        <div className="trading col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
           <TradingModule
             invalid={invalidToken}
             invalidCollection={invalidCollection}

@@ -5,7 +5,7 @@ import me_logo from "../../assets/images/me_logo_white.png";
 import { themeColors } from "../../constants/constants";
 import { marketplaceSelect } from "../../utils/collectionStats";
 
-export default function TradingListing(props) {
+export default function TradeListing(props) {
   const { selectedMarketplace, setSelectedMarketplace, invalid } = props;
 
   const [listPrice, setListPrice] = useState(0);

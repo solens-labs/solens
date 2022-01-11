@@ -24,6 +24,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: white;
+  font-weight: 800;
 
   -moz-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
@@ -42,7 +44,7 @@
 }
 
 .btn_mp_inner:hover {
-  /* background: transparent; */
+  background: transparent;
 }
 
 .listing_input {
