@@ -3,9 +3,7 @@ import { shortenAddress } from "../../candy-machine";
 import { explorerLink } from "../../constants/constants";
 
 export default function ItemDetails(props) {
-  const { invalid, item, royalty, received, marketplaces } = props;
-  const solanart = marketplaces.filter((item) => item === "solanart").length;
-  const magiceden = marketplaces.filter((item) => item === "magiceden").length;
+  const { invalid, item, royalty, received } = props;
 
   return (
     <div className="d-flex flex-row flex-wrap col-12">

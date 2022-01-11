@@ -5,14 +5,26 @@ import me_logo from "../../assets/images/me_logo_white.png";
 import smb_logo from "../../assets/images/smb_logo.png";
 import ss_logo from "../../assets/images/ss_logo.png";
 import { explorerLink } from "../../constants/constants";
+import { useHistory } from "react-router-dom";
 
 export default function NftCard(props) {
   const { links, item } = props;
+  const history = useHistory();
+
+  // Generate link to go to internal NFT Detail Page
+  const goToNFTDetailPage = (mint) => {
+    history.push("/mint/" + mint);
+  };
 
   return (
     <div className="nft_card_container col-12">
       <div className="nft_card col-12 d-flex flex-column align-items-center">
-        <img src={item.image} className="nft_card_image" alt="nft_card" />
+        <img
+          src={item.image}
+          className="nft_card_image"
+          alt="nft_card"
+          onClick={() => goToNFTDetailPage(item.mint)}
+        />
 
         <div className="nft_card_details col-12 d-flex align-items-center justify-content-between p-2 pb-0 pt-1">
           <div className="item_name col-6 pt-2 d-flex flex-wrap justify-content-start">

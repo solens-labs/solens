@@ -63,12 +63,6 @@ export default function User(props) {
       </WalletModalProvider>
     );
   };
-
-  // Generate link to go to internal NFT Detail Page
-  const goToNFTDetailPage = (mint) => {
-    history.push("/mint/" + mint);
-  };
-
   return (
     <div className="col-12 d-flex flex-column align-items-center">
       <div className="col-12 d-flex justify-content-center mt-2">
@@ -89,7 +83,6 @@ export default function User(props) {
               <div
                 className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                 key={i}
-                onClick={() => goToNFTDetailPage(item.mint)}
               >
                 <NftCard item={item} links={""} />
               </div>

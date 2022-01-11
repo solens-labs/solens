@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 import logo from "../../assets/images/logo2.png";
 import { Link, useHistory } from "react-router-dom";
 import CollectionSection from "../../components/CollectionSection";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   selectAllCollections,
   selectSolPrice,
@@ -11,15 +11,11 @@ import {
   selectWalletBuyersDay,
   selectWalletSellers,
   selectWalletSellersDay,
-  setDailyVolume,
   selectDailyVolume,
   selectWeeklyVolume,
   selectTopNFTsDay,
 } from "../../redux/app";
-import WalletCard from "../../components/WalletCard";
 import Loader from "../../components/Loader";
-import { explorerLink, links } from "../../constants/constants";
-import sol_logo from "../../assets/images/sol_logo.png";
 import Timeframe from "../../components/Timeframe";
 import WalletsHomeSection from "../../components/WalletsHomeSection";
 import NftCard from "../../components/NftCard/homepage";
@@ -27,7 +23,6 @@ import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
 
 export default function HomePage(props) {
-  const dispatch = useDispatch();
   const history = useHistory();
   const collections = useSelector(selectAllCollections);
   const walletBuyersAll = useSelector(selectWalletBuyers);
@@ -45,6 +40,7 @@ export default function HomePage(props) {
   const [buyers, setBuyers] = useState(walletBuyersDay);
   const [sellers, setSellers] = useState(walletSellersDay);
 
+  // Wallets timeframe switching
   useEffect(() => {
     switch (walletsTimeframe) {
       case 1:
@@ -86,26 +82,6 @@ export default function HomePage(props) {
       setTrending(truncated);
     }
   }, [collections, solPrice]);
-
-  // Top NFTs collection deeplink or explorer link
-  const nftCollectionLink = (item) => {
-    let internalLink = "";
-    if (item.internal_symbol) {
-      internalLink = `/collection/` + item.internal_symbol;
-    }
-    const externalLink = explorerLink("token", item.mint);
-    return internalLink ? internalLink : externalLink;
-  };
-
-  // Top NFTs nft detail page link
-  const nftPageLink = (item) => {
-    let detailPageLink = "";
-    if (item.mint) {
-      detailPageLink = `/mint/` + item.mint;
-    }
-    const externalLink = explorerLink("token", item.mint);
-    return detailPageLink ? detailPageLink : externalLink;
-  };
 
   const visitLaunchzone = () => {
     history.push("/launch");
@@ -162,7 +138,7 @@ export default function HomePage(props) {
         <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3">
           {topNFTs.length !== 0 ? (
             topNFTs.map((item, i) => {
-              return <NftCard link={nftPageLink(item)} item={item} />;
+              return <NftCard item={item} />;
             })
           ) : (
             <Loader />
