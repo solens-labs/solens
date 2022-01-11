@@ -125,6 +125,13 @@
   /* margin-left: 3vw; */
 }
 
+.wallet-adapter-button.connect_button {
+  /* height: 70%; */
+  /* font-family: "main" !important; */
+  /* font-size: 1.1rem !important; */
+  /* font-weight: 400 !important; */
+}
+
 .wallet-adapter-modal-wrapper {
   /* background: linear-gradient(
     -45deg,

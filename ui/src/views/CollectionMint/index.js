@@ -148,10 +148,6 @@ export default function CollectionMint(props) {
     return links;
   };
 
-  const goToNFTDetailPage = (mint) => {
-    history.push("/mint/" + mint);
-  };
-
   // Top NFTs nft detail page link
   const nftPageLink = (item) => {
     let detailPageLink = "";
@@ -221,14 +217,8 @@ export default function CollectionMint(props) {
                   <div
                     className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                     key={i}
-                    onClick={() => goToNFTDetailPage(item.mint)}
                   >
-                    {/* <a
-                      href={nftPageLink(item)}
-                      style={{ textDecoration: "none", color: "white" }}
-                    > */}
                     <NftCard item={item} links={getItemLinks(item.mint)} />
-                    {/* </a> */}
                   </div>
                 );
               })}

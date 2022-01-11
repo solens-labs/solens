@@ -24,15 +24,18 @@ import { PublicKey } from "@solana/web3.js";
 
 export default function MintPage(props) {
   const { address } = useParams();
+  const { connection } = useConnection();
 
   // Token Details State
-  const [collectionInfo, setCollectionInfo] = useState("");
   const [tokenMetadata, setTokenMetadata] = useState({});
+  const [collectionInfo, setCollectionInfo] = useState("");
   const [royalty, setRoyalty] = useState(0);
   const [attributes, setAttributes] = useState([]);
   const [image, setImage] = useState("");
   const [marketplaces, setMarketplaces] = useState([]);
   const [activity, setActivity] = useState([]);
+  const [tokenAccount, setTokenAccount] = useState("");
+  const [ownerAccount, setOwnerAccount] = useState("");
 
   // Accordions Expansion State
   const [detailsExpanded, setDetailsExpanded] = useState(false);
@@ -104,11 +107,42 @@ export default function MintPage(props) {
   // Calculate project royalty
   useEffect(() => {
     if (received && !invalidToken) {
-      setImage(tokenMetadata.image);
-      setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
-      setAttributes(tokenMetadata.attributes);
+      try {
+        setImage(tokenMetadata.image);
+        setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
+        setAttributes(tokenMetadata.attributes);
+      } catch {
+        console.log("Error setting image, royalty, or attributes");
+      }
     }
   }, [tokenMetadata]);
+
+  // Get Mint's Token Account & Owner Account
+  useEffect(async () => {
+    if (address && !tokenAccount && !ownerAccount) {
+      try {
+        const key = new PublicKey(address);
+        const test1 = await connection.getTokenLargestAccounts(key);
+        if (test1?.value.length === 0) {
+          return;
+        }
+
+        const account = test1.value[0];
+        if (account.amount === "1") {
+          const accountString = account.address.toBase58();
+          setTokenAccount(accountString);
+
+          const tokenAcctInfo = await connection.getParsedAccountInfo(
+            account.address
+          );
+          const owner = tokenAcctInfo.value.data.parsed.info.owner;
+          setOwnerAccount(owner);
+        }
+      } catch {
+        console.log("Error getting Token Account");
+      }
+    }
+  }, [address]);
 
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4 mt-lg-5">
@@ -144,9 +178,8 @@ export default function MintPage(props) {
             invalid={invalidToken}
             invalidCollection={invalidCollection}
             item={tokenMetadata}
-            mint={address}
             collection={collectionInfo}
-            marketplaces={marketplaces}
+            ownerAccount={ownerAccount}
           />
 
           <div className="details col-12 mt-3 mt-lg-0">
@@ -177,6 +210,8 @@ export default function MintPage(props) {
                   royalty={royalty}
                   received={received}
                   marketplaces={marketplaces}
+                  tokenAccount={tokenAccount}
+                  ownerAccount={ownerAccount}
                 />
               </AccordionDetails>
             </Accordion>

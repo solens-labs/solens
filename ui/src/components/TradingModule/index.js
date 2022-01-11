@@ -8,10 +8,13 @@ import ss_logo from "../../assets/images/ss_logo.png";
 import sol_logo from "../../assets/images/sol_logo.png";
 import { exchangeApi, explorerLink } from "../../constants/constants";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAddress } from "../../redux/app";
+import TradingListing from "../TradingListing";
 
 export default function TradingModule(props) {
-  const { invalid, invalidCollection, item, mint, collection, marketplaces } =
-    props;
+  const { invalid, invalidCollection, item, collection, ownerAccount } = props;
+  const user = useSelector(selectAddress);
   const history = useHistory();
 
   const [selectedMarketplace, setSelectedMarketplace] = useState("");
@@ -32,56 +35,13 @@ export default function TradingModule(props) {
         {!invalid && invalidCollection && "Unsupported Collection"}
       </h4>
 
-      <div className="trading_buttons d-flex flex-wrap justify-content-around col-12 mt-3">
-        {!invalid && (
-          <div className="col col-md-4 p-1 p-md-2">
-            <button className="btn_mp">
-              <div
-                className={
-                  selectedMarketplace === "magiceden"
-                    ? "btn_mp_inner_selected"
-                    : "btn_mp_inner"
-                }
-                onClick={() => setSelectedMarketplace("magiceden")}
-              >
-                <img
-                  src={me_logo}
-                  alt=""
-                  style={{
-                    height: 45,
-                    background: "transparent",
-                    margin: -8,
-                  }}
-                />
-              </div>
-            </button>
-          </div>
-        )}
-        {!invalid && (
-          <div className="col col-md-4 p-1 p-md-2">
-            <button className="btn_mp">
-              <div
-                className={
-                  selectedMarketplace === "solanart"
-                    ? "btn_mp_inner_selected"
-                    : "btn_mp_inner"
-                }
-                onClick={() => setSelectedMarketplace("solanart")}
-              >
-                <img
-                  src={sa_logo}
-                  alt=""
-                  style={{
-                    height: 45,
-                    background: "transparent",
-                    margin: -8,
-                  }}
-                />
-              </div>
-            </button>
-          </div>
-        )}
-      </div>
+      {user && user === ownerAccount && (
+        <TradingListing
+          selectedMarketplace={selectedMarketplace}
+          setSelectedMarketplace={setSelectedMarketplace}
+          invalid={invalid}
+        />
+      )}
     </div>
   );
 }

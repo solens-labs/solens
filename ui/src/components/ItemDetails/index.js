@@ -5,37 +5,8 @@ import { shortenAddress } from "../../candy-machine";
 import { explorerLink } from "../../constants/constants";
 
 export default function ItemDetails(props) {
-  const { invalid, item, royalty, received } = props;
-  const { connection } = useConnection();
-
-  const [tokenAccount, setTokenAccount] = useState("");
-  const [ownerAccount, setOwnerAccount] = useState("");
-
-  useEffect(async () => {
-    if (item.mint && !tokenAccount && !ownerAccount) {
-      try {
-        const key = new PublicKey(item.mint);
-        const test1 = await connection.getTokenLargestAccounts(key);
-        if (test1?.value.length === 0) {
-          return;
-        }
-
-        const account = test1.value[0];
-        if (account.amount === "1") {
-          const accountString = account.address.toBase58();
-          setTokenAccount(accountString);
-
-          const tokenAcctInfo = await connection.getParsedAccountInfo(
-            account.address
-          );
-          const owner = tokenAcctInfo.value.data.parsed.info.owner;
-          setOwnerAccount(owner);
-        }
-      } catch {
-        console.log("Error getting Token Account");
-      }
-    }
-  }, [item]);
+  const { invalid, item, royalty, received, tokenAccount, ownerAccount } =
+    props;
 
   return (
     <div className="d-flex flex-row flex-wrap col-12">
