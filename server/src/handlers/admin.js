@@ -2,6 +2,9 @@ const boom = require('@hapi/boom')
 const helpers = require('./helpers')
 
 const Transaction = require('../models/Transaction')
+const Wallets = require('../models/Wallets')
+const DailyWallets = require('../models/DailyWallets')
+const HourlyWallets = require('../models/HourlyWallets')
 const Collection = require('../models/Collection')
 const HourlyStats = require('../models/HourlyStats')
 const DailyStats = require('../models/DailyStats')
@@ -199,8 +202,10 @@ async function updateAlltimeStats(symbol) {
  exports.updateEverything = async (req, reply) => {
   // const symbols = await Collection.find({}, {symbol: 1, _id: 0})
   try {
-    const symbols = req.body.symbols
-    
+    // const symbols = req.body.symbols
+    let symbols = await Collection.find({}, {_id:0, symbol:1})
+    symbols = symbols.map(x => x.symbol)
+    console.log(symbols)
     for (let i = 0; i < symbols.length; i++) {
       // await updateTransactions(symbols[i])
       await updateHourlyStats(symbols[i])
@@ -213,130 +218,505 @@ async function updateAlltimeStats(symbol) {
   }
 }
 
-// HOURLY
-// exports.test = async (req, reply) => {
-//   try {
-//     const startDate = new Date();
-//     startDate.setDate(startDate.getDate() - 7);
-//     startDate.setUTCHours(0)
-//     startDate.setUTCMinutes(0)
-//     startDate.setUTCSeconds(0)
-//     startDate.setUTCMilliseconds(0)
-//     console.log(startDate)
 
-//     const entries = await Transaction.aggregate([
-//       { $match: {
-//         ...helpers.matchBuyTxs(),
-//         // date: { $gte: startDate },
-//       }},
-//       {$addFields: {
-//         // hour: {$hour: "$date"},
-//         day: {$dayOfMonth: "$date"},
-//         month: {$month: "$date"},
-//         year: {$year: "$date"}
-//       }},
-//       { $group:
-//         {
-//           _id : {mint: '$mint', day: "$day", month: "$month", year: "$year"},
-//           volume: { $sum: "$price"},
-//           min: { $min: "$price" },
-//           max: { $max: "$price" },
-//           avg: { $avg: "$price" },
-//           count: { $sum: 1 },
-//           symbol: {$first: "$symbol"},
-//         }
+// exports.updateWallets = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       ...helpers.matchBuyTxs(),
+//       // date: {$gte: new Date('2022-01-07')},
+//       symbol: {$exists: true}
+//     }},
+//     { $group:
+//       {
+//         _id : {symbol: '$symbol', wallet: '$owner'}, // owner
+//         volume: { $sum: "$price"},
+//         min: { $min: "$price" },
+//         max: { $max: "$price" },
+//         avg: { $avg: "$price" },
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {$project: {
+//       'wallet': '$_id.wallet',
+//       'symbol': '$_id.symbol',
+//       'type': 'seller', // seller
+//       'volume': 1,
+//       'count': 1,
+//       'min': 1,
+//       'max': 1,
+//       'avg': 1,
+//       _id: 0
+//     }},
+//     { $merge: {
+//       into: "wallets",
+//       on: [ "wallet", "symbol", "type" ],
+//       let: {
+//         volume: "$volume",
+//         count: "$count",
+//         min: "$min",
+//         max: "$max"
 //       },
-//       { $project:
-//         {
-//           mint: '$_id.mint',
-//           date: {$dateFromParts: {day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
-//           volume: { $round: ["$volume", 2] },
-//           min: { $round: ["$min", 2] },
-//           max: { $round: ["$max", 2] },
-//           avg: { $round: ["$avg", 2] },
-//           symbol: 1,
-//           count: 1,
-//           _id: 0,
-//         }
-//       },
-//       { $merge: {
-//         into: "hourlymints",
-//         on: [ "mint", "date" ],
-//         whenMatched: "replace",
-//         whenNotMatched: "insert"
-//       }}
-//     ],
-//     {allowDiskUse: true})
-//     return entries
+//       whenMatched: [
+//         { $set:
+//           {
+//             'volume': {$sum: ['$volume', '$$volume'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'count': {$sum: ['$count', '$$count'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'min': {$min: ['$min', '$$min'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'max': {$max: ['$max', '$$max'] }
+//           }
+//         },
+//         { $set: 
+//           {
+//             'avg': { $divide: ['$volume', '$count'] }
+//           }
+//         },
+//       ],
+//       whenNotMatched: "insert"
+//     }}
+//   ],
+//   {allowDiskUse: true})
+//   return entries
+// }
 
-//   } catch (err) {
-//     throw boom.boomify(err)
-//   }
+// exports.updateMarketWallet = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       ...helpers.matchBuyTxs(),
+//     }},
+//     { $group:
+//       {
+//         _id : {wallet: '$owner'}, // owner
+//         volume: { $sum: "$price"},
+//         min: { $min: "$price" },
+//         max: { $max: "$price" },
+//         avg: { $avg: "$price" },
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {$project: {
+//       'wallet': '$_id.wallet',
+//       'symbol': 'all',
+//       'type': 'seller', // seller
+//       'volume': 1,
+//       'count': 1,
+//       'min': 1,
+//       'max': 1,
+//       'avg': 1,
+//       _id: 0
+//     }},
+//     { $merge: {
+//       into: "wallets",
+//       on: [ "wallet", "symbol", "type" ],
+//       let: {
+//         volume: "$volume",
+//         count: "$count",
+//         min: "$min",
+//         max: "$max"
+//       },
+//       whenMatched: [
+//         { $set:
+//           {
+//             'volume': {$sum: ['$volume', '$$volume'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'count': {$sum: ['$count', '$$count'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'min': {$min: ['$min', '$$min'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'max': {$max: ['$max', '$$max'] }
+//           }
+//         },
+//         { $set: 
+//           {
+//             'avg': { $divide: ['$volume', '$count'] }
+//           }
+//         },
+//       ],
+//       whenNotMatched: "insert"
+//     }}
+//   ],
+//   {allowDiskUse: true})
+//   return entries
+// }
+
+// exports.updateHourlyWallets = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       ...helpers.matchBuyTxs(),
+//       // date: {$gte: new Date('2022-01-07')},
+//       symbol: {$exists: true}
+//     }},
+//     {$addFields: {
+//       hour: {$hour: "$date"},
+//       day: {$dayOfMonth: "$date"},
+//       month: {$month: "$date"},
+//       year: {$year: "$date"}
+//     }},
+//     { $group:
+//       {
+//         // change wallet
+//         _id : {symbol: '$symbol', wallet: '$owner', hour: "$hour", day: "$day", month: "$month", year: "$year"},
+//         volume: { $sum: "$price"},
+//         min: { $min: "$price" },
+//         max: { $max: "$price" },
+//         avg: { $avg: "$price" },
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {$addFields: {
+//       endHour: {$add: ["$_id.hour", 1]}
+//     }},
+//     {$project: {
+//       'wallet': '$_id.wallet',
+//       'symbol': '$_id.symbol',
+//       'start': {$dateFromParts: {hour: "$_id.hour", day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//       'end': {$dateFromParts: {hour: "$endHour", day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//       'type': 'seller', // change buyer seller
+//       'volume': 1,
+//       'count': 1,
+//       'min': 1,
+//       'max': 1,
+//       'avg': 1,
+//       _id: 0
+//     }},
+//     { $merge: {
+//       into: "hourlywallets", // changedaily hourlywallets
+//       on: [ "wallet", "symbol", "type", "start" ],
+//       let: {
+//         volume: "$volume",
+//         count: "$count",
+//         min: "$min",
+//         max: "$max"
+//       },
+//       whenMatched: [
+//         { $set:
+//           {
+//             'volume': {$sum: ['$volume', '$$volume'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'count': {$sum: ['$count', '$$count'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'min': {$min: ['$min', '$$min'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'max': {$max: ['$max', '$$max'] }
+//           }
+//         },
+//         { $set: 
+//           {
+//             'avg': { $divide: ['$volume', '$count'] }
+//           }
+//         },
+//       ],
+//       whenNotMatched: "insert"
+//     }}
+//   ],
+//   {allowDiskUse: true})
+//   return entries
+// }
+
+// exports.updateHourlyMarketWallets = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       ...helpers.matchBuyTxs(),
+//     }},
+//     {$addFields: {
+//       hour: {$hour: "$date"},
+//       day: {$dayOfMonth: "$date"},
+//       month: {$month: "$date"},
+//       year: {$year: "$date"}
+//     }},
+//     { $group:
+//       {
+//         // change wallet
+//         _id : {wallet: '$new_owner', hour: "$hour", day: "$day", month: "$month", year: "$year"},
+//         volume: { $sum: "$price"},
+//         min: { $min: "$price" },
+//         max: { $max: "$price" },
+//         avg: { $avg: "$price" },
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {$addFields: {
+//       endHour: {$add: ["$_id.hour", 1]}
+//     }},
+//     {$project: {
+//       'wallet': '$_id.wallet',
+//       'symbol': 'all',
+//       'start': {$dateFromParts: {hour: "$_id.hour", day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//       'end': {$dateFromParts: {hour: "$endHour", day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//       'type': 'buyer', // change buyer seller
+//       'volume': 1,
+//       'count': 1,
+//       'min': 1,
+//       'max': 1,
+//       'avg': 1,
+//       _id: 0
+//     }},
+//     { $merge: {
+//       into: "hourlywallets", // changedaily hourlywallets
+//       on: [ "wallet", "symbol", "type", "start" ],
+//       let: {
+//         volume: "$volume",
+//         count: "$count",
+//         min: "$min",
+//         max: "$max"
+//       },
+//       whenMatched: [
+//         { $set:
+//           {
+//             'volume': {$sum: ['$volume', '$$volume'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'count': {$sum: ['$count', '$$count'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'min': {$min: ['$min', '$$min'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'max': {$max: ['$max', '$$max'] }
+//           }
+//         },
+//         { $set: 
+//           {
+//             'avg': { $divide: ['$volume', '$count'] }
+//           }
+//         },
+//       ],
+//       whenNotMatched: "insert"
+//     }}
+//   ],
+//   {allowDiskUse: true})
+//   return entries
+// }
+
+// exports.updateDailyWallets = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       ...helpers.matchBuyTxs(),
+//       // date: {$gte: new Date('2022-01-07')},
+//       symbol: {$exists: true}
+//     }},
+//     {$addFields: {
+//       day: {$dayOfMonth: "$date"},
+//       month: {$month: "$date"},
+//       year: {$year: "$date"}
+//     }},
+//     { $group:
+//       {
+//         // change wallet
+//         _id : {symbol: '$symbol', wallet: '$owner', day: "$day", month: "$month", year: "$year"},
+//         volume: { $sum: "$price"},
+//         min: { $min: "$price" },
+//         max: { $max: "$price" },
+//         avg: { $avg: "$price" },
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {$addFields: {
+//       endDay: {$add: ["$_id.day", 1]}
+//     }},
+//     {$project: {
+//       'wallet': '$_id.wallet',
+//       'symbol': '$_id.symbol',
+//       'start': {$dateFromParts: {day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//       'end': {$dateFromParts: {day: "$endDay", month: "$_id.month", year: "$_id.year"}},
+//       'type': 'seller', // change buyer seller
+//       'volume': 1,
+//       'count': 1,
+//       'min': 1,
+//       'max': 1,
+//       'avg': 1,
+//       _id: 0
+//     }},
+//     { $merge: {
+//       into: "dailywallets", // changedaily hourlywallets
+//       on: [ "wallet", "symbol", "type", "start" ],
+//       let: {
+//         volume: "$volume",
+//         count: "$count",
+//         min: "$min",
+//         max: "$max"
+//       },
+//       whenMatched: [
+//         { $set:
+//           {
+//             'volume': {$sum: ['$volume', '$$volume'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'count': {$sum: ['$count', '$$count'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'min': {$min: ['$min', '$$min'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'max': {$max: ['$max', '$$max'] }
+//           }
+//         },
+//         { $set: 
+//           {
+//             'avg': { $divide: ['$volume', '$count'] }
+//           }
+//         },
+//       ],
+//       whenNotMatched: "insert"
+//     }}
+//   ],
+//   {allowDiskUse: true})
+//   return entries
+// }
+
+// exports.updateDailyMarketWallets = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       ...helpers.matchBuyTxs(),
+//     }},
+//     {$addFields: {
+//       day: {$dayOfMonth: "$date"},
+//       month: {$month: "$date"},
+//       year: {$year: "$date"}
+//     }},
+//     { $group:
+//       {
+//         // change wallet
+//         _id : {wallet: '$new_owner', day: "$day", month: "$month", year: "$year"},
+//         volume: { $sum: "$price"},
+//         min: { $min: "$price" },
+//         max: { $max: "$price" },
+//         avg: { $avg: "$price" },
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {$addFields: {
+//       endDay: {$add: ["$_id.day", 1]}
+//     }},
+//     {$project: {
+//       'wallet': '$_id.wallet',
+//       'symbol': 'all',
+//       'start': {$dateFromParts: {day: "$_id.day", month: "$_id.month", year: "$_id.year"}},
+//       'end': {$dateFromParts: {day: "$endDay", month: "$_id.month", year: "$_id.year"}},
+//       'type': 'buyer', // change buyer seller
+//       'volume': 1,
+//       'count': 1,
+//       'min': 1,
+//       'max': 1,
+//       'avg': 1,
+//       _id: 0
+//     }},
+//     { $merge: {
+//       into: "dailywallets", // changedaily hourlywallets
+//       on: [ "wallet", "symbol", "type", "start" ],
+//       let: {
+//         volume: "$volume",
+//         count: "$count",
+//         min: "$min",
+//         max: "$max"
+//       },
+//       whenMatched: [
+//         { $set:
+//           {
+//             'volume': {$sum: ['$volume', '$$volume'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'count': {$sum: ['$count', '$$count'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'min': {$min: ['$min', '$$min'] }
+//           }
+//         },
+//         { $set:
+//           {
+//             'max': {$max: ['$max', '$$max'] }
+//           }
+//         },
+//         { $set: 
+//           {
+//             'avg': { $divide: ['$volume', '$count'] }
+//           }
+//         },
+//       ],
+//       whenNotMatched: "insert"
+//     }}
+//   ],
+//   {allowDiskUse: true})
+//   return entries
 // }
 
 // exports.test = async (req, reply) => {
-//   try {
-//     const startDate = new Date();
-//     startDate.setUTCHours(startDate.getUTCHours() - 1)
-//     startDate.setUTCMinutes(0)
-//     startDate.setUTCSeconds(0)
-//     startDate.setUTCMilliseconds(0)
-//     console.log(startDate)
+//   const entries = await Wallets.aggregate([
+//     {$match:{symbol: 'all', }},
+//     {$sort: {volume: -1}},
+//     {$limit: 10}
+//   ])
+//   return entries
+// }
 
-//     const endDate = new Date();
-//     endDate.setUTCMinutes(0)
-//     endDate.setUTCSeconds(0)
-//     endDate.setUTCMilliseconds(0)
-//     console.log(endDate)
-
-//     const entries = await Transaction.aggregate([
-//       { $match: {
-//         ...helpers.matchBuyTxs(),
-//         $and: [
-//           {date: { $gte: startDate }},
-//           {date: { $lt: endDate }},
-//         ]
-//       }},
-//       { $group:
-//         {
-//           _id : {mint: '$mint'},
-//           volume: { $sum: "$price"},
-//           min: { $min: "$price" },
-//           max: { $max: "$price" },
-//           avg: { $avg: "$price" },
-//           count: { $sum: 1 },
-//           symbol: {$first: "$symbol"},
-//         }
-//       },
-//       { $project:
-//         {
-//           mint: '$_id.mint',
-//           volume: { $round: ["$volume", 2] },
-//           min: { $round: ["$min", 2] },
-//           max: { $round: ["$max", 2] },
-//           avg: { $round: ["$avg", 2] },
-//           date: startDate,
-//           symbol: 1,
-//           count: 1,
-//           _id: 0,
-//         }
-//       },
-//       // { $merge: {
-//       //   into: "hourlymints",
-//       //   on: [ "mint", "date" ],
-//       //   whenMatched: "replace",
-//       //   whenNotMatched: "insert"
-//       // }}
-//     ],
-//     {allowDiskUse: true})
-//     return entries
-
-//   } catch (err) {
-//     throw boom.boomify(err)
-//   }
+// exports.test = async (req, reply) => {
+//   const entries = await Transaction.aggregate([
+//     {$match:{
+//       new_owner: 'HFPaT6WKk9SkwtYVZ5m5Sqw7ZbyehGu9GHjsctigm49S',
+//       $and: [
+//         {date: {$gte: new Date('2021-08-15T09:00:00.000Z')}},
+//         {date: {$lt: new Date('2021-08-15T10:00:00.000Z')}},
+//       ],
+//       symbol: 'degenape'
+//     }},
+//     {$group: {
+//       _id: 0,
+//       count: {$sum: 1}
+//     }}
+//     // {$sort: {volume: -1}},
+//     // {$limit: 10}
+//   ])
+//   return entries
 // }
 
 exports.test = async (req, reply) => {
-  const entries = await Collection.find({}, {_id: 0, symbol: 1})
-  return entries.map(e => e.symbol)
+  return await Wallets.aggregate([ 
+    { $indexStats: { } },
+    { $sort: {"accesses.ops": 1} }
+  ])
 }
