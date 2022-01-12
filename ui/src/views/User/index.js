@@ -18,7 +18,7 @@ import {
 } from "../../redux/app";
 import getTokenAccounts from "../../utils/getTokenAccounts";
 import getNftAccounts from "../../utils/getNftAccounts";
-import NftCard from "../../components/NftCard";
+import NftCard from "../../components/NftCard/userprofile";
 import { useHistory } from "react-router-dom";
 import { shortenAddress } from "../../candy-machine";
 

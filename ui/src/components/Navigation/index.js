@@ -5,7 +5,7 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import { selectAddress, selectConnected } from "../../redux/network";
-import { links } from "../../constants/constants";
+import { links, themeColors } from "../../constants/constants";
 import logo2 from "../../assets/images/logo2.png";
 import {
   selectAddress,
@@ -31,6 +31,11 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import solens_symbol from "../../assets/images//logo3.png";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Navigation = (props) => {
   const { connection } = useConnection();
@@ -58,8 +63,6 @@ const Navigation = (props) => {
     }
   }, [wallet]);
 
-  // const address = useSelector(selectAddress);
-  //   const address_short = "0x..." + address.slice(-4);
   // const currentPage = useSelector(selectCurrentPage);
 
   // const activePage = (page) => {
@@ -74,70 +77,88 @@ const Navigation = (props) => {
   };
 
   return (
-    <nav className="navbar d-flex flex-row justify-content-between">
+    <nav className="navbar d-flex flex-row justify-content-between align-items-center">
       <div className="col-4 col-lg-2 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
           <img src={logo2} className="nav_logo" alt="logo" />
         </Link>
       </div>
 
-      <div className="d-none d-lg-flex col-lg-7 col-xl-6 col-xxl-5 flex-wrap justify-content-around align-items-center">
-        <div className="nav_link_container">
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">home</h1>
-          </Link>
-        </div>
-        <div className="nav_link_container">
-          <Link to="/collections" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">collections</h1>
-          </Link>
-        </div>
-        <div className="nav_link_container">
-          <Link to="/wallets" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">wallets</h1>
-          </Link>
-        </div>
-        <div className="nav_link_container">
-          <Link to="/launch" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">launchzone</h1>
-          </Link>
-        </div>
+      <div className="col-lg-6 d-none d-lg-flex justify-content-around align-items-center">
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <div className="d-none d-lg-block">
+              <HomeIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[2] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
+          </div>
+        </Link>
+        <Link to="/launch" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container ">
+            <div className="d-none d-lg-block">
+              <RocketLaunchIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[2] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              launchzone
+            </h1>
+          </div>
+        </Link>
+        <Link to="/collections" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <div className="d-none d-lg-block">
+              <CollectionsIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[2] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              collections
+            </h1>
+          </div>
+        </Link>
+        <Link to="/wallets" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container ">
+            <div className="d-none d-lg-block">
+              <AccountBalanceWalletIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[2] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              wallets
+            </h1>
+          </div>
+        </Link>
+        <Link to="/user" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container ">
+            <div className="d-none d-lg-block">
+              <AccountCircleOutlinedIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[2] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              profile
+            </h1>
+          </div>
+        </Link>
       </div>
 
-      {/* <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
-        <div className="icon_link">
-          <a
-            href={links.medium.url}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <MediumIcon style={{ fill: "white" }} className="icon_link" />
-          </a>
-        </div>
-        <div className="icon_link">
-          <a
-            href={links.twitter.url}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <TwitterIcon style={{ fill: "white" }} className="icon_link" />
-          </a>
-        </div>
-        <div className="icon_link">
-          <a
-            href={links.email.contact}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <EmailIcon style={{ fill: "white" }} />
-          </a>
-        </div>
-      </div> */}
-
-      <div className="col-lg-3 col-xxl-2 d-none d-lg-flex justify-content-end align-items-center">
-        <Link to="/user" style={{ textDecoration: "none", color: "white" }}>
+      <div className="col-lg-2 d-none d-lg-flex justify-content-end align-items-center">
+        {/* <Link to="/user" style={{ textDecoration: "none", color: "white" }}>
           <AccountCircleOutlinedIcon style={{ marginRight: 20 }} />
-        </Link>
+        </Link> */}
 
         <WalletModalProvider className="wallet_modal" logo={solens_symbol}>
           <WalletMultiButton
@@ -219,3 +240,33 @@ const Navigation = (props) => {
 };
 
 export default Navigation;
+
+/* <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
+  <div className="icon_link">
+    <a
+      href={links.medium.url}
+      target="_blank"
+      style={{ textDecoration: "none" }}
+    >
+      <MediumIcon style={{ fill: "white" }} className="icon_link" />
+    </a>
+  </div>
+  <div className="icon_link">
+    <a
+      href={links.twitter.url}
+      target="_blank"
+      style={{ textDecoration: "none" }}
+    >
+      <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+    </a>
+  </div>
+  <div className="icon_link">
+    <a
+      href={links.email.contact}
+      target="_blank"
+      style={{ textDecoration: "none" }}
+    >
+      <EmailIcon style={{ fill: "white" }} />
+    </a>
+  </div>
+</div> */

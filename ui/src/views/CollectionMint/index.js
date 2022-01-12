@@ -215,6 +215,8 @@ export default function CollectionMint(props) {
         </div>
       </div>
 
+      <h1 className="mt-0 mt-xxl-3">Listed Items</h1>
+
       <div className="col-12 col-lg-10">
         <InfiniteScroll
           dataLength={items.length}

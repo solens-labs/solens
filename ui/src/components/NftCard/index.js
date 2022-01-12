@@ -12,7 +12,7 @@ import { shortenAddress } from "../../candy-machine";
 export default function NftCard(props) {
   const { links, item } = props;
 
-  const price = parseFloat(item?.list_price.toFixed(2));
+  const price = parseFloat(item?.list_price?.toFixed(2));
   const listedMP = item?.list_mp;
 
   const history = useHistory();
@@ -32,7 +32,7 @@ export default function NftCard(props) {
           onClick={() => goToNFTDetailPage(item?.mint)}
         />
 
-        <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-1 ">
+        <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-2 ">
           <div className="col-12 d-flex flex-column justify-content-start align-items-center">
             <h5>{item?.name}</h5>
           </div>
