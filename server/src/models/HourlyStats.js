@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const hourlyStatsSchema = new mongoose.Schema({
   symbol: {type: String, require: true, index: true},
   marketplace: {type: String, require: true},
-  start: {type: Date, require: true, index: true},
+  start: {type: Date, require: true},
   end: {type: Date, require: true},
   count: {type: Number, require: true},
   volume: {type: Number, require: true},
@@ -17,6 +17,6 @@ const hourlyStatsSchema = new mongoose.Schema({
   },
 })
 
-hourlyStatsSchema.index({ symbol: 1, start: 1, marketplace: 1 }, { unique: true })
+hourlyStatsSchema.index({ start: 1, symbol: 1, marketplace: 1 }, { unique: true })
 
 module.exports = mongoose.model('HourlyStats', hourlyStatsSchema)

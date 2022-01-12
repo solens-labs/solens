@@ -27,6 +27,15 @@ walletSchema.index(
 
 walletSchema.index(
   {
+    'symbol': 1,
+    'type': 1,
+    'volume': -1,
+    'count': -1,
+  }
+)
+
+walletSchema.index(
+  {
     'wallet': 1,
     'symbol': 1,
     'type': 1

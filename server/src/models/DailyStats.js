@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const dailyStatsSchema = new mongoose.Schema({
   symbol: {type: String, require: true, index: true},
   marketplace: {type: String, require: true},
-  start: {type: Date, require: true, index: true},
+  start: {type: Date, require: true},
   end: {type: Date, require: true},
   count: {type: Number, require: true},
   volume: {type: Number, require: true},

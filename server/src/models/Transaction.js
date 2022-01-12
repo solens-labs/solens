@@ -5,6 +5,7 @@ const transactionSchema = new mongoose.Schema({
   mint: {type: String, require: true, index: true},
   owner: {type: String, index: true},
   new_owner: {type: String, index: true},
+  escrow: {type: String},
   bidder: {type: String},
   price: {type: Number},
   date: {type: Date, require: true, index: true},
