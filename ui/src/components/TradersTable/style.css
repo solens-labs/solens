@@ -7,11 +7,11 @@ td {
 }
 
 .sorted_asc {
-  color: rgb(57, 184, 223);
+  color: rgb(134, 64, 117);
 }
 
 .sorted_desc {
-  color: rgb(134, 64, 117);
+  color: rgb(65, 37, 156);
 }
 
 .pagination_select {

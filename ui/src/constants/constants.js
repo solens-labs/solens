@@ -1,8 +1,6 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
-const serverOld = "https://api-mainnet.arnori.io/api/stats/";
-const server = "https://api.arnori.io/stats/";
-const devServer = "http://3.19.58.245:3000/stats/";
+const server = "https://api.arnori.io/"; // mainnet production
 
 export const queries = {
   symbol: "?symbol=",
@@ -12,24 +10,24 @@ export const queries = {
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
   mintList: "&mint=true",
+  allTime: "&all_time=",
 };
 
 export const api = {
-  allCollections: `${server + "allCollections"}`,
-  topTrades: `${server + "topTrades"}`,
-  topNFTs: `${server + "topNFTs"}`,
-  collection: `${server + "collection"}`,
-  topTraders: `${server + "topTraders"}`,
-  marketStats: `${server + "marketStats"}`,
-  floor: `${server + "floor"}`, // need symbol, days
+  server: {
+    allCollections: server + "stats/allCollections",
+    collection: server + "stats/collection",
+    marketStats: server + "stats/marketStats",
+    floor: server + "stats/floor",
 
-  getAllCollections: `${server + "getAllCollections"}`,
-  getCollection: `${server + "getCollection/"}`,
-  getDailyStats: `${server + "getDailyStats/"}`,
-  getHourlyStats: `${server + "getHourlyStats/"}`,
-  getTopBuys: `${server + "getTopBuys/"}`,
-  getTopBuyers: `${server + "getTopBuyers/"}`,
-  getTopSellers: `${server + "getTopSellers/"}`,
+    // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
+    marketVolume: server + "totalMarketVolume",
+    mintSymbol: server + "symbol?mint=",
+    mintHistory: server + "stats/mintHistory?mint=",
+    topTraders: server + "stats/topTraders",
+    topNFTs: server + "stats/topNFTs",
+    listings: server + "listings",
+  },
 };
 
 export const exchangeApi = {
@@ -77,6 +75,13 @@ export const lineColors = [
   "rgb(87, 51, 207)",
   "rgb(57, 184, 223)",
   "rgb(255, 255, 255)",
+];
+
+export const themeColors = [
+  "rgb(179, 87, 156)", // Bright Pink
+  "rgb(65, 37, 156)", // Gradient Purple
+  "rgb(134, 64, 117)", // Gradient Pink
+  "rgb(18, 11, 37)", // Dark Purple
 ];
 
 export const links = {

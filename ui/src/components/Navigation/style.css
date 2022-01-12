@@ -27,7 +27,7 @@
 .nav_link {
   color: white;
   font-size: 1.3rem;
-  padding: 0px 20px 0px 20px;
+  padding: 0px 10px 0px 0px;
   text-align: end;
   letter-spacing: 0px;
   text-decoration: none !important;
@@ -150,10 +150,10 @@
   }
 
   .mobile_menu a {
-    margin: 1vh 1.5vw;
+    /* margin: 1vh 1.5vw; */
     color: white;
     text-decoration: none;
     font-size: 30px;
-    padding: 5px 0px;
+    padding: 1.1vh 0;
   }
 }
