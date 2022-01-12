@@ -1,7 +1,6 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
 const server = "https://api.arnori.io/"; // mainnet production
-const devServer = "http://18.217.246.3:3000/"; // developer
 
 export const queries = {
   symbol: "?symbol=",
@@ -20,14 +19,12 @@ export const api = {
     collection: server + "stats/collection",
     marketStats: server + "stats/marketStats",
     floor: server + "stats/floor",
-
-    // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
-    marketVolume: devServer + "totalMarketVolume",
-    mintSymbol: devServer + "symbol?mint=",
-    mintHistory: devServer + "stats/mintHistory?mint=",
-    topTraders: devServer + "stats/topTraders",
-    topNFTs: devServer + "stats/topNFTs",
-    listings: devServer + "listings",
+    marketVolume: server + "totalMarketVolume",
+    mintSymbol: server + "symbol?mint=",
+    mintHistory: server + "stats/mintHistory?mint=",
+    topTraders: server + "stats/topTraders",
+    topNFTs: server + "stats/topNFTs",
+    listings: server + "listings",
   },
 };
 

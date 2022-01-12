@@ -34,7 +34,7 @@ import HomePage from "../Home";
 import { api, links, queries } from "../../constants/constants";
 import ReactGA from "react-ga";
 import Wallets from "../Wallets";
-import ScrollToTop from "../../utils/scrollToTop";
+import ScrollToTop from "../../utils/ScrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
 import Launch from "../Launch";
