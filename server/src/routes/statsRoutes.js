@@ -72,6 +72,12 @@ const routes = [
     url: '/listings',
     schema: schema.listings,
     handler: statsHandlers.listings
+  },
+  // this is a temporary entdpoint
+  {
+    method: 'GET',
+    url: '/totalMarketVolume',
+    handler: statsHandlers.totalMarketVolume
   }
 ]
 

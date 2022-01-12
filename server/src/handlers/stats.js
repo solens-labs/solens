@@ -370,6 +370,21 @@ exports.floor = async (req, reply) => {
   }
 }
 
+exports.totalMarketVolume = async (req, reply) => {
+  return await Wallets.aggregate([
+    {$match: {
+      symbol: 'all'
+    }},
+    {$group : {
+      _id: 0,
+      volume: {$sum: '$volume'},
+    }},
+    {$project:{
+      _id : 0
+    }}
+  ])
+}
+
 exports.listings = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
@@ -387,13 +402,15 @@ exports.listings = async (req, reply) => {
       _id: {mint: '$mint'},
       owner: {$first: '$owner'},
       price: {$first: '$price'},
-      type: {$first: '$type'}
+      type: {$first: '$type'},
+      marketplace: {$first: '$marketplace'}
     }},
     {$project : {
       mint: '$_id.mint',
       owner: 1,
       price: 1,
       type: 1,
+      marketplace: 1,
       _id: 0
     }},
     {$match: {
@@ -406,6 +423,7 @@ exports.listings = async (req, reply) => {
       mint: 1,
       owner: 1,
       price: 1,
+      marketplace: 1,
     }}
   ])
 }
