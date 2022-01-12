@@ -91,7 +91,7 @@ export default function TradeListing(props) {
           {selectedMarketplace === "magiceden" && (
             // Terms & Conditions for Magic Eden
             <p className="terms_text m-0 mt-2 p-0">
-              By clicking "List", you agree to{" "}
+              By clicking "List Item", you agree to{" "}
               {marketplaceSelect(selectedMarketplace)}'s{" "}
               <a
                 href="https://magiceden.io/terms-of-service.pdf"
