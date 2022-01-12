@@ -15,15 +15,6 @@ export const queries = {
 };
 
 export const api = {
-  prodServer: {
-    allCollections: server + "stats/allCollections",
-    collection: server + "stats/collection",
-    topTraders: server + "stats/topTraders",
-    topNFTs: server + "stats/topNFTs",
-    topTrades: server + "stats/topTrades",
-    marketStats: server + "stats/marketStats",
-    floor: server + "stats/floor",
-  },
   server: {
     allCollections: server + "stats/allCollections",
     collection: server + "stats/collection",
