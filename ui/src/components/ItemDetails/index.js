@@ -68,8 +68,7 @@ export default function ItemDetails(props) {
       <div className="col-12 col-lg-6 d-flex flex-column align-items-start justify-content-start">
         {smb === 0 && (
           <h5 className="mint_info">
-            Project Fee:{" "}
-            <span className="mint_info_value">{royalty.toFixed(2)}%</span>
+            Project Fee: <span className="mint_info_value">{royalty}%</span>
           </h5>
         )}
         {smb > 0 && (
