@@ -227,7 +227,7 @@ exports.mintHistory = async (req, reply) => {
     const entries = Transaction.aggregate([
       { $match: {
         mint: req.query.mint,
-        ...helpers.matchBuyTxs(),
+        ...helpers.matchMainTxs(),
       } },
       { $sort: { date: -1} },
       { $limit: 10 },
@@ -237,7 +237,8 @@ exports.mintHistory = async (req, reply) => {
           buyer: "$new_owner",
           date: 1,
           symbol: 1,
-          price: { $round: ["$price", 2] },
+          type: 1,
+          price: { $round: ["$price", 4] },
           _id: 0
         }
       }
@@ -424,6 +425,48 @@ exports.listings = async (req, reply) => {
       owner: 1,
       price: 1,
       marketplace: 1,
+    }}
+  ])
+}
+
+exports.currentFloor = async (req, reply) => {
+  return Transaction.aggregate([
+    {$match: {
+      symbol: req.query.symbol,
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+        {type: { $eq: "buy"}},
+        {type: { $eq: "cancel"}},
+        {type: { $eq: "accept_offer"}}
+      ]
+    }},
+    {$sort: {date: -1}},
+    {$group : {
+      _id: {mint: '$mint'},
+      price: {$first: '$price'},
+      type: {$first: '$type'},
+      marketplace: {$first: '$marketplace'}
+    }},
+    {$match: {
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+      ]
+    }},
+    {$project : {
+      price: 1,
+      marketplace: 1,
+      _id: 0
+    }},
+    {$group : {
+      _id: {marketplace: '$marketplace'},
+      price: {$min: '$price'},
+    }},
+    {$project : {
+      markepplace: "$_id.marketplace",
+      floor: { $round: ["$price", 2] },
+      _id: 0
     }}
   ])
 }

@@ -70,8 +70,14 @@ const routes = [
   {
     method: 'GET',
     url: '/listings',
-    schema: schema.listings,
+    schema: schema.symbolRequired,
     handler: statsHandlers.listings
+  },
+  {
+    method: 'GET',
+    url: '/currentFloor',
+    schema: schema.symbolRequired,
+    handler: statsHandlers.currentFloor
   },
   // this is a temporary entdpoint
   {

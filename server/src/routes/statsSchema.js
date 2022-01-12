@@ -48,7 +48,7 @@ exports.mintHistory = {
   }
 }
 
-exports.listings = {
+exports.symbolRequired = {
   querystring: {
     type: 'object',
     additionalProperties: false,
