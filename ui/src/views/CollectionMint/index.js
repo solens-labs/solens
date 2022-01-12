@@ -64,6 +64,7 @@ export default function CollectionMint(props) {
           api.server.collection + queries.symbol + name + queries.mintList;
         const collectionInfo = await axios.get(apiRequest).then((response) => {
           const collectionInfo = response.data[0];
+          console.log({collectionInfo})
 
           setCollectionInfo(collectionInfo);
           setCollectionMintList(collectionInfo.mint);
@@ -83,6 +84,12 @@ export default function CollectionMint(props) {
           };
           setCollectionLinks(links);
         });
+
+        const apiRequest2 = api.server.listings + queries.symbol + name;
+        const collectionInfo = await axios.get(apiRequest2).then((response) => {
+          const listedItems = response.data;
+          console.log({listedItems});
+        }
       }
     }
   }, [name, allCollections]);
