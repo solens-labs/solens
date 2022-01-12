@@ -31,6 +31,7 @@ export const api = {
     floor: server + "stats/floor",
 
     // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
+    marketVolume: devServer + "totalMarketVolume",
     mintSymbol: devServer + "symbol?mint=",
     mintHistory: devServer + "stats/mintHistory?mint=",
     topTraders: devServer + "stats/topTraders",

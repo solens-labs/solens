@@ -111,22 +111,19 @@ export default function Home(props) {
     }
   }, []);
 
-  // Fetch Market Data
+  // Fetch Weekly Volume
   useEffect(async () => {
     if (volumeWeek === 0 && solPrice !== 0) {
-      const apiRequest = api.server.marketStats + "?days=" + 365;
+      // const apiRequest = api.server.marketStats + "?days=" + 365;
+      const apiRequest = api.server.marketVolume;
       const marketData = axios.get(apiRequest).then((response) => {
-        const data = response.data.splice(-7);
+        const marketVolumeSOL = response.data[0];
 
-        let weeklyVolumeCounter = 0;
-        data.map((day) => {
-          weeklyVolumeCounter += day.volume;
-        });
+        const marketVolumeConvert = solPrice * marketVolumeSOL.volume;
 
-        const weeklyConvertUSD = solPrice * weeklyVolumeCounter;
-        dispatch(setWeeklyVolume(Math.floor(weeklyConvertUSD)));
+        dispatch(setWeeklyVolume(Math.floor(marketVolumeConvert)));
 
-        const todaysVolume = data[6].volume;
+        // const todaysVolume = data[6].volume;
       });
     }
   }, [solPrice]);

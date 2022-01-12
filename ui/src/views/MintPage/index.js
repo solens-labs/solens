@@ -67,7 +67,6 @@ export default function MintPage(props) {
       const apiRequest = api.server.mintSymbol + address;
       const request = axios.get(apiRequest).then((response) => {
         const symbol = response.data?.symbol;
-        console.log(symbol);
 
         if (!symbol) {
           setInvalidCollection(true);
@@ -82,7 +81,6 @@ export default function MintPage(props) {
             const marketplacesArray = info.alltimestats?.map((mp, i) => {
               return mp.marketplace;
             });
-            console.log(marketplacesArray);
             setMarketplaces(marketplacesArray);
           });
         }
