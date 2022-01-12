@@ -87,7 +87,7 @@ export default function User(props) {
         )}
       </div>
 
-      <div className="col-12 col-xl-10 d-flex flex-row flex-wrap justify-content-center">
+      <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center">
         {nfts.length > 0 &&
           nfts.map((item, i) => {
             return (
