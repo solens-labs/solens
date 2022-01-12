@@ -7,6 +7,7 @@ import {
   selectAllCollections,
   selectCollection,
   selectDebugMode,
+  selectSolPrice,
 } from "../../redux/app";
 import axios from "axios";
 import {
@@ -43,6 +44,7 @@ export default function CollectionPage(props) {
   const { name } = useParams();
   const debug = useSelector(selectDebugMode);
   const allCollections = useSelector(selectAllCollections);
+  const solPrice = useSelector(selectSolPrice);
 
   const [timeframeFloor, setTimeframeFloor] = useState(30); // default timeframe for historical floor chart
   const [timeframeTrades, setTimeframeTrades] = useState(1000); // default timeframe for top trades table
@@ -54,6 +56,7 @@ export default function CollectionPage(props) {
   const [collectionVolume, setCollectionVolume] = useState(0); // needed for collection summary
   const [collectionAverage, setCollectionAverage] = useState(0); // needed for collection summary
   const [collectionTxCount, setCollectionTxCount] = useState(0); // needed for collection summary
+  const [collectionMarketCap, setCollectionMarketCap] = useState(0); //needed for collection summary
   const [stats, setStats] = useState([]); // needed to populate collection summary
   const [topTradesAll, setTopTradesAll] = useState([]); // needed for table
   const [topTradesWeek, setTopTradesWeek] = useState([]); // needed for table
@@ -104,6 +107,17 @@ export default function CollectionPage(props) {
       }
     }
   }, [name, allCollections]);
+
+  useEffect(() => {
+    if (floor > 0 && collectionInfo?.supply > 0 && solPrice > 0) {
+      const marketCap = floor * collectionInfo.supply * solPrice;
+      const marketCapFormatted = marketCap.toLocaleString("en", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+      setCollectionMarketCap(marketCapFormatted);
+    }
+  }, [solPrice, floor, collectionInfo]);
 
   // Fetch Top Trades All-Time
   useEffect(async () => {
@@ -464,6 +478,14 @@ export default function CollectionPage(props) {
       <h1 className="mt-0 mt-xxl-3">Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-12 col-xxl-10 p-lg-2 pt-lg-0 pb-lg-0 mt-lg-3">
         <CollectionStat
+          stat={collectionMarketCap ? `$${collectionMarketCap}` : "Loading..."}
+          label={"Market Cap"}
+        />
+        <CollectionStat
+          stat={floor > 0 ? floor : "Loading..."}
+          label={"Floor (SOL)"}
+        />
+        <CollectionStat
           stat={
             collectionVolume
               ? collectionVolume.toLocaleString("en", {
@@ -487,10 +509,6 @@ export default function CollectionPage(props) {
           label={"Average (SOL)"}
         />
         <CollectionStat
-          stat={floor > 0 ? floor : "Loading..."}
-          label={"Floor (SOL)"}
-        />
-        <CollectionStat
           stat={
             collectionInfo.supply
               ? collectionInfo.supply.toLocaleString()
@@ -498,10 +516,10 @@ export default function CollectionPage(props) {
           }
           label={"Supply"}
         />
-        <CollectionStat
+        {/* <CollectionStat
           stat={daysSinceCreated ? daysSinceCreated : "Loading..."}
           label={"Days Launched"}
-        />
+        /> */}
       </div>
 
       <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-lg-10 mt-5">
