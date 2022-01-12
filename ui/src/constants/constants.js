@@ -15,26 +15,27 @@ export const queries = {
 };
 
 export const api = {
-  devServer: {
+  prodServer: {
     allCollections: server + "stats/allCollections",
     collection: server + "stats/collection",
     topTraders: server + "stats/topTraders",
     topNFTs: server + "stats/topNFTs",
     topTrades: server + "stats/topTrades",
     marketStats: server + "stats/marketStats",
-    floor: server + "stats/floor", // need symbol, days
+    floor: server + "stats/floor",
   },
   server: {
     allCollections: server + "stats/allCollections",
     collection: server + "stats/collection",
     marketStats: server + "stats/marketStats",
-    floor: server + "stats/floor", // need symbol, days
+    floor: server + "stats/floor",
 
-    // new endpoints -- NEED TO CHANGE "devServer" and turn on GA before deploy
-    symbol: devServer + "symbol?mint=", // working & complete
-    mintHistory: devServer + "stats/mintHistory?mint=", // working & complete
-    topTraders: devServer + "stats/topTraders", // working & complete
-    topNFTs: devServer + "stats/topNFTs", // replaced topTrades from previous
+    // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
+    mintSymbol: devServer + "symbol?mint=",
+    mintHistory: devServer + "stats/mintHistory?mint=",
+    topTraders: devServer + "stats/topTraders",
+    topNFTs: devServer + "stats/topNFTs",
+    listings: devServer + "listings",
   },
 };
 
@@ -83,6 +84,13 @@ export const lineColors = [
   "rgb(87, 51, 207)",
   "rgb(57, 184, 223)",
   "rgb(255, 255, 255)",
+];
+
+export const themeColors = [
+  "rgb(179, 87, 156)", // Bright Pink
+  "rgb(65, 37, 156)", // Gradient Purple
+  "rgb(134, 64, 117)", // Gradient Pink
+  "rgb(18, 11, 37)", // Dark Purple
 ];
 
 export const links = {
