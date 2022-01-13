@@ -10,14 +10,16 @@
   /* background: linear-gradient(rgb(75, 53, 134), rgb(250, 163, 64)); */
   /* background: linear-gradient(rgba(75, 53, 134, 1), rgba(75, 53, 134, 0.9)); */
   background: rgb(18, 11, 37);
-  box-shadow: 0px 0px 5px black;
+  box-shadow: 0px 0px 2px black;
   border-bottom: 1px solid black;
   /* min-height: 7vh; */
 }
 
 .nav_link_container {
   /* width: 180px; */
-  overflow: hidden;
+  /* width: 100%; */
+  /* overflow: hidden; */
+  padding: 0px 15px;
   display: flex;
   justify-content: center;
   /* margin: 0px 5px; */
@@ -26,7 +28,7 @@
 
 .nav_link {
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   padding: 0px 10px 0px 0px;
   text-align: end;
   letter-spacing: 0px;
@@ -125,6 +127,68 @@
   /* margin-left: 3vw; */
 }
 
+.wallet-adapter-button.connect_button {
+  /* height: 70%; */
+  /* font-family: "main" !important; */
+  /* font-size: 1.1rem !important; */
+  /* font-weight: 400 !important; */
+}
+
+.wallet-adapter-modal-wrapper {
+  /* background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 1),
+    rgba(134, 64, 117, 1) 120%
+  ) !important; */
+  /* background: black !important; */
+  background: rgb(18, 11, 37) !important;
+  /* border: 2px solid rgba(255, 255, 255, 0.3) !important; */
+  border: 1px solid rgba(0, 0, 0, 1) !important;
+  box-shadow: 0px 0px 20px 2px black !important;
+}
+
+.wallet-adapter-modal-overlay {
+  /* background: rgba(18, 11, 37, 0.4) !important; */
+}
+
+.wallet-adapter-modal-logo-wrapper {
+  /* border: 2px solid rgba(255, 255, 255, 0.5) !important; */
+  /* box-shadow: 0px 0px 15px 2px black !important; */
+  border-radius: 100% !important;
+  background: transparent !important;
+}
+
+.wallet-adapter-modal-title {
+  color: white !important;
+}
+
+.wallet-adapter-button {
+  font-family: "main" !important;
+  font-size: 1rem !important;
+  background: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  ) !important;
+}
+
+.wallet-adapter-dropdown-list {
+  width: 100% !important;
+  background: rgb(18, 11, 37) !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  font-family: "main" !important;
+  font-size: 1rem !important;
+  font-weight: 100 !important;
+  /* font-size: 0.65rem !important; */
+  background: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  ) !important;
+}
+
 @media screen and (max-width: 991px) {
   .nav_logo {
     padding-left: 0px;
@@ -155,5 +219,14 @@
     text-decoration: none;
     font-size: 30px;
     padding: 1.1vh 0;
+  }
+}
+
+@media screen and (min-width: 991px) and (max-width: 1180px) {
+  .nav_link {
+    font-size: 1.1rem;
+  }
+  .connect_button {
+    max-height: 40px !important;
   }
 }

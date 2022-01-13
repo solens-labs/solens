@@ -34,12 +34,13 @@ import HomePage from "../Home";
 import { api, links, queries } from "../../constants/constants";
 import ReactGA from "react-ga";
 import Wallets from "../Wallets";
-import ScrollToTop from "../../utils/scrollToTop";
+import ScrollToTop from "../../utils/ScrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
 import Launch from "../Launch";
 import Footer from "../../components/Footer";
 import Apply from "../Apply";
+import User from "../User";
 import CollectionMint from "../CollectionMint";
 
 export default function Home(props) {
@@ -122,8 +123,6 @@ export default function Home(props) {
         const marketVolumeConvert = solPrice * marketVolumeSOL.volume;
 
         dispatch(setWeeklyVolume(Math.floor(marketVolumeConvert)));
-
-        // const todaysVolume = data[6].volume;
       });
     }
   }, [solPrice]);
@@ -242,6 +241,7 @@ export default function Home(props) {
           <Route path="/nfts/:name" component={CollectionMint} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
+          <Route path="/user" component={User} />
           <Route path="/launch" component={Launch} />
           <Route path="/mint/:address" component={MintPage} />
           <Route path="*" component={HomePage} />

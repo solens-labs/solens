@@ -7,8 +7,8 @@ import Typography from "@material-ui/core/Typography";
 const textColor = "#FFFFFF"; // white
 const questionBgColor = `linear-gradient(
   -45deg,
-  rgba(65, 37, 156, 0.85),
-  rgba(134, 64, 117, 0.85) 120%
+  rgba(65, 37, 156, 0.65),
+  rgba(134, 64, 117, 0.65) 120%
 ) !important`;
 const bgColor = "rgb(18, 11, 37)"; // dark purple
 
@@ -34,7 +34,7 @@ export const Accordion = withStyles({
 
 export const AccordionSummary = withStyles({
   root: {
-    // backgroundColor: `${bgColor}`,
+    backgroundColor: bgColor,
     background: questionBgColor,
     backdropFilter: "blur(50px)",
     border: `1px solid black`,

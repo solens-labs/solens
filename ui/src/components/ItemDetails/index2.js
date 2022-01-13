@@ -1,3 +1,5 @@
+// Split Columns
+
 import React from "react";
 import { shortenAddress } from "../../candy-machine";
 import { explorerLink } from "../../constants/constants";

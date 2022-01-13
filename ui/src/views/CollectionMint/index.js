@@ -35,10 +35,10 @@ export default function CollectionMint(props) {
 
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
-  const [collectionMintList, setCollectionMintList] = useState([]); // all mint addresses to request metadata
-  const [marketplaces, setMarketplaces] = useState([]);
+  // const [collectionMintList, setCollectionMintList] = useState([]); // all mint addresses to request metadata
+  const [collectionListed, setCollectionListed] = useState([]); // all listed items across all MPs
+  const [marketplaces, setMarketplaces] = useState([]); // number of MPs the collection is on
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
-  // const [items, setItems] = useState([]); // needed for collection nft grid items
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
   // Store collection name in redux
@@ -49,7 +49,7 @@ export default function CollectionMint(props) {
     }
   }, [storedCollectionName, name]);
 
-  // Fetch Collection Data
+  // Fetch Collection Data & Listed Items
   useEffect(async () => {
     if (name && allCollections.length > 0) {
       const filterCheck = allCollections.filter((item) => item.symbol === name);
@@ -60,13 +60,13 @@ export default function CollectionMint(props) {
       }
 
       if (result) {
-        const apiRequest =
-          api.server.collection + queries.symbol + name + queries.mintList;
+        const apiRequest = api.server.collection + queries.symbol + name;
+        // api.server.collection + queries.symbol + name + queries.mintList;
         const collectionInfo = await axios.get(apiRequest).then((response) => {
           const collectionInfo = response.data[0];
 
           setCollectionInfo(collectionInfo);
-          setCollectionMintList(collectionInfo.mint);
+          // setCollectionMintList(collectionInfo.mint);
 
           const marketplacesArray = [];
           if (collectionInfo) {
@@ -83,13 +83,17 @@ export default function CollectionMint(props) {
           };
           setCollectionLinks(links);
         });
+
+        const apiRequest2 = api.server.listings + queries.symbol + name;
+        const collectionListed = await axios
+          .get(apiRequest2)
+          .then((response) => {
+            const listedItems = response.data;
+            setCollectionListed(listedItems);
+          });
       }
     }
   }, [name, allCollections]);
-
-  // useEffect(() => {
-  //   setItems(storedItems);
-  // }, [storedItems]);
 
   // Set Initial Items
   useEffect(async () => {
@@ -98,27 +102,35 @@ export default function CollectionMint(props) {
       return;
     }
 
-    if (collectionMintList.length > 0 && items.length === 0) {
-      const initialItems = collectionMintList.slice(0, 20);
+    if (collectionListed.length > 0 && items.length === 0) {
+      const initialItems = collectionListed.slice(0, 20);
       const initialMetadata = initialItems.map(async (item, i) => {
-        const tokenMD = await getTokenMetadata(item);
+        const promise = await getTokenMetadata(item?.mint);
+        const tokenMD = await Promise.resolve(promise);
+        tokenMD["list_price"] = item?.price;
+        tokenMD["list_mp"] = item?.marketplace;
+        tokenMD["owner"] = item?.owner;
         return tokenMD;
       });
       const initialResolved = await Promise.all(initialMetadata);
       dispatch(setCollectionMints(initialResolved));
     }
-  }, [collectionMintList, storedCollectionName, name, items]);
+  }, [collectionListed, storedCollectionName, name, items]);
 
   // Add more mint addresses to items
   const fetchMoreData = async () => {
-    if (items.length > 0 && items.length >= collectionMintList.length) {
+    if (items.length > 0 && items.length >= collectionListed.length) {
       setHasMore(false);
       return;
     }
 
-    const newMints = collectionMintList.slice(items.length, items.length + 20);
+    const newMints = collectionListed.slice(items.length, items.length + 20);
     const newMetadata = newMints.map(async (item, i) => {
-      const tokenMD = await getTokenMetadata(item);
+      const promise = await getTokenMetadata(item?.mint);
+      const tokenMD = await Promise.resolve(promise);
+      tokenMD["list_price"] = item?.price;
+      tokenMD["list_mp"] = item?.marketplace;
+      tokenMD["owner"] = item?.owner;
       return tokenMD;
     });
     const newResolved = await Promise.all(newMetadata);
@@ -150,10 +162,6 @@ export default function CollectionMint(props) {
     }
 
     return links;
-  };
-
-  const selectNft = (mint) => {
-    history.push("/mint/" + mint);
   };
 
   // Top NFTs nft detail page link
@@ -207,6 +215,11 @@ export default function CollectionMint(props) {
         </div>
       </div>
 
+      <h1 className="mt-0 mt-xxl-3">
+        {collectionListed?.length || "Loading"} Listed Items
+      </h1>
+      <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+
       <div className="col-12 col-lg-10">
         <InfiniteScroll
           dataLength={items.length}
@@ -225,14 +238,9 @@ export default function CollectionMint(props) {
                   <div
                     className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                     key={i}
-                    onClick={() => selectNft(item.mint)}
                   >
-                    {/* <a
-                      href={nftPageLink(item)}
-                      style={{ textDecoration: "none", color: "white" }}
-                    > */}
+                    {/* <NftCard item={item} /> */}
                     <NftCard item={item} links={getItemLinks(item.mint)} />
-                    {/* </a> */}
                   </div>
                 );
               })}

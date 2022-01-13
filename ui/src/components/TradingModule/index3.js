@@ -1,4 +1,4 @@
-// Show buttons based on collection's supported marketplaces
+// Original before invalid check
 
 import React, { useState } from "react";
 import "./style.css";
@@ -38,48 +38,49 @@ export default function TradingModule(props) {
       </div> */}
 
       <div className="trading_buttons d-flex flex-wrap justify-content-around col-12 mt-3">
-        {marketplaces.map((mp, i) => {
-          return (
-            <div className="col col-md-4 p-1 p-md-2">
-              <a href={exchangeApi[mp].itemDetails + item.mint} target="_blank">
-                <button className="btn_trade">
-                  <div className="btn_trade_inner">
-                    <img
-                      src={
-                        mp === "magiceden"
-                          ? me_logo
-                          : mp === "solanart"
-                          ? sa_logo
-                          : mp === "smb"
-                          ? smb_logo
-                          : ""
-                      }
-                      alt=""
-                      style={{
-                        height: 45,
-                        background: "transparent",
-                        margin: -8,
-                      }}
-                    />
-                  </div>
-                </button>
-              </a>
-            </div>
-          );
-        })}
-
         <div className="col col-md-4 p-1 p-md-2">
-          <a href={explorerLink("token", mint)} target="_blank">
-            <button className="btn_trade">
-              <div className="btn_trade_inner">
-                <img
-                  src={ss_logo}
-                  alt=""
-                  style={{ height: 50, background: "transparent", margin: -8 }}
-                />
-              </div>
-            </button>
-          </a>
+          <button className="btn_mp">
+            <div
+              className={
+                selectedMarketplace === "magiceden"
+                  ? "btn_mp_inner_selected"
+                  : "btn_mp_inner"
+              }
+              onClick={() => setSelectedMarketplace("magiceden")}
+            >
+              <img
+                src={me_logo}
+                alt=""
+                style={{
+                  height: 45,
+                  background: "transparent",
+                  margin: -8,
+                }}
+              />
+            </div>
+          </button>
+        </div>
+        <div className="col col-md-4 p-1 p-md-2">
+          <button className="btn_mp">
+            <div
+              className={
+                selectedMarketplace === "solanart"
+                  ? "btn_mp_inner_selected"
+                  : "btn_mp_inner"
+              }
+              onClick={() => setSelectedMarketplace("solanart")}
+            >
+              <img
+                src={sa_logo}
+                alt=""
+                style={{
+                  height: 45,
+                  background: "transparent",
+                  margin: -8,
+                }}
+              />
+            </div>
+          </button>
         </div>
       </div>
     </div>

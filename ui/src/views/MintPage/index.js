@@ -26,7 +26,8 @@ export default function MintPage(props) {
   const { address } = useParams();
   const { connection } = useConnection();
 
-  // Token Detials State
+
+  // Token Details State
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [collectionInfo, setCollectionInfo] = useState("");
   const [royalty, setRoyalty] = useState(0);
@@ -172,7 +173,6 @@ export default function MintPage(props) {
             item={tokenMetadata}
             collection={collectionInfo}
             ownerAccount={ownerAccount}
-            marketplaces={marketplaces}
           />
 
           <div className="details col-12 mt-3 mt-lg-0">
