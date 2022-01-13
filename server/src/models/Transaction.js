@@ -38,11 +38,12 @@ const transactionSchema = new mongoose.Schema({
   tx: {type: String, require: true, unique: true, index: true},
 })
 
-// for getting live floor, listings, topNFTs for a symbol
+// for getting live floor, listings
 transactionSchema.index({ 'symbol': 1, 'type': 1, 'date': -1, 'price': -1 } )
 
-// for getting topNFTs of the entire market
-transactionSchema.index({ 'type': 1, 'price': -1 } )
+// for getting topNFTs
+transactionSchema.index({ 'symbol': 1, 'type': 1, 'price': -1, 'date': -1} )
+transactionSchema.index({ 'type': 1, 'price': -1, 'date': -1} )
 
 // for getting mint history
 transactionSchema.index({ 'mint': 1, 'type': 1, 'date': -1} )
