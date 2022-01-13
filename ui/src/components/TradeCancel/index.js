@@ -13,15 +13,8 @@ import { useWallet } from "@solana/wallet-adapter-react";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeCancel(props) {
-  const {
-    item,
-    ownerAccount,
-    tokenAccount,
-    marketplace,
-    setLoading,
-    listedDetails,
-    price,
-  } = props;
+  const { item, tokenAccount, marketplace, setLoading, listedDetails, price } =
+    props;
   const wallet = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
 
@@ -47,21 +40,9 @@ export default function TradeCancel(props) {
       });
 
       const mint = new anchor.web3.PublicKey(item.mint);
-      const owner = new anchor.web3.PublicKey(listedDetails.owner);
-      const [escrowFetch, bump] = await getEscrowAccount(mint, price, owner);
-
-      const makerString = wallet.publicKey.toBase58();
-      const maker = new anchor.web3.PublicKey(makerString);
-      const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
-      const escrowAccount = new anchor.web3.PublicKey(escrowFetch);
+      const maker = wallet.publicKey;
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
-
-      const cancelItem = await cancelMEden(
-        maker,
-        makerNftAccount,
-        escrowAccount,
-        program
-      );
+      const cancelItem = await cancelMEden(maker, mint, price, program);
       console.log(cancelItem);
     } catch (e) {
       console.log(e);

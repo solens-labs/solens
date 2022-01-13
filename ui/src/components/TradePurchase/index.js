@@ -15,15 +15,8 @@ import { buySolanart } from "../../exchanges/solanart";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradePurchase(props) {
-  const {
-    price,
-    item,
-    ownerAccount,
-    tokenAccount,
-    marketplace,
-    setLoading,
-    listedDetails,
-  } = props;
+  const { price, item, ownerAccount, tokenAccount, marketplace, setLoading } =
+    props;
   const userBalance = useSelector(selectBalance);
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
@@ -54,7 +47,6 @@ export default function TradePurchase(props) {
         break;
     }
   };
-
   const buyNftMagicEden = async () => {
     setLoading(true);
     try {
@@ -62,34 +54,18 @@ export default function TradePurchase(props) {
         preflightCommitment: "recent",
       });
 
-      const mint = new anchor.web3.PublicKey(item.mint);
-      const owner = new anchor.web3.PublicKey(listedDetails.owner);
-      const [escrowFetch, bump] = await getEscrowAccount(mint, price, owner);
-
-      const buyerString = wallet.publicKey.toBase58();
-      const buyer = new anchor.web3.PublicKey(buyerString);
-
-      const seller = new anchor.web3.PublicKey(listedDetails.owner);
-      const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
-      const escrowAccount = new anchor.web3.PublicKey(escrowFetch);
+      const seller = new anchor.web3.PublicKey(ownerAccount);
+      const buyer = wallet.publicKey;
       const metadataAccount = new anchor.web3.PublicKey(item.metadata_acct);
-      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const mint = new anchor.web3.PublicKey(item.mint);
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
-      const creators = item.creators.map((c) => {
-        return {
-          pubkey: new anchor.web3.PublicKey(c.address),
-          isWritable: true,
-          isSigner: false,
-        };
-      });
+      const creators = item.creators_list;
 
       const buyItem = await buyMEden(
-        buyer,
         seller,
-        makerNftAccount,
-        escrowAccount,
+        buyer,
         metadataAccount,
-        nftMint,
+        mint,
         price,
         program,
         creators
@@ -100,7 +76,6 @@ export default function TradePurchase(props) {
     }
     setLoading(false);
   };
-
   const buyNftSolanart = async () => {
     setLoading(true);
     try {
@@ -138,7 +113,6 @@ export default function TradePurchase(props) {
     }
     setLoading(false);
   };
-
   const buyNftSMB = async () => {
     console.log("Buying from SMB");
   };

@@ -106,7 +106,8 @@ export default function MintPage(props) {
       api.server.listings + queries.symbol + "none" + queries.mint + address;
     const itemDetailFetch = axios.get(apiRequest).then((response) => {
       const itemDetails = response.data[0];
-      if (Object.keys(itemDetails).length > 1) {
+
+      if (itemDetails && Object.keys(itemDetails)?.length > 1) {
         setListed(true);
         setListedDetails(itemDetails);
       }

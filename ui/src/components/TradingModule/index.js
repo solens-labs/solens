@@ -59,8 +59,6 @@ export default function TradingModule(props) {
   const floorDifference =
     ((price - floorDetails.floor) / floorDetails.floor) * 100;
 
-  const needRealOwnerAccount = "";
-
   return (
     <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-around p-2 pb-3">
       <div className="item_title_and_details col-12 d-flex flex-column align-items-center">
@@ -92,9 +90,15 @@ export default function TradingModule(props) {
           </div>
         )}
 
-        {!listed && (
+        {!listed && !invalid && (
           <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-3">
             <h4 className="m-0 p-0 pt-3">Item Not Listed</h4>
+          </div>
+        )}
+
+        {invalid && (
+          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-3">
+            <h4 className="m-0 p-0 pt-3">Invalid Token</h4>
           </div>
         )}
       </div>
@@ -121,11 +125,10 @@ export default function TradingModule(props) {
         />
       )}
 
-      {user && listed && !loading && (
+      {user && user === owner && listed && !loading && (
         <TradeCancel
           item={item}
           price={price}
-          ownerAccount={ownerAccount}
           tokenAccount={tokenAccount}
           setLoading={setLoading}
           marketplace={marketplace}
@@ -133,11 +136,11 @@ export default function TradingModule(props) {
         />
       )}
 
-      {user && user !== ownerAccount && listed && !loading && (
+      {user && user !== owner && listed && !loading && (
         <TradePurchase
           item={item}
           price={price}
-          ownerAccount={ownerAccount}
+          ownerAccount={owner}
           tokenAccount={tokenAccount}
           setLoading={setLoading}
           marketplace={marketplace}

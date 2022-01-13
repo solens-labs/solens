@@ -49,7 +49,7 @@ export default function TradeListing(props) {
           return;
         }
 
-        const maker = new anchor.web3.PublicKey(makerString);
+        const maker = wallet.publicKey;
         const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
         const nftMint = new anchor.web3.PublicKey(item.mint);
         const takerPrice = listPrice;
