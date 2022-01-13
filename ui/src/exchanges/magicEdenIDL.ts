@@ -156,12 +156,12 @@ const magicEdenIDL = {
           isSigner: !1,
         },
         { name: "pdaAccount", isMut: !1, isSigner: !1 },
+        { name: "tokenProgram", isMut: !1, isSigner: !1 },
         {
           name: "systemProgram",
           isMut: !1,
           isSigner: !1,
         },
-        { name: "tokenProgram", isMut: !1, isSigner: !1 },
         {
           name: "platformFeesAccount",
           isMut: !0,

@@ -22,6 +22,8 @@ export const getTokenMetadata = async (mint) => {
       });
 
     detailedData["mint"] = fullData.mint;
+    detailedData["creators"] = fullData.data.creators;
+    detailedData["metadata_acct"] = metadataPDA.toBase58();
 
     return detailedData;
   } catch {
