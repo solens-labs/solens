@@ -59,6 +59,18 @@ exports.symbolRequired = {
   }
 }
 
+exports.tmpSymbolOrMintRequired = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['symbol'],
+    properties: {
+      symbol: { type: 'string' },
+      mint: { type: 'string' }
+    }
+  }
+}
+
 exports.walletHistory = {
   querystring: {
     type: 'object',

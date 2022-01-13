@@ -70,7 +70,7 @@ const routes = [
   {
     method: 'GET',
     url: '/listings',
-    schema: schema.symbolRequired,
+    schema: schema.tmpSymbolOrMintRequired,
     handler: statsHandlers.listings
   },
   {

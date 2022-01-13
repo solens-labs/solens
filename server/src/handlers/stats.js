@@ -387,6 +387,32 @@ exports.totalMarketVolume = async (req, reply) => {
 }
 
 exports.listings = async (req, reply) => {
+
+  if (req.query.mint) {
+    return Transaction.aggregate([
+      {$match: {
+        mint: req.query.mint,
+        ...helpers.matchMainTxs()
+      }},
+      {$sort: {date: -1}},
+      {$limit: 1},
+      {$match: {
+        $or: [
+          {type: { $eq: "list"}},
+          {type: { $eq: "update"}},
+        ]
+      }},
+      {$project : {
+        symbol: 1,
+        mint: 1,
+        owner: 1,
+        price: 1,
+        marketplace: 1,
+        _id: 0
+      }}
+    ])
+  }
+
   return Transaction.aggregate([
     {$match: {
       symbol: req.query.symbol,
