@@ -101,7 +101,7 @@ export default function TradeListing(props) {
           "processed"
         );
 
-        console.log(sendTx, confirmTx);
+        console.log(sendTx);
       } catch (e) {
         console.log(e);
       }
@@ -170,7 +170,7 @@ export default function TradeListing(props) {
                   src={sa_logo}
                   alt=""
                   style={{
-                    height: 45,
+                    height: 41,
                     background: "transparent",
                     margin: -8,
                   }}

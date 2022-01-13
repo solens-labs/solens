@@ -11,6 +11,7 @@ export const queries = {
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
   mintList: "&mint=true",
+  mint: "&mint=",
   allTime: "&all_time=",
 };
 

@@ -86,7 +86,8 @@ export default function TradingModule(props) {
             </h4>
             <h4 className="item_price m-0 mt-2 p-0">{price} SOL</h4>
             <h5 className="" style={{ fontSize: "1rem" }}>
-              {floorDifference.toFixed(2)}% above floor
+              {floorDifference > 0 &&
+                floorDifference.toFixed(2) + "% above floor"}
             </h5>
           </div>
         )}

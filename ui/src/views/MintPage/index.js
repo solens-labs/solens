@@ -49,6 +49,7 @@ export default function MintPage(props) {
   const received = Object.keys(tokenMetadata).length > 0;
   const [invalidToken, setInvalidToken] = useState(false);
   const [invalidCollection, setInvalidCollection] = useState(false);
+  const [unsupportedToken, setUnsupportedToken] = useState(false);
 
   // Fetch mint address metadata
   useEffect(async () => {
@@ -64,7 +65,7 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint's collection symbol & data
+  // Fetch mint's collection symbol, data & floor
   useEffect(async () => {
     if (address && collectionInfo.length === 0) {
       const apiRequest = api.server.mintSymbol + address;
@@ -88,30 +89,28 @@ export default function MintPage(props) {
             setMarketplaces(marketplacesArray);
           });
 
-          // Request to get Collection Listed Items (to filter mint)
-          const apiRequest3 = api.server.listings + queries.symbol + symbol;
-          const collectionListed = axios.get(apiRequest3).then((response) => {
-            const listedItems = response.data;
-
-            const listedSearch = listedItems.filter(
-              (item) => item.mint === address
-            );
-
-            if (listedSearch.length === 1) {
-              setListed(true);
-              setListedDetails(listedSearch[0]);
-            }
-          });
-
           // Request Collection floor
-          const apiRequest4 = api.server.currentFloor + queries.symbol + symbol;
-          const currentFloor = axios.get(apiRequest4).then((response) => {
+          const apiRequest3 = api.server.currentFloor + queries.symbol + symbol;
+          const currentFloor = axios.get(apiRequest3).then((response) => {
             const [floorData] = response.data;
             setFloorDetails(floorData);
           });
         }
       });
     }
+  }, [address]);
+
+  // Fetch mint details
+  useEffect(async () => {
+    const apiRequest =
+      api.server.listings + queries.symbol + "none" + queries.mint + address;
+    const itemDetailFetch = axios.get(apiRequest).then((response) => {
+      const itemDetails = response.data[0];
+      if (Object.keys(itemDetails).length > 1) {
+        setListed(true);
+        setListedDetails(itemDetails);
+      }
+    });
   }, [address]);
 
   // Fetch mint activity

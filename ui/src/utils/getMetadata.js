@@ -23,6 +23,13 @@ export const getTokenMetadata = async (mint) => {
 
     detailedData["mint"] = fullData.mint;
     detailedData["creators"] = fullData.data.creators;
+    detailedData["creators_list"] = fullData.data.creators.map((c) => {
+      return {
+        pubkey: new anchor.web3.PublicKey(c.address),
+        isWritable: true,
+        isSigner: false,
+      };
+    });
     detailedData["metadata_acct"] = metadataPDA.toBase58();
 
     return detailedData;

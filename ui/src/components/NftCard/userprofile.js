@@ -1,13 +1,5 @@
-import React from "react";
 import "./style.css";
-import sa_logo from "../../assets/images/sa_logo_dark.png";
-import me_logo from "../../assets/images/me_logo_white.png";
-import smb_logo from "../../assets/images/smb_logo.png";
-import ss_logo from "../../assets/images/ss_logo.png";
-import sol_logo from "../../assets/images/sol_logo.png";
-import { explorerLink } from "../../constants/constants";
 import { useHistory } from "react-router-dom";
-import { shortenAddress } from "../../candy-machine";
 
 export default function NftCard(props) {
   const { links, item } = props;

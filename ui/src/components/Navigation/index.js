@@ -91,7 +91,7 @@ const Navigation = (props) => {
               <HomeIcon
                 fontSize={"medium"}
                 className="nav_icon"
-                style={{ fill: themeColors[2] }}
+                style={{ fill: themeColors[0] }}
               />
             </div>
             <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
@@ -103,7 +103,7 @@ const Navigation = (props) => {
               <RocketLaunchIcon
                 fontSize={"medium"}
                 className="nav_icon"
-                style={{ fill: themeColors[2] }}
+                style={{ fill: themeColors[0] }}
               />
             </div>
             <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
@@ -117,7 +117,7 @@ const Navigation = (props) => {
               <CollectionsIcon
                 fontSize={"medium"}
                 className="nav_icon"
-                style={{ fill: themeColors[2] }}
+                style={{ fill: themeColors[0] }}
               />
             </div>
             <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
@@ -131,7 +131,7 @@ const Navigation = (props) => {
               <AccountBalanceWalletIcon
                 fontSize={"medium"}
                 className="nav_icon"
-                style={{ fill: themeColors[2] }}
+                style={{ fill: themeColors[0] }}
               />
             </div>
             <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
@@ -145,7 +145,7 @@ const Navigation = (props) => {
               <AccountCircleOutlinedIcon
                 fontSize={"medium"}
                 className="nav_icon"
-                style={{ fill: themeColors[2] }}
+                style={{ fill: themeColors[0] }}
               />
             </div>
             <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">

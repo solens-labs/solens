@@ -116,111 +116,98 @@ export async function listSolanart(
   final_tx.add(...[createTokenIx, initAccountIx, listIx]);
 
   return { final_tx, escrowTokenAccount };
-  // return await anchor.web3.sendAndConfirmTransaction(
-  //   connection,
-  //   final_tx,
-  //   [wallet, escrowTokenAccount],
-  //   { skipPreflight: false }
-  // );
 }
 
-// async function buySolanart(
-//   taker: anchor.web3.Keypair,
-//   maker: anchor.web3.PublicKey,
-//   makerNftAccount: anchor.web3.PublicKey,
-//   nftMint: anchor.web3.PublicKey,
-//   takerPrice: number
-// ) {
-//   let txIxs = [];
+export async function buySolanart(
+  taker: anchor.web3.Keypair,
+  maker: anchor.web3.PublicKey,
+  makerNftAccount: anchor.web3.PublicKey,
+  nftMint: anchor.web3.PublicKey,
+  takerPrice: number,
+  creators: any
+) {
+  let txIxs = [];
 
-//   let takerAtaAddress = await Token.getAssociatedTokenAddress(
-//     ASSOCIATED_TOKEN_PROGRAM_ID,
-//     TOKEN_PROGRAM_ID,
-//     nftMint,
-//     taker.publicKey
-//   );
-//   let takerAtaAccount = await connection.getAccountInfo(takerAtaAddress);
-//   if (takerAtaAddress == null) {
-//     let createTakerAtaIx = Token.createAssociatedTokenAccountInstruction(
-//       ASSOCIATED_TOKEN_PROGRAM_ID,
-//       TOKEN_PROGRAM_ID,
-//       nftMint,
-//       takerAtaAddress,
-//       taker.publicKey,
-//       taker.publicKey
-//     );
-//     txIxs.push(createTakerAtaIx);
-//   }
+  let takerAtaAddress = await Token.getAssociatedTokenAddress(
+    ASSOCIATED_TOKEN_PROGRAM_ID,
+    TOKEN_PROGRAM_ID,
+    nftMint,
+    taker.publicKey
+  );
+  let takerAtaAccount = await connection.getAccountInfo(takerAtaAddress);
+  if (takerAtaAddress == null) {
+    let createTakerAtaIx = Token.createAssociatedTokenAccountInstruction(
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      nftMint,
+      takerAtaAddress,
+      taker.publicKey,
+      taker.publicKey
+    );
+    txIxs.push(createTakerAtaIx);
+  }
 
-//   takerPrice = taker.publicKey.toBase58() == maker.toBase58() ? 0 : takerPrice;
-//   let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL);
-//   let ixData = Buffer.from([action.Buy, ...priceBN.toArray("le", 8)]);
+  takerPrice = taker.publicKey.toBase58() == maker.toBase58() ? 0 : takerPrice;
+  let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL);
+  let ixData = Buffer.from([action.Buy, ...priceBN.toArray("le", 8)]);
 
-//   let [escrowAccount, bs] = await anchor.web3.PublicKey.findProgramAddress(
-//     [Buffer.from("sale"), nftMint.toBuffer()],
-//     Solanart
-//   );
-//   let [mintMetadataAccount, bm] =
-//     await anchor.web3.PublicKey.findProgramAddress(
-//       [
-//         Buffer.from("metadata"),
-//         TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-//         nftMint.toBuffer(),
-//       ],
-//       TOKEN_METADATA_PROGRAM_ID
-//     );
-//   let [stakePda, bn] = await PublicKey.findProgramAddress(
-//     [Buffer.from("nft"), maker.toBuffer()],
-//     stakeProgram
-//   );
+  let [escrowAccount, bs] = await anchor.web3.PublicKey.findProgramAddress(
+    [Buffer.from("sale"), nftMint.toBuffer()],
+    Solanart
+  );
+  let [mintMetadataAccount, bm] =
+    await anchor.web3.PublicKey.findProgramAddress(
+      [
+        Buffer.from("metadata"),
+        TOKEN_METADATA_PROGRAM_ID.toBuffer(),
+        nftMint.toBuffer(),
+      ],
+      TOKEN_METADATA_PROGRAM_ID
+    );
+  let [stakePda, bn] = await PublicKey.findProgramAddress(
+    [Buffer.from("nft"), maker.toBuffer()],
+    stakeProgram
+  );
 
-//   let keys = [
-//     taker.publicKey,
-//     takerAtaAddress,
-//     new PublicKey("2f8RUQFQ2BuDRcoshVoAc1xzHZqujA7Yoyhre21EPjhE"),
-//     maker,
-//     escrowAccount,
-//     TOKEN_PROGRAM_ID,
-//     exchangeFeeAccount,
-//     escrowAuthority,
-//     mintMetadataAccount,
-//     stakePda,
-//     stakeProgram,
-//     SystemProgram.programId,
-//   ];
+  let keys = [
+    taker.publicKey,
+    takerAtaAddress,
+    new PublicKey("2f8RUQFQ2BuDRcoshVoAc1xzHZqujA7Yoyhre21EPjhE"),
+    maker,
+    escrowAccount,
+    TOKEN_PROGRAM_ID,
+    exchangeFeeAccount,
+    escrowAuthority,
+    mintMetadataAccount,
+    stakePda,
+    stakeProgram,
+    SystemProgram.programId,
+  ];
 
-//   let accounts: any = [];
-//   keys.forEach((k, index) => {
-//     BuyKeys[index].pubkey = k;
-//     accounts.push(BuyKeys[index]);
-//   });
+  let accounts: any = [];
+  keys.forEach((k, index) => {
+    BuyKeys[index].pubkey = k;
+    accounts.push(BuyKeys[index]);
+  });
 
-//   if (takerPrice > 0) {
-//     let creators = await getCreatorsList(mintMetadataAccount);
-//     creators.forEach((c) => {
-//       accounts.push({
-//         pubkey: new anchor.web3.PublicKey(c.address),
-//         isWritable: true,
-//         isSigner: false,
-//       });
-//     });
-//   }
+  accounts.push(...creators);
+  console.log(accounts);
 
-//   let buyIx = new TransactionInstruction({
-//     programId: Solanart,
-//     data: ixData,
-//     keys: accounts,
-//   });
+  let buyIx = new TransactionInstruction({
+    programId: Solanart,
+    data: ixData,
+    keys: accounts,
+  });
 
-//   txIxs.push(buyIx);
+  txIxs.push(buyIx);
 
-//   const final_tx = new Transaction({
-//     feePayer: taker.publicKey,
-//   });
+  const final_tx = new Transaction({
+    feePayer: taker.publicKey,
+  });
 
-//   final_tx.add(...txIxs);
+  final_tx.add(...txIxs);
 
-//   return anchor.web3.sendAndConfirmTransaction(connection, final_tx, [taker], {
-//     skipPreflight: false,
-//   });
-// }
+  // return anchor.web3.sendAndConfirmTransaction(connection, final_tx, [taker], {
+  //   skipPreflight: false,
+  // });
+}

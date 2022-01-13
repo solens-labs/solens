@@ -56,16 +56,6 @@ export default function TradeCancel(props) {
       const escrowAccount = new anchor.web3.PublicKey(escrowFetch);
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
 
-      // console.log(
-      //   { mint: mint.toBase58() },
-      //   { owner: owner.toBase58() },
-      //   { escrowFetch: escrowFetch },
-      //   { maker: maker.toBase58() },
-      //   { makerNftAccount: makerNftAccount.toBase58() },
-      //   { escrowAccount: escrowAccount.toBase58() },
-      //   { program: program }
-      // );
-
       const cancelItem = await cancelMEden(
         maker,
         makerNftAccount,
@@ -78,11 +68,14 @@ export default function TradeCancel(props) {
     }
     setLoading(false);
   };
-
   const delistNftSolanart = async () => {
-    console.log("Delisting item from Solanart");
+    setLoading(true);
+    try {
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
   };
-
   const delistNftSMB = async () => {
     console.log("Delisting item from SMB Market");
   };
