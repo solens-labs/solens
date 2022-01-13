@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./style.css";
 import Loader from "../../components/Loader";
@@ -13,21 +13,41 @@ import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
 import NftCard from "../../components/NftCard";
 import { getTokenMetadata } from "../../utils/getMetadata";
-import { useSelector } from "react-redux";
-import { selectAllCollections } from "../../redux/app";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectAllCollections,
+  selectCollection,
+  selectCollectionMints,
+  selectCollectionName,
+  setCollection,
+  setCollectionMints,
+  setCollectionName,
+} from "../../redux/app";
 
 export default function CollectionMint(props) {
   const { name } = useParams();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const allCollections = useSelector(selectAllCollections);
+  const storedCollection = useSelector(selectCollection);
+  const storedCollectionName = useSelector(selectCollectionName);
+  const items = useSelector(selectCollectionMints);
 
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
-  const [collectionMintList, setCollectionMintList] = useState([]); // needed to request metadata
+  const [collectionMintList, setCollectionMintList] = useState([]); // all mint addresses to request metadata
   const [marketplaces, setMarketplaces] = useState([]);
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
-
-  const [items, setItems] = useState([]); // needed for collection nft grid items
+  // const [items, setItems] = useState([]); // needed for collection nft grid items
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
+
+  // Store collection name in redux
+  useEffect(() => {
+    if (storedCollectionName !== name) {
+      dispatch(setCollectionMints([]));
+      dispatch(setCollectionName(name));
+    }
+  }, [storedCollectionName, name]);
 
   // Fetch Collection Data
   useEffect(async () => {
@@ -41,7 +61,7 @@ export default function CollectionMint(props) {
 
       if (result) {
         const apiRequest =
-          api.collection + queries.symbol + name + queries.mintList;
+          api.server.collection + queries.symbol + name + queries.mintList;
         const collectionInfo = await axios.get(apiRequest).then((response) => {
           const collectionInfo = response.data[0];
 
@@ -67,22 +87,31 @@ export default function CollectionMint(props) {
     }
   }, [name, allCollections]);
 
+  // useEffect(() => {
+  //   setItems(storedItems);
+  // }, [storedItems]);
+
   // Set Initial Items
   useEffect(async () => {
-    if (collectionMintList.length > 0) {
+    if (items.length > 0 && storedCollectionName === name) {
+      // setItems(items);
+      return;
+    }
+
+    if (collectionMintList.length > 0 && items.length === 0) {
       const initialItems = collectionMintList.slice(0, 20);
       const initialMetadata = initialItems.map(async (item, i) => {
         const tokenMD = await getTokenMetadata(item);
         return tokenMD;
       });
       const initialResolved = await Promise.all(initialMetadata);
-      setItems(initialResolved);
+      dispatch(setCollectionMints(initialResolved));
     }
-  }, [collectionMintList]);
+  }, [collectionMintList, storedCollectionName, name, items]);
 
   // Add more mint addresses to items
   const fetchMoreData = async () => {
-    if (items.length >= collectionMintList.length) {
+    if (items.length > 0 && items.length >= collectionMintList.length) {
       setHasMore(false);
       return;
     }
@@ -94,7 +123,7 @@ export default function CollectionMint(props) {
     });
     const newResolved = await Promise.all(newMetadata);
     const fullItems = [...items, ...newResolved];
-    setItems(fullItems);
+    dispatch(setCollectionMints(fullItems));
   };
 
   // Scroll to Top Button
@@ -121,6 +150,20 @@ export default function CollectionMint(props) {
     }
 
     return links;
+  };
+
+  const selectNft = (mint) => {
+    history.push("/mint/" + mint);
+  };
+
+  // Top NFTs nft detail page link
+  const nftPageLink = (item) => {
+    let detailPageLink = "";
+    if (item.mint) {
+      detailPageLink = `/mint/` + item.mint;
+    }
+    const externalLink = explorerLink("token", item.mint);
+    return detailPageLink ? detailPageLink : externalLink;
   };
 
   return (
@@ -180,10 +223,16 @@ export default function CollectionMint(props) {
               items.map((item, i) => {
                 return (
                   <div
-                    className="col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                     key={i}
+                    onClick={() => selectNft(item.mint)}
                   >
+                    {/* <a
+                      href={nftPageLink(item)}
+                      style={{ textDecoration: "none", color: "white" }}
+                    > */}
                     <NftCard item={item} links={getItemLinks(item.mint)} />
+                    {/* </a> */}
                   </div>
                 );
               })}

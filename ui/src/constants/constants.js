@@ -1,8 +1,7 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
-const serverOld = "https://api-mainnet.arnori.io/api/stats/";
-const server = "https://api.arnori.io/stats/";
-const devServer = "http://3.19.58.245:3000/stats/";
+const server = "https://api.arnori.io/"; // mainnet production
+const devServer = "http://18.217.246.3:3000/"; // developer
 
 export const queries = {
   symbol: "?symbol=",
@@ -12,24 +11,31 @@ export const queries = {
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
   mintList: "&mint=true",
+  allTime: "&all_time=",
 };
 
 export const api = {
-  allCollections: `${server + "allCollections"}`,
-  topTrades: `${server + "topTrades"}`,
-  topNFTs: `${server + "topNFTs"}`,
-  collection: `${server + "collection"}`,
-  topTraders: `${server + "topTraders"}`,
-  marketStats: `${server + "marketStats"}`,
-  floor: `${server + "floor"}`, // need symbol, days
+  prodServer: {
+    allCollections: server + "stats/allCollections",
+    collection: server + "stats/collection",
+    topTraders: server + "stats/topTraders",
+    topNFTs: server + "stats/topNFTs",
+    topTrades: server + "stats/topTrades",
+    marketStats: server + "stats/marketStats",
+    floor: server + "stats/floor",
+  },
+  server: {
+    allCollections: server + "stats/allCollections",
+    collection: server + "stats/collection",
+    marketStats: server + "stats/marketStats",
+    floor: server + "stats/floor",
 
-  getAllCollections: `${server + "getAllCollections"}`,
-  getCollection: `${server + "getCollection/"}`,
-  getDailyStats: `${server + "getDailyStats/"}`,
-  getHourlyStats: `${server + "getHourlyStats/"}`,
-  getTopBuys: `${server + "getTopBuys/"}`,
-  getTopBuyers: `${server + "getTopBuyers/"}`,
-  getTopSellers: `${server + "getTopSellers/"}`,
+    // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
+    mintSymbol: devServer + "symbol?mint=",
+    mintHistory: devServer + "stats/mintHistory?mint=",
+    topTraders: devServer + "stats/topTraders",
+    topNFTs: devServer + "stats/topNFTs",
+  },
 };
 
 export const exchangeApi = {

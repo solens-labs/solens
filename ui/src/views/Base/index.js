@@ -80,7 +80,7 @@ export default function Home(props) {
   useEffect(async () => {
     if (allCollections.length === 0) {
       const collectionsData = await axios
-        .get(api.allCollections)
+        .get(api.server.allCollections)
         .then((response) => {
           const collections = response.data;
           const collectionsAboveZero = collections.filter((collection) => {
@@ -114,7 +114,7 @@ export default function Home(props) {
   // Fetch Market Data
   useEffect(async () => {
     if (volumeWeek === 0 && solPrice !== 0) {
-      const apiRequest = api.marketStats + "?days=" + 365;
+      const apiRequest = api.server.marketStats + "?days=" + 365;
       const marketData = axios.get(apiRequest).then((response) => {
         const data = response.data.splice(-7);
 
@@ -148,7 +148,10 @@ export default function Home(props) {
   useEffect(async () => {
     if (walletBuyersWeek.length === 0) {
       const apiRequest =
-        api.topTraders + "?type=buyers" + queries.days + 7 + queries.sortVolume;
+        api.server.topTraders +
+        "?all_time=true" +
+        "&type=buyers" +
+        queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
         dispatch(setWalletBuyers(walletList));
@@ -157,10 +160,9 @@ export default function Home(props) {
 
     if (walletSellersWeek.length === 0) {
       const apiRequest =
-        api.topTraders +
-        "?type=sellers" +
-        queries.days +
-        7 +
+        api.server.topTraders +
+        "?all_time=true" +
+        "&type=sellers" +
         queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
@@ -170,7 +172,10 @@ export default function Home(props) {
 
     if (walletBuyersDay.length === 0) {
       const apiRequest =
-        api.topTraders + "?type=buyers" + queries.days + 1 + queries.sortVolume;
+        api.server.topTraders +
+        "?all_time=false" +
+        "&type=buyers" +
+        queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
         dispatch(setWalletBuyersDay(walletList));
@@ -179,10 +184,9 @@ export default function Home(props) {
 
     if (walletSellersDay.length === 0) {
       const apiRequest =
-        api.topTraders +
-        "?type=sellers" +
-        queries.days +
-        1 +
+        api.server.topTraders +
+        "?all_time=false" +
+        "&type=sellers" +
         queries.sortVolume;
       const wallets = axios.get(apiRequest).then((response) => {
         const walletList = response.data;
@@ -204,7 +208,7 @@ export default function Home(props) {
   // Fetch Top NFTs
   useEffect(async () => {
     if (topNFTsDay.length === 0) {
-      const apiRequest = api.topNFTs + "?days=" + 1;
+      const apiRequest = api.server.topNFTs + "?days=" + 1;
       const topFourNFTs = await axios.get(apiRequest).then((response) => {
         const nfts = response.data;
         const topFour = nfts.slice(0, 4);
@@ -213,7 +217,7 @@ export default function Home(props) {
 
       const tokenMetadata = topFourNFTs.map(async (item, i) => {
         const tokenMD = await getTokenMetadata(item.mint);
-        tokenMD["price"] = topFourNFTs[i].volume;
+        tokenMD["price"] = topFourNFTs[i].price;
         tokenMD["internal_symbol"] = topFourNFTs[i].symbol
           ? topFourNFTs[i].symbol
           : "";

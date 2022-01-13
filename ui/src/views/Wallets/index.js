@@ -13,8 +13,8 @@ import WalletsSection from "../../components/WalletsSection";
 import Timeframe from "../../components/Timeframe";
 
 export default function Wallets(props) {
-  const walletBuyersWeek = useSelector(selectWalletBuyers);
-  const walletSellersWeek = useSelector(selectWalletSellers);
+  const walletBuyersAll = useSelector(selectWalletBuyers);
+  const walletSellersAll = useSelector(selectWalletSellers);
   const walletBuyersDay = useSelector(selectWalletBuyersDay);
   const walletSellersDay = useSelector(selectWalletSellersDay);
   const volumeDay = useSelector(selectDailyVolume);
@@ -32,10 +32,10 @@ export default function Wallets(props) {
         setBuyers(walletBuyersDay);
         setSellers(walletSellersDay);
         break;
-      case 7:
+      case 10000:
         setVolume(volumeWeek);
-        setBuyers(walletBuyersWeek);
-        setSellers(walletSellersWeek);
+        setBuyers(walletBuyersAll);
+        setSellers(walletSellersAll);
         break;
     }
   }, [timeframe]);
@@ -53,8 +53,8 @@ export default function Wallets(props) {
         <Timeframe
           currentTimeframe={timeframe}
           setTimeframe={setTimeframe}
-          timeframes={["DAY", "WEEK"]}
-          intervals={[1, 7]}
+          timeframes={["DAY", "ALL"]}
+          intervals={[1, 10000]}
         />
       </div>
 

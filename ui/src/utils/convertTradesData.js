@@ -12,11 +12,7 @@ const range = (len) => {
 const addTransaction = (transaction) => {
   const date = new Date(transaction["date"]);
   const mintAddress = (
-    <a
-      href={explorerLink("token", transaction["mint"])}
-      target="_blank"
-      style={{ textDecoration: "none" }}
-    >
+    <a href={`/mint/${transaction["mint"]}`} style={{ textDecoration: "none" }}>
       {shortenAddress(transaction["mint"])}
     </a>
   );

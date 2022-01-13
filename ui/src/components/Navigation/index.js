@@ -13,8 +13,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
+import { connect_button } from "../Buttons";
 
-const Header = (props) => {
+const Navigation = (props) => {
   //   const connected = useSelector(selectConnected);
   //   const address = useSelector(selectAddress);
   //   const address_short = "0x..." + address.slice(-4);
@@ -32,7 +33,7 @@ const Header = (props) => {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar d-flex flex-row justify-content-between">
       <div className="col-4 col-lg-2 col-xxl-1 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
           <img src={logo2} className="nav_logo" alt="logo" />
@@ -60,11 +61,6 @@ const Header = (props) => {
             <h1 className="nav_link">launchzone</h1>
           </Link>
         </div>
-        {/* <Link to="/apply" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
-            <h1 className="nav_link">apply</h1>
-          </div>
-        </Link> */}
       </div>
 
       <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
@@ -97,6 +93,10 @@ const Header = (props) => {
         </div>
       </div>
 
+      {/* <div className="col-lg-2 d-none d-lg-flex justify-content-end">
+        {connect_button}
+      </div> */}
+
       {!menu && (
         <div onClick={showMenu} className="menu_icon">
           <Menu />
@@ -111,33 +111,7 @@ const Header = (props) => {
         } slide-menu d-flex justify-content-between`}
       >
         <div className="mobile_menu">
-          <div className="col-6 d-flex flex-row justify-content-around p-2 pb-0 pt-0">
-            <a
-              href={links.twitter.url}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <TwitterIcon style={{ fill: "white" }} className="icon_link" />
-            </a>
-
-            <a
-              href={links.medium.url}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <MediumIcon style={{ fill: "white" }} className="icon_link" />
-            </a>
-
-            <a
-              href={links.email.contact}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <EmailIcon style={{ fill: "white" }} className="icon_link" />
-            </a>
-          </div>
-
-          <div className="col-6 d-flex flex-column justify-content-between">
+          <div className="col-12 d-flex flex-column align-items-end">
             <Link to="/" style={{ textDecoration: "none" }}>
               <h1 className="nav_link" onClick={() => showMenu()}>
                 home
@@ -158,11 +132,31 @@ const Header = (props) => {
                 launchzone
               </h1>
             </Link>
-            {/* <Link to="/apply" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                apply
-              </h1>
-            </Link> */}
+            <div className="d-flex flex-row col-4 justify-content-around">
+              <a
+                href={links.twitter.url}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+              </a>
+
+              <a
+                href={links.medium.url}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <MediumIcon style={{ fill: "white" }} className="icon_link" />
+              </a>
+
+              <a
+                href={links.email.contact}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <EmailIcon style={{ fill: "white" }} className="icon_link" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -170,4 +164,4 @@ const Header = (props) => {
   );
 };
 
-export default Header;
+export default Navigation;

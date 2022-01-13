@@ -9,30 +9,33 @@ const range = (len) => {
   return arr;
 };
 
-const addTransaction = (wallet) => {
-  const count = wallet["count"];
-  const address = (
+const addTransaction = (transaction) => {
+  const date = new Date(transaction["date"]);
+  const price = Number(transaction["price"]).toFixed(2);
+  const buyerAddress = (
     <a
-      href={explorerLink("account", wallet["wallet"])}
+      href={explorerLink("account", transaction["buyer"])}
       target="_blank"
       style={{ textDecoration: "none" }}
     >
-      {shortenAddress(wallet["wallet"])}
+      {shortenAddress(transaction["buyer"])}
     </a>
   );
-  // const total = Number(buyer["total"]).toFixed(2);
-  const total = Number(wallet["volume"]).toFixed(2);
-  const average = Number(wallet["avg"]).toFixed(2);
-  const min = Number(wallet["min"]).toFixed(2);
-  const max = Number(wallet["max"]).toFixed(2);
+  const sellerAddress = (
+    <a
+      href={explorerLink("account", transaction["seller"])}
+      target="_blank"
+      style={{ textDecoration: "none" }}
+    >
+      {shortenAddress(transaction["seller"])}
+    </a>
+  );
 
   return {
-    count: count,
-    address: address,
-    total: total,
-    average: average,
-    min: min,
-    max: max,
+    date: date.toLocaleDateString(),
+    price: price,
+    buyer: buyerAddress,
+    seller: sellerAddress,
   };
 };
 

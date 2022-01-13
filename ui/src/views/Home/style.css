@@ -44,6 +44,21 @@
   /* max-height: 70px; */
 }
 
+.launchzone_image_bg {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  background-image: url("../../assets/images/launch_bg.jpg");
+  background-position: bottom;
+  background-repeat: no-repeat;
+
+  /* background: rgb(0, 0, 0, 0.4) url("../../assets/images/launch5.jpg") center
+    bottom no-repeat; */
+  background-size: cover;
+
+  padding: 40px;
+  padding-bottom: 0px;
+}
+
 @media screen and (max-width: 1250px) {
   .homepage_tagline {
     font-size: 24px;
