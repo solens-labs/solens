@@ -9,33 +9,71 @@ import {
 } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { buySolanart } from "../../exchanges/solanart";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeCancel(props) {
-  const { item, tokenAccount, marketplace, setLoading, price } = props;
+  const { price, item, seller, tokenAccount, marketplace, setLoading } = props;
   const wallet = useWallet();
+  const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
 
-  const delistNft = async () => {
+  const cancelNft = async () => {
     switch (marketplace) {
       case "magiceden":
-        delistNftMagicEden();
+        cancelNftMagicEden();
         break;
       case "solanart":
-        delistNftSolanart();
+        cancelNftSolanart();
         break;
       case "smb":
-        delistNftSMB();
+        cancelNftSMB();
         break;
     }
   };
+  const cancelNftSolanart = async () => {
+    setLoading(true);
+    try {
+      const taker = wallet.publicKey;
+      const maker = new anchor.web3.PublicKey(seller);
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const creators = item.creators_list;
 
-  const delistNftMagicEden = async () => {
+      console.log(
+        taker.toBase58(),
+        maker.toBase58(),
+        nftMint.toBase58(),
+        creators
+      );
+
+      const final_tx = await buySolanart(
+        taker,
+        maker,
+        nftMint,
+        price,
+        creators
+      );
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+      });
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
+
+      console.log(sendTx);
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
+  };
+  const cancelNftMagicEden = async () => {
     setLoading(true);
     try {
       const provider = new anchor.Provider(connection, wallet, {
-        preflightCommitment: "recent",
+        preflightCommitment: "processed",
       });
 
       const mint = new anchor.web3.PublicKey(item.mint);
@@ -48,22 +86,14 @@ export default function TradeCancel(props) {
     }
     setLoading(false);
   };
-  const delistNftSolanart = async () => {
-    setLoading(true);
-    try {
-    } catch (e) {
-      console.log(e);
-    }
-    setLoading(false);
-  };
-  const delistNftSMB = async () => {
-    console.log("Delisting item from SMB Market");
+  const cancelNftSMB = async () => {
+    console.log("canceling item from SMB Market");
   };
 
   return (
     <>
       <div className="col-8 col-lg-4 p-1">
-        <button className="btn_mp" onClick={() => delistNft()}>
+        <button className="btn_mp" onClick={() => cancelNft()}>
           <div className="btn_mp_inner">Cancel Listing</div>
         </button>
       </div>

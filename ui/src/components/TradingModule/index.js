@@ -111,7 +111,7 @@ export default function TradingModule(props) {
 
       <hr
         style={{ color: "rgb(65, 37, 156)", width: "100%", height: 2 }}
-        className="m-0 mb-3 p-0"
+        className="m-0 mb-3 mt-2 p-0"
       />
 
       {!user && !loading && (
@@ -134,6 +134,7 @@ export default function TradingModule(props) {
         <TradeCancel
           item={item}
           price={price}
+          seller={owner}
           tokenAccount={tokenAccount}
           setLoading={setLoading}
           marketplace={marketplace}
@@ -141,16 +142,16 @@ export default function TradingModule(props) {
         />
       )}
 
-      {/* {user && user !== owner && listed && !loading && ( */}
-      <TradePurchase
-        item={item}
-        price={price}
-        seller={owner}
-        tokenAccount={tokenAccount}
-        setLoading={setLoading}
-        marketplace={marketplace}
-      />
-      {/* )} */}
+      {user && user !== owner && listed && !loading && (
+        <TradePurchase
+          item={item}
+          price={price}
+          maker={owner}
+          tokenAccount={tokenAccount}
+          setLoading={setLoading}
+          marketplace={marketplace}
+        />
+      )}
 
       <p className="terms_text m-0 mt-3 mb-1 p-0">
         There may be a slight delay between confirmation and the item status

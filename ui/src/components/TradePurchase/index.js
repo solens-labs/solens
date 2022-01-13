@@ -15,7 +15,7 @@ import { buySolanart } from "../../exchanges/solanart";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradePurchase(props) {
-  const { price, item, seller, tokenAccount, marketplace, setLoading } = props;
+  const { price, item, maker, tokenAccount, marketplace, setLoading } = props;
   const userBalance = useSelector(selectBalance);
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
@@ -46,12 +46,11 @@ export default function TradePurchase(props) {
         break;
     }
   };
-
   const buyNftSolanart = async () => {
     setLoading(true);
     try {
       const taker = wallet.publicKey;
-      const maker = new anchor.web3.PublicKey(seller);
+      const maker = new anchor.web3.PublicKey(maker);
       const nftMint = new anchor.web3.PublicKey(item.mint);
       const creators = item.creators_list;
 
@@ -81,10 +80,10 @@ export default function TradePurchase(props) {
     setLoading(true);
     try {
       const provider = new anchor.Provider(connection, wallet, {
-        preflightCommitment: "recent",
+        preflightCommitment: "processed",
       });
 
-      const seller = new anchor.web3.PublicKey(seller);
+      const seller = new anchor.web3.PublicKey(maker);
       const buyer = wallet.publicKey;
       const metadataAccount = new anchor.web3.PublicKey(item.metadata_acct);
       const mint = new anchor.web3.PublicKey(item.mint);

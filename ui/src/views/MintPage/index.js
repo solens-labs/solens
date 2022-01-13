@@ -20,7 +20,9 @@ import ActivityTable from "../../components/ActivityTable";
 import sol_logo from "../../assets/images/sol_logo.png";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import * as anchor from "@project-serum/anchor";
+import { getEscrowAccountInfo, Solanart } from "../../exchanges/solanart";
 
 export default function MintPage(props) {
   const { address } = useParams();
@@ -100,20 +102,52 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint details
+  // Fetch mint details, see listed status
   useEffect(async () => {
+    let itemDetailsFromChain = {};
+    const mintKey = new PublicKey(address);
+    let [escrowAccount, bump] = await PublicKey.findProgramAddress(
+      [Buffer.from("sale"), mintKey.toBuffer()],
+      Solanart
+    );
+    let accountInfo = await connection.getAccountInfo(
+      escrowAccount,
+      "processed"
+    );
+    if (accountInfo) {
+      let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
+      if (!escrowAccountInfo) {
+        return;
+      }
+      const maker = escrowAccountInfo.maker;
+      const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
+      const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
+
+      itemDetailsFromChain = {
+        owner: maker,
+        price: price,
+        escrowTokenAccount: escrowTokenAccount,
+        marketplace: "solanart",
+        mint: address,
+      };
+      setListed(true);
+      setListedDetails(itemDetailsFromChain);
+
+      console.log({ itemDetailsFromChain });
+      return;
+    }
+
     const apiRequest =
       api.server.listings + queries.symbol + "none" + queries.mint + address;
     const itemDetailFetch = axios.get(apiRequest).then((response) => {
       const itemDetailsFromBackend = response.data[0];
-      console.log({ itemDetailsFromBackend });
-
       if (
         itemDetailsFromBackend &&
         Object.keys(itemDetailsFromBackend)?.length > 1
       ) {
         setListed(true);
         setListedDetails(itemDetailsFromBackend);
+        console.log({ itemDetailsFromBackend });
       }
     });
   }, [address]);

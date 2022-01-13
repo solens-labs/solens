@@ -42,7 +42,7 @@ export default function TradeListing(props) {
   const listNftMagicEden = async () => {
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
-      preflightCommitment: "recent",
+      preflightCommitment: "processed",
     });
 
     try {

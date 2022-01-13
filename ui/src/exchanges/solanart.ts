@@ -34,7 +34,6 @@ class Assignable {
   }
 }
 export class SolanartEscrow extends Assignable {}
-
 export const SOLANART_SCHEMA = new Map<any, any>([
   [
     SolanartEscrow,
@@ -49,7 +48,6 @@ export const SOLANART_SCHEMA = new Map<any, any>([
     },
   ],
 ]);
-
 export const extendBorsh = () => {
   (BinaryReader.prototype as any).readPubkey = function () {
     const reader = this as unknown as BinaryReader;
@@ -75,16 +73,19 @@ export const extendBorsh = () => {
     writer.writeFixedArray(base58.decode(value));
   };
 };
-
 extendBorsh();
 
-async function getEscrowAccountInfo(escrowAccount: anchor.web3.PublicKey) {
+export async function getEscrowAccountInfo(
+  escrowAccount: anchor.web3.PublicKey
+) {
   let escrowRaw = await connection.getAccountInfo(escrowAccount);
   // @ts-ignore
   return deserializeUnchecked(SOLANART_SCHEMA, SolanartEscrow, escrowRaw.data);
 }
 
-const Solanart = new PublicKey("CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz");
+export const Solanart = new PublicKey(
+  "CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz"
+);
 const stakeProgram = new PublicKey(
   "7gDpaG9kUXHTz1dj4eVfykqtXnKq2efyuGigdMeCy74B"
 );
@@ -214,7 +215,6 @@ export async function buySolanart(
   takerPrice = taker.toBase58() == maker.toBase58() ? 0 : takerPrice;
   let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL);
   let ixData = Buffer.from([action.Buy, ...priceBN.toArray("le", 8)]);
-  console.log(takerPrice);
 
   let [escrowAccount, bs] = await anchor.web3.PublicKey.findProgramAddress(
     [Buffer.from("sale"), nftMint.toBuffer()],
@@ -263,7 +263,6 @@ export async function buySolanart(
       accounts.push(c);
     });
   }
-  console.log(accounts);
 
   let buyIx = new TransactionInstruction({
     programId: Solanart,
