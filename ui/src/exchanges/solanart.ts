@@ -18,11 +18,71 @@ import {
 import { BuyKeys, ListKeys } from "./solanartLayout";
 import { Buffer } from "buffer";
 import { decodeMetadata, Metadata } from "./metadata_layout";
+import { BinaryReader, BinaryWriter, deserializeUnchecked } from "borsh";
+import base58 from "bs58";
 
 const rpcHost: any = process.env.REACT_APP_SOLANA_RPC_HOST;
-
-// const connection = new anchor.web3.Connection(rpcHost);
 const connection = new Connection(rpcHost);
+
+type StringPublicKey = string;
+class Assignable {
+  constructor(properties: any) {
+    Object.keys(properties).map((key) => {
+      // @ts-ignore
+      return (this[key] = properties[key]);
+    });
+  }
+}
+export class SolanartEscrow extends Assignable {}
+
+export const SOLANART_SCHEMA = new Map<any, any>([
+  [
+    SolanartEscrow,
+    {
+      kind: "struct",
+      fields: [
+        ["key", "u8"],
+        ["maker", "pubkeyAsString"],
+        ["escrowTokenAccount", "pubkeyAsString"],
+        ["price", "u64"],
+      ],
+    },
+  ],
+]);
+
+export const extendBorsh = () => {
+  (BinaryReader.prototype as any).readPubkey = function () {
+    const reader = this as unknown as BinaryReader;
+    const array = reader.readFixedArray(32);
+    return new PublicKey(array);
+  };
+
+  (BinaryWriter.prototype as any).writePubkey = function (value: PublicKey) {
+    const writer = this as unknown as BinaryWriter;
+    writer.writeFixedArray(value.toBuffer());
+  };
+
+  (BinaryReader.prototype as any).readPubkeyAsString = function () {
+    const reader = this as unknown as BinaryReader;
+    const array = reader.readFixedArray(32);
+    return base58.encode(array) as StringPublicKey;
+  };
+
+  (BinaryWriter.prototype as any).writePubkeyAsString = function (
+    value: StringPublicKey
+  ) {
+    const writer = this as unknown as BinaryWriter;
+    writer.writeFixedArray(base58.decode(value));
+  };
+};
+
+extendBorsh();
+
+async function getEscrowAccountInfo(escrowAccount: anchor.web3.PublicKey) {
+  let escrowRaw = await connection.getAccountInfo(escrowAccount);
+  // @ts-ignore
+  return deserializeUnchecked(SOLANART_SCHEMA, SolanartEscrow, escrowRaw.data);
+}
 
 const Solanart = new PublicKey("CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz");
 const stakeProgram = new PublicKey(
@@ -45,25 +105,14 @@ enum action {
   Update,
 }
 
-// async function getCreatorsList(metadataAccount: anchor.web3.PublicKey) {
-//       let metadataAccountInfo = await connection.getAccountInfo(metadataAccount)
-//       let metadata = decodeMetadata(Buffer.from(metadataAccountInfo.data)) as Metadata
-//       let remainingAccounts: any = []
-//       metadata.data.creators.forEach((c) => {
-//           remainingAccounts.push({
-//               pubkey: new anchor.web3.PublicKey(c.address),
-//               isWritable: true,
-//               isSigner: false,
-//           })
-//       })
-//       return remainingAccounts
-// }
-
 export async function listSolanart(
   wallet: any,
   makerNftAccount: anchor.web3.PublicKey,
   nftMint: anchor.web3.PublicKey,
-  takerPrice: number
+  takerPrice: number,
+  name: string,
+  token_add: string,
+  img_url: string
 ) {
   let escrowTokenAccount = Keypair.generate();
   let createTokenIx = SystemProgram.createAccount({
@@ -79,10 +128,8 @@ export async function listSolanart(
     escrowTokenAccount.publicKey,
     wallet.publicKey
   );
-
   let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL);
   let ixData = Buffer.from([action.List, ...priceBN.toArray("le", 8)]);
-
   let [escrowAccount, bump] = await PublicKey.findProgramAddress(
     [Buffer.from("sale"), nftMint.toBuffer()],
     Solanart
@@ -102,26 +149,43 @@ export async function listSolanart(
   keys.forEach((k, index) => {
     ListKeys[index].pubkey = k;
   });
-
   let listIx = new TransactionInstruction({
     keys: ListKeys,
     data: ixData,
     programId: Solanart,
   });
 
+  let memoData =
+    '{"name": "' +
+    name +
+    '", "desc": "' +
+    "undefined" +
+    '", "token_add": "' +
+    token_add +
+    '", "sale_add": "' +
+    escrowAccount.toBase58() +
+    '", "img_url":"' +
+    img_url +
+    '", "price_sol":"' +
+    takerPrice +
+    '"}';
+
+  let memoIx = new TransactionInstruction({
+    programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+    data: Buffer.from(memoData, "utf-8"),
+    keys: [],
+  });
+
   const final_tx = new Transaction({
     feePayer: wallet.publicKey,
   });
-
-  final_tx.add(...[createTokenIx, initAccountIx, listIx]);
-
+  final_tx.add(...[createTokenIx, initAccountIx, listIx, memoIx]);
   return { final_tx, escrowTokenAccount };
 }
 
 export async function buySolanart(
-  taker: anchor.web3.Keypair,
+  taker: anchor.web3.PublicKey,
   maker: anchor.web3.PublicKey,
-  makerNftAccount: anchor.web3.PublicKey,
   nftMint: anchor.web3.PublicKey,
   takerPrice: number,
   creators: any
@@ -132,24 +196,25 @@ export async function buySolanart(
     ASSOCIATED_TOKEN_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
     nftMint,
-    taker.publicKey
+    taker
   );
   let takerAtaAccount = await connection.getAccountInfo(takerAtaAddress);
-  if (takerAtaAddress == null) {
+  if (takerAtaAccount == null) {
     let createTakerAtaIx = Token.createAssociatedTokenAccountInstruction(
       ASSOCIATED_TOKEN_PROGRAM_ID,
       TOKEN_PROGRAM_ID,
       nftMint,
       takerAtaAddress,
-      taker.publicKey,
-      taker.publicKey
+      taker,
+      taker
     );
     txIxs.push(createTakerAtaIx);
   }
 
-  takerPrice = taker.publicKey.toBase58() == maker.toBase58() ? 0 : takerPrice;
+  takerPrice = taker.toBase58() == maker.toBase58() ? 0 : takerPrice;
   let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL);
   let ixData = Buffer.from([action.Buy, ...priceBN.toArray("le", 8)]);
+  console.log(takerPrice);
 
   let [escrowAccount, bs] = await anchor.web3.PublicKey.findProgramAddress(
     [Buffer.from("sale"), nftMint.toBuffer()],
@@ -169,10 +234,13 @@ export async function buySolanart(
     stakeProgram
   );
 
+  let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
+  let depositNftAccount = escrowAccountInfo.escrowTokenAccount;
+
   let keys = [
-    taker.publicKey,
+    taker,
     takerAtaAddress,
-    new PublicKey("2f8RUQFQ2BuDRcoshVoAc1xzHZqujA7Yoyhre21EPjhE"),
+    depositNftAccount,
     maker,
     escrowAccount,
     TOKEN_PROGRAM_ID,
@@ -190,7 +258,11 @@ export async function buySolanart(
     accounts.push(BuyKeys[index]);
   });
 
-  accounts.push(...creators);
+  if (maker.toBase58() !== taker.toBase58()) {
+    creators.forEach((c: any) => {
+      accounts.push(c);
+    });
+  }
   console.log(accounts);
 
   let buyIx = new TransactionInstruction({
@@ -202,7 +274,7 @@ export async function buySolanart(
   txIxs.push(buyIx);
 
   const final_tx = new Transaction({
-    feePayer: taker.publicKey,
+    feePayer: taker,
   });
 
   final_tx.add(...txIxs);
@@ -210,4 +282,5 @@ export async function buySolanart(
   // return anchor.web3.sendAndConfirmTransaction(connection, final_tx, [taker], {
   //   skipPreflight: false,
   // });
+  return final_tx;
 }

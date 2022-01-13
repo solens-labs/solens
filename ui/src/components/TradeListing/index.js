@@ -22,6 +22,10 @@ export default function TradeListing(props) {
   const [selectedMarketplace, setSelectedMarketplace] = useState("");
 
   const listNft = async (marketplace) => {
+    if (listPrice <= 0) {
+      return;
+    }
+
     switch (marketplace) {
       case "magiceden":
         listNftMagicEden();
@@ -37,76 +41,71 @@ export default function TradeListing(props) {
 
   const listNftMagicEden = async () => {
     setLoading(true);
-    if (listPrice > 0) {
-      const provider = new anchor.Provider(connection, wallet, {
-        preflightCommitment: "recent",
-      });
+    const provider = new anchor.Provider(connection, wallet, {
+      preflightCommitment: "recent",
+    });
 
-      try {
-        const makerString = wallet.publicKey.toBase58();
-        if (makerString !== ownerAccount) {
-          alert("You are not the owner of this token.");
-          return;
-        }
-
-        const maker = wallet.publicKey;
-        const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
-        const nftMint = new anchor.web3.PublicKey(item.mint);
-        const takerPrice = listPrice;
-        const program = new anchor.Program(magicEdenIDL, magicEden, provider);
-
-        const listItem = await listMEden(
-          maker,
-          makerNftAccount,
-          nftMint,
-          takerPrice,
-          program
-        );
-        console.log(listItem);
-      } catch (e) {
-        console.log(e);
+    try {
+      const makerString = wallet.publicKey.toBase58();
+      if (makerString !== ownerAccount) {
+        alert("You are not the owner of this token.");
+        return;
       }
-    } else {
-      alert("List must be above 0.");
+
+      const maker = wallet.publicKey;
+      const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const takerPrice = listPrice;
+      const program = new anchor.Program(magicEdenIDL, magicEden, provider);
+
+      const listItem = await listMEden(
+        maker,
+        makerNftAccount,
+        nftMint,
+        takerPrice,
+        program
+      );
+      console.log(listItem);
+    } catch (e) {
+      console.log(e);
     }
     setLoading(false);
   };
   const listNftSolanart = async () => {
     setLoading(true);
-    if (listPrice > 0) {
-      try {
-        const makerString = wallet.publicKey.toBase58();
-        if (makerString !== ownerAccount) {
-          alert("You are not the owner of this token.");
-          return;
-        }
-
-        const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
-        const nftMint = new anchor.web3.PublicKey(item.mint);
-        const takerPrice = listPrice;
-
-        const { final_tx, escrowTokenAccount } = await listSolanart(
-          wallet,
-          makerNftAccount,
-          nftMint,
-          takerPrice
-        );
-
-        const sendTx = await sendTransaction(final_tx, connection, {
-          skipPreflight: false,
-          signers: [escrowTokenAccount],
-        });
-        const confirmTx = await connection.confirmTransaction(
-          sendTx,
-          "processed"
-        );
-
-        console.log(sendTx);
-      } catch (e) {
-        console.log(e);
+    try {
+      const makerString = wallet.publicKey.toBase58();
+      if (makerString !== ownerAccount) {
+        alert("You are not the owner of this token.");
+        return;
       }
-    } else {
-      alert("List must be above 0.");
+      const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const takerPrice = listPrice;
+      const name = item.name;
+      const token_add = item.mint;
+      const img_url = item.image;
+
+      const { final_tx, escrowTokenAccount } = await listSolanart(
+        wallet,
+        makerNftAccount,
+        nftMint,
+        takerPrice,
+        name,
+        token_add,
+        img_url
+      );
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        signers: [escrowTokenAccount],
+      });
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
+      console.log(sendTx);
+    } catch (e) {
+      console.log(e);
     }
     setLoading(false);
   };
@@ -118,17 +117,6 @@ export default function TradeListing(props) {
 
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-1">
-      <hr
-        style={{
-          color: "white",
-          width: "50%",
-          margin: 0,
-          marginBottom: "1rem",
-          padding: 0,
-        }}
-        className=""
-      />
-
       <h5 className="p-0 m-0">Select Marketplace to List Item</h5>
       <div className="trading_buttons col-12 d-flex flex-row flex-wrap justify-content-center mb-2">
         {!invalid && (

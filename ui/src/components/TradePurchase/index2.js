@@ -15,11 +15,13 @@ import { buySolanart } from "../../exchanges/solanart";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradePurchase(props) {
-  const { price, item, seller, tokenAccount, marketplace, setLoading } = props;
+  const { item, seller, tokenAccount, setLoading } = props;
   const userBalance = useSelector(selectBalance);
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
+  const price = 0.1;
+  const marketplace = "solanart";
 
   const buyNft = async () => {
     if (!price) {
@@ -46,37 +48,6 @@ export default function TradePurchase(props) {
         break;
     }
   };
-
-  const buyNftSolanart = async () => {
-    setLoading(true);
-    try {
-      const taker = wallet.publicKey;
-      const maker = new anchor.web3.PublicKey(seller);
-      const nftMint = new anchor.web3.PublicKey(item.mint);
-      const creators = item.creators_list;
-
-      const final_tx = await buySolanart(
-        taker,
-        maker,
-        nftMint,
-        price,
-        creators
-      );
-
-      const sendTx = await sendTransaction(final_tx, connection, {
-        skipPreflight: false,
-      });
-      const confirmTx = await connection.confirmTransaction(
-        sendTx,
-        "processed"
-      );
-
-      console.log(sendTx);
-    } catch (e) {
-      console.log(e);
-    }
-    setLoading(false);
-  };
   const buyNftMagicEden = async () => {
     setLoading(true);
     try {
@@ -101,6 +72,42 @@ export default function TradePurchase(props) {
         creators
       );
       console.log(buyItem);
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
+  };
+  const buyNftSolanart = async () => {
+    setLoading(true);
+    try {
+      const taker = wallet.publicKey;
+      // const maker = new anchor.web3.PublicKey(seller);
+      const maker = new anchor.web3.PublicKey(
+        "CmJT74Qk7eHtcK7iEC4J922bpRE2xLuhZk4MXEWJmJXU"
+      );
+      // const nftMint = new anchor.web3.PublicKey(item.mint);
+      const nftMint = new anchor.web3.PublicKey(
+        "2vmf29pa16bjVAGqm6MiHFfstN4wMd6pjQ9NsGX6qbSy"
+      );
+      const creators = item.creators_list;
+
+      const final_tx = await buySolanart(
+        taker,
+        maker,
+        nftMint,
+        price,
+        creators
+      );
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+      });
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
+
+      console.log(sendTx);
     } catch (e) {
       console.log(e);
     }

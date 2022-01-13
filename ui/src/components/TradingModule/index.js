@@ -78,7 +78,7 @@ export default function TradingModule(props) {
         />
 
         {listed && (
-          <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-2 mb-3">
+          <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-2 mb-2">
             <h4 className="m-0 p-0">
               Listed on {marketplaceSelect(marketplace)}
             </h4>
@@ -91,13 +91,13 @@ export default function TradingModule(props) {
         )}
 
         {!listed && !invalid && (
-          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-3">
+          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-2">
             <h4 className="m-0 p-0 pt-3">Item Not Listed</h4>
           </div>
         )}
 
         {invalid && (
-          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-3">
+          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-2">
             <h4 className="m-0 p-0 pt-3">Invalid Token</h4>
           </div>
         )}
@@ -108,6 +108,11 @@ export default function TradingModule(props) {
           <Loader />
         </div>
       )}
+
+      <hr
+        style={{ color: "rgb(65, 37, 156)", width: "100%", height: 2 }}
+        className="m-0 mb-3 p-0"
+      />
 
       {!user && !loading && (
         <div className="trading_connect col-12 d-flex justify-content-center align-items-center">
@@ -136,36 +141,23 @@ export default function TradingModule(props) {
         />
       )}
 
-      {user && user !== owner && listed && !loading && (
-        <TradePurchase
-          item={item}
-          price={price}
-          ownerAccount={owner}
-          tokenAccount={tokenAccount}
-          setLoading={setLoading}
-          marketplace={marketplace}
-          listedDetails={listedDetails}
-        />
-      )}
+      {/* {user && user !== owner && listed && !loading && ( */}
+      <TradePurchase
+        item={item}
+        price={price}
+        seller={owner}
+        tokenAccount={tokenAccount}
+        setLoading={setLoading}
+        marketplace={marketplace}
+      />
+      {/* )} */}
+
+      <p className="terms_text m-0 mt-3 mb-1 p-0">
+        There may be a slight delay between confirmation and the item status
+        updating.
+        <br />
+        Trading functionality is currently in beta. Use at your own risk.
+      </p>
     </div>
   );
 }
-
-/* 
-{user && user === ownerAccount && !listed && (
-    <TradeListing
-      invalid={invalid}
-      item={item}
-      ownerAccount={ownerAccount}
-      tokenAccount={tokenAccount}
-    />
-  )}
-
-  {user && user === ownerAccount && listed && (
-    <TradeCancel marketplace={marketplace} />
-  )}
-
-  {user && user !== ownerAccount && listed && (
-    <TradePurchase price={price} />
-  )}
-*/

@@ -13,8 +13,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeCancel(props) {
-  const { item, tokenAccount, marketplace, setLoading, listedDetails, price } =
-    props;
+  const { item, tokenAccount, marketplace, setLoading, price } = props;
   const wallet = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
 
