@@ -390,15 +390,9 @@ exports.listings = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
       symbol: req.query.symbol,
-      $or: [
-        {type: { $eq: "list"}},
-        {type: { $eq: "update"}},
-        {type: { $eq: "buy"}},
-        {type: { $eq: "cancel"}},
-        {type: { $eq: "accept_offer"}}
-      ]
+      ...helpers.matchMainTxs()
     }},
-    {$sort: {date: -1}},
+    {$sort: {date: -1, price: -1}},
     {$group : {
       _id: {mint: '$mint'},
       owner: {$first: '$owner'},
@@ -441,7 +435,7 @@ exports.currentFloor = async (req, reply) => {
         {type: { $eq: "accept_offer"}}
       ]
     }},
-    {$sort: {date: -1}},
+    {$sort: {date: -1, price: -1}},
     {$group : {
       _id: {mint: '$mint'},
       price: {$first: '$price'},
