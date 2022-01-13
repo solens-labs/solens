@@ -18,31 +18,45 @@ import convertActivityData from "../../utils/convertActivityData";
 import axios from "axios";
 import ActivityTable from "../../components/ActivityTable";
 import sol_logo from "../../assets/images/sol_logo.png";
+import ErrorIcon from "@mui/icons-material/Error";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 
 export default function MintPage(props) {
   const { address } = useParams();
+  const { connection } = useConnection();
 
   // Token Detials State
-  const [collectionInfo, setCollectionInfo] = useState("");
   const [tokenMetadata, setTokenMetadata] = useState({});
+  const [collectionInfo, setCollectionInfo] = useState("");
   const [royalty, setRoyalty] = useState(0);
   const [attributes, setAttributes] = useState([]);
   const [image, setImage] = useState("");
   const [marketplaces, setMarketplaces] = useState([]);
   const [activity, setActivity] = useState([]);
+  const [tokenAccount, setTokenAccount] = useState("");
+  const [ownerAccount, setOwnerAccount] = useState("");
 
   // Accordions Expansion State
   const [detailsExpanded, setDetailsExpanded] = useState(false);
   const [attributesExpanded, setAttributesExpanded] = useState(true);
   const [transactionsExpanded, setTransactionsExpanded] = useState(false);
 
+  // Logic to populate page if token is valid
   const received = Object.keys(tokenMetadata).length > 0;
+  const [invalidToken, setInvalidToken] = useState(false);
+  const [invalidCollection, setInvalidCollection] = useState(false);
 
   // Fetch mint address metadata
   useEffect(async () => {
     if (address && !received) {
       const metadata = getTokenMetadata(address);
       const resolved = await Promise.resolve(metadata);
+
+      if (resolved["invalid"]) {
+        setInvalidToken(true);
+        return;
+      }
       setTokenMetadata(resolved);
     }
   }, [address]);
@@ -52,7 +66,12 @@ export default function MintPage(props) {
     if (address && collectionInfo.length === 0) {
       const apiRequest = api.server.mintSymbol + address;
       const request = axios.get(apiRequest).then((response) => {
-        const symbol = response.data.symbol;
+        const symbol = response.data?.symbol;
+
+        if (!symbol) {
+          setInvalidCollection(true);
+        }
+
         if (symbol) {
           const apiRequest2 = api.server.collection + queries.symbol + symbol;
           const request2 = axios.get(apiRequest2).then((response) => {
@@ -69,7 +88,7 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint history
+  // Fetch mint activity
   useEffect(async () => {
     if (address && activity.length === 0) {
       const apiRequest = api.server.mintHistory + address;
@@ -85,43 +104,74 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Calculate Royalty into State
+  // Calculate project royalty
   useEffect(() => {
-    if (received) {
-      setImage(tokenMetadata.image);
-      setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
-      setAttributes(tokenMetadata.attributes);
+    if (received && !invalidToken) {
+      try {
+        setImage(tokenMetadata.image);
+        setRoyalty(tokenMetadata.seller_fee_basis_points / 100);
+        setAttributes(tokenMetadata.attributes);
+      } catch {
+        console.log("Error setting image, royalty, or attributes");
+      }
     }
   }, [tokenMetadata]);
+
+  // Get Mint's Token Account & Owner Account
+  useEffect(async () => {
+    if (address && !tokenAccount && !ownerAccount) {
+      try {
+        const key = new PublicKey(address);
+        const test1 = await connection.getTokenLargestAccounts(key);
+        if (test1?.value.length === 0) {
+          return;
+        }
+
+        const account = test1.value[0];
+        if (account.amount === "1") {
+          const accountString = account.address.toBase58();
+          setTokenAccount(accountString);
+
+          const tokenAcctInfo = await connection.getParsedAccountInfo(
+            account.address
+          );
+          const owner = tokenAcctInfo.value.data.parsed.info.owner;
+          setOwnerAccount(owner);
+        }
+      } catch {
+        console.log("Error getting Token Account");
+      }
+    }
+  }, [address]);
 
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4 mt-lg-5">
       <div className="details_header col-12 col-xl-10 col-xxl-8 d-flex flex-row flex-wrap justify-content-center mb-3">
-        <div className="col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
+        <div className="mint_item_image col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
               <img src={image} className="nft_image" alt="" />
             </div>
           ) : (
             <div className="nft_image_container d-flex justify-content-center overflow-hidden">
-              <Loader />
+              {invalidToken ? (
+                <div className="col-12 d-flex justify-content-center align-items-center">
+                  <ErrorIcon fontSize="large" />
+                </div>
+              ) : (
+                <Loader />
+              )}
             </div>
           )}
-          {/* <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
-            <h4 className="m-0 p-0">Status: Listed</h4>
-            <h4 className="m-0 p-0">
-              Price:{" "}
-              <img src={sol_logo} alt="sol logo" className="price_logo_lg" />
-              {200}
-            </h4>
-          </div> */}
         </div>
 
-        <div className="col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
+        <div className="trading col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
           <TradingModule
+            invalid={invalidToken}
+            invalidCollection={invalidCollection}
             item={tokenMetadata}
-            mint={address}
             collection={collectionInfo}
+            ownerAccount={ownerAccount}
             marketplaces={marketplaces}
           />
 
@@ -148,10 +198,13 @@ export default function MintPage(props) {
               </AccordionSummary>
               <AccordionDetails>
                 <ItemDetails
+                  invalid={invalidToken}
                   item={tokenMetadata}
                   royalty={royalty}
                   received={received}
                   marketplaces={marketplaces}
+                  tokenAccount={tokenAccount}
+                  ownerAccount={ownerAccount}
                 />
               </AccordionDetails>
             </Accordion>
@@ -183,7 +236,7 @@ export default function MintPage(props) {
           <AccordionDetails>
             <div className="col-12 d-flex flex-wrap justify-content-start">
               {received &&
-                attributes.map((item, i) => {
+                attributes?.map((item, i) => {
                   return (
                     <div className="col-6 col-md-4 col-xl-3 col-xxl-2 p-1">
                       <Attribute
@@ -206,8 +259,8 @@ export default function MintPage(props) {
           onChange={() => setTransactionsExpanded(!transactionsExpanded)}
         >
           <AccordionSummary
-            aria-controls={`attributes_content`}
-            id={`attributes_header`}
+            aria-controls={`transactions_content`}
+            id={`transactions_header`}
           >
             <Typography
               className={

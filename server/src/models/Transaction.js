@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const transactionSchema = new mongoose.Schema({
-  symbol: {type: String, index: true},
+  symbol: {type: String},
   mint: {type: String, require: true, index: true},
   owner: {type: String, index: true},
   new_owner: {type: String, index: true},

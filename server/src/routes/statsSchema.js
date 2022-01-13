@@ -8,26 +8,6 @@ exports.topNFTs = {
         type: 'integer',
         maximum: 365,
         default: 1
-      },
-      sortBy: {
-        type: 'string',
-        enum: ['volume', 'count'],
-        default: 'volume'
-      }
-    }
-  }
-}
-
-exports.topTrades = {
-  querystring: {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      symbol: { type: 'string' },
-      days: {
-        type: 'integer',
-        maximum: 365,
-        default: 1
       }
     }
   }
@@ -39,10 +19,9 @@ exports.topTraders = {
     additionalProperties: false,
     properties: {
       symbol: { type: 'string' },
-      days: {
-        type: 'integer',
-        maximum: 365,
-        default: 1
+      all_time: {
+        type: 'boolean',
+        default: true
       },
       type: {
         type: 'string',
@@ -54,6 +33,39 @@ exports.topTraders = {
         enum: ['volume', 'count'],
         default: 'volume'
       }
+    }
+  }
+}
+
+exports.mintHistory = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['mint'],
+    properties: {
+      mint: { type: 'string' },
+    }
+  }
+}
+
+exports.listings = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['symbol'],
+    properties: {
+      symbol: { type: 'string' },
+    }
+  }
+}
+
+exports.walletHistory = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['wallet'],
+    properties: {
+      wallet: { type: 'string' },
     }
   }
 }
