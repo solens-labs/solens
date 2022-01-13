@@ -38,6 +38,7 @@ export default function MintPage(props) {
   const [ownerAccount, setOwnerAccount] = useState("");
   const [listed, setListed] = useState(false);
   const [listedDetails, setListedDetails] = useState({});
+  const [floorDetails, setFloorDetails] = useState({});
 
   // Accordions Expansion State
   const [detailsExpanded, setDetailsExpanded] = useState(false);
@@ -100,6 +101,13 @@ export default function MintPage(props) {
               setListed(true);
               setListedDetails(listedSearch[0]);
             }
+          });
+
+          // Request Collection floor
+          const apiRequest4 = api.server.currentFloor + queries.symbol + symbol;
+          const currentFloor = axios.get(apiRequest4).then((response) => {
+            const [floorData] = response.data;
+            setFloorDetails(floorData);
           });
         }
       });
@@ -193,6 +201,7 @@ export default function MintPage(props) {
             ownerAccount={ownerAccount}
             listed={listed}
             listedDetails={listedDetails}
+            floorDetails={floorDetails}
           />
 
           <div className="details col-12 mt-3 mt-lg-0">

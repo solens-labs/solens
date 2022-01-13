@@ -1,6 +1,7 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
 const server = "https://api.arnori.io/"; // mainnet production
+const devServer = "http://18.217.246.3:3000/"; // dev
 
 export const queries = {
   symbol: "?symbol=",
@@ -25,6 +26,8 @@ export const api = {
     topTraders: server + "stats/topTraders",
     topNFTs: server + "stats/topNFTs",
     listings: server + "listings",
+
+    currentFloor: devServer + "currentFloor",
   },
 };
 

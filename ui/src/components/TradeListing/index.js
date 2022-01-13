@@ -8,12 +8,14 @@ import { marketplaceSelect } from "../../utils/collectionStats";
 import { magicEden, listMEden } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { listSolanart } from "../../exchanges/solanart";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeListing(props) {
   const { invalid, item, ownerAccount, tokenAccount, setLoading } = props;
   const wallet = useWallet();
+  const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
 
   const [listPrice, setListPrice] = useState(0);
@@ -70,14 +72,63 @@ export default function TradeListing(props) {
     setLoading(false);
   };
   const listNftSolanart = async () => {
-    console.log(`listing on Solanart for ${listPrice}.`);
+    setLoading(true);
+    if (listPrice > 0) {
+      try {
+        const makerString = wallet.publicKey.toBase58();
+        if (makerString !== ownerAccount) {
+          alert("You are not the owner of this token.");
+          return;
+        }
+
+        const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
+        const nftMint = new anchor.web3.PublicKey(item.mint);
+        const takerPrice = listPrice;
+
+        const { final_tx, escrowTokenAccount } = await listSolanart(
+          wallet,
+          makerNftAccount,
+          nftMint,
+          takerPrice
+        );
+
+        const sendTx = await sendTransaction(final_tx, connection, {
+          skipPreflight: false,
+          signers: [escrowTokenAccount],
+        });
+        const confirmTx = await connection.confirmTransaction(
+          sendTx,
+          "processed"
+        );
+
+        console.log(sendTx, confirmTx);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      alert("List must be above 0.");
+    }
+    setLoading(false);
   };
   const listNftSMB = async () => {
+    setLoading(true);
     console.log(`listing on SMB for ${listPrice}.`);
+    setLoading(false);
   };
 
   return (
-    <div className="col-12 mt-1">
+    <div className="col-12 d-flex flex-column align-items-center mt-1">
+      <hr
+        style={{
+          color: "white",
+          width: "50%",
+          margin: 0,
+          marginBottom: "1rem",
+          padding: 0,
+        }}
+        className=""
+      />
+
       <h5 className="p-0 m-0">Select Marketplace to List Item</h5>
       <div className="trading_buttons col-12 d-flex flex-row flex-wrap justify-content-center mb-2">
         {!invalid && (

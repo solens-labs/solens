@@ -27,6 +27,7 @@ export default function TradingModule(props) {
     tokenAccount,
     listed,
     listedDetails,
+    floorDetails,
   } = props;
   const user = useSelector(selectAddress);
   const history = useHistory();
@@ -55,6 +56,9 @@ export default function TradingModule(props) {
     );
   };
 
+  const floorDifference =
+    ((price - floorDetails.floor) / floorDetails.floor) * 100;
+
   const needRealOwnerAccount = "";
 
   return (
@@ -77,10 +81,13 @@ export default function TradingModule(props) {
 
         {listed && (
           <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-2 mb-3">
-            <h4 className="item_price m-0 p-0">{price} SOL</h4>
             <h4 className="m-0 p-0">
               Listed on {marketplaceSelect(marketplace)}
             </h4>
+            <h4 className="item_price m-0 mt-2 p-0">{price} SOL</h4>
+            <h5 className="" style={{ fontSize: "1rem" }}>
+              {floorDifference.toFixed(2)}% above floor
+            </h5>
           </div>
         )}
 
@@ -113,7 +120,7 @@ export default function TradingModule(props) {
         />
       )}
 
-      {user && user === needRealOwnerAccount && listed && !loading && (
+      {user && listed && !loading && (
         <TradeCancel
           item={item}
           price={price}

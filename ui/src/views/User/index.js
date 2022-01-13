@@ -14,6 +14,7 @@ import {
   selectBalance,
   selectUserNFTs,
   setAddress,
+  setLoading,
   setUserNFTs,
 } from "../../redux/app";
 import getTokenAccounts from "../../utils/getTokenAccounts";
@@ -32,10 +33,19 @@ export default function User(props) {
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
   const nfts = useSelector(selectUserNFTs);
+  const [loadedItems, setLoadedItems] = useState(false);
+
+  // Check if NFTs have already been fetched previously
+  useEffect(() => {
+    if (nfts.length > 0) {
+      setLoadedItems(true);
+    }
+  }, [nfts]);
 
   // Get token accounts, filter for NFTs, and fetch/set metadata
   useEffect(async () => {
     if (wallet.connected && wallet.publicKey && nfts.length === 0) {
+      setLoadedItems(false);
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
       const nftMetadataPromise = userNftTokenAccts.map(async (token, i) => {
@@ -43,11 +53,13 @@ export default function User(props) {
       });
       const nftMetadata = await Promise.all(nftMetadataPromise);
       dispatch(setUserNFTs(nftMetadata));
+      setLoadedItems(true);
     }
 
     if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
       dispatch(setUserNFTs([]));
       dispatch(setAddress(""));
+      setLoadedItems(false);
     }
   }, [wallet]);
 
@@ -104,7 +116,7 @@ export default function User(props) {
           })}
 
         <div className="mt-5">
-          {wallet.connected && nfts.length === 0 && <Loader />}
+          {wallet.connected && !loadedItems && <Loader />}
         </div>
       </div>
     </div>
