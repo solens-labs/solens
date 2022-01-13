@@ -1,25 +1,64 @@
+import * as anchor from "@project-serum/anchor";
 import React, { useState } from "react";
 import "./style.css";
 import sa_logo from "../../assets/images/sa_logo_dark.png";
 import me_logo from "../../assets/images/me_logo_white.png";
 import { themeColors } from "../../constants/constants";
 import { marketplaceSelect } from "../../utils/collectionStats";
+import { magicEden, listMEden } from "../../exchanges/magicEden";
+import magicEdenIDL from "../../exchanges/magicEdenIDL";
+import { useWallet } from "@solana/wallet-adapter-react";
+
+const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeListing(props) {
-  const { selectedMarketplace, setSelectedMarketplace, invalid } = props;
+  const { invalid, item, ownerAccount, tokenAccount, loading, setLoading } =
+    props;
+  const wallet = useWallet();
+  const connection = new anchor.web3.Connection(rpcHost);
 
   const [listPrice, setListPrice] = useState(0);
+  const [selectedMarketplace, setSelectedMarketplace] = useState("");
 
-  const listNft = () => {
+  const listNft = async () => {
+    setLoading(true);
     if (listPrice > 0) {
-      alert(`Listed for ${listPrice} SOL`);
+      const provider = new anchor.Provider(connection, wallet, {
+        preflightCommitment: "recent",
+      });
+
+      try {
+        const makerString = wallet.publicKey.toBase58();
+        if (makerString !== ownerAccount) {
+          alert("You are not the owner of this token.");
+          return;
+        }
+
+        const maker = new anchor.web3.PublicKey(makerString);
+        const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
+        const nftMint = new anchor.web3.PublicKey(item.mint);
+        const takerPrice = listPrice;
+        const program = new anchor.Program(magicEdenIDL, magicEden, provider);
+
+        const listItem = await listMEden(
+          maker,
+          makerNftAccount,
+          nftMint,
+          takerPrice,
+          program
+        );
+        console.log(listItem);
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       alert("List must be above 0.");
     }
+    setLoading(false);
   };
 
   return (
-    <div className="col-12 mt-4">
+    <div className="col-12 mt-1">
       <h5 className="p-0 m-0">Select Marketplace to List Item</h5>
       <div className="trading_buttons col-12 d-flex flex-row flex-wrap justify-content-center mb-2">
         {!invalid && (
@@ -72,7 +111,7 @@ export default function TradeListing(props) {
         )}
       </div>
 
-      {selectedMarketplace && (
+      {!loading && selectedMarketplace && (
         <div className="col-12 d-flex flex-column flex-wrap justify-content-center align-items-center">
           <div className="col-8 col-lg-4 p-1">
             <input

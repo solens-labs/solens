@@ -21,6 +21,7 @@ import getNftAccounts from "../../utils/getNftAccounts";
 import NftCard from "../../components/NftCard/userprofile";
 import { useHistory } from "react-router-dom";
 import { shortenAddress } from "../../candy-machine";
+import Loader from "../../components/Loader";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -99,6 +100,10 @@ export default function User(props) {
               </div>
             );
           })}
+
+        <div className="mt-5">
+          {wallet.connected && nfts.length === 0 && <Loader />}
+        </div>
       </div>
     </div>
   );

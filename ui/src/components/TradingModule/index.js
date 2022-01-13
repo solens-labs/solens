@@ -14,26 +14,25 @@ import {
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import TradeCancel from "../TradeCancel";
+import Loader from "../Loader";
+import { marketplaceSelect } from "../../utils/collectionStats";
 
 export default function TradingModule(props) {
-  const { invalid, invalidCollection, item, collection, ownerAccount } = props;
+  const {
+    invalid,
+    invalidCollection,
+    item,
+    collection,
+    ownerAccount,
+    tokenAccount,
+    listed,
+    listedDetails,
+  } = props;
   const user = useSelector(selectAddress);
   const history = useHistory();
+  const { price, owner, marketplace, mint } = listedDetails;
 
-  const [temp_listed, setTempListed] = useState(false);
-  const [temp_price, setTempPrice] = useState(0);
-  const [selectedMarketplace, setSelectedMarketplace] = useState("");
-
-  useEffect(() => {
-    const probability = Math.random() * 100;
-    if (probability >= 50) {
-      setTempListed(true);
-      setTempPrice(Math.floor(probability));
-    } else {
-      setTempListed(false);
-      setTempPrice(0);
-    }
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const collectionInsights = () => {
     history.push(`/collection/${collection.symbol}`);
@@ -74,43 +73,88 @@ export default function TradingModule(props) {
           className="m-0 mt-2 p-0"
         />
 
-        {temp_listed && (
+        {listed && (
           <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-2 mb-3">
-            <h4 className="item_price m-0 p-0">
-              {item.price || temp_price} SOL
+            <h4 className="item_price m-0 p-0">{price} SOL</h4>
+            <h4 className="m-0 p-0">
+              Listed on {marketplaceSelect(marketplace)}
             </h4>
-            <h4 className="m-0 p-0">Listed on Magic Eden</h4>
           </div>
         )}
 
-        {!temp_listed && (
+        {!listed && (
           <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-3">
             <h4 className="m-0 p-0 pt-3">Item Not Listed</h4>
           </div>
         )}
       </div>
 
-      {!user && (
+      {loading && (
+        <div className="col-12 d-flex justify-content-center overflow-hidden">
+          <Loader />
+        </div>
+      )}
+
+      {!user && !loading && (
         <div className="trading_connect col-12 d-flex justify-content-center align-items-center">
           {connectButton()}
         </div>
       )}
 
-      {user && user === ownerAccount && !temp_listed && (
+      {user && user === ownerAccount && !listed && !loading && (
         <TradeListing
-          selectedMarketplace={selectedMarketplace}
-          setSelectedMarketplace={setSelectedMarketplace}
           invalid={invalid}
+          item={item}
+          ownerAccount={ownerAccount}
+          tokenAccount={tokenAccount}
+          loading={loading}
+          setLoading={setLoading}
         />
       )}
 
-      {user && user === ownerAccount && temp_listed && (
-        <TradeCancel marketplace={"magiceden"} />
+      {user && listed && !loading && (
+        <TradeCancel
+          item={item}
+          price={price}
+          ownerAccount={ownerAccount}
+          tokenAccount={tokenAccount}
+          listedDetails={listedDetails}
+          loading={loading}
+          setLoading={setLoading}
+        />
       )}
 
-      {user && user !== ownerAccount && temp_listed && (
-        <TradePurchase price={temp_price} />
+      {user && user !== ownerAccount && listed && !loading && (
+        <TradePurchase
+          price={price}
+          item={item}
+          ownerAccount={ownerAccount}
+          tokenAccount={tokenAccount}
+          marketplace={marketplace}
+          listedDetails={listedDetails}
+          loading={loading}
+          setLoading={setLoading}
+        />
       )}
     </div>
   );
 }
+
+/* 
+{user && user === ownerAccount && !listed && (
+    <TradeListing
+      invalid={invalid}
+      item={item}
+      ownerAccount={ownerAccount}
+      tokenAccount={tokenAccount}
+    />
+  )}
+
+  {user && user === ownerAccount && listed && (
+    <TradeCancel marketplace={marketplace} />
+  )}
+
+  {user && user !== ownerAccount && listed && (
+    <TradePurchase price={price} />
+  )}
+*/

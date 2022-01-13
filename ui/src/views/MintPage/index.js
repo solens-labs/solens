@@ -26,7 +26,6 @@ export default function MintPage(props) {
   const { address } = useParams();
   const { connection } = useConnection();
 
-
   // Token Details State
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [collectionInfo, setCollectionInfo] = useState("");
@@ -37,6 +36,8 @@ export default function MintPage(props) {
   const [activity, setActivity] = useState([]);
   const [tokenAccount, setTokenAccount] = useState("");
   const [ownerAccount, setOwnerAccount] = useState("");
+  const [listed, setListed] = useState(false);
+  const [listedDetails, setListedDetails] = useState({});
 
   // Accordions Expansion State
   const [detailsExpanded, setDetailsExpanded] = useState(false);
@@ -74,6 +75,7 @@ export default function MintPage(props) {
         }
 
         if (symbol) {
+          // Request to get Collection Info
           const apiRequest2 = api.server.collection + queries.symbol + symbol;
           const request2 = axios.get(apiRequest2).then((response) => {
             const info = response.data[0];
@@ -83,6 +85,21 @@ export default function MintPage(props) {
               return mp.marketplace;
             });
             setMarketplaces(marketplacesArray);
+          });
+
+          // Request to get Collection Listed Items (to filter mint)
+          const apiRequest3 = api.server.listings + queries.symbol + symbol;
+          const collectionListed = axios.get(apiRequest3).then((response) => {
+            const listedItems = response.data;
+
+            const listedSearch = listedItems.filter(
+              (item) => item.mint === address
+            );
+
+            if (listedSearch.length === 1) {
+              setListed(true);
+              setListedDetails(listedSearch[0]);
+            }
           });
         }
       });
@@ -172,7 +189,10 @@ export default function MintPage(props) {
             invalidCollection={invalidCollection}
             item={tokenMetadata}
             collection={collectionInfo}
+            tokenAccount={tokenAccount}
             ownerAccount={ownerAccount}
+            listed={listed}
+            listedDetails={listedDetails}
           />
 
           <div className="details col-12 mt-3 mt-lg-0">
