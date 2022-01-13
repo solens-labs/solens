@@ -55,6 +55,8 @@ export default function TradingModule(props) {
     );
   };
 
+  const needRealOwnerAccount = "";
+
   return (
     <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-around p-2 pb-3">
       <div className="item_title_and_details col-12 d-flex flex-column align-items-center">
@@ -107,33 +109,31 @@ export default function TradingModule(props) {
           item={item}
           ownerAccount={ownerAccount}
           tokenAccount={tokenAccount}
-          loading={loading}
           setLoading={setLoading}
         />
       )}
 
-      {user && listed && !loading && (
+      {user && user === needRealOwnerAccount && listed && !loading && (
         <TradeCancel
           item={item}
           price={price}
           ownerAccount={ownerAccount}
           tokenAccount={tokenAccount}
-          listedDetails={listedDetails}
-          loading={loading}
           setLoading={setLoading}
+          marketplace={marketplace}
+          listedDetails={listedDetails}
         />
       )}
 
       {user && user !== ownerAccount && listed && !loading && (
         <TradePurchase
-          price={price}
           item={item}
+          price={price}
           ownerAccount={ownerAccount}
           tokenAccount={tokenAccount}
+          setLoading={setLoading}
           marketplace={marketplace}
           listedDetails={listedDetails}
-          loading={loading}
-          setLoading={setLoading}
         />
       )}
     </div>

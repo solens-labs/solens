@@ -95,8 +95,6 @@ export async function buyMEden(
   program: anchor.Program,
   creators: any
 ) {
-  // let [metadataAccount, _] = await getMetadataAccount(nftMint);
-  // let remAccounts = await getCreatorsList(metadataAccount);
   let remAccounts = creators;
   let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL);
   return program.rpc.exchange2(priceBN, nftMint, {

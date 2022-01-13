@@ -12,15 +12,28 @@ import { useWallet } from "@solana/wallet-adapter-react";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeListing(props) {
-  const { invalid, item, ownerAccount, tokenAccount, loading, setLoading } =
-    props;
+  const { invalid, item, ownerAccount, tokenAccount, setLoading } = props;
   const wallet = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
 
   const [listPrice, setListPrice] = useState(0);
   const [selectedMarketplace, setSelectedMarketplace] = useState("");
 
-  const listNft = async () => {
+  const listNft = async (marketplace) => {
+    switch (marketplace) {
+      case "magiceden":
+        listNftMagicEden();
+        break;
+      case "solanart":
+        listNftSolanart();
+        break;
+      case "smb":
+        listNftSMB();
+        break;
+    }
+  };
+
+  const listNftMagicEden = async () => {
     setLoading(true);
     if (listPrice > 0) {
       const provider = new anchor.Provider(connection, wallet, {
@@ -55,6 +68,12 @@ export default function TradeListing(props) {
       alert("List must be above 0.");
     }
     setLoading(false);
+  };
+  const listNftSolanart = async () => {
+    console.log(`listing on Solanart for ${listPrice}.`);
+  };
+  const listNftSMB = async () => {
+    console.log(`listing on SMB for ${listPrice}.`);
   };
 
   return (
@@ -111,7 +130,7 @@ export default function TradeListing(props) {
         )}
       </div>
 
-      {!loading && selectedMarketplace && (
+      {selectedMarketplace && (
         <div className="col-12 d-flex flex-column flex-wrap justify-content-center align-items-center">
           <div className="col-8 col-lg-4 p-1">
             <input
@@ -122,7 +141,10 @@ export default function TradeListing(props) {
           </div>
 
           <div className="col-8 col-lg-4 p-1">
-            <button className="btn_mp" onClick={listNft}>
+            <button
+              className="btn_mp"
+              onClick={() => listNft(selectedMarketplace)}
+            >
               <div className="btn_mp_inner_selected">List Item</div>
             </button>
           </div>

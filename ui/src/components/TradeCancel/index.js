@@ -17,16 +17,29 @@ export default function TradeCancel(props) {
     item,
     ownerAccount,
     tokenAccount,
-    loading,
+    marketplace,
     setLoading,
     listedDetails,
     price,
   } = props;
-
   const wallet = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
 
   const delistNft = async () => {
+    switch (marketplace) {
+      case "magiceden":
+        delistNftMagicEden();
+        break;
+      case "solanart":
+        delistNftSolanart();
+        break;
+      case "smb":
+        delistNftSMB();
+        break;
+    }
+  };
+
+  const delistNftMagicEden = async () => {
     setLoading(true);
     try {
       const provider = new anchor.Provider(connection, wallet, {
@@ -66,14 +79,20 @@ export default function TradeCancel(props) {
     setLoading(false);
   };
 
+  const delistNftSolanart = async () => {
+    console.log("Delisting item from Solanart");
+  };
+
+  const delistNftSMB = async () => {
+    console.log("Delisting item from SMB Market");
+  };
+
   return (
     <>
       <div className="col-8 col-lg-4 p-1">
-        {!loading && (
-          <button className="btn_mp" onClick={delistNft}>
-            <div className="btn_mp_inner">Cancel Listing</div>
-          </button>
-        )}
+        <button className="btn_mp" onClick={() => delistNft()}>
+          <div className="btn_mp_inner">Cancel Listing</div>
+        </button>
       </div>
     </>
   );

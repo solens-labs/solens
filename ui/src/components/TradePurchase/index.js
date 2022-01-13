@@ -20,7 +20,6 @@ export default function TradePurchase(props) {
     ownerAccount,
     tokenAccount,
     marketplace,
-    loading,
     setLoading,
     listedDetails,
   } = props;
@@ -29,6 +28,20 @@ export default function TradePurchase(props) {
   const connection = new anchor.web3.Connection(rpcHost);
 
   const buyNft = async () => {
+    switch (marketplace) {
+      case "magiceden":
+        buyNftMagicEden();
+        break;
+      case "solanart":
+        buyNftSolanart();
+        break;
+      case "smb":
+        buyNftSMB();
+        break;
+    }
+  };
+
+  const buyNftMagicEden = async () => {
     if (!price) {
       alert("Error fetching item price.");
     }
@@ -53,7 +66,7 @@ export default function TradePurchase(props) {
       const buyerString = wallet.publicKey.toBase58();
       const buyer = new anchor.web3.PublicKey(buyerString);
 
-      const seller = new anchor.web3.PublicKey(ownerAccount);
+      const seller = new anchor.web3.PublicKey("");
       const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
       const escrowAccount = new anchor.web3.PublicKey(escrowFetch);
       const metadataAccount = new anchor.web3.PublicKey(item.metadata_acct);
@@ -85,10 +98,18 @@ export default function TradePurchase(props) {
     setLoading(false);
   };
 
+  const buyNftSolanart = async () => {
+    console.log("Buying from Solanart");
+  };
+
+  const buyNftSMB = async () => {
+    console.log("Buying from SMB");
+  };
+
   return (
     <>
       <div className="col-8 col-lg-4 p-1">
-        <button className="btn_mp" onClick={buyNft}>
+        <button className="btn_mp" onClick={() => buyNft()}>
           <div className="btn_mp_inner">Buy Item</div>
         </button>
       </div>
