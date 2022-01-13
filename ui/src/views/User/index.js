@@ -72,11 +72,13 @@ export default function User(props) {
         {wallet.connected && (
           <div className="col-12 d-flex flex-column align-items-center">
             <h1>User Profile</h1>
-            <Walletinfo
-              address={walletAddress}
-              balance={walletBalance}
-              nfts={nfts.length}
-            />
+            <div className="col-12 d-flex justify-content-center mt-2">
+              <Walletinfo
+                address={walletAddress}
+                balance={walletBalance}
+                nfts={nfts.length}
+              />
+            </div>
           </div>
         )}
 
@@ -88,7 +90,7 @@ export default function User(props) {
         )}
       </div>
 
-      <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center">
+      <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
         {nfts.length > 0 &&
           nfts.map((item, i) => {
             return (
