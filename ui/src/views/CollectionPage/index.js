@@ -69,6 +69,7 @@ export default function CollectionPage(props) {
   const [floor, setFloor] = useState(0); // needed for collection summary
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
+  const [floorSMB, setFloorSMB] = useState(0); // needed for MP summary
   const [floorChart, setFloorChart] = useState([]); // needed for historical floor chart
   const [floor2W, setFloor2W] = useState([]); // needed for historical floor chart
   const [floor1M, setFloor1M] = useState([]); // needed for historical floor chart
@@ -108,6 +109,7 @@ export default function CollectionPage(props) {
     }
   }, [name, allCollections]);
 
+  // Calculate Market Cap
   useEffect(() => {
     if (floor > 0 && collectionInfo?.supply > 0 && solPrice > 0) {
       const marketCap = floor * collectionInfo.supply * solPrice;
@@ -236,56 +238,34 @@ export default function CollectionPage(props) {
     }
   }, [stats]);
 
-  // Fetch floors from MPs
-  useEffect(() => {
-    // Request ME Floor
-    const apiRequestME = exchangeApi.magiceden.floor + name;
-    const collectionFloorME = axios.get(apiRequestME).then((response) => {
-      const floorLamports = response.data;
-      if (Object.keys(floorLamports).length > 0) {
-        const floor = floorLamports.results.floorPrice * 10e-10;
-        setFloorME(floor.toFixed(2));
-      }
-    });
-
-    // Request SA Floor
-    const apiRequestSA = exchangeApi.solanart.floor + name;
-    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
-      const floor = response.data.floorPrice;
-      if (floor) {
-        setFloorSA(floor.toFixed(2));
-      }
-    });
-
-    // Request SMB Floor
-    if (name === "solana_monkey_business") {
-      const apiRequestSMB = exchangeApi.smb.items;
-      const collectionFloorSMB = axios.get(apiRequestSMB).then((response) => {
-        const fullSMBData = response.data.items;
-        const listed = fullSMBData.filter((item) => {
-          if (item.price && item.price > 0) {
-            return item.price;
-          }
-        });
-        const prices = listed.map((item) => {
-          return item.price / 1000000000;
-        });
-        const smbFloor = Math.min(...prices);
-        setFloor(smbFloor.toFixed(2));
+  // Fetch Floors
+  useEffect(async () => {
+    const apiRequest = api.server.currentFloor + queries.symbol + name;
+    const currentFloors = await axios.get(apiRequest).then((response) => {
+      const allFloors = response.data;
+      allFloors.sort((a, b) => {
+        return a.floor - b.floor;
       });
-    }
+      const absoluteFloor = allFloors[0].floor;
+      setFloor(absoluteFloor);
+
+      const meFloor = allFloors.filter((item) => {
+        if (item.marketplace === "magiceden") {
+          setFloorME(item.floor);
+        }
+      });
+      const saFloor = allFloors.filter((item) => {
+        if (item.marketplace === "solanart") {
+          setFloorSA(item.floor);
+        }
+      });
+      const smbFloor = allFloors.filter((item) => {
+        if (item.marketplace === "smb") {
+          setFloorSMB(item.floor);
+        }
+      });
+    });
   }, [name]);
-  // Determine absolute floor
-  useEffect(() => {
-    if (floorSA !== 0 && floorME !== 0) {
-      const floor = Math.min(floorSA, floorME);
-      setFloor(floor);
-    } else if (floorSA === 0 && floorME !== 0) {
-      setFloor(floorME);
-    } else if (floorSA !== 0 && floorME === 0) {
-      setFloor(floorSA);
-    } else setFloor("Unavailable");
-  }, [floorSA, floorME]);
 
   // Split Marketplace Data Structures
   useEffect(() => {
@@ -322,24 +302,10 @@ export default function CollectionPage(props) {
       const apiRequest =
         api.server.floor + queries.symbol + name + queries.days + 14;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
-        const floor = response.data;
-
-        // const currentFloor = floor[floor.length - 1].floor.toFixed(2);
-        // setFloor(currentFloor);
-
-        if (floor.length > 0) {
-          const floorData = convertFloorData(floor);
-          setFloor2W(floorData);
-
-          const split = splitMarketplaceData(floor);
-          if (split["magiceden"] && split["magiceden"].length > 0) {
-            const floorME = split["magiceden"][0].floor;
-            setFloorME(floorME);
-          }
-          if (split["solanart"] && split["solanart"].length > 0) {
-            const floorSA = split["solanart"][0].floor;
-            setFloorSA(floorSA);
-          }
+        const floorData = response.data;
+        if (floorData.length > 0) {
+          const floor = convertFloorData(floorData);
+          setFloor2W(floor);
         }
       });
     }
@@ -348,10 +314,10 @@ export default function CollectionPage(props) {
       const apiRequest =
         api.server.floor + queries.symbol + name + queries.days + 30;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
-        const floor = response.data;
-        if (floor.length > 0) {
-          const floorData = convertFloorData(floor);
-          setFloor1M(floorData);
+        const floorData = response.data;
+        if (floorData.length > 0) {
+          const floor = convertFloorData(floorData);
+          setFloor1M(floor);
         }
       });
     }
@@ -360,10 +326,10 @@ export default function CollectionPage(props) {
       const apiRequest =
         api.server.floor + queries.symbol + name + queries.days + 365;
       const historicalFloor = await axios.get(apiRequest).then((response) => {
-        const floor = response.data;
-        if (floor.length > 0) {
-          const floorData = convertFloorData(floor);
-          setFloorAll(floorData);
+        const floorData = response.data;
+        if (floorData.length > 0) {
+          const floor = convertFloorData(floorData);
+          setFloorAll(floor);
         }
       });
     }

@@ -20,7 +20,7 @@ export default function About(props) {
         {/* <div className="col-12 col-md-8 offset-md-2">
           <img className="img-fluid p-3" src={logo} alt="" />
         </div> */}
-        <h1 className="about_heading">Happy Halloween, Friends!</h1>
+        <h1 className="about_heading">Welcome Solensians!</h1>
         <hr
           style={{
             color: "white",
