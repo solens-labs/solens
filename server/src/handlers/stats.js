@@ -484,7 +484,7 @@ exports.currentFloor = async (req, reply) => {
       price: {$min: '$price'},
     }},
     {$project : {
-      markepplace: "$_id.marketplace",
+      marketplace: "$_id.marketplace",
       floor: { $round: ["$price", 2] },
       _id: 0
     }}
