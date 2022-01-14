@@ -299,10 +299,6 @@ export default function CollectionPage(props) {
         </div>
       </div>
 
-      {/* <hr
-        style={{ color: "white", width: "50%" }}
-        className="mt-lg-5 mt-0 mb-3"
-      /> */}
       <h1 className="mt-0 mt-xxl-3">Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-12 col-xxl-10 p-lg-2 pt-lg-0 pb-lg-0 mt-lg-3">
         <CollectionStat

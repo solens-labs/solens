@@ -235,6 +235,7 @@ export const fetchHistoricalFloor = async (symbol) => {
   };
 };
 
+// Fetch the metadata for top four trades
 export const fetchTopFourMetadata = async (topFour) => {
   const topFourMetadataPull = topFour.map(async (token, i) => {
     const mintAddressObject = token.address.props.href;

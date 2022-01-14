@@ -21,8 +21,8 @@ export default function Attribute(props) {
       traitShort = trait.slice(0, 20) + "...";
     }
 
-    if (value.length > 15) {
-      valueShort = value.slice(0, 15) + "...";
+    if (value.length > 13) {
+      valueShort = value.slice(0, 13) + "...";
     }
   }
 
