@@ -4,6 +4,7 @@ import * as fs from "fs";
 import {TOKEN_PROGRAM_ID} from "@solana/spl-token";
 import {BinaryReader, BinaryWriter, deserializeUnchecked} from 'borsh';
 import base58 from 'bs58';
+import {SOLANART_SCHEMA, SolanartEscrow} from "./solanart_layout";
 
 type StringPublicKey = string;
 
@@ -20,6 +21,13 @@ const provider = new anchor.Provider(connection, walletWrapper, {
     preflightCommitment: 'recent',
 });
 
+const Solanart = new PublicKey('CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz')
+
+
+async function getEscrowAccountInfo(escrowAccount: anchor.web3.PublicKey){
+    let escrowRaw = await connection.getAccountInfo(escrowAccount)
+    return deserializeUnchecked(SOLANART_SCHEMA, SolanartEscrow, escrowRaw.data)
+}
 
 function getCnadyFilter(candy: string) {
     return {
@@ -134,6 +142,26 @@ function saveMintList(mint_list: any) {
 
 
 async function main() {
+
+    let accInfo = await connection.getAccountInfo(new PublicKey('5TCLprtCUMMhAW8X4Cvo6K9ZLTCxBc151WdzoJ4u9b5Z'))
+    console.log(accInfo.data)
+    return
+
+    let accInnfo = await connection.getParsedProgramAccounts(
+        Solanart,
+        {
+            commitment: "processed",
+            filters:[
+                {
+                    memcmp:{
+                        offset:33,
+                        bytes: '5TCLprtCUMMhAW8X4Cvo6K9ZLTCxBc151WdzoJ4u9b5Z'
+                    }
+                }
+            ]
+        }
+
+    )
     const fetch = require("node-fetch");
     let res = await fetch('https://api-mainnet.arnori.io/stats/collection?symbol=degenape&mint=true')
     let mint = await res.json()
@@ -351,8 +379,8 @@ async function main() {
 
     return
 
-    const idl1 = await anchor.Program.fetchIdl('CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk', provider)
     const idl = await anchor.Program.fetchIdl('gdrpGjVffourzkdDRrQmySw4aTHr8a3xmQzzxSwFD1a', provider)
+    const idl1 = await anchor.Program.fetchIdl('CMY8R8yghKfFnHKCWjzrArUpYH4PbJ56aWBr4kCP4DMk', provider)
     // const idl = await anchor.Program.fetchIdl('cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ', provider)
     // const program = new anchor.Program(idl, 'J7RagMKwSD5zJSbRQZU56ypHUtux8LRDkUpAPSKH4WPp', provider);
     let conf = new PublicKey("D5SgDb9jFdtFs4kW5TSeiRFcWgcNs1dUXBcBNUeFeLCL")

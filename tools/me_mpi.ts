@@ -1,9 +1,10 @@
 import * as anchor from "@project-serum/anchor"
 import * as fs from "fs";
-import {MEdenIdl} from "./me_layout";
+import {Eden, MAGICEDEN_SCHEMA, MEdenIdl} from "./me_layout";
 import {decodeMetadata, Metadata} from "./metadata_layout";
 import {TOKEN_PROGRAM_ID} from "@solana/spl-token";
 import {LAMPORTS_PER_SOL, SystemProgram} from "@solana/web3.js";
+import {deserializeUnchecked} from "borsh";
 
 const connection = new anchor.web3.Connection('https://dawn-divine-feather.solana-mainnet.quiknode.pro/971e7d86ae5ad52d9d48097afaec1f7edde191e7/')
 
@@ -20,6 +21,7 @@ const walletWrapper = new anchor.Wallet(keypair);
 const provider = new anchor.Provider(connection, walletWrapper, {
     preflightCommitment: 'recent',
 });
+
 // @ts-ignore
 const program = new anchor.Program(MEdenIdl, magicEden, provider)
 
@@ -65,6 +67,12 @@ async function getCreatorsList(metadataAccount: anchor.web3.PublicKey) {
         })
     })
     return remainingAccounts
+}
+
+
+async function getEscrowAccountInfo(escrowAccount: anchor.web3.PublicKey){
+    let escrowRaw = await connection.getAccountInfo(escrowAccount)
+    return deserializeUnchecked(MAGICEDEN_SCHEMA, Eden, escrowRaw.data)
 }
 
 
@@ -136,7 +144,7 @@ async function main() {
     let makerNftAccount = new anchor.web3.PublicKey('4CFnmAMu6BDcpJRDu2WjqmtQ8BoAXs6MaTUkhqWVsPzt')
     let nftMint = new anchor.web3.PublicKey('3GRz6nPyjvgzQtTnWs1nkSyA6hbGqLBNTjqnXkPT3per')
     let escrowAccount, takerPrice;
-    let select = action.Stale
+    let select = action.List
     switch (select) {
         // @ts-ignore
         case action.Stale:

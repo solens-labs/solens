@@ -10,7 +10,7 @@ import {
 import * as anchor from "@project-serum/anchor";
 import * as fs from "fs";
 import {ASSOCIATED_TOKEN_PROGRAM_ID, Token, TOKEN_PROGRAM_ID} from "@solana/spl-token";
-import {BuyKeys, ListKeys} from "./solanart_layout";
+import {BuyKeys, ListKeys, UpdateKeys} from "./solanart_layout";
 import {Buffer} from "buffer";
 import {decodeMetadata, Metadata} from "./metadata_layout";
 
@@ -142,7 +142,7 @@ async function buySolanart(taker: anchor.web3.Keypair,
     let keys = [
         taker.publicKey,
         takerAtaAddress,
-        new PublicKey('2f8RUQFQ2BuDRcoshVoAc1xzHZqujA7Yoyhre21EPjhE'),
+        new PublicKey('HQjo82y23sKLMJdSZRhYxHw1DRVpVwUNnpw1iYFbNgom'),
         maker,
         escrowAccount,
         TOKEN_PROGRAM_ID,
@@ -162,8 +162,8 @@ async function buySolanart(taker: anchor.web3.Keypair,
     })
 
     if (takerPrice > 0) {
-       let creators = await getCreatorsList(mintMetadataAccount)
-        creators.forEach((c)=>{
+        let creators = await getCreatorsList(mintMetadataAccount)
+        creators.forEach((c) => {
             accounts.push({
                 pubkey: new anchor.web3.PublicKey(c.address),
                 isWritable: true,
@@ -187,6 +187,7 @@ async function buySolanart(taker: anchor.web3.Keypair,
 
     final_tx.add(...txIxs)
 
+
     return anchor.web3.sendAndConfirmTransaction(
         connection,
         final_tx,
@@ -197,14 +198,63 @@ async function buySolanart(taker: anchor.web3.Keypair,
 }
 
 
-async function main() {
+async function updateSolanart(maker: anchor.web3.Keypair, escrowAccount: anchor.web3.PublicKey, nftMint: anchor.web3.PublicKey, takerPrice: number) {
+    let keys = [
+        maker.publicKey,
+        escrowAccount,
+        nftMint
+    ]
 
+    keys.forEach((k, index) => {
+        UpdateKeys[index].pubkey = k
+    })
+
+    let priceBN = new anchor.BN(takerPrice * LAMPORTS_PER_SOL)
+    let ixData = Buffer.from([action.Update, ...priceBN.toArray('le', 8)]);
+
+    let updateIx = new TransactionInstruction({
+        programId: Solanart,
+        data: ixData,
+        keys: UpdateKeys
+    })
+
+
+    let memoData = '{"name": "' + l +
+        '", "desc": "' + b +
+        '", "token_add": "' + n +
+        '", "sale_add": "' + y.toString() +
+        '", "img_url":"' + p +
+        '", "price_sol":"' + h + '"}'
+    let memoIx = new TransactionInstruction({
+        programId: new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'),
+        data: Buffer.from(memoData, 'utf-8'),
+        keys: []
+    })
+
+    const final_tx = new Transaction({
+        feePayer: maker.publicKey
+    });
+
+    final_tx.add(...[updateIx])
+
+
+    return anchor.web3.sendAndConfirmTransaction(
+        connection,
+        final_tx,
+        [maker],
+        {skipPreflight: false}
+    )
+
+}
+
+
+async function main() {
     let maker = keypair;
-    let taker = keypair;
+    let taker = keypair1;
     let makerNftAccount = new anchor.web3.PublicKey('4CFnmAMu6BDcpJRDu2WjqmtQ8BoAXs6MaTUkhqWVsPzt')
     let nftMint = new anchor.web3.PublicKey('3GRz6nPyjvgzQtTnWs1nkSyA6hbGqLBNTjqnXkPT3per')
     let escrowAccount, takerPrice;
-    let select = action.List
+    let select = action.Buy
     switch (select) {
         // @ts-ignore
         case action.Stale:
@@ -217,16 +267,17 @@ async function main() {
             break;
         // @ts-ignore
         case action.Buy:
-            takerPrice = 0.5 // price in sol
+            takerPrice =  // price in sol
             let buyTxId = await buySolanart(taker, maker.publicKey, makerNftAccount, nftMint, takerPrice)
             console.log(buyTxId)
             break;
-        // // @ts-ignore
-        // case action.Update:
-        //     escrowAccount = new anchor.web3.PublicKey('3EKQCd3d7yTw2G1UbxjeJJKxZuGv4DrQX7ZntrnPq4NM')
-        //     let cancelTxId = await cancelMEden(maker, makerNftAccount, escrowAccount)
-        //     console.log(cancelTxId)
-        //     break;
+        // @ts-ignore
+        case action.Update:
+            takerPrice = 1 // price in sol
+            let [escrowAccount, bump] = await PublicKey.findProgramAddress([Buffer.from("sale"), nftMint.toBuffer()], Solanart)
+            let cancelTxId = await updateSolanart(maker, escrowAccount, nftMint, takerPrice)
+            console.log(cancelTxId)
+            break;
         default:
             break;
     }

@@ -1,3 +1,10 @@
+import {BinaryReader, BinaryWriter} from "borsh";
+import {PublicKey} from "@solana/web3.js";
+
+type StringPublicKey = string;
+import base58 from 'bs58';
+
+
 export const MEdenIdl = {
     version: "0.0.0",
     name: "escrow",
@@ -183,3 +190,60 @@ export const MEdenIdl = {
         msg: "Numerical Overflow"
     }, {code: 310, name: "MEExpired", msg: "Expired"}]
 }
+
+
+class Assignable {
+    constructor(properties) {
+        Object.keys(properties).map((key) => {
+            return (this[key] = properties[key]);
+        });
+    }
+}
+
+export class Eden extends Assignable {
+}
+
+export const MAGICEDEN_SCHEMA = new Map<any, any>([
+    [
+        Eden,
+        {
+            kind: "struct",
+            fields: [
+                ["discriminator", "u64"],
+                ["initializer", "pubkeyAsString"],
+                ["tokenAccount", "pubkeyAsString"],
+                ["price", "u64"]
+            ]
+        }
+    ]
+
+])
+
+
+export const extendBorsh = () => {
+    (BinaryReader.prototype as any).readPubkey = function () {
+        const reader = this as unknown as BinaryReader;
+        const array = reader.readFixedArray(32);
+        return new PublicKey(array);
+    };
+
+    (BinaryWriter.prototype as any).writePubkey = function (value: PublicKey) {
+        const writer = this as unknown as BinaryWriter;
+        writer.writeFixedArray(value.toBuffer());
+    };
+
+    (BinaryReader.prototype as any).readPubkeyAsString = function () {
+        const reader = this as unknown as BinaryReader;
+        const array = reader.readFixedArray(32);
+        return base58.encode(array) as StringPublicKey;
+    };
+
+    (BinaryWriter.prototype as any).writePubkeyAsString = function (
+        value: StringPublicKey,
+    ) {
+        const writer = this as unknown as BinaryWriter;
+        writer.writeFixedArray(base58.decode(value));
+    };
+};
+
+extendBorsh();
