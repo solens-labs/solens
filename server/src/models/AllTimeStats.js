@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const allTimeStatsSchema = new mongoose.Schema({
-  symbol: {type: String, require: true, index: true},
+  symbol: {type: String, require: true},
   marketplace: {type: String, require: true},
   count: {type: Number, require: true},
   volume: {type: Number, require: true},

@@ -64,6 +64,17 @@ exports.matchBuyTxs = () => {
   }
 }
 
+exports.matchMainTxs = () => {
+  return { $or: [
+      {type: { $eq: "list"}},
+      {type: { $eq: "update"}},
+      {type: { $eq: "buy"}},
+      {type: { $eq: "cancel"}},
+      {type: { $eq: "accept_offer"}}
+    ]
+  }
+}
+
 exports.lookupAggregatedStats = (collection, days = 1, skip = 0, outField = '', symbol = '') => {
   const out = outField || collection
   const match = { $match: {
