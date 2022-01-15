@@ -5,8 +5,17 @@ import { shortenAddress } from "../../candy-machine";
 import { explorerLink } from "../../constants/constants";
 
 export default function ItemDetails(props) {
-  const { invalid, item, royalty, received, tokenAccount, ownerAccount } =
-    props;
+  const {
+    invalid,
+    item,
+    royalty,
+    received,
+    listedDetails,
+    tokenAccount,
+    ownerAccount,
+  } = props;
+
+  const owner = listedDetails?.owner || ownerAccount;
 
   return (
     <div className="d-flex flex-row flex-wrap col-12">
@@ -43,14 +52,14 @@ export default function ItemDetails(props) {
         </h5>
         <h5 className="mint_info">
           Owner:{" "}
-          {received && ownerAccount && !invalid && (
+          {received && owner && !invalid && (
             <a
-              href={explorerLink("account", ownerAccount)}
+              href={explorerLink("account", owner)}
               target="_blank"
               style={{ textDecoration: "none" }}
             >
               <span className="mint_info_value">
-                {received && shortenAddress(ownerAccount)}
+                {received && shortenAddress(owner)}
               </span>{" "}
             </a>
           )}

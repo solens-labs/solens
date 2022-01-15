@@ -12,18 +12,20 @@ export default function ActivityTable(props) {
   const { data } = props;
   const emptyObject = [
     {
+      TX: "--",
       type: "--",
-      buyer: "--",
       date: "--",
       price: "--",
-      seller: "--",
+      buyerLink: "--",
+      sellerLink: "--",
     },
     {
+      TX: "--",
       type: "--",
-      buyer: "--",
       date: "--",
       price: "--",
-      seller: "--",
+      buyerLink: "--",
+      sellerLink: "--",
     },
   ];
 
@@ -51,15 +53,23 @@ export default function ActivityTable(props) {
       //   },
       // },
       {
-        Header: "",
+        Header: "TX",
         accessor: "symbol",
-        width: 40,
-        maxWidth: 40,
+        // width: 40,
+        // maxWidth: 40,
       },
       {
         Header: "TYPE",
         accessor: "type",
       },
+      {
+        Header: "PRICE",
+        accessor: "price",
+      },
+      // {
+      //   Header: "% Change",
+      //   accessor: "change",
+      // },
       {
         Header: "DATE",
         accessor: "date",
@@ -71,14 +81,6 @@ export default function ActivityTable(props) {
           else return 0;
         },
       },
-      {
-        Header: "PRICE",
-        accessor: "price",
-      },
-      // {
-      //   Header: "% Change",
-      //   accessor: "change",
-      // },
       {
         Header: "BUYER",
         accessor: "buyerLink",
