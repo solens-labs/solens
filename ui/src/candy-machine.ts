@@ -295,11 +295,14 @@ export const mintOneToken = async (
 
 export const shortenAddress = (address: string, chars = 4): string => {
   let addressShort: string = "";
+  if (address?.length !== 44) {
+    return "";
+  }
 
   try {
     addressShort = `${address.slice(0, chars)}...${address.slice(-chars)}`;
   } catch (e) {
-    // console.log(e);
+    console.log(e);
   }
   return addressShort;
 };
