@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectBalance } from "../../redux/app";
 import * as anchor from "@project-serum/anchor";
@@ -12,6 +12,7 @@ import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
+import ReactGA from "react-ga";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -30,6 +31,8 @@ export default function TradePurchase(props) {
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
+
+  const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const buyNft = async () => {
     if (!price) {
@@ -77,16 +80,34 @@ export default function TradePurchase(props) {
         preflightCommitment: "processed",
       });
       setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
       console.log(sendTx);
+
       const confirmTx = await connection.confirmTransaction(
         sendTx,
         "processed"
       );
-      history.go(0);
+
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy on Solanart`,
+        label: item.mint,
+        value: price,
+      });
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 2000);
     } catch (e) {
       console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy Failed on Solanart`,
+        label: txHashAnalytics || e,
+      });
+      setLoading(false);
     }
-    setLoading(false);
   };
   const buyNftMagicEden = async () => {
     setLoading(true);
@@ -113,10 +134,25 @@ export default function TradePurchase(props) {
       );
       setTxHash(buyItem);
       console.log(buyItem);
+
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy on MagicEden`,
+        label: item.mint,
+        value: price,
+      });
+
+      setLoading(false);
+      history.go(0);
     } catch (e) {
       console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy Failed on MagicEden`,
+        label: txHashAnalytics || e,
+      });
+      setLoading(false);
     }
-    setLoading(false);
   };
   const buyNftSMB = async () => {
     console.log("Buying from SMB");

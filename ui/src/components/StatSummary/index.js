@@ -2,6 +2,7 @@ import React from "react";
 import "./style.css";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import ReactGA from "react-ga";
+import { Link } from "react-router-dom";
 
 export default function StatSummary(props) {
   const { symbol, marketplaceData } = props;
@@ -92,18 +93,20 @@ export default function StatSummary(props) {
         </div>
       </div>
 
-      <a
+      {/* <a
         href={marketplaceLink()}
         target="_blank"
         style={{ textDecoration: "none", width: "100%" }}
+      > */}
+      <Link
+        to={`/nfts/${symbol}`}
+        style={{ textDecoration: "none", width: "100%" }}
       >
-        <div
-          className="col-12 btn-button btn-main btn-large btn-wide d-flex mt-2 mb-2"
-          onClick={() => sendAnalytics()}
-        >
+        <div className="col-12 btn-button btn-main btn-large btn-wide d-flex mt-2 mb-2">
           Trade
         </div>
-      </a>
+      </Link>
+      {/* </a> */}
 
       {/* <a href={marketplaceLink()} target="_blank">
           <button className="btn-button btn-main btn-large">Sell</button>

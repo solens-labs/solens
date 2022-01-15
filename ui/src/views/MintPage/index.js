@@ -23,6 +23,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 import { getEscrowAccountInfo, Solanart } from "../../exchanges/solanart";
+import ReactGA from "react-ga";
 
 export default function MintPage(props) {
   const { address } = useParams();
@@ -52,6 +53,28 @@ export default function MintPage(props) {
   const [invalidToken, setInvalidToken] = useState(false);
   const [invalidCollection, setInvalidCollection] = useState(false);
   const [unsupportedToken, setUnsupportedToken] = useState(false);
+
+  // Analytics note which mint was visited
+  useEffect(() => {
+    if (received && !invalidToken) {
+      ReactGA.event({
+        category: "User",
+        action: "Mint Visit",
+        label: address,
+      });
+    }
+  }, [received, invalidToken]);
+
+  // Analytics send unsuppored collection tokens
+  useEffect(() => {
+    if (received && !invalidToken && invalidCollection) {
+      ReactGA.event({
+        category: "Collection",
+        action: "Unsupported Collection",
+        label: address,
+      });
+    }
+  }, [received, invalidToken, invalidCollection]);
 
   // Fetch mint address metadata
   useEffect(async () => {
@@ -104,47 +127,47 @@ export default function MintPage(props) {
 
   // Fetch mint details, see listed status
   useEffect(async () => {
-    // try {
-    //   let itemDetailsFromChain = {};
-    //   let mintKey = {};
-    //   try {
-    //     mintKey = new PublicKey(address);
-    //   } catch {
-    //     return;
-    //   }
-    //   let [escrowAccount, bump] = await PublicKey.findProgramAddress(
-    //     [Buffer.from("sale"), mintKey.toBuffer()],
-    //     Solanart
-    //   );
-    //   let accountInfo = await connection.getAccountInfo(
-    //     escrowAccount,
-    //     "processed"
-    //   );
-    //   if (accountInfo) {
-    //     let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
-    //     if (!escrowAccountInfo) {
-    //       return;
-    //     }
-    //     const maker = escrowAccountInfo.maker;
-    //     const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
-    //     const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
+    try {
+      let itemDetailsFromChain = {};
+      let mintKey = {};
+      try {
+        mintKey = new PublicKey(address);
+      } catch {
+        return;
+      }
+      let [escrowAccount, bump] = await PublicKey.findProgramAddress(
+        [Buffer.from("sale"), mintKey.toBuffer()],
+        Solanart
+      );
+      let accountInfo = await connection.getAccountInfo(
+        escrowAccount,
+        "processed"
+      );
+      if (accountInfo) {
+        let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
+        if (!escrowAccountInfo) {
+          return;
+        }
+        const maker = escrowAccountInfo.maker;
+        const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
+        const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
 
-    //     itemDetailsFromChain = {
-    //       owner: maker,
-    //       price: price,
-    //       escrowTokenAccount: escrowTokenAccount,
-    //       marketplace: "solanart",
-    //       mint: address,
-    //     };
-    //     setListed(true);
-    //     setListedDetails(itemDetailsFromChain);
+        itemDetailsFromChain = {
+          owner: maker,
+          price: price,
+          escrowTokenAccount: escrowTokenAccount,
+          marketplace: "solanart",
+          mint: address,
+        };
+        setListed(true);
+        setListedDetails(itemDetailsFromChain);
 
-    //     console.log({ itemDetailsFromChain });
-    //     return;
-    //   }
-    // } catch (e) {
-    //   console.log("Error fetching itemDetailsFromChain.");
-    // }
+        console.log({ itemDetailsFromChain });
+        return;
+      }
+    } catch (e) {
+      console.log("Error fetching itemDetailsFromChain.");
+    }
 
     const apiRequest =
       api.server.listings + queries.symbol + "none" + queries.mint + address;

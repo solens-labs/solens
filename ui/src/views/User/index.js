@@ -23,6 +23,7 @@ import NftCard from "../../components/NftCard/userprofile";
 import { useHistory } from "react-router-dom";
 import { shortenAddress } from "../../candy-machine";
 import Loader from "../../components/Loader";
+import ReactGA from "react-ga";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -35,6 +36,17 @@ export default function User(props) {
   // const nfts = useSelector(selectUserNFTs);
   const [nfts, setNfts] = useState([]);
   const [loadedItems, setLoadedItems] = useState(false);
+
+  // Send user sign in analytics
+  useEffect(() => {
+    if (wallet.connected && wallet.publicKey) {
+      ReactGA.event({
+        category: "User",
+        action: "Login",
+        label: wallet.publicKey,
+      });
+    }
+  }, [wallet]);
 
   // Check if NFTs have already been fetched previously
   useEffect(() => {

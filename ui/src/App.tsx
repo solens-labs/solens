@@ -21,7 +21,7 @@ import { WalletDialogProvider } from "@solana/wallet-adapter-material-ui";
 import { BrowserRouter as Router } from "react-router-dom";
 import ReactGA from "react-ga";
 
-// ReactGA.initialize("UA-215619609-1");
+ReactGA.initialize("UA-215619609-1");
 const network = process.env.REACT_APP_SOLANA_NETWORK as WalletAdapterNetwork;
 
 const App = () => {

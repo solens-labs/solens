@@ -10,6 +10,7 @@ import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
+import ReactGA from "react-ga";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -23,6 +24,7 @@ export default function TradeListing(props) {
 
   const [listPrice, setListPrice] = useState(0);
   const [selectedMarketplace, setSelectedMarketplace] = useState("");
+  const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const listNft = async (marketplace) => {
     if (listPrice <= 0) {
@@ -42,39 +44,6 @@ export default function TradeListing(props) {
     }
   };
 
-  const listNftMagicEden = async () => {
-    setLoading(true);
-    const provider = new anchor.Provider(connection, wallet, {
-      preflightCommitment: "processed",
-    });
-
-    try {
-      const makerString = wallet.publicKey.toBase58();
-      if (makerString !== ownerAccount) {
-        alert("You are not the owner of this token.");
-        return;
-      }
-
-      const maker = wallet.publicKey;
-      const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
-      const nftMint = new anchor.web3.PublicKey(item.mint);
-      const takerPrice = listPrice;
-      const program = new anchor.Program(magicEdenIDL, magicEden, provider);
-
-      const listItem = await listMEden(
-        maker,
-        makerNftAccount,
-        nftMint,
-        takerPrice,
-        program
-      );
-      setTxHash(listItem);
-      console.log(listItem);
-    } catch (e) {
-      console.log(e);
-    }
-    setLoading(false);
-  };
   const listNftSolanart = async () => {
     setLoading(true);
     try {
@@ -105,17 +74,81 @@ export default function TradeListing(props) {
         signers: [escrowTokenAccount],
       });
       setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
       console.log(sendTx);
+
       const confirmTx = await connection.confirmTransaction(
         sendTx,
         "processed"
       );
+
+      ReactGA.event({
+        category: "Trade",
+        action: `List on Solanart`,
+        label: item.mint,
+        value: listPrice,
+      });
+
       setTimeout(function () {
         setLoading(false);
         history.go(0);
       }, 2000);
     } catch (e) {
       console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Listing Failed on Solanart`,
+        label: txHashAnalytics || e,
+      });
+      setLoading(false);
+    }
+  };
+  const listNftMagicEden = async () => {
+    setLoading(true);
+    const provider = new anchor.Provider(connection, wallet, {
+      preflightCommitment: "processed",
+    });
+
+    try {
+      const makerString = wallet.publicKey.toBase58();
+      if (makerString !== ownerAccount) {
+        alert("You are not the owner of this token.");
+        return;
+      }
+
+      const maker = wallet.publicKey;
+      const makerNftAccount = new anchor.web3.PublicKey(tokenAccount);
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const takerPrice = listPrice;
+      const program = new anchor.Program(magicEdenIDL, magicEden, provider);
+
+      const listItem = await listMEden(
+        maker,
+        makerNftAccount,
+        nftMint,
+        takerPrice,
+        program
+      );
+      // setTxHash(listItem); // not needed because no delay
+      setTxHashAnalytics(listItem);
+      console.log(listItem);
+
+      ReactGA.event({
+        category: "Trade",
+        action: `List on MagicEden`,
+        label: item.mint,
+        value: listPrice,
+      });
+
+      setLoading(false);
+      history.go(0);
+    } catch (e) {
+      console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Listing Failed on MagicEden`,
+        label: txHashAnalytics || e,
+      });
       setLoading(false);
     }
   };

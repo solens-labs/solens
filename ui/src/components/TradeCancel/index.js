@@ -11,6 +11,7 @@ import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
+import ReactGA from "react-ga";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -29,6 +30,8 @@ export default function TradeCancel(props) {
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
+
+  const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const cancelNft = async () => {
     switch (marketplace) {
@@ -64,18 +67,33 @@ export default function TradeCancel(props) {
         preflightCommitment: "processed",
       });
       setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
       console.log(sendTx);
+
       const confirmTx = await connection.confirmTransaction(
         sendTx,
         "processed"
       );
       setListed(false);
+
+      ReactGA.event({
+        category: "Trade",
+        action: `Cancel on Solanart`,
+        label: item.mint,
+        value: price,
+      });
+
       setTimeout(function () {
         setLoading(false);
         history.go(0);
       }, 1500);
     } catch (e) {
       console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Cancel Failed on Solanart`,
+        label: txHashAnalytics || e,
+      });
       setLoading(false);
     }
   };
@@ -90,12 +108,28 @@ export default function TradeCancel(props) {
       const maker = wallet.publicKey;
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
       const cancelItem = await cancelMEden(maker, mint, price, program);
-      setTxHash(cancelItem);
+      // setTxHash(cancelItem);  // not needed because no delay
+      setTxHashAnalytics(cancelItem);
       console.log(cancelItem);
+
+      ReactGA.event({
+        category: "Trade",
+        action: `Cancel on MagicEden`,
+        label: item.mint,
+        value: price,
+      });
+
+      setLoading(false);
+      history.go(0);
     } catch (e) {
       console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Cancel Failed on MagicEden`,
+        label: txHashAnalytics || e,
+      });
+      setLoading(false);
     }
-    setLoading(false);
   };
   const cancelNftSMB = async () => {
     console.log("canceling item from SMB Market");
