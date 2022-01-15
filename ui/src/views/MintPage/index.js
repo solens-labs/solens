@@ -171,6 +171,7 @@ export default function MintPage(props) {
 
     const apiRequest =
       api.server.listings + queries.symbol + "none" + queries.mint + address;
+
     const itemDetailFetch = axios.get(apiRequest).then((response) => {
       const itemDetailsFromBackend = response.data[0];
       if (

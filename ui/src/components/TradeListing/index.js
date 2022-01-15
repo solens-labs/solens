@@ -98,7 +98,7 @@ export default function TradeListing(props) {
       ReactGA.event({
         category: "Trade",
         action: `Listing Failed on Solanart`,
-        label: txHashAnalytics || e,
+        label: txHashAnalytics,
       });
       setLoading(false);
     }
@@ -147,7 +147,7 @@ export default function TradeListing(props) {
       ReactGA.event({
         category: "Trade",
         action: `Listing Failed on MagicEden`,
-        label: txHashAnalytics || e,
+        label: txHashAnalytics,
       });
       setLoading(false);
     }

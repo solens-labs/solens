@@ -85,8 +85,8 @@ export default function CollectionList(props) {
 
   const sendSortAnalytic = (sort) => {
     ReactGA.event({
-      category: "User",
-      action: `Sort By`,
+      category: "Data",
+      action: "Sort By",
       label: sort,
     });
   };

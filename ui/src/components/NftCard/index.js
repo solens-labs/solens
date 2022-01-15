@@ -59,7 +59,6 @@ export default function NftCard(props) {
                   style={{
                     textDecoration: "none",
                     color: "white",
-                    marginRight: -12,
                   }}
                   target="_blank"
                 >
@@ -69,6 +68,7 @@ export default function NftCard(props) {
                     style={{
                       height: 33,
                       width: "auto",
+                      marginLeft: -2,
                     }}
                     alt=""
                   />
@@ -87,7 +87,7 @@ export default function NftCard(props) {
                   <img
                     src={me_logo}
                     className=""
-                    style={{ height: 33, marginRight: -2, width: "auto" }}
+                    style={{ height: 33, width: "auto" }}
                     alt=""
                   />
                 </a>

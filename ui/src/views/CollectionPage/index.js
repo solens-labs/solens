@@ -148,7 +148,6 @@ export default function CollectionPage(props) {
     if (topTradesDay.length === 0) {
       const fetchTopTradesData = async (symbol) => {
         let response = await fetchTopTrades(1, symbol);
-        console.log(response);
         setTopTradesDay(response);
       };
       fetchTopTradesData(name);

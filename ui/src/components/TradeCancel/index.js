@@ -74,7 +74,7 @@ export default function TradeCancel(props) {
         sendTx,
         "processed"
       );
-      setListed(false);
+      // setListed(false);
 
       ReactGA.event({
         category: "Trade",
@@ -84,15 +84,15 @@ export default function TradeCancel(props) {
       });
 
       setTimeout(function () {
-        setLoading(false);
         history.go(0);
-      }, 1500);
+        setLoading(false);
+      }, 2000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
         category: "Trade",
         action: `Cancel Failed on Solanart`,
-        label: txHashAnalytics || e,
+        label: txHashAnalytics,
       });
       setLoading(false);
     }
@@ -126,7 +126,7 @@ export default function TradeCancel(props) {
       ReactGA.event({
         category: "Trade",
         action: `Cancel Failed on MagicEden`,
-        label: txHashAnalytics || e,
+        label: txHashAnalytics,
       });
       setLoading(false);
     }
