@@ -238,6 +238,7 @@ exports.mintHistory = async (req, reply) => {
           date: 1,
           symbol: 1,
           type: 1,
+          marketplace: 1,
           price: { $round: ["$price", 4] },
           _id: 0
         }
@@ -407,6 +408,7 @@ exports.listings = async (req, reply) => {
         mint: 1,
         owner: 1,
         price: 1,
+        escrow: 1,
         marketplace: 1,
         _id: 0
       }}
@@ -426,14 +428,6 @@ exports.listings = async (req, reply) => {
       type: {$first: '$type'},
       marketplace: {$first: '$marketplace'}
     }},
-    {$project : {
-      mint: '$_id.mint',
-      owner: 1,
-      price: 1,
-      type: 1,
-      marketplace: 1,
-      _id: 0
-    }},
     {$match: {
       $or: [
         {type: { $eq: "list"}},
@@ -441,11 +435,14 @@ exports.listings = async (req, reply) => {
       ]
     }},
     {$project : {
-      mint: 1,
+      mint: '$_id.mint',
       owner: 1,
       price: 1,
+      type: 1,
+      escrow: 1,
       marketplace: 1,
-    }}
+      _id: 0
+    }},
   ])
 }
 
