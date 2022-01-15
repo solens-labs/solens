@@ -105,7 +105,12 @@ export default function MintPage(props) {
   // Fetch mint details, see listed status
   useEffect(async () => {
     let itemDetailsFromChain = {};
-    const mintKey = new PublicKey(address);
+    let mintKey = {};
+    try {
+      mintKey = new PublicKey(address);
+    } catch {
+      return;
+    }
     let [escrowAccount, bump] = await PublicKey.findProgramAddress(
       [Buffer.from("sale"), mintKey.toBuffer()],
       Solanart
