@@ -10,11 +10,13 @@ import {
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
+import { useHistory } from "react-router";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeCancel(props) {
   const { price, item, seller, tokenAccount, marketplace, setLoading } = props;
+  const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
@@ -40,13 +42,6 @@ export default function TradeCancel(props) {
       const nftMint = new anchor.web3.PublicKey(item.mint);
       const creators = item.creators_list;
 
-      console.log(
-        taker.toBase58(),
-        maker.toBase58(),
-        nftMint.toBase58(),
-        creators
-      );
-
       const final_tx = await buySolanart(
         taker,
         maker,
@@ -57,17 +52,19 @@ export default function TradeCancel(props) {
 
       const sendTx = await sendTransaction(final_tx, connection, {
         skipPreflight: false,
+        preflightCommitment: "processed",
       });
+      console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
-        "processed"
+        "finalized"
       );
-
-      console.log(sendTx);
+      setLoading(false);
+      history.go(0);
     } catch (e) {
       console.log(e);
+      setLoading(false);
     }
-    setLoading(false);
   };
   const cancelNftMagicEden = async () => {
     setLoading(true);
@@ -80,7 +77,6 @@ export default function TradeCancel(props) {
       const maker = wallet.publicKey;
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
       const cancelItem = await cancelMEden(maker, mint, price, program);
-      console.log(cancelItem);
     } catch (e) {
       console.log(e);
     }

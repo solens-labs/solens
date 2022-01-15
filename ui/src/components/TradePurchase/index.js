@@ -64,13 +64,13 @@ export default function TradePurchase(props) {
 
       const sendTx = await sendTransaction(final_tx, connection, {
         skipPreflight: false,
+        preflightCommitment: "processed",
       });
+      console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
-        "processed"
+        "finalized"
       );
-
-      console.log(sendTx);
     } catch (e) {
       console.log(e);
     }

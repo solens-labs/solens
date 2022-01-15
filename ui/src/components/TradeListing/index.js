@@ -9,11 +9,13 @@ import { magicEden, listMEden } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
+import { useHistory } from "react-router";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeListing(props) {
   const { invalid, item, ownerAccount, tokenAccount, setLoading } = props;
+  const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const connection = new anchor.web3.Connection(rpcHost);
@@ -97,17 +99,19 @@ export default function TradeListing(props) {
       );
       const sendTx = await sendTransaction(final_tx, connection, {
         skipPreflight: false,
+        preflightCommitment: "processed",
         signers: [escrowTokenAccount],
       });
       const confirmTx = await connection.confirmTransaction(
         sendTx,
-        "processed"
+        "finalized"
       );
-      console.log(sendTx);
+      setLoading(false);
+      history.go(0);
     } catch (e) {
       console.log(e);
+      setLoading(false);
     }
-    setLoading(false);
   };
   const listNftSMB = async () => {
     setLoading(true);

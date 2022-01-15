@@ -143,8 +143,6 @@ export const fetchTopTraders = async (type, symbol) => {
     true +
     queries.sortVolume;
 
-  //   console.log(apiRequest);
-
   const topTraders = await axios
     .get(apiRequest)
     .then((response) => {
@@ -181,6 +179,7 @@ export const fetchTopTrades = async (timeframe, symbol) => {
 
   return topTrades;
 };
+
 // Fetch Historical Floor API
 export const fetchHistoricalFloor = async (symbol) => {
   const apiRequest2W =

@@ -95,7 +95,7 @@ export default function CollectionList(props) {
     <div className="collection_list d-flex flex-column align-items-center col-12 mt-4 mb-5">
       <h1>{allCollections.length !== 0 && collections.length} Collections</h1>
 
-      <div className="mb-4 d-flex flex-wrap col-8 justify-content-around">
+      <div className="mb-4 d-flex flex-wrap col-12 col-xl-8 justify-content-around">
         <select
           name="sort"
           id="sort"

@@ -79,8 +79,14 @@ export async function getEscrowAccountInfo(
   escrowAccount: anchor.web3.PublicKey
 ) {
   let escrowRaw = await connection.getAccountInfo(escrowAccount);
-  // @ts-ignore
-  return deserializeUnchecked(SOLANART_SCHEMA, SolanartEscrow, escrowRaw.data);
+  if (escrowRaw) {
+    // @ts-ignore
+    return deserializeUnchecked(
+      SOLANART_SCHEMA,
+      SolanartEscrow,
+      escrowRaw.data
+    );
+  }
 }
 
 export const Solanart = new PublicKey(
