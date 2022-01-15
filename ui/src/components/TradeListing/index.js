@@ -14,7 +14,8 @@ import { useHistory } from "react-router";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeListing(props) {
-  const { invalid, item, ownerAccount, tokenAccount, setLoading } = props;
+  const { invalid, item, ownerAccount, tokenAccount, setLoading, setTxHash } =
+    props;
   const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
@@ -67,6 +68,7 @@ export default function TradeListing(props) {
         takerPrice,
         program
       );
+      setTxHash(listItem);
       console.log(listItem);
     } catch (e) {
       console.log(e);
@@ -102,13 +104,16 @@ export default function TradeListing(props) {
         preflightCommitment: "processed",
         signers: [escrowTokenAccount],
       });
+      setTxHash(sendTx);
       console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
         "processed"
       );
-      setLoading(false);
-      // history.go(0);
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 2000);
     } catch (e) {
       console.log(e);
       setLoading(false);

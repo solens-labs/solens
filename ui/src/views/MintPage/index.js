@@ -104,47 +104,47 @@ export default function MintPage(props) {
 
   // Fetch mint details, see listed status
   useEffect(async () => {
-    try {
-      let itemDetailsFromChain = {};
-      let mintKey = {};
-      try {
-        mintKey = new PublicKey(address);
-      } catch {
-        return;
-      }
-      let [escrowAccount, bump] = await PublicKey.findProgramAddress(
-        [Buffer.from("sale"), mintKey.toBuffer()],
-        Solanart
-      );
-      let accountInfo = await connection.getAccountInfo(
-        escrowAccount,
-        "processed"
-      );
-      if (accountInfo) {
-        let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
-        if (!escrowAccountInfo) {
-          return;
-        }
-        const maker = escrowAccountInfo.maker;
-        const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
-        const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
+    // try {
+    //   let itemDetailsFromChain = {};
+    //   let mintKey = {};
+    //   try {
+    //     mintKey = new PublicKey(address);
+    //   } catch {
+    //     return;
+    //   }
+    //   let [escrowAccount, bump] = await PublicKey.findProgramAddress(
+    //     [Buffer.from("sale"), mintKey.toBuffer()],
+    //     Solanart
+    //   );
+    //   let accountInfo = await connection.getAccountInfo(
+    //     escrowAccount,
+    //     "processed"
+    //   );
+    //   if (accountInfo) {
+    //     let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
+    //     if (!escrowAccountInfo) {
+    //       return;
+    //     }
+    //     const maker = escrowAccountInfo.maker;
+    //     const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
+    //     const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
 
-        itemDetailsFromChain = {
-          owner: maker,
-          price: price,
-          escrowTokenAccount: escrowTokenAccount,
-          marketplace: "solanart",
-          mint: address,
-        };
-        setListed(true);
-        setListedDetails(itemDetailsFromChain);
+    //     itemDetailsFromChain = {
+    //       owner: maker,
+    //       price: price,
+    //       escrowTokenAccount: escrowTokenAccount,
+    //       marketplace: "solanart",
+    //       mint: address,
+    //     };
+    //     setListed(true);
+    //     setListedDetails(itemDetailsFromChain);
 
-        console.log({ itemDetailsFromChain });
-        return;
-      }
-    } catch (e) {
-      console.log("Error fetching itemDetailsFromChain.");
-    }
+    //     console.log({ itemDetailsFromChain });
+    //     return;
+    //   }
+    // } catch (e) {
+    //   console.log("Error fetching itemDetailsFromChain.");
+    // }
 
     const apiRequest =
       api.server.listings + queries.symbol + "none" + queries.mint + address;
@@ -249,6 +249,7 @@ export default function MintPage(props) {
             listed={listed}
             listedDetails={listedDetails}
             floorDetails={floorDetails}
+            setListed={setListed}
           />
 
           <div className="details col-12 mt-3 mt-lg-0">

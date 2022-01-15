@@ -28,12 +28,14 @@ export default function TradingModule(props) {
     listed,
     listedDetails,
     floorDetails,
+    setListed,
   } = props;
   const user = useSelector(selectAddress);
   const history = useHistory();
   const { price, owner, marketplace, mint } = listedDetails;
 
   const [loading, setLoading] = useState(false);
+  const [txHash, setTxHash] = useState("");
 
   const collectionInsights = () => {
     history.push(`/collection/${collection.symbol}`);
@@ -103,16 +105,15 @@ export default function TradingModule(props) {
         )}
       </div>
 
+      <hr
+        style={{ color: "rgb(65, 37, 156)", width: "100%", height: 2 }}
+        className="m-0 mb-3 mt-2 p-0"
+      />
       {loading && (
         <div className="col-12 d-flex justify-content-center overflow-hidden">
           <Loader />
         </div>
       )}
-
-      <hr
-        style={{ color: "rgb(65, 37, 156)", width: "100%", height: 2 }}
-        className="m-0 mb-3 mt-2 p-0"
-      />
 
       {!user && !loading && (
         <div className="trading_connect col-12 d-flex justify-content-center align-items-center">
@@ -127,6 +128,7 @@ export default function TradingModule(props) {
           ownerAccount={ownerAccount}
           tokenAccount={tokenAccount}
           setLoading={setLoading}
+          setTxHash={setTxHash}
         />
       )}
 
@@ -139,6 +141,8 @@ export default function TradingModule(props) {
           setLoading={setLoading}
           marketplace={marketplace}
           listedDetails={listedDetails}
+          setTxHash={setTxHash}
+          setListed={setListed}
         />
       )}
 
@@ -150,15 +154,29 @@ export default function TradingModule(props) {
           tokenAccount={tokenAccount}
           setLoading={setLoading}
           marketplace={marketplace}
+          setTxHash={setTxHash}
         />
       )}
 
-      <p className="terms_text m-0 mt-3 mb-1 p-0">
+      {txHash && (
+        <div className="col-12 d-flex justify-content-center mt-3">
+          <a
+            href={explorerLink("tx", txHash)}
+            style={{ textDecoration: "none" }}
+            target="_blank"
+          >
+            <button className="btn_mp">
+              <div className="btn_mp_inner p-4 pt-0 pb-0">View Explorer</div>
+            </button>
+          </a>
+        </div>
+      )}
+      {/* <p className="terms_text m-0 mt-3 mb-1 p-0">
         There may be a slight delay between confirmation and the item status
         updating.
         <br />
         Trading functionality is currently in beta. Use at your own risk.
-      </p>
+      </p> */}
     </div>
   );
 }

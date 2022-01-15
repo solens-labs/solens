@@ -16,7 +16,15 @@ import { useHistory } from "react-router";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradePurchase(props) {
-  const { price, item, seller, tokenAccount, marketplace, setLoading } = props;
+  const {
+    price,
+    item,
+    seller,
+    tokenAccount,
+    marketplace,
+    setLoading,
+    setTxHash,
+  } = props;
   const history = useHistory();
   const userBalance = useSelector(selectBalance);
   const wallet = useWallet();
@@ -68,6 +76,7 @@ export default function TradePurchase(props) {
         skipPreflight: false,
         preflightCommitment: "processed",
       });
+      setTxHash(sendTx);
       console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
@@ -102,6 +111,7 @@ export default function TradePurchase(props) {
         program,
         creators
       );
+      setTxHash(buyItem);
       console.log(buyItem);
     } catch (e) {
       console.log(e);

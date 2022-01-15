@@ -16,7 +16,6 @@ const range = (len) => {
 
 const addTransaction = (transaction, prevPrice) => {
   const date = new Date(transaction["date"]);
-  const price = "◎ " + Number(transaction["price"]).toFixed(2);
   const seller = transaction["seller"];
   const sellerLink = (
     <a
@@ -30,7 +29,8 @@ const addTransaction = (transaction, prevPrice) => {
   const buyer = transaction["buyer"];
   const buyerLink =
     transaction["buyer"] === seller ? (
-      " -- "
+      // " -- "
+      ""
     ) : (
       <a
         href={explorerLink("account", transaction["buyer"])}
@@ -41,27 +41,27 @@ const addTransaction = (transaction, prevPrice) => {
       </a>
     );
 
-  const type =
-    transaction["type"] === "buy"
-      ? "sale"
-      : transaction["type"] === "accept_offer"
-      ? "accept offer"
-      : transaction["type"];
-
+  const txType = transaction["type"];
   let symbol = "";
-  switch (type) {
-    case "sale":
+  let type = "";
+  let priceNumber = Number(transaction["price"]).toFixed(2);
+  let price = "◎ " + parseFloat(priceNumber);
+
+  switch (txType) {
+    case "buy":
       symbol = (
         <BuyIcon style={{ fill: "rgba(86, 143, 56, 1)" }} fontSize="small" />
       );
+      type = "Sale";
       break;
-    case "accept offer":
+    case "accept_offer":
       symbol = (
         <AcceptOfferIcon
           style={{ fill: "rgba(86, 143, 56, 0.8)" }}
           fontSize="small"
         />
       );
+      type = "Offer Accepted";
       break;
     case "list":
       symbol = (
@@ -70,11 +70,24 @@ const addTransaction = (transaction, prevPrice) => {
           fontSize="small"
         />
       );
+      type = "List";
+      break;
+    case "update":
+      symbol = (
+        <ListIcon
+          style={{ fill: "rgba(255, 255, 255, 0.5)" }}
+          fontSize="small"
+        />
+      );
+      type = "Update";
       break;
     case "cancel":
       symbol = (
         <CancelIcon style={{ fill: "rgba(201, 87, 87, 1)" }} fontSize="small" />
       );
+      type = "Cancel";
+      price = "";
+      // price = " -- ";
       break;
   }
 

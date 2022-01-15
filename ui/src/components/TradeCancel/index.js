@@ -15,7 +15,16 @@ import { useHistory } from "react-router";
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeCancel(props) {
-  const { price, item, seller, tokenAccount, marketplace, setLoading } = props;
+  const {
+    price,
+    item,
+    seller,
+    tokenAccount,
+    marketplace,
+    setLoading,
+    setTxHash,
+    setListed,
+  } = props;
   const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
@@ -54,13 +63,17 @@ export default function TradeCancel(props) {
         skipPreflight: false,
         preflightCommitment: "processed",
       });
+      setTxHash(sendTx);
       console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
         "processed"
       );
-      setLoading(false);
-      history.go(0);
+      setListed(false);
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 1500);
     } catch (e) {
       console.log(e);
       setLoading(false);
@@ -77,6 +90,8 @@ export default function TradeCancel(props) {
       const maker = wallet.publicKey;
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
       const cancelItem = await cancelMEden(maker, mint, price, program);
+      setTxHash(cancelItem);
+      console.log(cancelItem);
     } catch (e) {
       console.log(e);
     }

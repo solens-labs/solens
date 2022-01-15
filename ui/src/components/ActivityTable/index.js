@@ -1,18 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
 import "./style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import BuyIcon from "@mui/icons-material/AttachMoney";
-import logo from "../../assets/images/logo3.png";
 
 export default function ActivityTable(props) {
   const { data } = props;
   const emptyObject = [
     {
-      TX: "--",
+      symbol: "--",
       type: "--",
       date: "--",
       price: "--",
@@ -20,7 +16,7 @@ export default function ActivityTable(props) {
       sellerLink: "--",
     },
     {
-      TX: "--",
+      symbol: "--",
       type: "--",
       date: "--",
       price: "--",
@@ -53,13 +49,13 @@ export default function ActivityTable(props) {
       //   },
       // },
       {
-        Header: "TX",
+        Header: "TYPE",
         accessor: "symbol",
         // width: 40,
         // maxWidth: 40,
       },
       {
-        Header: "TYPE",
+        Header: "DETAIL",
         accessor: "type",
       },
       {
