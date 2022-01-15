@@ -78,15 +78,15 @@ export default function TradingModule(props) {
         />
 
         {listed && (
-          <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-2 mb-2">
+          <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3 mb-2">
             <h4 className="m-0 p-0">
               Listed on {marketplaceSelect(marketplace)}
             </h4>
             <h4 className="item_price m-0 mt-2 p-0">{price} SOL</h4>
-            <h5 className="" style={{ fontSize: "1rem" }}>
+            {/* <h5 className="" style={{ fontSize: "1rem" }}>
               {floorDifference > 0 &&
                 floorDifference.toFixed(2) + "% above floor"}
-            </h5>
+            </h5> */}
           </div>
         )}
 
@@ -146,7 +146,7 @@ export default function TradingModule(props) {
         <TradePurchase
           item={item}
           price={price}
-          maker={owner}
+          seller={owner}
           tokenAccount={tokenAccount}
           setLoading={setLoading}
           marketplace={marketplace}

@@ -5,17 +5,21 @@ import { useTable, useSortBy, usePagination } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import BuyIcon from "@mui/icons-material/AttachMoney";
+import logo from "../../assets/images/logo3.png";
 
 export default function ActivityTable(props) {
   const { data } = props;
   const emptyObject = [
     {
+      type: "--",
       buyer: "--",
       date: "--",
       price: "--",
       seller: "--",
     },
     {
+      type: "--",
       buyer: "--",
       date: "--",
       price: "--",
@@ -35,10 +39,30 @@ export default function ActivityTable(props) {
 
   const columns = React.useMemo(
     () => [
+      // {
+      //   Header: "",
+      //   accessor: "symbol",
+      //   Cell: (row) => {
+      //     return (
+      //       <div>
+      //         <img height={34} src={logo} />
+      //       </div>
+      //     );
+      //   },
+      // },
+      {
+        Header: "",
+        accessor: "symbol",
+        width: 40,
+        maxWidth: 40,
+      },
+      {
+        Header: "TYPE",
+        accessor: "type",
+      },
       {
         Header: "DATE",
         accessor: "date",
-        className: "test_width",
         sortMethod: (a, b) => {
           var a1 = new Date(a).getTime();
           var b1 = new Date(b).getTime();
@@ -51,13 +75,17 @@ export default function ActivityTable(props) {
         Header: "PRICE",
         accessor: "price",
       },
+      // {
+      //   Header: "% Change",
+      //   accessor: "change",
+      // },
       {
         Header: "BUYER",
-        accessor: "buyer",
+        accessor: "buyerLink",
       },
       {
         Header: "SELLER",
-        accessor: "seller",
+        accessor: "sellerLink",
       },
     ],
     []
@@ -104,6 +132,12 @@ export default function ActivityTable(props) {
                       // Apply the header cell props
                       <th
                         {...column.getHeaderProps(
+                          // {
+                          //   style: {
+                          //     width: column.width,
+                          //     maxWidth: column.maxWidth,
+                          //   },
+                          // }
                           column.getSortByToggleProps()
                         )}
                         className={

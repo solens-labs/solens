@@ -102,12 +102,13 @@ export default function TradeListing(props) {
         preflightCommitment: "processed",
         signers: [escrowTokenAccount],
       });
+      console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
-        "finalized"
+        "processed"
       );
       setLoading(false);
-      history.go(0);
+      // history.go(0);
     } catch (e) {
       console.log(e);
       setLoading(false);

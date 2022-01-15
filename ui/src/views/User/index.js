@@ -32,7 +32,8 @@ export default function User(props) {
 
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
-  const nfts = useSelector(selectUserNFTs);
+  // const nfts = useSelector(selectUserNFTs);
+  const [nfts, setNfts] = useState([]);
   const [loadedItems, setLoadedItems] = useState(false);
 
   // Check if NFTs have already been fetched previously
@@ -44,7 +45,7 @@ export default function User(props) {
 
   // Get token accounts, filter for NFTs, and fetch/set metadata
   useEffect(async () => {
-    if (wallet.connected && wallet.publicKey && nfts.length === 0) {
+    if (wallet.connected && wallet.publicKey) {
       setLoadedItems(false);
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
@@ -52,12 +53,14 @@ export default function User(props) {
         return await getTokenMetadata(token.mint);
       });
       const nftMetadata = await Promise.all(nftMetadataPromise);
-      dispatch(setUserNFTs(nftMetadata));
+      // dispatch(setUserNFTs(nftMetadata));
+      setNfts(nftMetadata);
       setLoadedItems(true);
     }
 
     if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
-      dispatch(setUserNFTs([]));
+      // dispatch(setUserNFTs([]));
+      setNfts([]);
       dispatch(setAddress(""));
       setLoadedItems(false);
     }

@@ -57,7 +57,7 @@ export default function TradeCancel(props) {
       console.log(sendTx);
       const confirmTx = await connection.confirmTransaction(
         sendTx,
-        "finalized"
+        "processed"
       );
       setLoading(false);
       history.go(0);
