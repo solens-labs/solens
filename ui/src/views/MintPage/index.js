@@ -139,15 +139,13 @@ export default function MintPage(props) {
         [Buffer.from("sale"), mintKey.toBuffer()],
         Solanart
       );
-      let accountInfo = await connection.getAccountInfo(
-        escrowAccount,
-        "processed"
+      let escrowAccountInfo = await getEscrowAccountInfo(
+        escrowAccount
       );
-      if (accountInfo) {
-        let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
-        if (!escrowAccountInfo) {
+      if (!escrowAccountInfo) {
           return;
         }
+      else {
         const maker = escrowAccountInfo.maker;
         const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
         const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;

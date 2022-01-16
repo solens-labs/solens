@@ -9,7 +9,7 @@ import {
   buyMEden,
 } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
-import { useWallet } from "@solana/wallet-adapter-react";
+import {useConnection, useWallet} from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
@@ -30,7 +30,8 @@ export default function TradePurchase(props) {
   const userBalance = useSelector(selectBalance);
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
-  const connection = new anchor.web3.Connection(rpcHost);
+  const {connection} = useConnection()
+
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
@@ -114,6 +115,7 @@ export default function TradePurchase(props) {
     try {
       const provider = new anchor.Provider(connection, wallet, {
         preflightCommitment: "processed",
+        commitment: "processed"
       });
 
       const maker = new anchor.web3.PublicKey(seller);

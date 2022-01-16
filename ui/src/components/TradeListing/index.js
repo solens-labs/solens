@@ -7,7 +7,7 @@ import { themeColors } from "../../constants/constants";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import { magicEden, listMEden } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
-import { useWallet } from "@solana/wallet-adapter-react";
+import {useConnection, useWallet} from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
@@ -20,7 +20,7 @@ export default function TradeListing(props) {
   const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
-  const connection = new anchor.web3.Connection(rpcHost);
+  const {connection} = useConnection()
 
   const [listPrice, setListPrice] = useState(0);
   const [selectedMarketplace, setSelectedMarketplace] = useState("");
@@ -107,6 +107,7 @@ export default function TradeListing(props) {
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
       preflightCommitment: "processed",
+      commitment: "processed"
     });
 
     try {
