@@ -12,6 +12,7 @@ let id = connection.onProgramAccountChange(new PublicKey('CJsLwbP1iu5DuUikHEJnLf
     notified = true
 }, 'processed')
 const SOLANART = new PublicKey('CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz')
+const BPF_UPGRADABLE = new PublicKey('BPFLoaderUpgradeab1e11111111111111111111111')
 const TRANSACTION_URI = 'http://localhost:3000/transactions'
 const COLLECTION_URI = 'http://localhost:3000/collections/'
 
@@ -58,8 +59,6 @@ function getMintFromTx(tokenBalances, index) {
     })
     return mint
 }
-
-
 
 
 function getAcceptOfferTxInfo(tx, ix, index) {
@@ -135,11 +134,19 @@ function getUpdateTxInfo(tx, ix, index) {
 }
 
 
+function checkUpgrade(ix) {
+    return ix.programId.toBase58() == BPF_UPGRADABLE.toBase58() && ix.parsed.info.programAccount == SOLANART.toBase58()
+}
+
+
 async function processLatestTxs(latestTxs) {
     let payloads = []
     latestTxs.forEach((tx) => {
         tx.transaction.message.instructions.forEach((ix, index) => {
-            if (ix.programId.toBase58() == SOLANART.toBase58()) {
+            if (checkUpgrade(ix)) {
+                // error
+                process.exit(-1)
+            } else if (ix.programId.toBase58() == SOLANART.toBase58()) {
                 let ixData = base58.decode(ix.data)
                 let type = new BN(ixData[0]).toNumber()
                 switch (type) {
@@ -182,7 +189,7 @@ async function solanart(until) {
 }
 
 async function main() {
-    let last = await connection.getTransaction('5HKiPC2HMdgCV86fhDDcetHPbZ6e84GadaMS23yHJF8q2rP17Y3TiaKzQ5yPdkYSXFsDwGVpAK7Z1Fb6LgLNGp88')
+    let last = await connection.getTransaction('3LPkPJDtpX9rEteEYS357FaVGMYnLrJEcWfHHpsVGK6ER1oCWkcevbGAgWNqpajiFq6Rj489KFkaP1wY2KeEpztg')
     let block = await connection.getBlock(last.slot)
     let until = block.parentSlot
     let new_until;

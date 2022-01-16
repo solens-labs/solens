@@ -12,6 +12,7 @@ let id = connection.onProgramAccountChange(new PublicKey('MEisE1HzehtrDpAAT8PnLH
     notified = true
 }, 'processed')
 const MAGICEDEN = new PublicKey('MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')
+const BPF_UPGRADABLE = new PublicKey('BPFLoaderUpgradeab1e11111111111111111111111')
 const TRANSACTION_URI = 'http://localhost:3000/transactions'
 const COLLECTION_URI = 'http://localhost:3000/collections/'
 
@@ -154,10 +155,18 @@ function getAcceptOfferTxInfo(tx, ix, index) {
     return res
 }
 
+function checkUpgrade(ix) {
+    return ix.programId.toBase58() == BPF_UPGRADABLE.toBase58() && ix.parsed.info.programAccount == MAGICEDEN.toBase58()
+}
+
 async function processLatestTxs(latestTxs) {
     let payloads = []
     latestTxs.forEach((tx) => {
         tx.transaction.message.instructions.forEach((ix, index) => {
+            if (checkUpgrade(ix)) {
+                // error
+                process.exit(-1)
+            }
             if (ix.programId.toBase58() == MAGICEDEN.toBase58()) {
                 let ixData = base58.decode(ix.data)
                 let type = ixData.slice(0, 8).toString('hex')
