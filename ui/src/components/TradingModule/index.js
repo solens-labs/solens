@@ -110,7 +110,7 @@ export default function TradingModule(props) {
         className="m-0 mb-3 mt-2 p-0"
       />
       {loading && (
-        <div className="col-12 d-flex justify-content-center overflow-hidden">
+        <div className="col-8 d-flex justify-content-center">
           <Loader />
         </div>
       )}
