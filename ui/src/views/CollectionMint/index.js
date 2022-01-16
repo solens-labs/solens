@@ -64,6 +64,7 @@ export default function CollectionMint(props) {
       if (reverse) {
         sorted.reverse();
       }
+      setItems([]);
       setAllItems(sorted);
       const sortedItemsInitial = sorted.slice(0, 20);
       const sortedItemsMetadata = await fetchItemsMetadata(
