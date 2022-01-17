@@ -8,7 +8,7 @@ import {
   getEscrowAccount,
 } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
-import {useConnection, useWallet} from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
@@ -29,8 +29,7 @@ export default function TradeCancel(props) {
   const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
-  const {connection} = useConnection()
-
+  const { connection } = useConnection();
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
@@ -103,13 +102,14 @@ export default function TradeCancel(props) {
     try {
       const provider = new anchor.Provider(connection, wallet, {
         preflightCommitment: "processed",
-        commitment: "processed"
+        commitment: "processed",
       });
 
       const mint = new anchor.web3.PublicKey(item.mint);
       const maker = wallet.publicKey;
+      const token = new anchor.web3.PublicKey(tokenAccount);
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
-      const cancelItem = await cancelMEden(maker, mint, price, program);
+      const cancelItem = await cancelMEden(maker, mint, token, price, program);
       // setTxHash(cancelItem);  // not needed because no delay
       setTxHashAnalytics(cancelItem);
       console.log(cancelItem);

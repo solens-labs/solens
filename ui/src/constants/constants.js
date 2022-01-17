@@ -28,6 +28,7 @@ export const api = {
     topNFTs: server + "stats/topNFTs",
     listings: server + "listings",
 
+    walletListings: devServer + "walletListings?wallet=",
     currentFloor: devServer + "currentFloor",
   },
 };

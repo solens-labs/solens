@@ -62,7 +62,10 @@ export const extendBorsh = () => {
 extendBorsh();
 
 async function getEscrowAccountInfo(escrowAccount: anchor.web3.PublicKey) {
-  let escrowRaw = await connection.getAccountInfo(escrowAccount);
+  let escrowRaw = await connection.getAccountInfo(escrowAccount, "processed");
+  if (!escrowRaw) {
+    return;
+  }
   // @ts-ignore
   return deserializeUnchecked(MAGICEDEN_SCHEMA, Eden, escrowRaw.data);
 }
@@ -130,6 +133,7 @@ export async function listMEden(
 export async function cancelMEden(
   maker: anchor.web3.PublicKey,
   mint: anchor.web3.PublicKey,
+  token: anchor.web3.PublicKey,
   price: number,
   program: anchor.Program
 ) {
@@ -143,12 +147,13 @@ export async function cancelMEden(
     ],
     magicEden
   );
-  let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
-  const makerNftAccount = escrowAccountInfo.tokenAccount;
+
+  // let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
+  // const makerNftAccount = escrowAccountInfo.tokenAccount;
   return program.rpc.cancelEscrow({
     accounts: {
       initializer: maker,
-      pdaDepositTokenAccount: makerNftAccount,
+      pdaDepositTokenAccount: token,
       pdaAccount: MEdenAutority,
       escrowAccount: escrowAccount,
       tokenProgram: TOKEN_PROGRAM_ID,

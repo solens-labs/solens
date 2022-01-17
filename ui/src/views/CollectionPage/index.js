@@ -293,7 +293,7 @@ export default function CollectionPage(props) {
           <p className="collection_description">{collectionInfo.description}</p>
           <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
             <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
-              View NFTs
+              Trade
             </div>
           </Link>
         </div>

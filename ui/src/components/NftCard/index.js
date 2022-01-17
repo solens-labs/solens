@@ -24,13 +24,11 @@ export default function NftCard(props) {
 
   return (
     <div className="nft_card_container col-12">
-      <div className="nft_card col-12 d-flex flex-column align-items-center">
-        <img
-          src={item?.image}
-          className="nft_card_image"
-          alt="nft_card"
-          onClick={() => goToNFTDetailPage(item?.mint)}
-        />
+      <div
+        className="nft_card col-12 d-flex flex-column align-items-center"
+        onClick={() => goToNFTDetailPage(item?.mint)}
+      >
+        <img src={item?.image} className="nft_card_image" alt="nft_card" />
 
         <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-2 ">
           <div className="col-12 d-flex flex-column justify-content-start align-items-center">
@@ -54,43 +52,43 @@ export default function NftCard(props) {
               )}
 
               {listedMP === "solanart" && (
-                <a
-                  href={links?.solanart}
+                // <a
+                //   href={links?.solanart}
+                //   style={{
+                //     textDecoration: "none",
+                //     color: "white",
+                //   }}
+                //   target="_blank"
+                // >
+                <img
+                  src={sa_logo}
+                  className=""
                   style={{
-                    textDecoration: "none",
-                    color: "white",
+                    height: 33,
+                    width: "auto",
+                    marginLeft: -2,
                   }}
-                  target="_blank"
-                >
-                  <img
-                    src={sa_logo}
-                    className=""
-                    style={{
-                      height: 33,
-                      width: "auto",
-                      marginLeft: -2,
-                    }}
-                    alt=""
-                  />
-                </a>
+                  alt=""
+                />
+                // </a>
               )}
 
               {listedMP === "magiceden" && (
-                <a
-                  href={links?.magiceden}
-                  style={{
-                    textDecoration: "none",
-                    color: "white",
-                  }}
-                  target="_blank"
-                >
-                  <img
-                    src={me_logo}
-                    className=""
-                    style={{ height: 33, width: "auto" }}
-                    alt=""
-                  />
-                </a>
+                // <a
+                //   href={links?.magiceden}
+                //   style={{
+                //     textDecoration: "none",
+                //     color: "white",
+                //   }}
+                //   target="_blank"
+                // >
+                <img
+                  src={me_logo}
+                  className=""
+                  style={{ height: 33, width: "auto" }}
+                  alt=""
+                />
+                // </a>
               )}
             </div>
 

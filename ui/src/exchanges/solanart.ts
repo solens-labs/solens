@@ -79,7 +79,6 @@ export async function getEscrowAccountInfo(
   escrowAccount: anchor.web3.PublicKey
 ) {
   let escrowRaw = await connection.getAccountInfo(escrowAccount, "processed");
-  console.log({ escrowRaw });
   if (escrowRaw) {
     // @ts-ignore
     return deserializeUnchecked(

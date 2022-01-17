@@ -58,6 +58,9 @@ export default function CollectionMint(props) {
           sortType = "price";
           reverse = true;
           break;
+        case "magiceden":
+          sortType = "magiceden";
+          break;
       }
 
       const sorted = sortData(allItems, sortType);
@@ -92,7 +95,6 @@ export default function CollectionMint(props) {
       // }
 
       if (result) {
-        console.log("Fetching...");
         const apiRequest = api.server.collection + queries.symbol + name;
         const collectionInfo = await axios.get(apiRequest).then((response) => {
           const collectionInfo = response.data[0];

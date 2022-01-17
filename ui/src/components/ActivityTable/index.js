@@ -8,6 +8,7 @@ export default function ActivityTable(props) {
   const { data } = props;
   const emptyObject = [
     {
+      marketplace: "--",
       symbol: "--",
       type: "--",
       date: "--",
@@ -16,6 +17,7 @@ export default function ActivityTable(props) {
       sellerLink: "--",
     },
     {
+      marketplace: "--",
       symbol: "--",
       type: "--",
       date: "--",
@@ -53,6 +55,10 @@ export default function ActivityTable(props) {
         accessor: "symbol",
         // width: 40,
         // maxWidth: 40,
+      },
+      {
+        Header: "MARKET",
+        accessor: "marketplace",
       },
       {
         Header: "DETAIL",

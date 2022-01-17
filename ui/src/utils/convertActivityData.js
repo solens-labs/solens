@@ -17,6 +17,7 @@ const range = (len) => {
 const addTransaction = (transaction, prevPrice) => {
   const date = new Date(transaction["date"]);
   const seller = transaction["seller"];
+  const marketplace = transaction["marketplace"];
   const sellerLink = (
     <a
       href={explorerLink("account", transaction["seller"])}
@@ -145,6 +146,7 @@ const addTransaction = (transaction, prevPrice) => {
     sellerLink: sellerLink,
     buyer: buyer,
     seller: seller,
+    marketplace: marketplace,
   };
 };
 

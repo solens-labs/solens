@@ -127,44 +127,47 @@ export default function MintPage(props) {
 
   // Fetch mint details, see listed status
   useEffect(async () => {
-    try {
-      let itemDetailsFromChain = {};
-      let mintKey = {};
+    const getDetailsFromChain = async () => {
       try {
-        mintKey = new PublicKey(address);
-      } catch {
-        return;
-      }
-      let [escrowAccount, bump] = await PublicKey.findProgramAddress(
-        [Buffer.from("sale"), mintKey.toBuffer()],
-        Solanart
-      );
-      let escrowAccountInfo = await getEscrowAccountInfo(
-        escrowAccount
-      );
-      if (!escrowAccountInfo) {
+        let itemDetailsFromChain = {};
+        let mintKey = {};
+        try {
+          mintKey = new PublicKey(address);
+        } catch {
           return;
         }
-      else {
-        const maker = escrowAccountInfo.maker;
-        const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
-        const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
+        let [escrowAccount, bump] = await PublicKey.findProgramAddress(
+          [Buffer.from("sale"), mintKey.toBuffer()],
+          Solanart
+        );
+        let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
+        if (!escrowAccountInfo) {
+          return;
+        } else {
+          const maker = escrowAccountInfo.maker;
+          const price = escrowAccountInfo.price.toNumber() / LAMPORTS_PER_SOL;
+          const escrowTokenAccount = escrowAccountInfo.escrowTokenAccount;
 
-        itemDetailsFromChain = {
-          owner: maker,
-          price: price,
-          escrowTokenAccount: escrowTokenAccount,
-          marketplace: "solanart",
-          mint: address,
-        };
-        setListed(true);
-        setListedDetails(itemDetailsFromChain);
-
-        console.log({ itemDetailsFromChain });
-        return;
+          itemDetailsFromChain = {
+            owner: maker,
+            price: price,
+            escrowTokenAccount: escrowTokenAccount,
+            marketplace: "solanart",
+            mint: address,
+          };
+          setListed(true);
+          setListedDetails(itemDetailsFromChain);
+          console.log({ itemDetailsFromChain });
+          return itemDetailsFromChain;
+        }
+      } catch (e) {
+        console.log("Error fetching itemDetailsFromChain.");
       }
-    } catch (e) {
-      console.log("Error fetching itemDetailsFromChain.");
+    };
+
+    const chainDetails = await getDetailsFromChain();
+    if (chainDetails) {
+      return;
     }
 
     const apiRequest =
