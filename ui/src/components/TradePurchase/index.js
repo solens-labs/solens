@@ -97,7 +97,7 @@ export default function TradePurchase(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 2000);
+      }, 3000);
     } catch (e) {
       console.log(e);
       ReactGA.event({

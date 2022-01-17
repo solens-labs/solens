@@ -39,17 +39,43 @@ export default function CollectionItems(props) {
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
   const [collectionListed, setCollectionListed] = useState([]); // all listed items across all MPs
   const [collectionItems, setCollectionItems] = useState([]); // all collection mints
+
   const [marketplaces, setMarketplaces] = useState([]); // number of MPs the collection is on
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
   const [seeAllItems, setSeeAllItems] = useState(false); // needed to toggle listed items/all items
 
   const [items, setItems] = useState([]); // items always displayed on page and used in infinite scroll
-  const [sortSelected, setSort] = useState("price_lth"); // selected sort option
+  const [sortSelected, setSortSelected] = useState(""); // selected sort option
 
   // Search & Sort Functionality for Listed Items
   useEffect(async () => {
-    if (sortSelected && collectionListed.length > 0) {
+    if (!seeAllItems && collectionListed.length > 0) {
+      setItems([]);
+      const initialItems = await setInitialItems(collectionListed);
+      setItems(initialItems);
+    }
+
+    if (seeAllItems && collectionItems.length > 0) {
+      setItems([]);
+      const initialItems = await setInitialItems(collectionItems);
+      setItems(initialItems);
+    }
+  }, [seeAllItems, collectionItems, collectionListed]);
+
+  // Listen for sort events and set collection listed persist + page items
+  useEffect(async () => {
+    if (sortSelected) {
+      setItems([]);
+      const sortedItems = sortItems(collectionListed, sortSelected);
+      setCollectionListed(sortedItems);
+      const initialItems = await setInitialItems(collectionListed);
+      setItems(initialItems);
+    }
+  }, [sortSelected, seeAllItems]);
+
+  const sortItems = (allItems, sortSelected) => {
+    if (sortSelected && allItems.length > 0) {
       let sortType = "";
       let reverse = false;
 
@@ -66,33 +92,20 @@ export default function CollectionItems(props) {
           reverse = true;
       }
 
-      const sorted = sortData(collectionListed, sortType);
+      const sorted = sortData(allItems, sortType);
       if (reverse) {
         sorted.reverse();
       }
-      setItems([]);
-      const sortedItemsInitial = sorted.slice(0, 20);
-      const sortedItemsMetadata = await fetchItemsMetadata(
-        [],
-        sortedItemsInitial
-      );
-      setItems(sortedItemsMetadata);
+      return sorted;
     }
-  }, [sortSelected, collectionListed]);
+  };
 
-  useEffect(async () => {
-    if (seeAllItems && collectionItems.length > 0) {
-      setItems([]);
-      const itemsMetadata = await fetchItemsMetadata([], collectionItems);
-      setItems(itemsMetadata);
-    }
+  const setInitialItems = async (allItems) => {
+    const intitialItems = allItems.slice(0, 20);
+    const intitialItemsMetadata = await fetchItemsMetadata([], intitialItems);
 
-    if (!seeAllItems && collectionListed.length > 0) {
-      setItems([]);
-      const itemsMetadata = await fetchItemsMetadata([], collectionListed);
-      setItems(itemsMetadata);
-    }
-  }, [seeAllItems]);
+    return intitialItemsMetadata;
+  };
 
   // Fetch Collection Data, All Items, & Listed Items
   useEffect(async () => {
@@ -146,7 +159,8 @@ export default function CollectionItems(props) {
           .get(apiRequest2)
           .then((response) => {
             const listedItems = response.data;
-            setCollectionListed(listedItems);
+            const sortedListeditems = sortItems(listedItems, "price_lth");
+            setCollectionListed(sortedListeditems);
           });
       }
     }
@@ -312,16 +326,14 @@ export default function CollectionItems(props) {
               id="sort_mints"
               className="select_collection_filter"
               onChange={(e) => {
-                setSort(e.target.value);
+                setSortSelected(e.target.value);
               }}
             >
-              <option value="" disabled>
+              <option value="" disabled selected>
                 Sort by
               </option>
               <option value="price_htl">Price - High to Low</option>
-              <option value="price_lth" selected>
-                Price - Low to High
-              </option>
+              <option value="price_lth">Price - Low to High</option>
               {/* <option value="mint_solanart">Solanart</option> */}
               {/* <option value="mint_magiceden">Magic Eden</option> */}
             </select>
