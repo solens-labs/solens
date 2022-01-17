@@ -91,7 +91,6 @@ export default function User(props) {
         api.server.walletListings + wallet.publicKey.toBase58();
       const fetchListed = axios.get(apiRequest).then(async (response) => {
         const items = response.data;
-        console.log(items);
         const nftMetadataPromise = items.map(async (item, i) => {
           const promise = await getTokenMetadata(item?.mint);
           const tokenMD = await Promise.resolve(promise);
