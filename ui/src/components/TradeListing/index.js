@@ -180,7 +180,6 @@ export default function TradeListing(props) {
 
   useEffect(() => {
     if (listPrice > 0 && listPrice < floorDetails.floor) {
-      console.log("too low");
       setShowWarning(true);
     } else {
       setShowWarning(false);

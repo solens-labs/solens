@@ -8,10 +8,12 @@ import {
   exchangeApi,
   explorerLink,
   queries,
+  themeColors,
 } from "../../constants/constants";
 import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
 import NftCard from "../../components/NftCard";
+import NftCardView from "../../components/NftCard/userprofile";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,17 +38,18 @@ export default function CollectionItems(props) {
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
   const [collectionListed, setCollectionListed] = useState([]); // all listed items across all MPs
+  const [collectionItems, setCollectionItems] = useState([]); // all collection mints
   const [marketplaces, setMarketplaces] = useState([]); // number of MPs the collection is on
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
+  const [seeAllItems, setSeeAllItems] = useState(false); // needed to toggle listed items/all items
 
-  const [allItems, setAllItems] = useState([]);
-  const [items, setItems] = useState([]);
-  const [sortSelected, setSort] = useState("");
+  const [items, setItems] = useState([]); // items always displayed on page and used in infinite scroll
+  const [sortSelected, setSort] = useState("price_lth"); // selected sort option
 
-  // Search & Sort Functionality
+  // Search & Sort Functionality for Listed Items
   useEffect(async () => {
-    if (sortSelected) {
+    if (sortSelected && collectionListed.length > 0) {
       let sortType = "";
       let reverse = false;
 
@@ -58,17 +61,16 @@ export default function CollectionItems(props) {
           sortType = "price";
           reverse = true;
           break;
-        case "magiceden":
-          sortType = "magiceden";
-          break;
+        default:
+          sortType = "price";
+          reverse = true;
       }
 
-      const sorted = sortData(allItems, sortType);
+      const sorted = sortData(collectionListed, sortType);
       if (reverse) {
         sorted.reverse();
       }
       setItems([]);
-      setAllItems(sorted);
       const sortedItemsInitial = sorted.slice(0, 20);
       const sortedItemsMetadata = await fetchItemsMetadata(
         [],
@@ -76,9 +78,23 @@ export default function CollectionItems(props) {
       );
       setItems(sortedItemsMetadata);
     }
-  }, [sortSelected]);
+  }, [sortSelected, collectionListed]);
 
-  // Fetch Collection Data & Listed Items
+  useEffect(async () => {
+    if (seeAllItems && collectionItems.length > 0) {
+      setItems([]);
+      const itemsMetadata = await fetchItemsMetadata([], collectionItems);
+      setItems(itemsMetadata);
+    }
+
+    if (!seeAllItems && collectionListed.length > 0) {
+      setItems([]);
+      const itemsMetadata = await fetchItemsMetadata([], collectionListed);
+      setItems(itemsMetadata);
+    }
+  }, [seeAllItems]);
+
+  // Fetch Collection Data, All Items, & Listed Items
   useEffect(async () => {
     if (name && allCollections.length > 0) {
       const filterCheck = allCollections.filter((item) => item.symbol === name);
@@ -95,11 +111,19 @@ export default function CollectionItems(props) {
       // }
 
       if (result) {
-        const apiRequest = api.server.collection + queries.symbol + name;
+        const apiRequest =
+          api.server.collection + queries.symbol + name + queries.mintList;
         const collectionInfo = await axios.get(apiRequest).then((response) => {
           const collectionInfo = response.data[0];
 
           setCollectionInfo(collectionInfo);
+
+          const collectionMints = collectionInfo?.mint.map((item) => {
+            return {
+              mint: item,
+            };
+          });
+          setCollectionItems(collectionMints);
 
           const marketplacesArray = [];
           if (collectionInfo) {
@@ -122,30 +146,23 @@ export default function CollectionItems(props) {
           .get(apiRequest2)
           .then((response) => {
             const listedItems = response.data;
-            setAllItems(listedItems);
             setCollectionListed(listedItems);
           });
       }
     }
   }, [name, allCollections]);
 
-  // Set Initial Items
-  useEffect(() => {
-    if (collectionListed.length > 0 && items.length === 0) {
-      fetchAndSetItems();
-    }
-  }, [collectionListed, name, items]);
-  // }, [collectionListed, storedCollectionName, name, items]);
-
   // Infinite Scroll Data Fetch
-  const fetchAndSetItems = async () => {
-    if (items.length > 0 && items.length >= allItems.length) {
+  const fetchAndSetItems = async (items, fullList) => {
+    if (items.length > 0 && items.length >= fullList.length) {
       setHasMore(false);
       return;
     }
-
-    const itemMetadata = await fetchItemsMetadata(items, allItems);
-    setItems(itemMetadata);
+    if (items.length === 0 && fullList.length === 0) {
+      return;
+    }
+    const itemsMetadata = await fetchItemsMetadata(items, fullList);
+    setItems(itemsMetadata);
   };
 
   // Get metadata of an array of items
@@ -185,6 +202,16 @@ export default function CollectionItems(props) {
       links["solanart"] = exchangeApi.solanart.itemDetails + mint;
     }
     return links;
+  };
+
+  const selectedItems = () => {
+    if (seeAllItems) {
+      return collectionItems;
+    }
+
+    if (!seeAllItems) {
+      return collectionListed;
+    }
   };
 
   // Store collection name in redux
@@ -239,42 +266,86 @@ export default function CollectionItems(props) {
         </div>
       </div>
 
-      <h1 className="mt-0 mt-xxl-3">
-        {collectionListed?.length || "Loading"} Listed Items
-      </h1>
+      <hr
+        style={{ color: themeColors[0], width: "50%" }}
+        className="mt-0 mb-4"
+      />
 
-      <div className="col-12 d-flex flex-wrap col-xl-8 mb-4 justify-content-around">
-        <select
-          name="sort_mints"
-          id="sort_mints"
-          className="select_collection_filter"
-          onChange={(e) => {
-            setSort(e.target.value);
-          }}
-        >
-          <option value="" disabled selected>
-            Sort by
-          </option>
-          <option value="price_htl">Price - High to Low</option>
-          <option value="price_lth">Price - Low to High</option>
-          {/* <option value="mint_solanart">Solanart</option> */}
-          {/* <option value="mint_magiceden">Magic Eden</option> */}
-        </select>
+      <div className="col-12 col-lg-8 col-xl-6 col-xxl-5 d-flex flex-row flex-wrap justify-content-center mb-3">
+        <div className="col-6 p-3 pt-0 pb-0">
+          <div
+            className={`btn-button btn-tall btn-wide ${
+              !seeAllItems ? "btn-main" : "btn_color_outside"
+            } d-flex mt-2 mb-2`}
+            onClick={() => setSeeAllItems(false)}
+          >
+            {seeAllItems && (
+              <div className="btn_color_inner">View Listed Items</div>
+            )}
+            {!seeAllItems && "View Listed Items"}
+          </div>
+        </div>
+        <div className="col-6 p-3 pt-0 pb-0">
+          <div
+            className={`btn-button btn-tall btn-wide ${
+              seeAllItems ? "btn-main" : "btn_color_outside"
+            } d-flex mt-2 mb-2`}
+            onClick={() => setSeeAllItems(true)}
+          >
+            {!seeAllItems && (
+              <div className="btn_color_inner">View All Items</div>
+            )}
+            {seeAllItems && "View All Items"}
+          </div>
+        </div>
+      </div>
 
-        {/* <input
+      {!seeAllItems && (
+        <>
+          <h1 className="mt-0 mt-xxl-3">
+            {collectionListed?.length || "Loading"} Listed Items
+          </h1>
+
+          <div className="col-12 d-flex flex-wrap col-xl-8 mb-4 justify-content-around">
+            <select
+              name="sort_mints"
+              id="sort_mints"
+              className="select_collection_filter"
+              onChange={(e) => {
+                setSort(e.target.value);
+              }}
+            >
+              <option value="" disabled>
+                Sort by
+              </option>
+              <option value="price_htl">Price - High to Low</option>
+              <option value="price_lth" selected>
+                Price - Low to High
+              </option>
+              {/* <option value="mint_solanart">Solanart</option> */}
+              {/* <option value="mint_magiceden">Magic Eden</option> */}
+            </select>
+
+            {/* <input
           type="text"
           placeholder="Search"
           className="search_collection_input"
           onChange={(e) => setSearch(e.target.value)}
         /> */}
-      </div>
+          </div>
+        </>
+      )}
 
-      <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+      {seeAllItems && (
+        <h1 className="mt-0 mt-xxl-3">
+          {collectionItems?.length || "Loading"} Total Items
+        </h1>
+      )}
 
       <div className="col-12 col-lg-10">
         <InfiniteScroll
           dataLength={items.length}
-          next={fetchAndSetItems}
+          next={() => fetchAndSetItems(items, selectedItems())}
           hasMore={hasMore}
           loader={
             <div className="mt-5 mb-5">
@@ -282,19 +353,39 @@ export default function CollectionItems(props) {
             </div>
           }
         >
-          <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-            {items.length > 0 &&
-              items.map((item, i) => {
-                return (
-                  <div
-                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                    key={i}
-                  >
-                    <NftCard item={item} links={getItemLinks(item.mint)} />
-                  </div>
-                );
-              })}
-          </div>
+          {!seeAllItems && (
+            <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
+              {items.length > 0 &&
+                items.map((item, i) => {
+                  return (
+                    <div
+                      className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                      key={i}
+                    >
+                      <NftCard item={item} links={getItemLinks(item.mint)} />
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+          {seeAllItems && (
+            <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
+              {items.length > 0 &&
+                items.map((item, i) => {
+                  return (
+                    <div
+                      className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                      key={i}
+                    >
+                      <NftCardView
+                        item={item}
+                        links={getItemLinks(item.mint)}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          )}
         </InfiniteScroll>
       </div>
 

@@ -93,7 +93,7 @@ export default function NftCard(props) {
             </div>
 
             <h5 className="nft_list_price">
-              {price} SOL
+              {price && price + " SOL"}
               {/* <img
                 src={sol_logo}
                 alt="sol logo"
