@@ -84,10 +84,12 @@ function getBuyTxInfo(tx, ix) {
 
     let type;
     accounts[3].toBase58() == accounts[0].toBase58() ? type = 'cancel' : type = 'buy';
-    let price = new BN(base58.decode(ix.data).slice(1, 9), 'le').toNumber() / LAMPORTS_PER_SOL;
-    if (price < 1e-8) {
-      price = (tx.meta.preBalances[0] - tx.meta.postBalances[0] - tx.meta.postBalances[1] - 5000) / LAMPORTS_PER_SOL;
-    }
+    // let price = new BN(base58.decode(ix.data).slice(1, 9), 'le').toNumber() / LAMPORTS_PER_SOL;
+    let taIndex;
+    accountKeys.forEach((k, index) => {
+      k.pubkey.toBase58() == accounts[1].toBase58() ? taIndex = index : null;
+    })
+    let price = (tx.meta.preBalances[0] - tx.meta.postBalances[0] - tx.meta.postBalances[taIndex] - tx.meta.fee) / LAMPORTS_PER_SOL;
     if (type == 'cancel') {
       price = 0
     }
