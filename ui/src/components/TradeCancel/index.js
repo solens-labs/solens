@@ -110,10 +110,20 @@ export default function TradeCancel(props) {
       const maker = wallet.publicKey;
       const token = new anchor.web3.PublicKey(tokenAccount);
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
-      const cancelItem = await cancelMEden(maker, mint, token, price, program);
-      setTxHash(cancelItem); // not needed because no delay
-      setTxHashAnalytics(cancelItem);
-      console.log(cancelItem);
+      const final_tx = await cancelMEden(maker, mint, token, price, program);
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        preflightCommitment: "processed",
+      });
+
+      setTxHash(sendTx); // not needed because no delay
+      setTxHashAnalytics(sendTx);
+      console.log(sendTx);
+
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
 
       ReactGA.event({
         category: "Trade",
@@ -121,16 +131,6 @@ export default function TradeCancel(props) {
         label: item.mint,
         value: price,
       });
-
-      // var intervalId = window.setInterval(async function () {
-      //   const itemDetails = await getListedInfoFromBackend(item.mint);
-
-      //   if (!itemDetails) {
-      //     setLoading(false);
-      //     clearInterval(intervalId);
-      //     history.go(0);
-      //   }
-      // }, 2500);
 
       setTimeout(function () {
         setLoading(false);

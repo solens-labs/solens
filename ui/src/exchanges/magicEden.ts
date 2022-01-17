@@ -163,17 +163,26 @@ export async function cancelMEden(
     magicEden
   );
 
-  // let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
-  // const makerNftAccount = escrowAccountInfo.tokenAccount;
-  return program.rpc.cancelEscrow({
-    accounts: {
-      initializer: maker,
-      pdaDepositTokenAccount: token,
-      pdaAccount: MEdenAutority,
-      escrowAccount: escrowAccount,
-      tokenProgram: TOKEN_PROGRAM_ID,
-    },
+  let txIxs = [];
+
+  txIxs.push(
+    await program.instruction.cancelEscrow({
+      accounts: {
+        initializer: maker,
+        pdaDepositTokenAccount: token,
+        pdaAccount: MEdenAutority,
+        escrowAccount: escrowAccount,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      },
+    })
+  );
+
+  const final_tx = new Transaction({
+    feePayer: maker,
   });
+
+  final_tx.add(...txIxs);
+  return final_tx;
 }
 
 export async function buyMEden(

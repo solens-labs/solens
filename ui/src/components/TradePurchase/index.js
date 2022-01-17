@@ -9,7 +9,7 @@ import {
   buyMEden,
 } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
-import {useConnection, useWallet} from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
@@ -30,8 +30,7 @@ export default function TradePurchase(props) {
   const userBalance = useSelector(selectBalance);
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
-  const {connection} = useConnection()
-
+  const { connection } = useConnection();
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
@@ -115,7 +114,7 @@ export default function TradePurchase(props) {
     try {
       const provider = new anchor.Provider(connection, wallet, {
         preflightCommitment: "processed",
-        commitment: "processed"
+        commitment: "processed",
       });
 
       const maker = new anchor.web3.PublicKey(seller);
@@ -125,7 +124,7 @@ export default function TradePurchase(props) {
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
       const creators = item.creators_list;
 
-      const buyItem = await buyMEden(
+      const final_tx = await buyMEden(
         maker,
         buyer,
         metadataAccount,
@@ -134,8 +133,19 @@ export default function TradePurchase(props) {
         program,
         creators
       );
-      setTxHash(buyItem);
-      console.log(buyItem);
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        preflightCommitment: "processed",
+      });
+      setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
+      console.log(sendTx);
+
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
 
       ReactGA.event({
         category: "Trade",
@@ -144,8 +154,10 @@ export default function TradePurchase(props) {
         value: price,
       });
 
-      setLoading(false);
-      history.go(0);
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
