@@ -18,8 +18,6 @@ import getTokenAccounts from "../../utils/getTokenAccounts";
 import getNftAccounts from "../../utils/getNftAccounts";
 import NftCard from "../../components/NftCard/userprofile";
 import NftCardListed from "../../components/NftCard/index";
-import { useHistory } from "react-router-dom";
-import { shortenAddress } from "../../candy-machine";
 import Loader from "../../components/Loader";
 import ReactGA from "react-ga";
 import { api } from "../../constants/constants";
@@ -28,24 +26,17 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function User(props) {
   const { connection } = useConnection();
-  const dispatch = useDispatch();
-  const history = useHistory();
   const wallet = useWallet();
 
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
-  // const nfts = useSelector(selectUserNFTs);
-  // const [walletAddress, setWalletAddress] = useState("");
-  const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
   const [items, setItems] = useState([]);
+  const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
   const [walletItems, setWalletItems] = useState([]);
   const [listedItems, setListedItems] = useState([]);
-
   const [seeAllItems, setSeeAllItems] = useState(false);
-  const [loadedItems, setLoadedItems] = useState(false);
-  const [loadedListed, setLoadedListed] = useState(false);
 
   // Send user sign in analytics
   useEffect(() => {
@@ -61,24 +52,20 @@ export default function User(props) {
   // Get wallet items
   useEffect(async () => {
     if (wallet.connected && wallet.publicKey && walletItems.length === 0) {
-      setLoadedItems(false);
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
       setWalletItems(userNftTokenAccts);
-      setLoadedItems(true);
     }
   }, [wallet, walletItems]);
 
   // Get listed items
   useEffect(async () => {
     if (wallet.connected && wallet.publicKey && listedItems.length === 0) {
-      setLoadedListed(false);
       const apiRequest =
         api.server.walletListings + wallet.publicKey.toBase58();
       const fetchListed = axios.get(apiRequest).then(async (response) => {
         const items = response.data;
         setListedItems(items);
-        setLoadedListed(true);
       });
     }
   }, [wallet, listedItems]);
@@ -93,25 +80,8 @@ export default function User(props) {
       setListedItems([]);
       setWalletItems([]);
       setItems([]);
-      setLoadedListed(false);
-      setLoadedItems(false);
     }
   }, [wallet]);
-
-  // Infinite scroll data fetcher
-  const fetchAndSetItems = async (items, fullList) => {
-    if (items.length > 0 && items.length >= fullList.length) {
-      setHasMore(false);
-      return;
-    }
-    if (items.length === 0 && fullList.length === 0) {
-      console.log("items and full list zero");
-      return;
-    }
-    console.log("fetching more...");
-    const itemsMetadata = await fetchItemsMetadata(items, fullList);
-    setItems(itemsMetadata);
-  };
 
   // Toggle between Listed Items & All Items
   useEffect(async () => {
@@ -135,18 +105,24 @@ export default function User(props) {
     }
   }, [seeAllItems, walletItems, listedItems]);
 
-  // useEffect(async () => {
-  //   if (seeAllItems && walletItems.length > 0 && items.length === 0) {
-  //     const initialItems = await setInitialItems(listedItems);
-  //     setItems(initialItems);
-  //   }
-  // }, [seeAllItems, walletItems]);
-
   // Set the first 20 for toggle
   const setInitialItems = async (allItems) => {
     const intitialItems = allItems.slice(0, 10);
     const intitialItemsMetadata = await fetchItemsMetadata([], intitialItems);
     return intitialItemsMetadata;
+  };
+
+  // Infinite scroll data fetcher
+  const fetchAndSetItems = async (items, fullList) => {
+    if (items.length > 0 && items.length >= fullList.length) {
+      setHasMore(false);
+      return;
+    }
+    if (items.length === 0 && fullList.length === 0) {
+      return;
+    }
+    const itemsMetadata = await fetchItemsMetadata(items, fullList);
+    setItems(itemsMetadata);
   };
 
   // Get metadata of an array of items
@@ -244,9 +220,7 @@ export default function User(props) {
           <InfiniteScroll
             dataLength={items.length}
             next={() => {
-              console.log("attempting...");
               fetchAndSetItems(items, selectedItems());
-              console.log("fetched...");
             }}
             hasMore={hasMore}
             loader={
