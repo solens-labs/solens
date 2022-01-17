@@ -39,6 +39,18 @@ const routes = [
   },
   {
     method: 'GET',
+    url: '/stats/mintHistory',
+    schema: schema.mintHistory,
+    handler: statsHandlers.mintHistory
+  },
+  {
+    method: 'GET',
+    url: '/stats/walletHistory',
+    schema: schema.walletHistory,
+    handler: statsHandlers.walletHistory
+  },
+  {
+    method: 'GET',
     url: '/stats/dailyStats',
     schema: schema.topTrades,
     handler: statsHandlers.dailyStats
