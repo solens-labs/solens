@@ -11,7 +11,6 @@ import { shortenAddress } from "../../candy-machine";
 
 export default function NftCard(props) {
   const { links, item } = props;
-  console.log(item);
 
   const price = parseFloat(item?.list_price?.toFixed(2));
   const listedMP = item?.list_mp || item.marketplace;

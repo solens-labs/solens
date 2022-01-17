@@ -24,6 +24,7 @@ import Loader from "../../components/Loader";
 import ReactGA from "react-ga";
 import { api } from "../../constants/constants";
 import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -34,10 +35,14 @@ export default function User(props) {
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
   // const nfts = useSelector(selectUserNFTs);
-  const [nfts, setNfts] = useState([]);
   // const [walletAddress, setWalletAddress] = useState("");
+  const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
+
+  const [items, setItems] = useState([]);
+
+  const [walletItems, setWalletItems] = useState([]);
   const [listedItems, setListedItems] = useState([]);
-  // const [toggleItemView, setToggleItemView] = useState("wallet");
+
   const [seeAllItems, setSeeAllItems] = useState(false);
   const [loadedItems, setLoadedItems] = useState(false);
   const [loadedListed, setLoadedListed] = useState(false);
@@ -53,73 +58,126 @@ export default function User(props) {
     }
   }, [wallet]);
 
-  // Check if NFTs have already been fetched previously
-  useEffect(() => {
-    if (nfts.length > 0) {
-      setLoadedItems(true);
-    }
-  }, [nfts]);
-
-  // Get wallet token accounts, filter for NFTs, and fetch/set metadata
+  // Get wallet items
   useEffect(async () => {
-    if (wallet.connected && wallet.publicKey) {
+    if (wallet.connected && wallet.publicKey && walletItems.length === 0) {
       setLoadedItems(false);
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
-      const nftMetadataPromise = userNftTokenAccts.map(async (token, i) => {
-        return await getTokenMetadata(token.mint);
-      });
-      const nftMetadata = await Promise.all(nftMetadataPromise);
-      // dispatch(setUserNFTs(nftMetadata));
-      setNfts(nftMetadata);
+      setWalletItems(userNftTokenAccts);
       setLoadedItems(true);
     }
+  }, [wallet, walletItems]);
 
-    if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
-      // dispatch(setUserNFTs([]));
-      setNfts([]);
-      dispatch(setAddress(""));
-      setLoadedItems(false);
-    }
-  }, [wallet]);
-
-  // Get listed items and fetch/set metadata
+  // Get listed items
   useEffect(async () => {
-    if (wallet.connected && wallet.publicKey) {
+    if (wallet.connected && wallet.publicKey && listedItems.length === 0) {
       setLoadedListed(false);
       const apiRequest =
         api.server.walletListings + wallet.publicKey.toBase58();
       const fetchListed = axios.get(apiRequest).then(async (response) => {
         const items = response.data;
-        console.log(items);
-        const nftMetadataPromise = items.map(async (item, i) => {
-          const promise = await getTokenMetadata(item?.mint);
-          const tokenMD = await Promise.resolve(promise);
-          tokenMD["list_price"] = item?.price;
-          tokenMD["list_mp"] = item?.marketplace;
-          tokenMD["owner"] = item?.owner;
-          return tokenMD;
-        });
-        const nftMetadata = await Promise.all(nftMetadataPromise);
-
-        setListedItems(nftMetadata);
+        setListedItems(items);
         setLoadedListed(true);
       });
     }
+  }, [wallet, listedItems]);
 
-    if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
+  // Handle disconnect
+  useEffect(() => {
+    if (
+      !wallet.connected ||
+      (wallet.disconnecting && walletItems.length > 0) ||
+      (wallet.disconnecting && listedItems.length > 0)
+    ) {
       setListedItems([]);
+      setWalletItems([]);
+      setItems([]);
       setLoadedListed(false);
+      setLoadedItems(false);
     }
   }, [wallet]);
 
-  // Toggle between listed/unlisted
-  const toggleItems = () => {
-    setSeeAllItems(!seeAllItems);
+  // Infinite scroll data fetcher
+  const fetchAndSetItems = async (items, fullList) => {
+    if (items.length > 0 && items.length >= fullList.length) {
+      setHasMore(false);
+      return;
+    }
+    if (items.length === 0 && fullList.length === 0) {
+      console.log("items and full list zero");
+      return;
+    }
+    console.log("fetching more...");
+    const itemsMetadata = await fetchItemsMetadata(items, fullList);
+    setItems(itemsMetadata);
+  };
+
+  // Toggle between Listed Items & All Items
+  useEffect(async () => {
+    setItems([]);
+    if (!seeAllItems && listedItems.length > 0 && items.length === 0) {
+      const initialItems = await setInitialItems(listedItems);
+      setItems(initialItems);
+      return;
+    }
+
+    if (!seeAllItems && listedItems.length > 0) {
+      const initialItems = await setInitialItems(listedItems);
+      setItems(initialItems);
+      return;
+    }
+
+    if (seeAllItems && walletItems.length > 0) {
+      const initialItems = await setInitialItems(walletItems);
+      setItems(initialItems);
+      return;
+    }
+  }, [seeAllItems, walletItems, listedItems]);
+
+  // useEffect(async () => {
+  //   if (seeAllItems && walletItems.length > 0 && items.length === 0) {
+  //     const initialItems = await setInitialItems(listedItems);
+  //     setItems(initialItems);
+  //   }
+  // }, [seeAllItems, walletItems]);
+
+  // Set the first 20 for toggle
+  const setInitialItems = async (allItems) => {
+    const intitialItems = allItems.slice(0, 10);
+    const intitialItemsMetadata = await fetchItemsMetadata([], intitialItems);
+    return intitialItemsMetadata;
+  };
+
+  // Get metadata of an array of items
+  const fetchItemsMetadata = async (items, totalItems) => {
+    const newMints = totalItems.slice(items.length, items.length + 10);
+    const newMetadata = newMints.map(async (item, i) => {
+      const promise = await getTokenMetadata(item?.mint);
+      const tokenMD = await Promise.resolve(promise);
+      tokenMD["list_price"] = item?.price;
+      tokenMD["list_mp"] = item?.marketplace;
+      tokenMD["owner"] = item?.owner;
+      return tokenMD;
+    });
+    const newResolved = await Promise.all(newMetadata);
+    const fullItems = [...items, ...newResolved];
+    return fullItems;
+  };
+
+  // Tells Infinite Scroll which full array to use
+  const selectedItems = () => {
+    if (seeAllItems) {
+      return walletItems;
+    }
+
+    if (!seeAllItems) {
+      return listedItems;
+    }
   };
 
   return (
-    <div className="col-12 d-flex flex-column align-items-center mt-4">
+    <div className="col-12 d-flex flex-column align-items-center justify-content-center mt-4">
       <div className="col-12 d-flex justify-content-center">
         {!wallet.connected && (
           <div className="d-flex flex-column align-items-center">
@@ -143,7 +201,7 @@ export default function User(props) {
             <Walletinfo
               address={walletAddress}
               balance={walletBalance}
-              nfts={nfts.length}
+              nfts={walletItems.length}
               listed={listedItems.length}
             />
           </div>
@@ -181,43 +239,62 @@ export default function User(props) {
         </div>
       )}
 
-      {!seeAllItems && (
-        <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-          {listedItems.length > 0 &&
-            listedItems.map((item, i) => {
-              return (
-                <div
-                  className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                  key={i}
-                >
-                  <NftCardListed item={item} links={""} />
-                </div>
-              );
-            })}
+      {wallet.connected && items.length > 0 && (
+        <div className="col-12 col-xxl-10 d-flex flex-row justify-content-center">
+          <InfiniteScroll
+            dataLength={items.length}
+            next={() => {
+              console.log("attempting...");
+              fetchAndSetItems(items, selectedItems());
+              console.log("fetched...");
+            }}
+            hasMore={hasMore}
+            loader={
+              <div className="mt-5 mb-5">
+                <Loader />
+              </div>
+            }
+          >
+            {!seeAllItems && items.length > 0 && (
+              <div
+                className="col-12 d-flex flex-row flex-wrap justify-content-center mt-4"
+                style={{ width: "100%", overflow: "visible" }}
+              >
+                {items.length > 0 &&
+                  items.map((item, i) => {
+                    return (
+                      <div
+                        className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                        key={i}
+                      >
+                        <NftCardListed item={item} links={""} />
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
 
-          <div className="mt-5">
-            {wallet.connected && !loadedListed && <Loader />}
-          </div>
+            {seeAllItems && items.length > 0 && (
+              <div className="col-12 d-flex flex-row flex-wrap justify-content-center mt-4">
+                {items.map((item, i) => {
+                  return (
+                    <div
+                      className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                      key={i}
+                    >
+                      <NftCard item={item} links={""} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </InfiniteScroll>
         </div>
       )}
 
-      {seeAllItems && (
-        <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-          {nfts.length > 0 &&
-            nfts.map((item, i) => {
-              return (
-                <div
-                  className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                  key={i}
-                >
-                  <NftCard item={item} links={""} />
-                </div>
-              );
-            })}
-
-          <div className="mt-5">
-            {wallet.connected && !loadedItems && <Loader />}
-          </div>
+      {wallet.connected && items.length === 0 && (
+        <div className="mt-5">
+          <Loader />
         </div>
       )}
     </div>
