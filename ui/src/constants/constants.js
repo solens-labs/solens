@@ -27,10 +27,10 @@ export const api = {
     mintSymbol: server + "symbol?mint=",
     marketVolume: server + "totalMarketVolume",
 
-    mintHistory: devServer + "mintHistory?mint=",
-    walletListings: devServer + "walletListings?wallet=",
-    walletHistory: devServer + "walletHistory?wallet=",
-    currentFloor: devServer + "currentFloor",
+    mintHistory: server + "mintHistory?mint=",
+    walletListings: server + "walletListings?wallet=",
+    walletHistory: server + "walletHistory?wallet=",
+    currentFloor: server + "currentFloor",
   },
 };
 

@@ -48,7 +48,7 @@ export default function CollectionItems(props) {
   const [items, setItems] = useState([]); // items always displayed on page and used in infinite scroll
   const [sortSelected, setSortSelected] = useState(""); // selected sort option
 
-  // Search & Sort Functionality for Listed Items
+  // Toggle between Listed Items & All Items
   useEffect(async () => {
     if (!seeAllItems && collectionListed.length > 0) {
       setItems([]);
