@@ -3,10 +3,7 @@ import "./style.css";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import Walletinfo from "../../components/WalletInfo";
-import {
-  WalletModalProvider,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import solens_symbol from "../../assets/images//logo3.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,6 +21,8 @@ import { useHistory } from "react-router-dom";
 import { shortenAddress } from "../../candy-machine";
 import Loader from "../../components/Loader";
 import ReactGA from "react-ga";
+import { api } from "../../constants/constants";
+import axios from "axios";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -35,7 +34,11 @@ export default function User(props) {
   const walletAddress = useSelector(selectAddress);
   // const nfts = useSelector(selectUserNFTs);
   const [nfts, setNfts] = useState([]);
+  // const [walletAddress, setWalletAddress] = useState("");
+  const [listedItems, setListedItems] = useState([]);
+  const [toggleItemView, setToggleItemView] = useState("wallet");
   const [loadedItems, setLoadedItems] = useState(false);
+  const [loadedListed, setLoadedListed] = useState(false);
 
   // Send user sign in analytics
   useEffect(() => {
@@ -55,7 +58,7 @@ export default function User(props) {
     }
   }, [nfts]);
 
-  // Get token accounts, filter for NFTs, and fetch/set metadata
+  // Get wallet token accounts, filter for NFTs, and fetch/set metadata
   useEffect(async () => {
     if (wallet.connected && wallet.publicKey) {
       setLoadedItems(false);
@@ -78,21 +81,41 @@ export default function User(props) {
     }
   }, [wallet]);
 
-  // Wallet connect button for page
-  const connectButton = () => {
-    return (
-      <WalletModalProvider className="wallet_modal" logo={solens_symbol}>
-        <WalletMultiButton
-          className="connect_button"
-          style={{
-            border: "1px solid black",
-            color: "white",
-            borderRadius: 15,
-          }}
-        />
-      </WalletModalProvider>
-    );
+  // Get listed items and fetch/set metadata
+  useEffect(async () => {
+    if (wallet.connected && wallet.publicKey) {
+      setLoadedListed(false);
+      const apiRequest =
+        api.server.walletListings + wallet.publicKey.toBase58();
+      const fetchListed = axios.get(apiRequest).then(async (response) => {
+        const items = response.data;
+        const nftMetadataPromise = items.map(async (token, i) => {
+          return await getTokenMetadata(token.mint);
+        });
+        const nftMetadata = await Promise.all(nftMetadataPromise);
+        setListedItems(nftMetadata);
+        setLoadedListed(true);
+      });
+    }
+
+    if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
+      setListedItems([]);
+      setLoadedListed(false);
+    }
+  }, [wallet]);
+
+  // Toggle between listed/unlisted
+  const toggleItems = () => {
+    switch (toggleItemView) {
+      case "wallet":
+        setToggleItemView("listed");
+        break;
+      case "listed":
+        setToggleItemView("wallet");
+        break;
+    }
   };
+
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4">
       <div className="col-12 d-flex justify-content-center">
@@ -112,28 +135,65 @@ export default function User(props) {
         {!wallet.connected && (
           <div className="d-flex flex-column align-items-center">
             <h2 className="mt-5">Connect to view your profile</h2>
-            {connectButton()}
+            <WalletMultiButton
+              className="connect_button"
+              style={{
+                border: "1px solid black",
+                color: "white",
+                borderRadius: 15,
+              }}
+            />
           </div>
         )}
       </div>
 
-      <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-        {nfts.length > 0 &&
-          nfts.map((item, i) => {
-            return (
-              <div
-                className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                key={i}
-              >
-                <NftCard item={item} links={""} />
-              </div>
-            );
-          })}
+      <button
+        className="btn-button btn-main btn-large"
+        onClick={() => toggleItems()}
+      >
+        {toggleItemView === "wallet" && "View Listed Items"}
+        {toggleItemView === "listed" && "View Wallet"}
+      </button>
 
-        <div className="mt-5">
-          {wallet.connected && !loadedItems && <Loader />}
+      {toggleItemView === "listed" && (
+        <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
+          {listedItems.length > 0 &&
+            listedItems.map((item, i) => {
+              return (
+                <div
+                  className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                  key={i}
+                >
+                  <NftCard item={item} links={""} />
+                </div>
+              );
+            })}
+
+          <div className="mt-5">
+            {wallet.connected && !loadedListed && <Loader />}
+          </div>
         </div>
-      </div>
+      )}
+
+      {toggleItemView === "wallet" && (
+        <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
+          {nfts.length > 0 &&
+            nfts.map((item, i) => {
+              return (
+                <div
+                  className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                  key={i}
+                >
+                  <NftCard item={item} links={""} />
+                </div>
+              );
+            })}
+
+          <div className="mt-5">
+            {wallet.connected && !loadedItems && <Loader />}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

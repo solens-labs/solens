@@ -21,14 +21,15 @@ export const api = {
     collection: server + "stats/collection",
     marketStats: server + "stats/marketStats",
     floor: server + "stats/floor",
-    marketVolume: server + "totalMarketVolume",
-    mintSymbol: server + "symbol?mint=",
-    mintHistory: server + "stats/mintHistory?mint=",
     topTraders: server + "stats/topTraders",
     topNFTs: server + "stats/topNFTs",
     listings: server + "listings",
+    mintSymbol: server + "symbol?mint=",
+    marketVolume: server + "totalMarketVolume",
 
+    mintHistory: devServer + "mintHistory?mint=",
     walletListings: devServer + "walletListings?wallet=",
+    walletHistory: devServer + "walletHistory?wallet=",
     currentFloor: devServer + "currentFloor",
   },
 };

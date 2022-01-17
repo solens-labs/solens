@@ -7,29 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 // import { selectAddress, selectConnected } from "../../redux/network";
 import { links, themeColors } from "../../constants/constants";
 import logo2 from "../../assets/images/logo2.png";
-import {
-  selectAddress,
-  selectBalance,
-  setConnected,
-  setAddress,
-  setBalance,
-  selectConnected,
-  selectCurrentPage,
-} from "../../redux/app";
+import { setConnected, setAddress, setBalance } from "../../redux/app";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
-import { connect_button } from "../Buttons";
-import * as anchor from "@project-serum/anchor";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import {
-  WalletModalProvider,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
-import solens_symbol from "../../assets/images//logo3.png";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CollectionsIcon from "@mui/icons-material/Collections";
@@ -62,14 +48,6 @@ const Navigation = (props) => {
       dispatch(setBalance(0));
     }
   }, [wallet]);
-
-  // const currentPage = useSelector(selectCurrentPage);
-
-  // const activePage = (page) => {
-  //   if (currentPage === page) {
-  //     return "nav-link-active";
-  //   }
-  // };
 
   const [menu, setMenu] = useState(false);
   const showMenu = () => {
@@ -160,16 +138,14 @@ const Navigation = (props) => {
           <AccountCircleOutlinedIcon style={{ marginRight: 20 }} />
         </Link> */}
 
-        <WalletModalProvider className="wallet_modal" logo={solens_symbol}>
-          <WalletMultiButton
-            className="connect_button"
-            style={{
-              border: "1px solid black",
-              color: "white",
-              borderRadius: 15,
-            }}
-          />
-        </WalletModalProvider>
+        <WalletMultiButton
+          className="connect_button"
+          style={{
+            border: "1px solid black",
+            color: "white",
+            borderRadius: 15,
+          }}
+        />
       </div>
 
       {!menu && (
@@ -240,33 +216,3 @@ const Navigation = (props) => {
 };
 
 export default Navigation;
-
-/* <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
-  <div className="icon_link">
-    <a
-      href={links.medium.url}
-      target="_blank"
-      style={{ textDecoration: "none" }}
-    >
-      <MediumIcon style={{ fill: "white" }} className="icon_link" />
-    </a>
-  </div>
-  <div className="icon_link">
-    <a
-      href={links.twitter.url}
-      target="_blank"
-      style={{ textDecoration: "none" }}
-    >
-      <TwitterIcon style={{ fill: "white" }} className="icon_link" />
-    </a>
-  </div>
-  <div className="icon_link">
-    <a
-      href={links.email.contact}
-      target="_blank"
-      style={{ textDecoration: "none" }}
-    >
-      <EmailIcon style={{ fill: "white" }} />
-    </a>
-  </div>
-</div> */

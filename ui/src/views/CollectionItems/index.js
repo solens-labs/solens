@@ -25,7 +25,7 @@ import {
 } from "../../redux/app";
 import { filterData, sortData } from "../../utils/sortAndSearch";
 
-export default function CollectionMint(props) {
+export default function CollectionItems(props) {
   const { name } = useParams();
   const dispatch = useDispatch();
   const allCollections = useSelector(selectAllCollections);
@@ -139,17 +139,18 @@ export default function CollectionMint(props) {
 
   // Infinite Scroll Data Fetch
   const fetchAndSetItems = async () => {
+    if (items.length > 0 && items.length >= allItems.length) {
+      setHasMore(false);
+      return;
+    }
+
     const itemMetadata = await fetchItemsMetadata(items, allItems);
+    console.log({ itemMetadata });
     setItems(itemMetadata);
   };
 
   // Get metadata of an array of items
   const fetchItemsMetadata = async (items, totalItems) => {
-    if (items.length > 0 && items.length >= totalItems.length) {
-      setHasMore(false);
-      return;
-    }
-
     const newMints = totalItems.slice(items.length, items.length + 20);
     const newMetadata = newMints.map(async (item, i) => {
       const promise = await getTokenMetadata(item?.mint);
@@ -228,8 +229,11 @@ export default function CollectionMint(props) {
           <p className="collection_description">
             {collectionInfo && collectionInfo.description}
           </p>
-          <Link to={`/collection/${name}`} style={{ textDecoration: "none" }}>
-            <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
+          <Link
+            to={`/collection/${name}`}
+            style={{ textDecoration: "none", width: "70%" }}
+          >
+            <div className="col-12 btn-button btn-main btn-large btn-wide d-flex mt-2 mb-2">
               View Insights
             </div>
           </Link>

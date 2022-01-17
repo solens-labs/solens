@@ -9,16 +9,15 @@ import { useSelector } from "react-redux";
 import { selectAddress } from "../../redux/app";
 import TradeListing from "../TradeListing";
 import TradePurchase from "../TradePurchase";
-import {
-  WalletModalProvider,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import TradeCancel from "../TradeCancel";
 import Loader from "../Loader";
 import { marketplaceSelect } from "../../utils/collectionStats";
+import sa_logo from "../../assets/images/ss_logo.png";
 
 export default function TradingModule(props) {
   const {
+    address,
     invalid,
     invalidCollection,
     item,
@@ -40,22 +39,6 @@ export default function TradingModule(props) {
   const collectionInsights = () => {
     history.push(`/collection/${collection.symbol}`);
     return;
-  };
-
-  // Wallet connect button for page
-  const connectButton = () => {
-    return (
-      <WalletModalProvider className="wallet_modal" logo={solens_symbol}>
-        <WalletMultiButton
-          className="connect_button_large"
-          style={{
-            border: "1px solid black",
-            color: "white",
-            borderRadius: 15,
-          }}
-        />
-      </WalletModalProvider>
-    );
   };
 
   const floorDifference =
@@ -117,7 +100,14 @@ export default function TradingModule(props) {
 
       {!user && !loading && (
         <div className="trading_connect col-12 d-flex justify-content-center align-items-center">
-          {connectButton()}
+          <WalletMultiButton
+            className="connect_button"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              borderRadius: 15,
+            }}
+          />
         </div>
       )}
 
@@ -156,6 +146,29 @@ export default function TradingModule(props) {
           marketplace={marketplace}
           setTxHash={setTxHash}
         />
+      )}
+
+      {user && user !== ownerAccount && !listed && !loading && (
+        <div className="col-4 d-flex justify-content center">
+          <a
+            href={explorerLink("token", address)}
+            target="_blank"
+            style={{ width: "100%", textDecoration: "none" }}
+          >
+            <button className="btn_mp" style={{ height: 55 }}>
+              <div className="btn_mp_inner">
+                <img
+                  src={sa_logo}
+                  alt=""
+                  style={{
+                    height: 41,
+                    background: "transparent",
+                  }}
+                />
+              </div>
+            </button>
+          </a>
+        </div>
       )}
 
       {txHash && (

@@ -1,5 +1,7 @@
+// @ts-nocheck
 import {Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import {BN} from "@project-serum/anchor";
+import axios from "axios";
 
 const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 const base58 = require("base-x")(BASE58);
@@ -44,7 +46,7 @@ async function getLatestTxs(until) {
     let before = null;
     let latestTxs = []
     while (true) {
-        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "finalized")
+        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "confirmed")
         let sigs = []
         confirmedSigs.forEach((r) => {
             r.slot >= until && !r.err ? sigs.push(r.signature) : null;
@@ -179,7 +181,7 @@ function getAcceptOfferTxInfo(tx, ix, index) {
         price: new BN(base58.decode(ix.data).slice(8, 16), 'le').toNumber() / LAMPORTS_PER_SOL,
         date: tx.blockTime * 1000 + index,
         marketplace: 'magiceden',
-        type: 'acceptOffer',
+        type: 'accept_offer',
         ix: index,
         tx: tx.transaction.signatures[0],
     })
@@ -234,17 +236,30 @@ function sleep(ms: number): Promise<void> {
 async function magiceden(until) {
     const txs = await getLatestTxs(until)
     const payload = await processLatestTxs(txs)
-    payload.forEach((p) => {
+    for (let i = 0; i < payload.length; i++) {
+      let p = payload[i]
+        const symbol = (await axios.get(`${COLLECTION_URI}${p.mint}`)).data
+        if (symbol) {
+          p.symbol = symbol.symbol
+        }
+        await axios.post(
+          TRANSACTION_URI,
+          p,
+          {
+            headers: {
+              "content-type": "application/json",
+              "Accept": "application/json"
+            }
+          }
+        )
         console.log(p)
-        console.log()
-    })
-    console.log(payload.length)
+    }
     return txs.length > 0 ? txs[0].slot : until
 }
 
 
 async function main() {
-    let last = await connection.getTransaction('2p8rcHWwDoZTMhgUPvg1HjbsjdYNnHPEaiUDxveBY32a53RwQj2yybj8Z5LzhzW1k3RYT5hFh1jknb43sgaWgE9V')
+    let last = await connection.getTransaction('3CKCpFqT8LYtbGZjZKuFeYis9hZRkehnA2oeN3Bpnd5LE8An1SN1pcj2RzCMG8RnYMtXW7BNzhxRb393j6u2yyRh')
     let block = await connection.getBlock(last.slot)
     let until = block.parentSlot
     let new_until;

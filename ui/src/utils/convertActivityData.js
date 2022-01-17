@@ -1,10 +1,15 @@
 import { shortenAddress } from "../candy-machine";
 import { explorerLink } from "../constants/constants";
 import { themeColors } from "../constants/constants";
-import BuyIcon from "@mui/icons-material/AttachMoney";
+import BuyIcon from "@mui/icons-material/Paid";
 import CancelIcon from "@mui/icons-material/Cancel";
+// import ListIcon from "@mui/icons-material/Sell";
 import ListIcon from "@mui/icons-material/FeaturedPlayList";
+import OfferIcon from "@mui/icons-material/AttachMoney";
 import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
+import CancelOfferIcon from "@mui/icons-material/ThumbDown";
+import UnknownIcon from "@mui/icons-material/QuestionMark";
+import { marketplaceSelect } from "./collectionStats";
 
 const range = (len) => {
   const arr = [];
@@ -15,9 +20,9 @@ const range = (len) => {
 };
 
 const addTransaction = (transaction, prevPrice) => {
-  const date = new Date(transaction["date"]);
-  const seller = transaction["seller"];
-  const marketplace = transaction["marketplace"];
+  const date = new Date(transaction["date"]) || "xx/xx/xxxx";
+  const seller = transaction["seller"] || "";
+  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
   const sellerLink = (
     <a
       href={explorerLink("account", transaction["seller"])}
@@ -27,10 +32,9 @@ const addTransaction = (transaction, prevPrice) => {
       {shortenAddress(transaction["seller"])}
     </a>
   );
-  const buyer = transaction["buyer"];
+  const buyer = transaction["buyer"] || "";
   const buyerLink =
     transaction["buyer"] === seller ? (
-      // " -- "
       ""
     ) : (
       <a
@@ -90,41 +94,30 @@ const addTransaction = (transaction, prevPrice) => {
       price = "";
       // price = " -- ";
       break;
+    case "cancel_offer":
+      symbol = (
+        <CancelOfferIcon
+          style={{ fill: "rgba(201, 87, 87, 1)" }}
+          fontSize="small"
+        />
+      );
+      type = "Offer Cancelled";
+      break;
+    case "offer":
+      symbol = (
+        <OfferIcon style={{ fill: "rgba(86, 143, 56, 1)" }} fontSize="small" />
+      );
+      type = "Sale";
+      break;
+    default:
+      symbol = (
+        <UnknownIcon
+          style={{ fill: "rgba(139, 64, 179, 1)" }}
+          fontSize="small"
+        />
+      );
+      type = "Unknown";
   }
-
-  // let type = "";
-  // switch (transaction["type"]) {
-  //   case "buy":
-  //     type = (
-  //       <div className="col-12 d-flex justify-content-between">
-  //         <span className="p-3 pt-0 pb-0">Buy</span>
-  //         <BuyIcon style={{ fill: "rgba(86, 143, 56, 1)" }} fontSize="small" />
-  //       </div>
-  //     );
-  //     break;
-  //   case "list":
-  //     type = (
-  //       <div className="col-12 d-flex justify-content-between">
-  //         <span className="p-3 pt-0 pb-0">List</span>
-  //         <ListIcon
-  //           style={{ fill: "rgba(255,255,255,0.6)" }}
-  //           fontSize="small"
-  //         />
-  //       </div>
-  //     );
-  //     break;
-  //   case "cancel":
-  //     type = (
-  //       <div className="col-12 d-flex justify-content-between">
-  //         <span className="p-3 pt-0 pb-0">Cancel</span>
-  //         <CancelIcon
-  //           style={{ fill: "rgba(201, 87, 87, 1)" }}
-  //           fontSize="small"
-  //         />
-  //       </div>
-  //     );
-  //     break;
-  // }
 
   // const differenceCalc = (
   //   ((Number(transaction["price"]) - prevPrice) / prevPrice) *

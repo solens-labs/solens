@@ -12,6 +12,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
+import { getListedInfoFromBackend } from "../../utils/getListedDetails";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -110,7 +111,7 @@ export default function TradeCancel(props) {
       const token = new anchor.web3.PublicKey(tokenAccount);
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
       const cancelItem = await cancelMEden(maker, mint, token, price, program);
-      // setTxHash(cancelItem);  // not needed because no delay
+      setTxHash(cancelItem); // not needed because no delay
       setTxHashAnalytics(cancelItem);
       console.log(cancelItem);
 
@@ -121,8 +122,20 @@ export default function TradeCancel(props) {
         value: price,
       });
 
-      setLoading(false);
-      history.go(0);
+      // var intervalId = window.setInterval(async function () {
+      //   const itemDetails = await getListedInfoFromBackend(item.mint);
+
+      //   if (!itemDetails) {
+      //     setLoading(false);
+      //     clearInterval(intervalId);
+      //     history.go(0);
+      //   }
+      // }, 2500);
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
     } catch (e) {
       console.log(e);
       ReactGA.event({

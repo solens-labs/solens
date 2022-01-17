@@ -11,6 +11,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
+import { getListedInfoFromBackend } from "../../utils/getListedDetails";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -123,16 +124,26 @@ export default function TradeListing(props) {
       const takerPrice = listPrice;
       const program = new anchor.Program(magicEdenIDL, magicEden, provider);
 
-      const listItem = await listMEden(
+      const final_tx = await listMEden(
         maker,
         makerNftAccount,
         nftMint,
         takerPrice,
         program
       );
-      // setTxHash(listItem); // not needed because no delay
-      setTxHashAnalytics(listItem);
-      console.log(listItem);
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        preflightCommitment: "processed",
+      });
+      setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
+      console.log(sendTx);
+
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
 
       ReactGA.event({
         category: "Trade",
@@ -141,8 +152,10 @@ export default function TradeListing(props) {
         value: listPrice,
       });
 
-      setLoading(false);
-      history.go(0);
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
     } catch (e) {
       console.log(e);
       ReactGA.event({

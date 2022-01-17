@@ -1,13 +1,18 @@
 import * as anchor from "@project-serum/anchor";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { LAMPORTS_PER_SOL, SystemProgram } from "@solana/web3.js";
+import {
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { BinaryReader, BinaryWriter, deserializeUnchecked } from "borsh";
-import { PublicKey } from "@solana/web3.js";
 import base58 from "bs58";
 
 const rpcHost: any = process.env.REACT_APP_SOLANA_RPC_HOST;
 const connection = new anchor.web3.Connection(rpcHost);
 type StringPublicKey = string;
+
 class Assignable {
   constructor(properties: any) {
     Object.keys(properties).map((key) => {
@@ -119,15 +124,25 @@ export async function listMEden(
     magicEden
   );
 
-  return program.rpc.initializeEscrow2(priceBN, bump, {
-    accounts: {
-      initializer: maker,
-      initializerDepositTokenAccount: makerNftAccount,
-      escrowAccount: escrowAccount,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: SystemProgram.programId,
-    },
+  let txIxs = [];
+
+  txIxs.push(
+    await program.instruction.initializeEscrow2(priceBN, bump, {
+      accounts: {
+        initializer: maker,
+        initializerDepositTokenAccount: makerNftAccount,
+        escrowAccount: escrowAccount,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+      },
+    })
+  );
+  const final_tx = new Transaction({
+    feePayer: maker,
   });
+
+  final_tx.add(...txIxs);
+  return final_tx;
 }
 
 export async function cancelMEden(
@@ -183,18 +198,28 @@ export async function buyMEden(
   );
   let escrowAccountInfo = await getEscrowAccountInfo(escrowAccount);
   const makerNftAccount = escrowAccountInfo.tokenAccount;
-  return program.rpc.exchange2(priceBN, mint, {
-    accounts: {
-      taker: buyer,
-      pdaDepositTokenAccount: makerNftAccount,
-      initializerMainAccount: seller,
-      escrowAccount: escrowAccount,
-      pdaAccount: MEdenAutority,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: SystemProgram.programId,
-      platformFeesAccount: MEdenFee,
-      metadataAccount: metadataAccount,
-    },
-    remainingAccounts: remAccounts,
+  let txIxs = [];
+  txIxs.push(
+    await program.instruction.exchange2(priceBN, mint, {
+      accounts: {
+        taker: buyer,
+        pdaDepositTokenAccount: makerNftAccount,
+        initializerMainAccount: seller,
+        escrowAccount: escrowAccount,
+        pdaAccount: MEdenAutority,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+        platformFeesAccount: MEdenFee,
+        metadataAccount: metadataAccount,
+      },
+      remainingAccounts: remAccounts,
+    })
+  );
+
+  const final_tx = new Transaction({
+    feePayer: buyer,
   });
+
+  final_tx.add(...txIxs);
+  return final_tx;
 }

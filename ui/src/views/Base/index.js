@@ -41,7 +41,7 @@ import Launch from "../Launch";
 import Footer from "../../components/Footer";
 import Apply from "../Apply";
 import User from "../User";
-import CollectionMint from "../CollectionMint";
+import CollectionItems from "../CollectionItems";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -238,7 +238,7 @@ export default function Home(props) {
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
           <Route path="/collection/:name" component={CollectionPage} />
-          <Route path="/nfts/:name" component={CollectionMint} />
+          <Route path="/nfts/:name" component={CollectionItems} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
           <Route path="/user" component={User} />
