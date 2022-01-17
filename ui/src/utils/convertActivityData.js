@@ -49,7 +49,7 @@ const addTransaction = (transaction, prevPrice) => {
   const txType = transaction["type"];
   let symbol = "";
   let type = "";
-  let priceNumber = Number(transaction["price"]).toFixed(2);
+  let priceNumber = Number(transaction["price"]).toFixed(3);
   let price = "◎ " + parseFloat(priceNumber);
 
   switch (txType) {

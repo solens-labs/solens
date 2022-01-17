@@ -17,12 +17,9 @@ import { Typography } from "@material-ui/core";
 import convertActivityData from "../../utils/convertActivityData";
 import axios from "axios";
 import ActivityTable from "../../components/ActivityTable";
-import sol_logo from "../../assets/images/sol_logo.png";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import * as anchor from "@project-serum/anchor";
-import { getEscrowAccountInfo, Solanart } from "../../exchanges/solanart";
+import { PublicKey } from "@solana/web3.js";
 import ReactGA from "react-ga";
 import {
   getListedInfoFromBackend,
@@ -129,11 +126,9 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint details, see listed status
+  // Fetch listed item's details from chain & backend
   useEffect(async () => {
     const chainDetails = await getListedInfoFromChain(address);
-    console.log({ chainDetails });
-
     if (chainDetails) {
       setListed(true);
       setListedDetails(chainDetails);
@@ -141,8 +136,6 @@ export default function MintPage(props) {
     }
 
     const backendDetails = await getListedInfoFromBackend(address);
-    console.log({ backendDetails });
-
     if (backendDetails) {
       setListed(true);
       setListedDetails(backendDetails);

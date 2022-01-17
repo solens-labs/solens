@@ -147,13 +147,15 @@ export default function User(props) {
         )}
       </div>
 
-      <button
-        className="btn-button btn-main btn-large"
-        onClick={() => toggleItems()}
-      >
-        {toggleItemView === "wallet" && "View Listed Items"}
-        {toggleItemView === "listed" && "View Wallet"}
-      </button>
+      {wallet.connected && (
+        <button
+          className="btn-button btn-main btn-large"
+          onClick={() => toggleItems()}
+        >
+          {toggleItemView === "wallet" && "View Listed Items"}
+          {toggleItemView === "listed" && "View Wallet"}
+        </button>
+      )}
 
       {toggleItemView === "listed" && (
         <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">

@@ -11,9 +11,6 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
-import { getListedInfoFromBackend } from "../../utils/getListedDetails";
-
-const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
 export default function TradeListing(props) {
   const { invalid, item, ownerAccount, tokenAccount, setLoading, setTxHash } =
@@ -168,7 +165,7 @@ export default function TradeListing(props) {
   };
   const listNftSMB = async () => {
     setLoading(true);
-    console.log(`listing on SMB for ${listPrice}.`);
+    alert(`Listing on SMB Market will be supported soon. `);
     setLoading(false);
   };
 

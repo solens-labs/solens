@@ -11,19 +11,19 @@ export default function ActivityTable(props) {
       marketplace: "--",
       symbol: "--",
       type: "--",
-      date: "--",
       price: "--",
       buyerLink: "--",
       sellerLink: "--",
+      date: "--",
     },
     {
       marketplace: "--",
       symbol: "--",
       type: "--",
-      date: "--",
       price: "--",
       buyerLink: "--",
       sellerLink: "--",
+      date: "--",
     },
   ];
 
@@ -73,6 +73,14 @@ export default function ActivityTable(props) {
       //   accessor: "change",
       // },
       {
+        Header: "BUYER",
+        accessor: "buyerLink",
+      },
+      {
+        Header: "SELLER",
+        accessor: "sellerLink",
+      },
+      {
         Header: "DATE",
         accessor: "date",
         sortMethod: (a, b) => {
@@ -82,14 +90,6 @@ export default function ActivityTable(props) {
           else if (a1 > b1) return -1;
           else return 0;
         },
-      },
-      {
-        Header: "BUYER",
-        accessor: "buyerLink",
-      },
-      {
-        Header: "SELLER",
-        accessor: "sellerLink",
       },
     ],
     []

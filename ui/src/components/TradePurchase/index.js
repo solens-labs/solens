@@ -13,8 +13,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
-
-const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
+import { exchangeApi } from "../../constants/constants";
+import smb_logo from "../../assets/images/smb_logo.png";
 
 export default function TradePurchase(props) {
   const {
@@ -81,7 +81,6 @@ export default function TradePurchase(props) {
       });
       setTxHash(sendTx);
       setTxHashAnalytics(sendTx);
-      console.log(sendTx);
 
       const confirmTx = await connection.confirmTransaction(
         sendTx,
@@ -140,7 +139,6 @@ export default function TradePurchase(props) {
       });
       setTxHash(sendTx);
       setTxHashAnalytics(sendTx);
-      console.log(sendTx);
 
       const confirmTx = await connection.confirmTransaction(
         sendTx,
@@ -169,15 +167,40 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftSMB = async () => {
-    console.log("Buying from SMB");
+    alert("Buying from SMB Market will be supported soon.");
   };
 
   return (
     <>
       <div className="col-8 col-lg-4 p-1">
-        <button className="btn_mp" onClick={() => buyNft()}>
-          <div className="btn_mp_inner">Buy Item</div>
-        </button>
+        {marketplace !== "smb" && (
+          <button className="btn_mp" onClick={() => buyNft()}>
+            <div className="btn_mp_inner">Buy Item</div>
+          </button>
+        )}
+
+        {marketplace === "smb" && (
+          <a
+            href={exchangeApi.smb.itemDetails + item.mint}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <button className="btn_mp">
+              <div className="btn_mp_inner d-flex flex-row">
+                Buy on
+                <img
+                  src={smb_logo}
+                  style={{
+                    width: 45,
+                    paddingBottom: 1,
+                    height: "auto",
+                    marginLeft: 10,
+                  }}
+                />
+              </div>
+            </button>
+          </a>
+        )}
       </div>
     </>
   );

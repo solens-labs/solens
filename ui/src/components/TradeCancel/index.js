@@ -12,7 +12,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
-import { getListedInfoFromBackend } from "../../utils/getListedDetails";
+import { exchangeApi } from "../../constants/constants";
+import smb_logo from "../../assets/images/smb_logo.png";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -147,15 +148,42 @@ export default function TradeCancel(props) {
     }
   };
   const cancelNftSMB = async () => {
-    console.log("canceling item from SMB Market");
+    setLoading(true);
+    alert("Canceling item on SMB Market will be supported soon.");
+    setLoading(false);
   };
 
   return (
     <>
       <div className="col-8 col-lg-4 p-1">
-        <button className="btn_mp" onClick={() => cancelNft()}>
-          <div className="btn_mp_inner">Cancel Listing</div>
-        </button>
+        {marketplace !== "smb" && (
+          <button className="btn_mp" onClick={() => cancelNft()}>
+            <div className="btn_mp_inner">Cancel Listing</div>
+          </button>
+        )}
+
+        {marketplace === "smb" && (
+          <a
+            href={exchangeApi.smb.itemDetails + item.mint}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <button className="btn_mp">
+              <div className="btn_mp_inner d-flex flex-row">
+                Cancel on
+                <img
+                  src={smb_logo}
+                  style={{
+                    width: 45,
+                    paddingBottom: 1,
+                    height: "auto",
+                    marginLeft: 10,
+                  }}
+                />
+              </div>
+            </button>
+          </a>
+        )}
       </div>
     </>
   );

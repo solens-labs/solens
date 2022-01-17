@@ -145,7 +145,6 @@ export default function CollectionItems(props) {
     }
 
     const itemMetadata = await fetchItemsMetadata(items, allItems);
-    console.log({ itemMetadata });
     setItems(itemMetadata);
   };
 
