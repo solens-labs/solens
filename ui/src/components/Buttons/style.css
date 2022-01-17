@@ -89,6 +89,12 @@ COLORS:
   /* background: linear-gradient(90deg, rgb(63, 49, 109), rgb(134, 64, 117)); */
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
 }
+
+.btn_color_selected {
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+  border: 1px solid black;
+}
+
 .btn-wide {
   display: block;
   width: 100% !important;
@@ -136,3 +142,10 @@ COLORS:
     width: 40px;
   }
 } */
+
+@media screen and (max-width: 990px) {
+  .btn_color_inner,
+  .btn_color_selected {
+    font-size: 0.9rem;
+  }
+}

@@ -286,30 +286,28 @@ export default function CollectionItems(props) {
       />
 
       <div className="col-12 col-lg-8 col-xl-6 col-xxl-5 d-flex flex-row flex-wrap justify-content-center mb-3">
-        <div className="col-6 p-3 pt-0 pb-0">
+        <div className="col-6 p-1 p-lg-3 pt-0 pb-0">
           <div
             className={`btn-button btn-tall btn-wide ${
-              !seeAllItems ? "btn-main" : "btn_color_outside"
+              seeAllItems ? "btn_color_selected" : "btn_color_outside"
             } d-flex mt-2 mb-2`}
             onClick={() => setSeeAllItems(false)}
           >
-            {seeAllItems && (
-              <div className="btn_color_inner">View Listed Items</div>
+            {!seeAllItems && (
+              <div className="btn_color_inner">Listed Items</div>
             )}
-            {!seeAllItems && "View Listed Items"}
+            {seeAllItems && "Listed Items"}
           </div>
         </div>
-        <div className="col-6 p-3 pt-0 pb-0">
+        <div className="col-6 p-1 p-lg-3 pt-0 pb-0">
           <div
             className={`btn-button btn-tall btn-wide ${
-              seeAllItems ? "btn-main" : "btn_color_outside"
+              !seeAllItems ? "btn_color_selected" : "btn_color_outside"
             } d-flex mt-2 mb-2`}
             onClick={() => setSeeAllItems(true)}
           >
-            {!seeAllItems && (
-              <div className="btn_color_inner">View All Items</div>
-            )}
-            {seeAllItems && "View All Items"}
+            {seeAllItems && <div className="btn_color_inner">All Items</div>}
+            {!seeAllItems && "All Items"}
           </div>
         </div>
       </div>
