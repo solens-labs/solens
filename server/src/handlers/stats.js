@@ -489,7 +489,7 @@ exports.currentFloor = async (req, reply) => {
       floor: { $round: ["$price", 2] },
       _id: 0
     }}
-  ]).explain()
+  ])
 }
 
 exports.walletListings = async (req, reply) => {
