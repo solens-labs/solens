@@ -19,8 +19,10 @@ const COLLECTION_URI = 'http://localhost:3000/collections/'
 
 enum IxType {
     List = '96d480ba74018371',
+    OldList = '96d480ba74018371',
     Cancel = '9ccb36b326482115',
     Buy = '438e36d81f1d1b5c',
+    OldBuy = '2f031b61d7ecdb90',
     AcceptOffer = 'c4bf01e590ac7ae3',
 }
 
@@ -38,6 +40,7 @@ class tx_info extends Assignable {
 }
 
 async function getLatestTxs(until) {
+
     let before = null;
     let latestTxs = []
     while (true) {
@@ -134,6 +137,34 @@ function getBuyTxInfo(tx, ix, index) {
     return res
 }
 
+function getOldBuyTxInfo(tx, ix, index) {
+    let accountKeys = tx.transaction.message.accountKeys
+    let accounts = ix.accounts;
+    let transferIxs = tx.meta.innerInstructions.find(inix => inix.index == index).instructions
+    transferIxs = transferIxs.slice(0,transferIxs.length-1)
+    let price = new BN(0);
+    transferIxs.forEach((tix) => {
+        price = price.add(new BN(tix.parsed.info.lamports))
+    })
+    let mintIdx;
+    accountKeys.forEach((k, index) => {
+        k.pubkey.toBase58() == accounts[1].toBase58() ? mintIdx = index : null;
+    })
+    let res = new tx_info({
+        mint: getMintFromTx(tx.meta.postTokenBalances, mintIdx),
+        owner: accounts[2].toBase58(),
+        new_owner: accounts[0].toBase58(),
+        price: price.toNumber() / LAMPORTS_PER_SOL,
+        date: tx.blockTime * 1000 + index,
+        marketplace: 'magiceden',
+        escrow: accounts[3].toBase58(),
+        type: 'buy',
+        ix: index,
+        tx: tx.transaction.signatures[0],
+    })
+    return res
+}
+
 function getAcceptOfferTxInfo(tx, ix, index) {
     let accountKeys = tx.transaction.message.accountKeys
     let accounts = ix.accounts;
@@ -171,11 +202,14 @@ async function processLatestTxs(latestTxs) {
                 let ixData = base58.decode(ix.data)
                 let type = ixData.slice(0, 8).toString('hex')
                 switch (type) {
-                    case IxType.List:
+                    case IxType.List || IxType.OldList:
                         payloads.push(getListTxInfo(tx, ix, index))
                         break;
                     case IxType.Cancel:
                         payloads.push(getCancelTxInfo(tx, ix, index))
+                        break;
+                    case IxType.OldBuy:
+                        payloads.push(getOldBuyTxInfo(tx, ix, index))
                         break;
                     case IxType.Buy:
                         payloads.push(getBuyTxInfo(tx, ix, index))
@@ -210,7 +244,7 @@ async function magiceden(until) {
 
 
 async function main() {
-    let last = await connection.getTransaction('395My1gJC1UmchM94AqXhwxGhwrgzKFJa5ccuM4og5eHvJzo3ZutdcQP646VQQFfxRGqUcTTWozjsUB867Aw2JGG')
+    let last = await connection.getTransaction('2p8rcHWwDoZTMhgUPvg1HjbsjdYNnHPEaiUDxveBY32a53RwQj2yybj8Z5LzhzW1k3RYT5hFh1jknb43sgaWgE9V')
     let block = await connection.getBlock(last.slot)
     let until = block.parentSlot
     let new_until;
