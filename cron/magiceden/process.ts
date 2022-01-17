@@ -46,7 +46,7 @@ async function getLatestTxs(until) {
     let before = null;
     let latestTxs = []
     while (true) {
-        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "finalized")
+        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "confirmed")
         let sigs = []
         confirmedSigs.forEach((r) => {
             r.slot >= until && !r.err ? sigs.push(r.signature) : null;
@@ -259,7 +259,7 @@ async function magiceden(until) {
 
 
 async function main() {
-    let last = await connection.getTransaction('3CKCpFqT8LYtbGZjZKuFeYis9hZRkehnA2oeN3Bpnd5LE8An1SN1pcj2RzCMG8RnYMtXW7BNzhxRb393j6u2yyRh')
+    let last = await connection.getTransaction('4BJwAAgWbubo55ofJVppb5efxXxv5UHoycXqFYEqovkMmUv2R868ecw4v63ZGe3KTq2VH7TWepQGPRLJm9NYUacf')
     let block = await connection.getBlock(last.slot)
     let until = block.parentSlot
     let new_until;
