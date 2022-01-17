@@ -79,6 +79,12 @@ const routes = [
     schema: schema.symbolRequired,
     handler: statsHandlers.currentFloor
   },
+  {
+    method: 'GET',
+    url: '/walletListings',
+    schema: schema.walletRequired,
+    handler: statsHandlers.walletListings
+  },
   // this is a temporary entdpoint
   {
     method: 'GET',

@@ -394,9 +394,10 @@ exports.listings = async (req, reply) => {
     return Transaction.aggregate([
       {$match: {
         mint: req.query.mint,
+        historical: false,
         ...helpers.matchMainTxs()
       }},
-      {$sort: {date: -1}},
+      {$sort: {mint: 1, date: -1}},
       {$limit: 1},
       {$match: {
         $or: [
@@ -419,9 +420,10 @@ exports.listings = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
       symbol: req.query.symbol,
+      historical: false,
       ...helpers.matchMainTxs()
     }},
-    {$sort: {date: -1, price: -1}},
+    {$sort: {mint: 1, date: -1}},
     {$group : {
       _id: {mint: '$mint'},
       owner: {$first: '$owner'},
@@ -451,6 +453,7 @@ exports.currentFloor = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
       symbol: req.query.symbol,
+      historical: false,
       $or: [
         {type: { $eq: "list"}},
         {type: { $eq: "update"}},
@@ -459,7 +462,7 @@ exports.currentFloor = async (req, reply) => {
         {type: { $eq: "accept_offer"}}
       ]
     }},
-    {$sort: {date: -1, price: -1}},
+    {$sort: {mint: 1, date: -1}},
     {$group : {
       _id: {mint: '$mint'},
       price: {$first: '$price'},
@@ -486,5 +489,38 @@ exports.currentFloor = async (req, reply) => {
       floor: { $round: ["$price", 2] },
       _id: 0
     }}
+  ]).explain()
+}
+
+exports.walletListings = async (req, reply) => {
+  return Transaction.aggregate([
+    {$match: {
+      owner: req.query.wallet,
+      historical: false,
+      ...helpers.matchMainTxs()
+    }},
+    {$sort: {date: -1}},
+    {$group : {
+      _id: {mint: '$mint'},
+      owner: {$first: '$owner'},
+      price: {$first: '$price'},
+      type: {$first: '$type'},
+      escrow: {$first: '$escrow'},
+      marketplace: {$first: '$marketplace'}
+    }},
+    {$match: {
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+      ]
+    }},
+    {$project : {
+      mint: '$_id.mint',
+      owner: 1,
+      price: 1,
+      escrow: 1,
+      marketplace: 1,
+      _id: 0
+    }},
   ])
 }

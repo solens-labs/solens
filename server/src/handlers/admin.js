@@ -850,5 +850,5 @@ exports.test = async (req, reply) => {
       marketplace: 1,
       _id: 0
     }},
-  ]).explain()
+  ])
 }
