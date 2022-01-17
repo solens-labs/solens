@@ -46,16 +46,15 @@ async function getLatestTxs(until) {
     let before = null;
     let latestTxs = []
     while (true) {
-        // let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "finalized")
-        let sigs = ['5PrVXCdn17Jf5zxA8KF1knkR8PBAqF9s27WAW2Wnsy1npVhVoBLGrdEBkYrdWHzmVffjZ1XWvfEZ6jjW6V8bW7Cm']
-        // confirmedSigs.forEach((r) => {
-        //     r.slot >= until && !r.err ? sigs.push(r.signature) : null;
-        // })
+        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "finalized")
+        let sigs = []
+        confirmedSigs.forEach((r) => {
+            r.slot >= until && !r.err ? sigs.push(r.signature) : null;
+        })
         let confirmedTxs = await connection.getParsedConfirmedTransactions(sigs, 'confirmed')
         sigs.forEach((sig) => {
             latestTxs.push(confirmedTxs.find(tx => tx.transaction.signatures.includes(sig)))
         })
-        return latestTxs
         if (confirmedSigs[confirmedSigs.length - 1].slot < until) {
             return latestTxs;
         } else {
@@ -243,15 +242,24 @@ async function magiceden(until) {
         if (symbol) {
           p.symbol = symbol.symbol
         }
+        await axios.post(
+          TRANSACTION_URI,
+          p,
+          {
+            headers: {
+              "content-type": "application/json",
+              "Accept": "application/json"
+            }
+          }
+        )
         console.log(p)
-        console.log()
     }
     return txs.length > 0 ? txs[0].slot : until
 }
 
 
 async function main() {
-    let last = await connection.getTransaction('4Gu6tbsgev2LkFiYUQWKrAexYoJDQqQGnudsvB6RkenUR4DoAa5GPfDRGB8744oChqGA55eMVMh2iFLzwJbFKPk9')
+    let last = await connection.getTransaction('3CKCpFqT8LYtbGZjZKuFeYis9hZRkehnA2oeN3Bpnd5LE8An1SN1pcj2RzCMG8RnYMtXW7BNzhxRb393j6u2yyRh')
     let block = await connection.getBlock(last.slot)
     let until = block.parentSlot
     let new_until;
