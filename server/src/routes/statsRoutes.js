@@ -27,13 +27,13 @@ const routes = [
   },
   {
     method: 'GET',
-    url: '/stats/mintHistory',
+    url: '/mintHistory',
     schema: schema.mintHistory,
     handler: statsHandlers.mintHistory
   },
   {
     method: 'GET',
-    url: '/stats/walletHistory',
+    url: '/walletHistory',
     schema: schema.walletHistory,
     handler: statsHandlers.walletHistory
   },
