@@ -60,3 +60,7 @@
 .terms_text {
   font-size: 0.7rem;
 }
+
+.floor_warning {
+  color: rgb(251, 84, 84);
+}

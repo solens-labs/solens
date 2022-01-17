@@ -119,6 +119,7 @@ export default function TradingModule(props) {
           tokenAccount={tokenAccount}
           setLoading={setLoading}
           setTxHash={setTxHash}
+          floorDetails={floorDetails}
         />
       )}
 

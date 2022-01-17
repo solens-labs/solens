@@ -1,5 +1,5 @@
 import * as anchor from "@project-serum/anchor";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import sa_logo from "../../assets/images/sa_logo_dark.png";
 import me_logo from "../../assets/images/me_logo_white.png";
@@ -13,14 +13,23 @@ import { useHistory } from "react-router";
 import ReactGA from "react-ga";
 
 export default function TradeListing(props) {
-  const { invalid, item, ownerAccount, tokenAccount, setLoading, setTxHash } =
-    props;
+  const {
+    invalid,
+    item,
+    ownerAccount,
+    tokenAccount,
+    floorDetails,
+    setLoading,
+    setTxHash,
+  } = props;
   const history = useHistory();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
 
+  const lowerBoundry = floorDetails?.floor * 0.8;
   const [listPrice, setListPrice] = useState(0);
+  const [showWarning, setShowWarning] = useState(false);
   const [selectedMarketplace, setSelectedMarketplace] = useState("");
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
@@ -169,6 +178,15 @@ export default function TradeListing(props) {
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (listPrice > 0 && listPrice < floorDetails.floor) {
+      console.log("too low");
+      setShowWarning(true);
+    } else {
+      setShowWarning(false);
+    }
+  }, [listPrice]);
+
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-1">
       <h5 className="p-0 m-0">Select Marketplace to List Item</h5>
@@ -232,6 +250,13 @@ export default function TradeListing(props) {
               onChange={(e) => setListPrice(e.target.value)}
             />
           </div>
+
+          {showWarning && (
+            <span className="floor_warning">
+              Warning! Your listing is below the current floor:{" "}
+              {floorDetails.floor} SOL
+            </span>
+          )}
 
           <div className="col-8 col-lg-4 p-1">
             <button
