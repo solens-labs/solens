@@ -1,18 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
 import "./style.css";
+import "../Buttons/style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-export default function TradesTable(props) {
+export default function TradersTable(props) {
   const { data } = props;
   const blankTx = {
     address: "--",
-    price: "--",
-    buyer: "--",
-    seller: "--",
-    date: "--",
+    total: "--",
+    count: "--",
+    min: "--",
+    average: "--",
+    max: "--",
   };
 
   const emptyObject = [blankTx, blankTx, blankTx, blankTx, blankTx, blankTx];
@@ -36,35 +37,31 @@ export default function TradesTable(props) {
     }
   }, [data]);
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
-        Header: "MINT",
+        Header: "ADDRESS",
         accessor: "address",
       },
       {
-        Header: "PRICE",
-        accessor: "price",
+        Header: "TOTAL",
+        accessor: "total",
       },
       {
-        Header: "BUYER",
-        accessor: "buyer",
+        Header: "COUNT",
+        accessor: "count",
       },
       {
-        Header: "SELLER",
-        accessor: "seller",
+        Header: "MIN",
+        accessor: "min",
       },
       {
-        Header: "DATE",
-        accessor: "date",
-        className: "test_width",
-        sortMethod: (a, b) => {
-          var a1 = new Date(a).getTime();
-          var b1 = new Date(b).getTime();
-          if (a1 < b1) return 1;
-          else if (a1 > b1) return -1;
-          else return 0;
-        },
+        Header: "AVG",
+        accessor: "average",
+      },
+      {
+        Header: "MAX",
+        accessor: "max",
       },
     ],
     []
@@ -85,11 +82,7 @@ export default function TradesTable(props) {
     setPageSize,
     canPreviousPage,
     canNextPage,
-  } = useTable(
-    { columns: columns, data: tableData, initialState: { pageSize: 10 } },
-    useSortBy,
-    usePagination
-  );
+  } = useTable({ columns: columns, data: tableData }, useSortBy, usePagination);
 
   return (
     <>
@@ -108,8 +101,8 @@ export default function TradesTable(props) {
           ))}
         </select>
       </div> */}
-      <div className="col-12 data_table overflow-auto">
-        <table {...getTableProps()}>
+      <div className="col-12 p-3 pt-0 pb-0 d-flex justify-content-start overflow-auto">
+        <table {...getTableProps()} style={{ width: "100%" }}>
           <thead>
             {
               // Loop over the header rows
@@ -122,27 +115,39 @@ export default function TradesTable(props) {
                       // Apply the header cell props
                       <th
                         {...column.getHeaderProps(
+                          // {
+                          //   style: {
+                          //     width: column.width,
+                          //     maxWidth: column.maxWidth,
+                          //   },
+                          // }
                           column.getSortByToggleProps()
                         )}
                         className={
                           column.isSorted
                             ? column.isSortedDesc
-                              ? "sorted_desc"
-                              : "sorted_asc"
-                            : ""
+                              ? "activity_header sorted_desc"
+                              : "activity_header sorted_asc"
+                            : "activity_header"
                         }
                       >
-                        {
-                          // Render the header
-                          column.render("Header")
-                        }
-                        {/* <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span> */}
+                        <div className="header_inner d-flex flex-row p-0 m-0 justify-content-center">
+                          {
+                            // Render the header
+                            column.render("Header")
+                          }
+                          <div className="sort_arrow">
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <ArrowDropDownIcon />
+                              ) : (
+                                <ArrowDropUpIcon />
+                              )
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       </th>
                     ))
                   }
@@ -165,7 +170,10 @@ export default function TradesTable(props) {
                       row.cells.map((cell) => {
                         // Apply the cell props
                         return (
-                          <td {...cell.getCellProps()}>
+                          <td
+                            {...cell.getCellProps()}
+                            className="activity_data"
+                          >
                             {
                               // Render the cell contents
                               cell.render("Cell")

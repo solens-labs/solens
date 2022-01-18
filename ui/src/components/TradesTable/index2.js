@@ -109,7 +109,7 @@ export default function TradesTable(props) {
         </select>
       </div> */}
       <div className="col-12 data_table overflow-auto">
-        <table {...getTableProps()}>
+        <table {...getTableProps()} style={{ width: "100%" }}>
           <thead>
             {
               // Loop over the header rows
@@ -122,27 +122,39 @@ export default function TradesTable(props) {
                       // Apply the header cell props
                       <th
                         {...column.getHeaderProps(
+                          // {
+                          //   style: {
+                          //     width: column.width,
+                          //     maxWidth: column.maxWidth,
+                          //   },
+                          // }
                           column.getSortByToggleProps()
                         )}
                         className={
                           column.isSorted
                             ? column.isSortedDesc
-                              ? "sorted_desc"
-                              : "sorted_asc"
-                            : ""
+                              ? "activity_header sorted_desc"
+                              : "activity_header sorted_asc"
+                            : "activity_header"
                         }
                       >
-                        {
-                          // Render the header
-                          column.render("Header")
-                        }
-                        {/* <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span> */}
+                        <div className="header_inner d-flex flex-row p-0 m-0 justify-content-center">
+                          {
+                            // Render the header
+                            column.render("Header")
+                          }
+                          <div className="sort_arrow">
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <ArrowDropDownIcon />
+                              ) : (
+                                <ArrowDropUpIcon />
+                              )
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       </th>
                     ))
                   }
@@ -165,7 +177,10 @@ export default function TradesTable(props) {
                       row.cells.map((cell) => {
                         // Apply the cell props
                         return (
-                          <td {...cell.getCellProps()}>
+                          <td
+                            {...cell.getCellProps()}
+                            className="activity_data"
+                          >
                             {
                               // Render the cell contents
                               cell.render("Cell")

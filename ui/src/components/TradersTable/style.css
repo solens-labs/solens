@@ -33,6 +33,7 @@ td {
 .data_table {
   display: flex;
   justify-content: center;
+  max-width: 95%;
 }
 
 @media screen and (max-width: 900px) {
