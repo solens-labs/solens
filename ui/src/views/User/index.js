@@ -8,6 +8,7 @@ import solens_symbol from "../../assets/images//logo3.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectAddress,
+  selectAllCollections,
   selectBalance,
   selectUserNFTs,
   setAddress,
@@ -24,12 +25,15 @@ import Loader from "../../components/Loader";
 import ReactGA from "react-ga";
 import { api } from "../../constants/constants";
 import axios from "axios";
+import convertWalletActivity from "../../utils/convertWalletActivityData";
+import ActivityWalletTable from "../../components/ActivityWalletTable";
 
 export default function User(props) {
   const { connection } = useConnection();
   const dispatch = useDispatch();
   const history = useHistory();
   const wallet = useWallet();
+  const allCollections = useSelector(selectAllCollections);
 
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
@@ -41,14 +45,33 @@ export default function User(props) {
   const [seeAllItems, setSeeAllItems] = useState(false);
   const [loadedItems, setLoadedItems] = useState(false);
   const [loadedListed, setLoadedListed] = useState(false);
+  const [activity, setActivity] = useState([]);
+  const [seeActivity, setSeeActivity] = useState(false);
+
+  useEffect(() => {
+    if (
+      wallet &&
+      wallet.connected &&
+      wallet.publicKey &&
+      allCollections.length > 0 &&
+      activity.length === 0
+    ) {
+      const apiRequest = api.server.walletHistory + wallet.publicKey.toBase58();
+      const walletHistory = axios.get(apiRequest).then((response) => {
+        const activity = response.data;
+        const converted = convertWalletActivity(activity, allCollections);
+        setActivity(converted);
+      });
+    }
+  }, [wallet, allCollections]);
 
   // Send user sign in analytics
   useEffect(() => {
-    if (wallet.connected && wallet.publicKey) {
+    if (wallet && wallet.connected && wallet.publicKey) {
       ReactGA.event({
         category: "User",
         action: "Login",
-        label: wallet.publicKey,
+        label: wallet.publicKey.toBase58(),
       });
     }
   }, [wallet]);
@@ -62,7 +85,7 @@ export default function User(props) {
 
   // Get wallet token accounts, filter for NFTs, and fetch/set metadata
   useEffect(async () => {
-    if (wallet.connected && wallet.publicKey) {
+    if (wallet && wallet.connected && wallet.publicKey) {
       setLoadedItems(false);
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
@@ -85,7 +108,7 @@ export default function User(props) {
 
   // Get listed items and fetch/set metadata
   useEffect(async () => {
-    if (wallet.connected && wallet.publicKey) {
+    if (wallet && wallet.connected && wallet.publicKey) {
       setLoadedListed(false);
       const apiRequest =
         api.server.walletListings + wallet.publicKey.toBase58();
@@ -150,74 +173,116 @@ export default function User(props) {
       )}
 
       {wallet.connected && (
-        <div className="col-12 col-lg-8 col-xl-6 col-xxl-5 d-flex flex-row flex-wrap justify-content-center mb-3">
-          <div className="col-6 p-1 p-lg-3 pt-0 pb-0">
+        <div className="col-12 col-lg-8 col-xl-6 d-flex flex-row flex-wrap justify-content-center mb-3">
+          <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
             <div
               className={`btn-button btn-tall btn-wide ${
-                seeAllItems ? "btn_color_selected" : "btn_color_outside"
+                seeAllItems && !seeActivity
+                  ? "btn_color_selected"
+                  : "btn_color_outside"
               } d-flex mt-2 mb-2`}
-              onClick={() => setSeeAllItems(false)}
+              onClick={() => {
+                setSeeAllItems(false);
+                setSeeActivity(false);
+              }}
             >
-              {!seeAllItems && (
+              {!seeAllItems && !seeActivity && (
                 <div className="btn_color_inner">Listed Items</div>
               )}
-              {seeAllItems && "Listed Items"}
+              {seeAllItems || seeActivity ? "Listed Items" : ""}
             </div>
           </div>
-          <div className="col-6 p-1 p-lg-3 pt-0 pb-0">
+
+          <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
             <div
               className={`btn-button btn-tall btn-wide ${
-                !seeAllItems ? "btn_color_selected" : "btn_color_outside"
+                !seeAllItems && !seeActivity
+                  ? "btn_color_selected"
+                  : "btn_color_outside"
               } d-flex mt-2 mb-2`}
-              onClick={() => setSeeAllItems(true)}
+              onClick={() => {
+                setSeeAllItems(true);
+                setSeeActivity(false);
+              }}
             >
-              {seeAllItems && (
+              {seeAllItems && !seeActivity && (
                 <div className="btn_color_inner">Wallet Items</div>
               )}
-              {!seeAllItems && "Wallet Items"}
+              {!seeAllItems || seeActivity ? "Wallet Items" : ""}
+            </div>
+          </div>
+
+          <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
+            <div
+              className={`btn-button btn-tall btn-wide ${
+                !seeActivity ? "btn_color_selected" : "btn_color_outside"
+              } d-flex mt-2 mb-2`}
+              onClick={() => {
+                setSeeActivity(true);
+              }}
+            >
+              {seeActivity && <div className="btn_color_inner">Activity</div>}
+              {!seeActivity && "Activity"}
             </div>
           </div>
         </div>
       )}
 
-      {!seeAllItems && (
-        <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-          {listedItems.length > 0 &&
-            listedItems.map((item, i) => {
-              return (
-                <div
-                  className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                  key={i}
-                >
-                  <NftCardListed item={item} links={""} />
-                </div>
-              );
-            })}
+      {!seeAllItems && !seeActivity && (
+        <>
+          {" "}
+          <h2 className="mb-3">Listed Items on Exchanges</h2>
+          <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
+            {listedItems.length > 0 &&
+              listedItems.map((item, i) => {
+                return (
+                  <div
+                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                    key={i}
+                  >
+                    <NftCardListed item={item} links={""} />
+                  </div>
+                );
+              })}
 
-          <div className="mt-5">
-            {wallet.connected && !loadedListed && <Loader />}
+            <div className="mt-5">
+              {wallet.connected && !loadedListed && <Loader />}
+            </div>
           </div>
-        </div>
+        </>
       )}
 
-      {seeAllItems && (
-        <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-          {nfts.length > 0 &&
-            nfts.map((item, i) => {
-              return (
-                <div
-                  className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                  key={i}
-                >
-                  <NftCard item={item} links={""} />
-                </div>
-              );
-            })}
+      {seeAllItems && !seeActivity && (
+        <>
+          <h2 className="mb-3">Unlisted Items in Wallet</h2>
 
-          <div className="mt-5">
-            {wallet.connected && !loadedItems && <Loader />}
+          <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
+            {nfts.length > 0 &&
+              nfts.map((item, i) => {
+                return (
+                  <div
+                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                    key={i}
+                  >
+                    <NftCard item={item} links={""} />
+                  </div>
+                );
+              })}
+
+            <div className="mt-5">
+              {wallet.connected && !loadedItems && <Loader />}
+            </div>
           </div>
-        </div>
+        </>
+      )}
+
+      {wallet.connected && seeActivity && (
+        <>
+          <h2>Recent Activity</h2>
+          <div className="chartbox col-12 col-lg-10 col-xxl-8 d-flex flex-row flex-wrap justify-content-center mt-4">
+            <ActivityWalletTable data={activity} />
+          </div>
+        </>
       )}
     </div>
   );

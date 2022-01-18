@@ -99,7 +99,7 @@ export default function TradeListing(props) {
 
       setTimeout(function () {
         setLoading(false);
-        // history.go(0);
+        history.go(0);
         history.push(location.pathname);
       }, 3000);
     } catch (e) {
