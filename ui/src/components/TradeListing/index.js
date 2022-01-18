@@ -9,7 +9,7 @@ import { magicEden, listMEden } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 
 export default function TradeListing(props) {
@@ -23,6 +23,7 @@ export default function TradeListing(props) {
     setTxHash,
   } = props;
   const history = useHistory();
+  const location = useLocation();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
@@ -98,7 +99,8 @@ export default function TradeListing(props) {
 
       setTimeout(function () {
         setLoading(false);
-        history.go(0);
+        // history.go(0);
+        history.push(location.pathname);
       }, 3000);
     } catch (e) {
       console.log(e);
