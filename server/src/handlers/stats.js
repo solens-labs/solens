@@ -273,6 +273,9 @@ exports.walletHistory = async (req, reply) => {
           date: 1,
           symbol: 1,
           mint: 1,
+          type: 1,
+          tx: 1,
+          marketplace: 1,
           price: { $round: ["$price", 2] },
           _id: 0
         }
