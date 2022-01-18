@@ -187,9 +187,9 @@ export default function User(props) {
               }}
             >
               {!seeAllItems && !seeActivity && (
-                <div className="btn_color_inner">Listed Items</div>
+                <div className="btn_color_inner">Listed</div>
               )}
-              {seeAllItems || seeActivity ? "Listed Items" : ""}
+              {seeAllItems || seeActivity ? "Listed" : ""}
             </div>
           </div>
 
@@ -206,9 +206,9 @@ export default function User(props) {
               }}
             >
               {seeAllItems && !seeActivity && (
-                <div className="btn_color_inner">Wallet Items</div>
+                <div className="btn_color_inner">Wallet</div>
               )}
-              {!seeAllItems || seeActivity ? "Wallet Items" : ""}
+              {!seeAllItems || seeActivity ? "Wallet" : ""}
             </div>
           </div>
 
