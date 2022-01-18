@@ -164,26 +164,76 @@ const Navigation = (props) => {
         <div className="mobile_menu">
           <div className="col-12 d-flex flex-column align-items-end">
             <Link to="/" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                home
-              </h1>
-            </Link>
-            <Link to="/collections" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                collections
-              </h1>
-            </Link>
-            <Link to="/wallets" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                wallets
-              </h1>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  home
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <HomeIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
             </Link>
             <Link to="/launch" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                launchzone
-              </h1>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  launchzone
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <RocketLaunchIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
             </Link>
-            <div className="d-flex flex-row col-4 justify-content-around">
+            <Link to="/collections" style={{ textDecoration: "none" }}>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  collections
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <CollectionsIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
+            </Link>
+            <Link to="/wallets" style={{ textDecoration: "none" }}>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  wallets
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <AccountBalanceWalletIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
+            </Link>
+            <Link to="/user" style={{ textDecoration: "none" }}>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  profile
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <AccountCircleOutlinedIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
+            </Link>
+            <div className="d-flex flex-row col-6 justify-content-around">
               <a
                 href={links.twitter.url}
                 target="_blank"
