@@ -2,6 +2,7 @@
 import {Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import {BN} from "@project-serum/anchor";
 import axios from "axios";
+import { exit } from 'process';
 
 const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 const base58 = require("base-x")(BASE58);
@@ -14,6 +15,7 @@ const MAGICEDEN = new PublicKey('MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')
 const BPF_UPGRADABLE = new PublicKey('BPFLoaderUpgradeab1e11111111111111111111111')
 const TRANSACTION_URI = 'http://localhost:3000/transactions'
 const COLLECTION_URI = 'http://localhost:3000/collections/'
+const STATUS_URI = 'http://localhost:3000/status'
 
 
 enum IxType {
@@ -187,17 +189,27 @@ function getAcceptOfferTxInfo(tx, ix, index) {
     return res
 }
 
+async function halt() {
+  await axios.post(STATUS_URI,
+    {"live": false},
+    { headers: { "content-type": "application/json", "Accept": "application/json" }})
+}
+
 function checkUpgrade(ix) {
     return ix.programId.toBase58() == BPF_UPGRADABLE.toBase58() && ix.parsed.info.programAccount == MAGICEDEN.toBase58()
 }
 
 async function processLatestTxs(latestTxs) {
     let payloads = []
-    latestTxs.forEach((tx) => {
-        tx.transaction.message.instructions.forEach((ix, index) => {
+    for (let i = 0; i < latestTxs.length; i++) {
+        let tx = latestTxs[i]
+
+        for (let index = 0; index < tx.transaction.message.instructions.length; index++) {
+            let ix = tx.transaction.message.instructions[index]
+
             if (checkUpgrade(ix)) {
-                // error
-                process.exit(-1)
+              await halt()
+              return exit(1)
             }
             if (ix.programId.toBase58() == MAGICEDEN.toBase58()) {
                 let ixData = base58.decode(ix.data)
@@ -222,8 +234,8 @@ async function processLatestTxs(latestTxs) {
                         break;
                 }
             }
-        })
-    })
+        }
+    }
     return payloads
 }
 
@@ -267,7 +279,7 @@ async function process(until) {
 
 
 async function main() {
-  let until = '1642407740'
+  let until = '1642566667'
   while (true) {
     let prev_until = until
     try {
