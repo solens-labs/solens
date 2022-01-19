@@ -1,7 +1,13 @@
 const statsHandlers = require('../handlers/stats')
 const schema = require('./statsSchema')
+const statusController = require('../controllers/statusController')
 
 const routes = [
+  {
+    method: 'GET',
+    url: '/status',
+    handler: statusController.getStatus
+  },
   {
     method: 'GET',
     url: '/stats/allCollections',
