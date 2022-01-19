@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
 import NftCard from "../../components/CardNft";
-import NftCardView from "../../components/CardNft/userprofile";
+import NftCardView from "../../components/CardNft/userWallet";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -30,6 +30,7 @@ import { filterData, sortData } from "../../utils/sortAndSearch";
 export default function CollectionItems(props) {
   const { name } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const allCollections = useSelector(selectAllCollections);
   // const storedCollection = useSelector(selectCollection);
   // const storedCollectionName = useSelector(selectCollectionName);
@@ -107,6 +108,11 @@ export default function CollectionItems(props) {
     return intitialItemsMetadata;
   };
 
+  // Generate link to go to internal NFT Detail Page
+  const goToNFTDetailPage = (mint) => {
+    history.push("/mint/" + mint);
+  };
+
   // Fetch Collection Data, All Items, & Listed Items
   useEffect(async () => {
     if (name && allCollections.length > 0) {
@@ -159,6 +165,7 @@ export default function CollectionItems(props) {
           .get(apiRequest2)
           .then((response) => {
             const listedItems = response.data;
+            // setCollectionListed(listedItems);
             const sortedListeditems = sortItems(listedItems, "price_lth");
             setCollectionListed(sortedListeditems);
           });
@@ -372,7 +379,17 @@ export default function CollectionItems(props) {
                       className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
                       key={i}
                     >
-                      <NftCard item={item} links={getItemLinks(item.mint)} />
+                      <div className="nft_card_container col-12">
+                        <div
+                          className="nft_card col-12 d-flex flex-column align-items-center"
+                          onClick={() => goToNFTDetailPage(item.mint)}
+                        >
+                          <NftCard
+                            item={item}
+                            links={getItemLinks(item.mint)}
+                          />
+                        </div>
+                      </div>
                     </div>
                   );
                 })}

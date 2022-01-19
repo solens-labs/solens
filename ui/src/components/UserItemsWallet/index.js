@@ -1,5 +1,5 @@
 import React from "react";
-import NftCard from "../CardNft/userprofile";
+import NftCard from "../CardNft/userWallet";
 
 export default function UserWalletItems(props) {
   const { walletItems } = props;

@@ -15,100 +15,88 @@ export default function NftCard(props) {
   const price = parseFloat(item?.list_price?.toFixed(2));
   const listedMP = item?.list_mp || item.marketplace;
 
-  const history = useHistory();
-
-  // Generate link to go to internal NFT Detail Page
-  const goToNFTDetailPage = (mint) => {
-    history.push("/mint/" + mint);
-  };
-
   return (
-    <div className="nft_card_container col-12">
-      <div
-        className="nft_card col-12 d-flex flex-column align-items-center"
-        onClick={() => goToNFTDetailPage(item?.mint)}
-      >
-        <img
-          src={item?.image}
-          loading="lazy"
-          className="nft_card_image"
-          alt="nft_card"
-        />
+    <>
+      <img
+        src={item?.image}
+        loading="lazy"
+        className="nft_card_image"
+        alt="nft_card"
+      />
 
-        <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-2 ">
-          <div className="col-12 d-flex flex-column justify-content-start align-items-center">
-            <h5>{item?.name}</h5>
-          </div>
-          <div className="col-12 d-flex flex-row justify-content-between align-items-center">
-            <div>
-              {listedMP === "smb" && (
-                <a
-                  href={links?.smb}
-                  style={{ textDecoration: "none", color: "white" }}
-                  target="_blank"
-                >
-                  <img
-                    src={smb_logo}
-                    className=""
-                    style={{ height: 33, width: "auto" }}
-                    alt=""
-                  />
-                </a>
-              )}
-
-              {listedMP === "solanart" && (
-                // <a
-                //   href={links?.solanart}
-                //   style={{
-                //     textDecoration: "none",
-                //     color: "white",
-                //   }}
-                //   target="_blank"
-                // >
+      <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-2 ">
+        <div className="col-12 d-flex flex-column justify-content-start align-items-center">
+          <h5>{item?.name}</h5>
+        </div>
+        <div className="col-12 d-flex flex-row justify-content-between align-items-center">
+          <div>
+            {listedMP === "smb" && (
+              <a
+                href={links?.smb}
+                style={{ textDecoration: "none", color: "white" }}
+                target="_blank"
+              >
                 <img
-                  src={sa_logo}
-                  className=""
-                  style={{
-                    height: 33,
-                    width: "auto",
-                    marginLeft: -2,
-                  }}
-                  alt=""
-                />
-                // </a>
-              )}
-
-              {listedMP === "magiceden" && (
-                // <a
-                //   href={links?.magiceden}
-                //   style={{
-                //     textDecoration: "none",
-                //     color: "white",
-                //   }}
-                //   target="_blank"
-                // >
-                <img
-                  src={me_logo}
+                  src={smb_logo}
                   className=""
                   style={{ height: 33, width: "auto" }}
                   alt=""
                 />
-                // </a>
-              )}
-            </div>
+              </a>
+            )}
 
-            <h5 className="nft_list_price">
-              {price && price + " SOL"}
-              {/* <img
+            {listedMP === "solanart" && (
+              // <a
+              //   href={links?.solanart}
+              //   style={{
+              //     textDecoration: "none",
+              //     color: "white",
+              //   }}
+              //   target="_blank"
+              // >
+              <img
+                src={sa_logo}
+                className=""
+                style={{
+                  height: 33,
+                  width: "auto",
+                  marginLeft: -2,
+                }}
+                alt=""
+              />
+              // </a>
+            )}
+
+            {listedMP === "magiceden" && (
+              // <a
+              //   href={links?.magiceden}
+              //   style={{
+              //     textDecoration: "none",
+              //     color: "white",
+              //   }}
+              //   target="_blank"
+              // >
+              <img
+                src={me_logo}
+                className=""
+                style={{ height: 33, width: "auto" }}
+                alt=""
+              />
+              // </a>
+            )}
+          </div>
+
+          <h5 className="nft_list_price">
+            {price && price + " SOL"}
+            {/* <img
                 src={sol_logo}
                 alt="sol logo"
                 className="price_logo_lg"
                 style={{ marginLeft: 10 }}
               /> */}
-            </h5>
-          </div>
+          </h5>
         </div>
       </div>
-    </div>
+    </>
   );
 }

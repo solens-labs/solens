@@ -37,7 +37,7 @@ export default function TradingModule(props) {
   const [txHash, setTxHash] = useState("");
 
   const collectionInsights = () => {
-    history.push(`/collection/${collection.symbol}`);
+    history.push(`/nfts/${collection.symbol}`);
     return;
   };
 

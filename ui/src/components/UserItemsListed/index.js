@@ -1,5 +1,5 @@
 import React from "react";
-import NftCard from "../CardNft";
+import NftCard from "../CardNft/userListed";
 
 export default function UserListedItems(props) {
   const { listedItems } = props;

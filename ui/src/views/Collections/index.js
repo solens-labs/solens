@@ -79,7 +79,7 @@ export default function CollectionList(props) {
   const selectCollection = (collection) => {
     dispatch(setCollection(collection));
     const symbol = collection.symbol;
-    history.push("/collection/" + symbol);
+    history.push("/nfts/" + symbol);
   };
 
   const sendSortAnalytic = (sort) => {
