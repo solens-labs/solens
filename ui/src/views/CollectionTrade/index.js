@@ -12,8 +12,8 @@ import {
 } from "../../constants/constants";
 import axios from "axios";
 import SocialLinks from "../../components/SocialLinks";
-import NftCard from "../../components/NftCard";
-import NftCardView from "../../components/NftCard/userprofile";
+import NftCard from "../../components/CardNft";
+import NftCardView from "../../components/CardNft/userprofile";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { useDispatch, useSelector } from "react-redux";
 import {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { selectAllCollections, setCollection } from "../../redux/app";
-import CollectionCard from "../CollectionCard";
+import CollectionCard from "../CardCollection";
 import "./style.css";
 
 export default function CollectionSection(props) {

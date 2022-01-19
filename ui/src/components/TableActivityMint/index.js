@@ -4,7 +4,7 @@ import { useTable, useSortBy, usePagination } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-export default function ActivityTable(props) {
+export default function ActivityMintTable(props) {
   const { data } = props;
   const emptyObject = [
     {

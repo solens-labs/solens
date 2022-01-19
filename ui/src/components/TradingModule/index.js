@@ -185,12 +185,6 @@ export default function TradingModule(props) {
           </a>
         </div>
       )}
-      {/* <p className="terms_text m-0 mt-3 mb-1 p-0">
-        There may be a slight delay between confirmation and the item status
-        updating.
-        <br />
-        Trading functionality is currently in beta. Use at your own risk.
-      </p> */}
     </div>
   );
 }

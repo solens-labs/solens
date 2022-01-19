@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./style.css";
 import logo from "../../assets/images/logo2.png";
 import { Link, useHistory } from "react-router-dom";
-import CollectionSection from "../../components/CollectionSection";
+import CollectionSection from "../../components/SectionCollection";
 import { useSelector } from "react-redux";
 import {
   selectAllCollections,
@@ -17,8 +17,8 @@ import {
 } from "../../redux/app";
 import Loader from "../../components/Loader";
 import Timeframe from "../../components/Timeframe";
-import WalletsHomeSection from "../../components/WalletsHomeSection";
-import NftCard from "../../components/NftCard/homepage";
+import WalletsHomeSection from "../../components/SectionWallets";
+import NftCard from "../../components/CardNft/homepage";
 import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
 import collections_gif from "../../assets/images/collections.gif";

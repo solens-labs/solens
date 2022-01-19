@@ -17,8 +17,8 @@ import {
   lineColors,
   queries,
 } from "../../constants/constants";
-import TradesTable from "../../components/TradesTable";
-import TradersTable from "../../components/TradersTable";
+import TradesTable from "../../components/TableCollectionTrades";
+import TradersTable from "../../components/TableCollectionTraders";
 import convertTradesData from "../../utils/convertTradesData";
 import convertTradersData from "../../utils/convertTradersData";
 import {

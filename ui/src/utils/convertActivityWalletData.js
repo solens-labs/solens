@@ -19,33 +19,41 @@ const range = (len) => {
   return arr;
 };
 
-const addTransaction = (transaction, allCollections) => {
+const addTransaction = (transaction, allCollections, user) => {
   const date = new Date(transaction["date"]) || "xx/xx/xxxx";
-  const seller = transaction["seller"] || "";
-  const sellerLink = (
-    <a
-      href={explorerLink("account", transaction["seller"])}
-      target="_blank"
-      style={{ textDecoration: "none", color: themeColors[0] }}
-    >
-      {shortenAddress(transaction["seller"])}
-    </a>
-  );
-  const buyer = transaction["buyer"] || "";
-  const buyerLink =
-    transaction["buyer"] === seller ? (
-      ""
-    ) : (
+  let buyer = transaction["buyer"];
+  let seller = transaction["seller"];
+  let transactor = "";
+  let txType = "";
+  let detail = "";
+
+  if (buyer === user) {
+    transactor = (
       <a
-        href={explorerLink("account", transaction["buyer"])}
+        href={explorerLink("account", seller)}
         target="_blank"
         style={{ textDecoration: "none", color: themeColors[0] }}
       >
-        {shortenAddress(transaction["buyer"])}
+        {shortenAddress(seller)}
       </a>
     );
+    txType = <BuyIcon style={{ fill: themeColors[0] }} fontSize="medium" />;
+    detail = "Buy";
+  } else if (seller === user) {
+    transactor = (
+      <a
+        href={explorerLink("account", buyer)}
+        target="_blank"
+        style={{ textDecoration: "none", color: themeColors[0] }}
+      >
+        {shortenAddress(buyer)}
+      </a>
+    );
+    txType = <OfferIcon style={{ fill: themeColors[0] }} fontSize="small" />;
+    detail = "Sell";
+  }
 
-  const mintAddress = (
+  const mintLink = (
     <a
       href={`/mint/${transaction["mint"]}`}
       style={{ textDecoration: "none", color: themeColors[0] }}
@@ -53,9 +61,9 @@ const addTransaction = (transaction, allCollections) => {
       {shortenAddress(transaction["mint"])}
     </a>
   );
-  const mint = transaction["mint"];
   let priceNumber = Number(transaction["price"]).toFixed(4);
-  let price = "◎ " + parseFloat(priceNumber);
+  // let price = "◎ " + parseFloat(priceNumber);
+  let price = parseFloat(priceNumber);
 
   const namecheck =
     transaction["symbol"] &&
@@ -72,25 +80,38 @@ const addTransaction = (transaction, allCollections) => {
     ) : (
       "Unverified"
     );
-  const txType = transaction["type"];
+
   const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
 
+  const txHash = (
+    <a
+      href={explorerLink("tx", transaction["tx"])}
+      style={{ textDecoration: "none", color: themeColors[0] }}
+      target="_blank"
+    >
+      {transaction["tx"].slice(0, 6) + "..."}
+    </a>
+  );
+
   return {
-    symbol: symbol,
-    date: date.toLocaleDateString(),
-    price: price,
-    buyerLink: buyerLink,
-    sellerLink: sellerLink,
-    buyer: buyer,
-    seller: seller,
-    mint: mint,
     txType: txType,
-    mintAddress: mintAddress,
+    detail: detail,
+    mintLink: mintLink,
+    price: price,
     marketplace: marketplace,
+    symbol: symbol,
+    transactor: transactor,
+    txHash: txHash,
+    date: date.toLocaleDateString(),
   };
 };
 
-export default function convertData(transactions, allCollections, lens = 100) {
+export default function convertData(
+  transactions,
+  allCollections,
+  user,
+  lens = 100
+) {
   const makeDataLevel = () => {
     const requestedLength = Math.min(transactions.length, lens);
 
@@ -104,7 +125,7 @@ export default function convertData(transactions, allCollections, lens = 100) {
       const prevPrice = getPreviousPrice();
 
       return {
-        ...addTransaction(transactions[i], allCollections),
+        ...addTransaction(transactions[i], allCollections, user),
       };
     });
   };

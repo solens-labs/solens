@@ -20,12 +20,20 @@
   position: relative;
 }
 
-.sort_arrow {
+.sort_arrow_wallet {
   /* width: 25px; */
   position: absolute;
   right: 0;
-  padding-right: 10%;
+  padding-right: 5%;
   /* overflow: hidden; */
+}
+
+.sorted_asc {
+  color: rgb(134, 64, 117);
+}
+
+.sorted_desc {
+  color: rgb(65, 37, 156);
 }
 
 .activity_data {

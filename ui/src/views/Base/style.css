@@ -46,6 +46,14 @@
   min-height: 75vh;
 }
 
+.sorted_asc {
+  color: rgb(134, 64, 117);
+}
+
+.sorted_desc {
+  color: rgb(65, 37, 156);
+}
+
 .page_box {
   background: linear-gradient(rgba(75, 53, 134, 0.7), rgba(0, 0, 0, 0.7));
   /* border: 2px solid rgb(250, 163, 64); */
