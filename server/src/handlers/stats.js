@@ -240,7 +240,7 @@ exports.mintHistory = async (req, reply) => {
           type: 1,
           marketplace: 1,
           escrow: 1,
-          tx,
+          tx: 1,
           price: { $round: ["$price", 4] },
           _id: 0
         }
