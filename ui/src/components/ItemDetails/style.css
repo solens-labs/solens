@@ -1,0 +1,8 @@
+.detail_header {
+  color: grey !important;
+  text-decoration: underline;
+}
+
+.detail_column h5 {
+  color: red !important;
+}

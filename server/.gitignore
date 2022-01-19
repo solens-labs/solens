@@ -267,3 +267,5 @@ cython_debug/
 
 # Certificates
 https/*
+
+.DS_Store
