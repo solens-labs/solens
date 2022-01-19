@@ -1,7 +1,13 @@
 const statsHandlers = require('../handlers/stats')
 const schema = require('./statsSchema')
+const statusController = require('../controllers/statusController')
 
 const routes = [
+  {
+    method: 'GET',
+    url: '/status',
+    handler: statusController.getStatus
+  },
   {
     method: 'GET',
     url: '/stats/allCollections',
@@ -24,6 +30,18 @@ const routes = [
     url: '/stats/topNFTs',
     schema: schema.topNFTs,
     handler: statsHandlers.topNFTs
+  },
+  {
+    method: 'GET',
+    url: '/mintHistory',
+    schema: schema.mintHistory,
+    handler: statsHandlers.mintHistory
+  },
+  {
+    method: 'GET',
+    url: '/walletHistory',
+    schema: schema.walletHistory,
+    handler: statsHandlers.walletHistory
   },
   {
     method: 'GET',
@@ -78,6 +96,12 @@ const routes = [
     url: '/currentFloor',
     schema: schema.symbolRequired,
     handler: statsHandlers.currentFloor
+  },
+  {
+    method: 'GET',
+    url: '/walletListings',
+    schema: schema.walletRequired,
+    handler: statsHandlers.walletListings
   },
   // this is a temporary entdpoint
   {

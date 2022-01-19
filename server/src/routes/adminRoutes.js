@@ -1,3 +1,4 @@
+const statusController = require('../controllers/statusController')
 const collectionController = require('../controllers/collectionController')
 const transactionController = require('../controllers/transactionController')
 const hourlyStatsController = require('../controllers/hourlyStatsController')
@@ -9,6 +10,11 @@ const adminHandlers = require('../handlers/admin')
 const schema = require('./adminSchema')
 
 const routes = [
+  {
+    method: 'POST',
+    url: '/status',
+    handler: statusController.updateStatus
+  },
   {
     method: 'GET',
     url: '/collections',

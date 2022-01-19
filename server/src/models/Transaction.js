@@ -9,6 +9,7 @@ const transactionSchema = new mongoose.Schema({
   bidder: {type: String},
   price: {type: Number},
   date: {type: Date, require: true},
+  historical: {type: Boolean, default: false},
   marketplace: {
     type: String,
     require: true,
@@ -35,11 +36,14 @@ const transactionSchema = new mongoose.Schema({
       'accept_offer'
     ]
   },
-  tx: {type: String, require: true, unique: true, index: true},
+  tx: {type: String, require: true},
+  ix: {type: Number}
 })
 
 // for getting live floor, listings
 transactionSchema.index({ 'symbol': 1, 'type': 1, 'date': -1, 'price': -1 } )
+// transactionSchema.index({ 'historical': 1, 'symbol': 1, 'type': 1, 'date': -1, 'price': -1 } )
+// transactionSchema.index({ 'historical': 1, 'symbol': 1, 'type': 1, 'mint': 1, 'date': -1, 'price': -1 } )
 
 // for getting topNFTs
 transactionSchema.index({ 'symbol': 1, 'type': 1, 'price': -1, 'date': -1} )
@@ -51,5 +55,9 @@ transactionSchema.index({ 'mint': 1, 'type': 1, 'date': -1} )
 // for getting wallet history
 transactionSchema.index({ 'owner': 1, 'type': 1, 'date': -1} )
 transactionSchema.index({ 'new_owner': 1, 'type': 1, 'date': -1} )
+
+// tx uniqueness
+transactionSchema.index({ 'tx': 1, 'ix': 1}, {unique: true})
+
 
 module.exports = mongoose.model('Transaction', transactionSchema)

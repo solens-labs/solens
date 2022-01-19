@@ -207,7 +207,7 @@ async function updateAlltimeStats(symbol) {
     symbols = symbols.map(x => x.symbol)
     console.log(symbols)
     for (let i = 0; i < symbols.length; i++) {
-      // await updateTransactions(symbols[i])
+      await updateTransactions(symbols[i])
       await updateHourlyStats(symbols[i])
       await updateDailyStats(symbols[i])
       await updateAlltimeStats(symbols[i]) 
@@ -693,30 +693,162 @@ async function updateAlltimeStats(symbol) {
 //   ])
 //   return entries
 // }
+const timer = ms => new Promise( res => setTimeout(res, ms));
+exports.test = async (req, reply) => {
+  // let mints = await Transaction.aggregate([
+  //   {$sort: {mint: 1}},
+  //   {$group: {
+  //     _id: {mint: "$mint"}
+  //   }},
+  //   {$skip: 476000},
+  //   {$limit: 400000},
+  //   {$project: {
+  //     _id: 0,
+  //     mint: "$_id.mint"
+  //   }}
+  // ])
+  // mints = mints.map(m => m.mint)
+  // console.log(mints.length)
+  // return {}
+  let mints = []
+  let col = await Collection.find({}, {_id: 0, mint: 1}).skip(737)
+  col = col.map(m => {
+    console.log(mints.length)
+    mints.push(...m.mint)
+  })
+  
+  // return mints.length
+
+  // let mints = await Collection.findOne(
+  //   {
+  //     symbol: 'solana_monkey_business'
+  //   },
+  //   {
+  //     _id: 0,
+  //     mint: 1
+  //   }
+  // )
+  // mints = mints.mint
+
+  let modifiedCount = 0
+  for (let i = 0; i < mints.length; i++) {
+    await timer(3)
+    const mint = mints[i]
+    if (!mint) continue
+    Transaction.aggregate([
+      {$match : {
+        mint : mint,
+        historical: false
+      }},
+      {$sort: {date: -1}},
+      {$project: {
+        date: 1,
+        type: 1,
+        _id: 0
+      }}
+    ]).then (txs => {
+      for (let j = 0; j < txs.length; j++) {
+      
+        const t = txs[j]
+        if (t.type == 'list' || t.type == 'update' || t.type == 'buy' || t.type == 'accept_offer' || t.type == 'cancel') {
+          
+          Transaction.updateMany(
+            {
+              $and: [
+                {mint: mint},
+                {historical: false},
+                {date: { $lt: t.date}}
+              ]
+              
+            },
+            [
+              {$set: {historical: true}}
+            ]
+          ).then(res => {
+            modifiedCount += res.modifiedCount
+            console.log(i, mint, modifiedCount)
+          })
+          break
+        }
+  
+      }
+    })
+    
+  }
+  return modifiedCount
+
+}
+
 
 // exports.test = async (req, reply) => {
-//   const entries = await Transaction.aggregate([
-//     {$match:{
-//       new_owner: 'HFPaT6WKk9SkwtYVZ5m5Sqw7ZbyehGu9GHjsctigm49S',
-//       $and: [
-//         {date: {$gte: new Date('2021-08-15T09:00:00.000Z')}},
-//         {date: {$lt: new Date('2021-08-15T10:00:00.000Z')}},
-//       ],
-//       symbol: 'degenape'
+
+//   // return Transaction.find({historical:true}).count()
+
+//   return Transaction.aggregate([
+//     {$match: {
+//       symbol: 'solana_monkey_business',
+//       historical: false,
+//       ...helpers.matchMainTxs()
 //     }},
-//     {$group: {
-//       _id: 0,
-//       count: {$sum: 1}
-//     }}
-//     // {$sort: {volume: -1}},
-//     // {$limit: 10}
-//   ])
-//   return entries
+//     {$sort: {mint: 1, date: -1}},
+//     {$group : {
+//       _id: {mint: '$mint'},
+//       owner: {$first: '$owner'},
+//       price: {$first: '$price'},
+//       type: {$first: '$type'},
+//       marketplace: {$first: '$marketplace'}
+//     }},
+//     {$match: {
+//       $or: [
+//         {type: { $eq: "list"}},
+//         {type: { $eq: "update"}},
+//       ]
+//     }},
+//     {$project : {
+//       mint: '$_id.mint',
+//       owner: 1,
+//       price: 1,
+//       type: 1,
+//       escrow: 1,
+//       marketplace: 1,
+//       _id: 0
+//     }},
+//   ]).explain()
+
+// }
+
+// exports.test = async (req, reply) => {
+//   return Transaction.find({mint: "8idfnAnPMs7qPze1ubRfwvuVWDKXtgx2wYc4WitEorsj", historical: false}).sort({date: 1}).explain()
 // }
 
 exports.test = async (req, reply) => {
-  return await Wallets.aggregate([ 
-    { $indexStats: { } },
-    { $sort: {"accesses.ops": 1} }
+  return Transaction.aggregate([
+    {$match: {
+      owner: "4Ye5P44dKMUbK3E3SZmGA4G6hxTePWPz8oQb92EG8yTW",
+      historical: false,
+      ...helpers.matchMainTxs()
+    }},
+    {$sort: {date: -1}},
+    {$group : {
+      _id: {mint: '$mint'},
+      owner: {$first: '$owner'},
+      price: {$first: '$price'},
+      type: {$first: '$type'},
+      marketplace: {$first: '$marketplace'}
+    }},
+    {$match: {
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+      ]
+    }},
+    {$project : {
+      mint: '$_id.mint',
+      owner: 1,
+      price: 1,
+      escrow: 1,
+      marketplace: 1,
+      _id: 0
+    }},
   ])
 }
