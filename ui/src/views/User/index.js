@@ -24,7 +24,9 @@ import ReactGA from "react-ga";
 import { api } from "../../constants/constants";
 import axios from "axios";
 import convertWalletActivity from "../../utils/convertActivityWalletData";
-import ActivityTable from "../../components/TableActivityWallet";
+import UserActivity from "../../components/UserActivity";
+import UserListedItems from "../../components/UserItemsListed";
+import UserWalletItems from "../../components/UserItemsWallet";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -34,16 +36,14 @@ export default function User(props) {
 
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
-  // const nfts = useSelector(selectUserNFTs);
-  const [nfts, setNfts] = useState([]);
-  // const [walletAddress, setWalletAddress] = useState("");
+
   const [listedItems, setListedItems] = useState([]);
-  // const [toggleItemView, setToggleItemView] = useState("wallet");
-  const [seeAllItems, setSeeAllItems] = useState(false);
-  const [loadedItems, setLoadedItems] = useState(false);
-  const [loadedListed, setLoadedListed] = useState(false);
+  const [walletItems, setWalletItems] = useState([]);
   const [activity, setActivity] = useState([]);
+
   const [seeActivity, setSeeActivity] = useState(true);
+  const [seeAllItems, setSeeAllItems] = useState(false);
+  const [currentView, setCurrentView] = useState("activity");
 
   useEffect(() => {
     if (
@@ -58,7 +58,6 @@ export default function User(props) {
         const activity = response.data;
         const user = wallet.publicKey.toBase58();
         const converted = convertWalletActivity(activity, allCollections, user);
-        console.log({ converted });
         setActivity(converted);
       });
     }
@@ -75,17 +74,9 @@ export default function User(props) {
     }
   }, [wallet]);
 
-  // Check if NFTs have already been fetched previously
-  useEffect(() => {
-    if (nfts.length > 0) {
-      setLoadedItems(true);
-    }
-  }, [nfts]);
-
   // Get wallet token accounts, filter for NFTs, and fetch/set metadata
   useEffect(async () => {
     if (wallet && wallet.connected && wallet.publicKey) {
-      setLoadedItems(false);
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
       const nftMetadataPromise = userNftTokenAccts.map(async (token, i) => {
@@ -93,22 +84,19 @@ export default function User(props) {
       });
       const nftMetadata = await Promise.all(nftMetadataPromise);
       // dispatch(setUserNFTs(nftMetadata));
-      setNfts(nftMetadata);
-      setLoadedItems(true);
+      setWalletItems(nftMetadata);
     }
 
-    if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
+    if (!wallet.connected || (wallet.disconnecting && walletItems.length > 0)) {
       // dispatch(setUserNFTs([]));
-      setNfts([]);
+      setWalletItems([]);
       dispatch(setAddress(""));
-      setLoadedItems(false);
     }
   }, [wallet]);
 
   // Get listed items and fetch/set metadata
   useEffect(async () => {
     if (wallet && wallet.connected && wallet.publicKey) {
-      setLoadedListed(false);
       const apiRequest =
         api.server.walletListings + wallet.publicKey.toBase58();
       const fetchListed = axios.get(apiRequest).then(async (response) => {
@@ -124,13 +112,11 @@ export default function User(props) {
         const nftMetadata = await Promise.all(nftMetadataPromise);
 
         setListedItems(nftMetadata);
-        setLoadedListed(true);
       });
     }
 
-    if (!wallet.connected || (wallet.disconnecting && nfts.length > 0)) {
+    if (!wallet.connected || (wallet.disconnecting && walletItems.length > 0)) {
       setListedItems([]);
-      setLoadedListed(false);
     }
   }, [wallet]);
 
@@ -152,144 +138,80 @@ export default function User(props) {
         )}
       </div>
 
-      {wallet.connected && (
+      {/* {wallet.connected && (
         <div className="col-12 d-flex flex-column align-items-center">
           <h1>User Profile</h1>
-          {/* <div className="col-12 d-flex justify-content-center mt-2">
-            <Walletinfo
-              address={walletAddress}
-              balance={walletBalance}
-              nfts={nfts.length}
-              listed={listedItems.length}
-            />
-          </div> */}
         </div>
-      )}
+      )} */}
 
       {wallet.connected && (
         <div className="col-12 col-lg-8 col-xl-6 d-flex flex-row flex-wrap justify-content-center mb-3">
           <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
             <div
-              className={`btn-button btn-tall btn-wide ${
-                seeAllItems && !seeActivity
-                  ? "btn_color_selected"
-                  : "btn_color_outside"
-              } d-flex mt-2 mb-2`}
+              className={`${
+                currentView === "activity"
+                  ? "btn_color_outside"
+                  : "btn_color_selected"
+              } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
               onClick={() => {
-                setSeeAllItems(false);
-                setSeeActivity(false);
+                setCurrentView("activity");
               }}
             >
-              {!seeAllItems && !seeActivity && (
+              {currentView === "activity" && (
+                <div className="btn_color_inner">Activity</div>
+              )}
+              {currentView !== "activity" && "Activity"}
+            </div>
+          </div>
+
+          <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
+            <div
+              className={`${
+                currentView === "listed"
+                  ? "btn_color_outside"
+                  : "btn_color_selected"
+              } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
+              onClick={() => {
+                setCurrentView("listed");
+              }}
+            >
+              {currentView === "listed" && (
                 <div className="btn_color_inner">Listed</div>
               )}
-              {seeAllItems || seeActivity ? "Listed" : ""}
+              {currentView !== "listed" ? "Listed" : ""}
             </div>
           </div>
 
           <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
             <div
-              className={`btn-button btn-tall btn-wide ${
-                !seeAllItems && !seeActivity
-                  ? "btn_color_selected"
-                  : "btn_color_outside"
-              } d-flex mt-2 mb-2`}
+              className={`${
+                currentView === "wallet"
+                  ? "btn_color_outside"
+                  : "btn_color_selected"
+              } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
               onClick={() => {
-                setSeeAllItems(true);
-                setSeeActivity(false);
+                setCurrentView("wallet");
               }}
             >
-              {seeAllItems && !seeActivity && (
+              {currentView === "wallet" && (
                 <div className="btn_color_inner">Wallet</div>
               )}
-              {!seeAllItems || seeActivity ? "Wallet" : ""}
-            </div>
-          </div>
-
-          <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
-            <div
-              className={`btn-button btn-tall btn-wide ${
-                !seeActivity ? "btn_color_selected" : "btn_color_outside"
-              } d-flex mt-2 mb-2`}
-              onClick={() => {
-                setSeeActivity(true);
-              }}
-            >
-              {seeActivity && <div className="btn_color_inner">Activity</div>}
-              {!seeActivity && "Activity"}
+              {currentView !== "wallet" ? "Wallet" : ""}
             </div>
           </div>
         </div>
       )}
 
-      {!seeAllItems && !seeActivity && (
-        <>
-          <div className="stat_container col-12 col-lg-3 p-2">
-            <div className="stat p-2">
-              <h2>{listedItems.length} Listed Items</h2>
-              {/* <h4>On Exchanges</h4> */}
-            </div>
-          </div>
-          <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-            {listedItems.length > 0 &&
-              listedItems.map((item, i) => {
-                return (
-                  <div
-                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                    key={i}
-                  >
-                    <NftCardListed item={item} links={""} />
-                  </div>
-                );
-              })}
-
-            <div className="mt-5">
-              {wallet.connected && !loadedListed && <Loader />}
-            </div>
-          </div>
-        </>
+      {wallet.connected && currentView === "listed" && (
+        <UserListedItems listedItems={listedItems} />
       )}
 
-      {seeAllItems && !seeActivity && (
-        <>
-          <div className="stat_container col-12 col-lg-3 p-2">
-            <div className="stat p-2">
-              <h2>{nfts.length} Unlisted Items</h2>
-              {/* <h4>In Wallet</h4> */}
-            </div>
-          </div>
-
-          <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-            {nfts.length > 0 &&
-              nfts.map((item, i) => {
-                return (
-                  <div
-                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                    key={i}
-                  >
-                    <NftCard item={item} links={""} />
-                  </div>
-                );
-              })}
-
-            <div className="mt-5">
-              {wallet.connected && !loadedItems && <Loader />}
-            </div>
-          </div>
-        </>
+      {wallet.connected && currentView === "wallet" && (
+        <UserWalletItems walletItems={walletItems} />
       )}
 
-      {wallet.connected && seeActivity && (
-        <>
-          <div className="stat_container col-12 col-lg-3 p-2">
-            <div className="stat p-2">
-              <h2>Recent Activity</h2>
-            </div>
-          </div>
-          <div className="chartbox col-12 col-lg-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-            <ActivityTable data={activity} />
-          </div>
-        </>
+      {wallet.connected && currentView === "activity" && (
+        <UserActivity activity={activity} />
       )}
     </div>
   );

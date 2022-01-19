@@ -55,213 +55,223 @@ const Navigation = (props) => {
   };
 
   return (
-    <nav className="navbar d-flex flex-row justify-content-between align-items-center">
-      <div className="col-4 col-lg-2 d-flex justify-content-start">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <img src={logo2} className="nav_logo" alt="logo" />
-        </Link>
-      </div>
+    <>
+      {/* <div className="maintenance col-12 d-flex justify-content-center">
+        Website under maintenance. Some stats may be delayed.
+      </div> */}
+      <nav className="navbar d-flex flex-row justify-content-between align-items-center">
+        <div className="col-4 col-lg-2 d-flex justify-content-start">
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <img src={logo2} className="nav_logo" alt="logo" />
+          </Link>
+        </div>
 
-      <div className="col-lg-6 d-none d-lg-flex justify-content-around align-items-center">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
-            <div className="d-none d-lg-block">
-              <HomeIcon
-                fontSize={"medium"}
-                className="nav_icon"
-                style={{ fill: themeColors[0] }}
-              />
+        <div className="col-lg-6 d-none d-lg-flex justify-content-around align-items-center">
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container">
+              <div className="d-none d-lg-block">
+                <HomeIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: themeColors[0] }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
             </div>
-            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
-          </div>
-        </Link>
-        <Link to="/launch" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container ">
-            <div className="d-none d-lg-block">
-              <RocketLaunchIcon
-                fontSize={"medium"}
-                className="nav_icon"
-                style={{ fill: themeColors[0] }}
-              />
+          </Link>
+          <Link to="/launch" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container ">
+              <div className="d-none d-lg-block">
+                <RocketLaunchIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: themeColors[0] }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+                launchzone
+              </h1>
             </div>
-            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
-              launchzone
-            </h1>
-          </div>
-        </Link>
-        <Link to="/collections" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container">
-            <div className="d-none d-lg-block">
-              <CollectionsIcon
-                fontSize={"medium"}
-                className="nav_icon"
-                style={{ fill: themeColors[0] }}
-              />
+          </Link>
+          <Link to="/collections" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container">
+              <div className="d-none d-lg-block">
+                <CollectionsIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: themeColors[0] }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+                collections
+              </h1>
             </div>
-            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
-              collections
-            </h1>
-          </div>
-        </Link>
-        <Link to="/wallets" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container ">
-            <div className="d-none d-lg-block">
-              <AccountBalanceWalletIcon
-                fontSize={"medium"}
-                className="nav_icon"
-                style={{ fill: themeColors[0] }}
-              />
+          </Link>
+          <Link to="/wallets" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container ">
+              <div className="d-none d-lg-block">
+                <AccountBalanceWalletIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: themeColors[0] }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+                wallets
+              </h1>
             </div>
-            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
-              wallets
-            </h1>
-          </div>
-        </Link>
-        <Link to="/user" style={{ textDecoration: "none" }}>
-          <div className="nav_link_container ">
-            <div className="d-none d-lg-block">
-              <AccountCircleOutlinedIcon
-                fontSize={"medium"}
-                className="nav_icon"
-                style={{ fill: themeColors[0] }}
-              />
+          </Link>
+          <Link to="/user" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container ">
+              <div className="d-none d-lg-block">
+                <AccountCircleOutlinedIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: themeColors[0] }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+                profile
+              </h1>
             </div>
-            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
-              profile
-            </h1>
-          </div>
-        </Link>
-      </div>
+          </Link>
+        </div>
 
-      <div className="col-lg-2 d-none d-lg-flex justify-content-end align-items-center">
-        {/* <Link to="/user" style={{ textDecoration: "none", color: "white" }}>
+        <div className="col-lg-2 d-none d-lg-flex justify-content-end align-items-center">
+          {/* <Link to="/user" style={{ textDecoration: "none", color: "white" }}>
           <AccountCircleOutlinedIcon style={{ marginRight: 20 }} />
         </Link> */}
 
-        <WalletMultiButton
-          className="connect_button"
-          style={{
-            border: "1px solid black",
-            color: "white",
-            borderRadius: 15,
-          }}
-        />
-      </div>
-
-      {!menu && (
-        <div onClick={showMenu} className="menu_icon">
-          <Menu />
+          <WalletMultiButton
+            className="connect_button"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              borderRadius: 15,
+            }}
+          />
         </div>
-      )}
 
-      {menu && <Close onClick={() => setMenu(false)} className="close_icon" />}
+        {!menu && (
+          <div onClick={showMenu} className="menu_icon">
+            <Menu />
+          </div>
+        )}
 
-      <div
-        className={`${
-          menu && "active"
-        } slide-menu d-flex justify-content-between`}
-      >
-        <div className="mobile_menu">
-          <div className="col-12 d-flex flex-column align-items-end">
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <div className="col-12 d-flex">
-                <h1 className="nav_link" onClick={() => showMenu()}>
-                  home
-                </h1>
-                <div className="p-1 pt-0 pb-1 pr-0">
-                  <HomeIcon
-                    fontSize={"small"}
-                    className="nav_icon"
-                    style={{ fill: themeColors[0] }}
-                  />
-                </div>
-              </div>
-            </Link>
-            <Link to="/launch" style={{ textDecoration: "none" }}>
-              <div className="col-12 d-flex">
-                <h1 className="nav_link" onClick={() => showMenu()}>
-                  launchzone
-                </h1>
-                <div className="p-1 pt-0 pb-1 pr-0">
-                  <RocketLaunchIcon
-                    fontSize={"small"}
-                    className="nav_icon"
-                    style={{ fill: themeColors[0] }}
-                  />
-                </div>
-              </div>
-            </Link>
-            <Link to="/collections" style={{ textDecoration: "none" }}>
-              <div className="col-12 d-flex">
-                <h1 className="nav_link" onClick={() => showMenu()}>
-                  collections
-                </h1>
-                <div className="p-1 pt-0 pb-1 pr-0">
-                  <CollectionsIcon
-                    fontSize={"small"}
-                    className="nav_icon"
-                    style={{ fill: themeColors[0] }}
-                  />
-                </div>
-              </div>
-            </Link>
-            <Link to="/wallets" style={{ textDecoration: "none" }}>
-              <div className="col-12 d-flex">
-                <h1 className="nav_link" onClick={() => showMenu()}>
-                  wallets
-                </h1>
-                <div className="p-1 pt-0 pb-1 pr-0">
-                  <AccountBalanceWalletIcon
-                    fontSize={"small"}
-                    className="nav_icon"
-                    style={{ fill: themeColors[0] }}
-                  />
-                </div>
-              </div>
-            </Link>
-            <Link to="/user" style={{ textDecoration: "none" }}>
-              <div className="col-12 d-flex">
-                <h1 className="nav_link" onClick={() => showMenu()}>
-                  profile
-                </h1>
-                <div className="p-1 pt-0 pb-1 pr-0">
-                  <AccountCircleOutlinedIcon
-                    fontSize={"small"}
-                    className="nav_icon"
-                    style={{ fill: themeColors[0] }}
-                  />
-                </div>
-              </div>
-            </Link>
-            <div className="d-flex flex-row col-6 justify-content-around">
-              <a
-                href={links.twitter.url}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <TwitterIcon style={{ fill: "white" }} className="icon_link" />
-              </a>
+        {menu && (
+          <Close onClick={() => setMenu(false)} className="close_icon" />
+        )}
 
-              <a
-                href={links.medium.url}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <MediumIcon style={{ fill: "white" }} className="icon_link" />
-              </a>
+        <div
+          className={`${
+            menu && "active"
+          } slide-menu d-flex justify-content-between`}
+        >
+          <div className="mobile_menu">
+            <div className="col-12 d-flex flex-column align-items-end">
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <div className="col-12 d-flex">
+                  <h1 className="nav_link" onClick={() => showMenu()}>
+                    home
+                  </h1>
+                  <div className="p-1 pt-0 pb-1 pr-0">
+                    <HomeIcon
+                      fontSize={"small"}
+                      className="nav_icon"
+                      style={{ fill: themeColors[0] }}
+                    />
+                  </div>
+                </div>
+              </Link>
+              <Link to="/launch" style={{ textDecoration: "none" }}>
+                <div className="col-12 d-flex">
+                  <h1 className="nav_link" onClick={() => showMenu()}>
+                    launchzone
+                  </h1>
+                  <div className="p-1 pt-0 pb-1 pr-0">
+                    <RocketLaunchIcon
+                      fontSize={"small"}
+                      className="nav_icon"
+                      style={{ fill: themeColors[0] }}
+                    />
+                  </div>
+                </div>
+              </Link>
+              <Link to="/collections" style={{ textDecoration: "none" }}>
+                <div className="col-12 d-flex">
+                  <h1 className="nav_link" onClick={() => showMenu()}>
+                    collections
+                  </h1>
+                  <div className="p-1 pt-0 pb-1 pr-0">
+                    <CollectionsIcon
+                      fontSize={"small"}
+                      className="nav_icon"
+                      style={{ fill: themeColors[0] }}
+                    />
+                  </div>
+                </div>
+              </Link>
+              <Link to="/wallets" style={{ textDecoration: "none" }}>
+                <div className="col-12 d-flex">
+                  <h1 className="nav_link" onClick={() => showMenu()}>
+                    wallets
+                  </h1>
+                  <div className="p-1 pt-0 pb-1 pr-0">
+                    <AccountBalanceWalletIcon
+                      fontSize={"small"}
+                      className="nav_icon"
+                      style={{ fill: themeColors[0] }}
+                    />
+                  </div>
+                </div>
+              </Link>
+              <Link to="/user" style={{ textDecoration: "none" }}>
+                <div className="col-12 d-flex">
+                  <h1 className="nav_link" onClick={() => showMenu()}>
+                    profile
+                  </h1>
+                  <div className="p-1 pt-0 pb-1 pr-0">
+                    <AccountCircleOutlinedIcon
+                      fontSize={"small"}
+                      className="nav_icon"
+                      style={{ fill: themeColors[0] }}
+                    />
+                  </div>
+                </div>
+              </Link>
+              <div className="d-flex flex-row col-6 justify-content-around">
+                <a
+                  href={links.twitter.url}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <TwitterIcon
+                    style={{ fill: "white" }}
+                    className="icon_link"
+                  />
+                </a>
 
-              <a
-                href={links.email.contact}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <EmailIcon style={{ fill: "white" }} className="icon_link" />
-              </a>
+                <a
+                  href={links.medium.url}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <MediumIcon style={{ fill: "white" }} className="icon_link" />
+                </a>
+
+                <a
+                  href={links.email.contact}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <EmailIcon style={{ fill: "white" }} className="icon_link" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 

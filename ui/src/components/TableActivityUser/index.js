@@ -72,7 +72,7 @@ export default function ActivityWalletTable(props) {
         accessor: "transactor",
       },
       {
-        Header: "TX",
+        Header: "HASH",
         accessor: "txHash",
       },
       {
