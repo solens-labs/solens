@@ -17,16 +17,20 @@ import { Typography } from "@material-ui/core";
 import convertActivityData from "../../utils/convertActivityData";
 import axios from "axios";
 import ActivityTable from "../../components/ActivityTable";
-import sol_logo from "../../assets/images/sol_logo.png";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
+import ReactGA from "react-ga";
+import {
+  getListedInfoFromBackend,
+  getListedInfoFromChain,
+} from "../../utils/getListedDetails";
 
 export default function MintPage(props) {
   const { address } = useParams();
   const { connection } = useConnection();
 
-  // Token Detials State
+  // Token Details State
   const [tokenMetadata, setTokenMetadata] = useState({});
   const [collectionInfo, setCollectionInfo] = useState("");
   const [royalty, setRoyalty] = useState(0);
@@ -36,6 +40,9 @@ export default function MintPage(props) {
   const [activity, setActivity] = useState([]);
   const [tokenAccount, setTokenAccount] = useState("");
   const [ownerAccount, setOwnerAccount] = useState("");
+  const [listed, setListed] = useState(false);
+  const [listedDetails, setListedDetails] = useState({});
+  const [floorDetails, setFloorDetails] = useState({});
 
   // Accordions Expansion State
   const [detailsExpanded, setDetailsExpanded] = useState(false);
@@ -46,6 +53,29 @@ export default function MintPage(props) {
   const received = Object.keys(tokenMetadata).length > 0;
   const [invalidToken, setInvalidToken] = useState(false);
   const [invalidCollection, setInvalidCollection] = useState(false);
+  const [unsupportedToken, setUnsupportedToken] = useState(false);
+
+  // Analytics note which mint was visited
+  useEffect(() => {
+    if (received && !invalidToken) {
+      ReactGA.event({
+        category: "User",
+        action: "Mint Visit",
+        label: address,
+      });
+    }
+  }, [received, invalidToken]);
+
+  // Analytics send unsuppored collection tokens
+  useEffect(() => {
+    if (received && !invalidToken && invalidCollection) {
+      ReactGA.event({
+        category: "Collection",
+        action: "Unsupported Collection",
+        label: address,
+      });
+    }
+  }, [received, invalidToken, invalidCollection]);
 
   // Fetch mint address metadata
   useEffect(async () => {
@@ -61,7 +91,7 @@ export default function MintPage(props) {
     }
   }, [address]);
 
-  // Fetch mint's collection symbol & data
+  // Fetch mint's collection symbol, data & floor
   useEffect(async () => {
     if (address && collectionInfo.length === 0) {
       const apiRequest = api.server.mintSymbol + address;
@@ -73,6 +103,7 @@ export default function MintPage(props) {
         }
 
         if (symbol) {
+          // Request to get Collection Info
           const apiRequest2 = api.server.collection + queries.symbol + symbol;
           const request2 = axios.get(apiRequest2).then((response) => {
             const info = response.data[0];
@@ -83,8 +114,31 @@ export default function MintPage(props) {
             });
             setMarketplaces(marketplacesArray);
           });
+
+          // Request Collection floor
+          const apiRequest3 = api.server.currentFloor + queries.symbol + symbol;
+          const currentFloor = axios.get(apiRequest3).then((response) => {
+            const [floorData] = response.data;
+            setFloorDetails(floorData);
+          });
         }
       });
+    }
+  }, [address]);
+
+  // Fetch listed item's details from chain & backend
+  useEffect(async () => {
+    const chainDetails = await getListedInfoFromChain(address);
+    if (chainDetails) {
+      setListed(true);
+      setListedDetails(chainDetails);
+      return;
+    }
+
+    const backendDetails = await getListedInfoFromBackend(address);
+    if (backendDetails) {
+      setListed(true);
+      setListedDetails(backendDetails);
     }
   }, [address]);
 
@@ -167,12 +221,17 @@ export default function MintPage(props) {
 
         <div className="trading col-12 col-lg-6 d-flex flex-column mt-4 mt-lg-0">
           <TradingModule
+            address={address}
             invalid={invalidToken}
             invalidCollection={invalidCollection}
             item={tokenMetadata}
             collection={collectionInfo}
+            tokenAccount={tokenAccount}
             ownerAccount={ownerAccount}
-            marketplaces={marketplaces}
+            listed={listed}
+            listedDetails={listedDetails}
+            floorDetails={floorDetails}
+            setListed={setListed}
           />
 
           <div className="details col-12 mt-3 mt-lg-0">
@@ -203,6 +262,7 @@ export default function MintPage(props) {
                   royalty={royalty}
                   received={received}
                   marketplaces={marketplaces}
+                  listedDetails={listedDetails}
                   tokenAccount={tokenAccount}
                   ownerAccount={ownerAccount}
                 />

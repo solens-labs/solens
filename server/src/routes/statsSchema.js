@@ -48,13 +48,25 @@ exports.mintHistory = {
   }
 }
 
-exports.listings = {
+exports.symbolRequired = {
   querystring: {
     type: 'object',
     additionalProperties: false,
     required: ['symbol'],
     properties: {
       symbol: { type: 'string' },
+    }
+  }
+}
+
+exports.tmpSymbolOrMintRequired = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['symbol'],
+    properties: {
+      symbol: { type: 'string' },
+      mint: { type: 'string' }
     }
   }
 }

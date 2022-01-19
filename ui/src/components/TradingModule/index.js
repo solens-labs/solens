@@ -1,82 +1,196 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 import "../Buttons/style.css";
-import sa_logo from "../../assets/images/sa_logo.png";
-import me_logo from "../../assets/images/me_logo_white.png";
-import smb_logo from "../../assets/images/smb_logo.png";
-import ss_logo from "../../assets/images/ss_logo.png";
+import solens_symbol from "../../assets/images/logo3.png";
 import sol_logo from "../../assets/images/sol_logo.png";
 import { exchangeApi, explorerLink } from "../../constants/constants";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAddress } from "../../redux/app";
+import TradeListing from "../TradeListing";
+import TradePurchase from "../TradePurchase";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import TradeCancel from "../TradeCancel";
+import Loader from "../Loader";
+import { marketplaceSelect } from "../../utils/collectionStats";
+import sa_logo from "../../assets/images/ss_logo.png";
 
 export default function TradingModule(props) {
-  const { item, mint, collection, marketplaces } = props;
+  const {
+    address,
+    invalid,
+    invalidCollection,
+    item,
+    collection,
+    ownerAccount,
+    tokenAccount,
+    listed,
+    listedDetails,
+    floorDetails,
+    setListed,
+  } = props;
+  const user = useSelector(selectAddress);
   const history = useHistory();
+  const { price, owner, marketplace, mint } = listedDetails;
+
+  const [loading, setLoading] = useState(false);
+  const [txHash, setTxHash] = useState("");
 
   const collectionInsights = () => {
     history.push(`/collection/${collection.symbol}`);
     return;
   };
 
+  const floorDifference =
+    ((price - floorDetails.floor) / floorDetails.floor) * 100;
+
   return (
-    <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-between p-2 pb-3">
-      <h1 className="item_title m-0 p-0">{item ? item.name : "Loading..."}</h1>
-      <h4 className="item_collection m-0 p-0" onClick={collectionInsights}>
-        {collection?.name}
-      </h4>
+    <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-around p-2 pb-3">
+      <div className="item_title_and_details col-12 d-flex flex-column align-items-center">
+        <h1 className="item_title m-0 p-0">
+          {invalid ? "Invalid Token" : item.name}
+        </h1>
 
-      {/* <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3">
-        <h4 className="m-0 p-0">Status: Listed</h4>
-        <h4 className="m-0 p-0">
-          Price: <img src={sol_logo} alt="sol logo" className="price_logo_lg" />
-          {item.price || 200}
+        <h4 className="item_collection m-0 p-0" onClick={collectionInsights}>
+          {collection?.name}
+          {invalid && "Please check the Mint Address"}
+          {!invalid && invalidCollection && "Unsupported Collection"}
         </h4>
-      </div> */}
 
-      <div className="trading_buttons d-flex flex-wrap justify-content-around col-12 mt-3">
-        {marketplaces.map((mp, i) => {
-          return (
-            <div className="col col-md-4 p-1 p-md-2">
-              <a href={exchangeApi[mp].itemDetails + item.mint} target="_blank">
-                <button className="btn_trade">
-                  <div className="btn_trade_inner">
-                    <img
-                      src={
-                        mp === "magiceden"
-                          ? me_logo
-                          : mp === "solanart"
-                          ? sa_logo
-                          : mp === "smb"
-                          ? smb_logo
-                          : ""
-                      }
-                      alt=""
-                      style={{
-                        height: 45,
-                        background: "transparent",
-                        margin: -8,
-                      }}
-                    />
-                  </div>
-                </button>
-              </a>
-            </div>
-          );
-        })}
-        <div className="col col-md-4 p-1 p-md-2">
-          <a href={explorerLink("token", mint)} target="_blank">
-            <button className="btn_trade">
-              <div className="btn_trade_inner">
+        <hr
+          style={{ color: "rgb(65, 37, 156)", width: "100%", height: 2 }}
+          className="m-0 mt-2 p-0"
+        />
+
+        {listed && (
+          <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3 mb-2">
+            <h4 className="m-0 p-0">
+              Listed on {marketplaceSelect(marketplace)}
+            </h4>
+            <h4 className="item_price m-0 mt-2 p-0">{price} SOL</h4>
+            {/* <h5 className="" style={{ fontSize: "1rem" }}>
+              {floorDifference > 0 &&
+                floorDifference.toFixed(2) + "% above floor"}
+            </h5> */}
+          </div>
+        )}
+
+        {!listed && !invalid && (
+          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-2">
+            <h4 className="m-0 p-0 pt-3">Item Not Listed</h4>
+          </div>
+        )}
+
+        {invalid && (
+          <div className="col-12 d-flex align-items-center justify-content-center p-md-2 mt-2 mb-2">
+            <h4 className="m-0 p-0 pt-3">Invalid Token</h4>
+          </div>
+        )}
+      </div>
+
+      <hr
+        style={{ color: "rgb(65, 37, 156)", width: "100%", height: 2 }}
+        className="m-0 mb-3 mt-2 p-0"
+      />
+      {loading && (
+        <div className="col-8 d-flex justify-content-center">
+          <Loader />
+        </div>
+      )}
+
+      {!user && !loading && (
+        <div className="trading_connect col-12 d-flex justify-content-center align-items-center">
+          <WalletMultiButton
+            className="connect_button"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              borderRadius: 15,
+            }}
+          />
+        </div>
+      )}
+
+      {user && user === ownerAccount && !listed && !loading && (
+        <TradeListing
+          invalid={invalid}
+          item={item}
+          ownerAccount={ownerAccount}
+          tokenAccount={tokenAccount}
+          setLoading={setLoading}
+          setTxHash={setTxHash}
+          floorDetails={floorDetails}
+        />
+      )}
+
+      {user && user === owner && listed && !loading && (
+        <TradeCancel
+          item={item}
+          price={price}
+          seller={owner}
+          tokenAccount={tokenAccount}
+          setLoading={setLoading}
+          marketplace={marketplace}
+          listedDetails={listedDetails}
+          setTxHash={setTxHash}
+          setListed={setListed}
+        />
+      )}
+
+      {user && user !== owner && listed && !loading && (
+        <TradePurchase
+          item={item}
+          price={price}
+          seller={owner}
+          tokenAccount={tokenAccount}
+          setLoading={setLoading}
+          marketplace={marketplace}
+          setTxHash={setTxHash}
+        />
+      )}
+
+      {user && user !== ownerAccount && !listed && !loading && (
+        <div className="col-4 d-flex justify-content center">
+          <a
+            href={explorerLink("token", address)}
+            target="_blank"
+            style={{ width: "100%", textDecoration: "none" }}
+          >
+            <button className="btn_mp" style={{ height: 55 }}>
+              <div className="btn_mp_inner">
                 <img
-                  src={ss_logo}
+                  src={sa_logo}
                   alt=""
-                  style={{ height: 50, background: "transparent", margin: -8 }}
+                  style={{
+                    height: 41,
+                    background: "transparent",
+                  }}
                 />
               </div>
             </button>
           </a>
         </div>
-      </div>
+      )}
+
+      {txHash && (
+        <div className="col-12 d-flex justify-content-center mt-3">
+          <a
+            href={explorerLink("tx", txHash)}
+            style={{ textDecoration: "none" }}
+            target="_blank"
+          >
+            <button className="btn_mp">
+              <div className="btn_mp_inner p-4 pt-0 pb-0">View Explorer</div>
+            </button>
+          </a>
+        </div>
+      )}
+      {/* <p className="terms_text m-0 mt-3 mb-1 p-0">
+        There may be a slight delay between confirmation and the item status
+        updating.
+        <br />
+        Trading functionality is currently in beta. Use at your own risk.
+      </p> */}
     </div>
   );
 }

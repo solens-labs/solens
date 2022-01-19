@@ -227,7 +227,7 @@ exports.mintHistory = async (req, reply) => {
     const entries = Transaction.aggregate([
       { $match: {
         mint: req.query.mint,
-        ...helpers.matchBuyTxs(),
+        ...helpers.matchMainTxs(),
       } },
       { $sort: { date: -1} },
       { $limit: 10 },
@@ -237,7 +237,10 @@ exports.mintHistory = async (req, reply) => {
           buyer: "$new_owner",
           date: 1,
           symbol: 1,
-          price: { $round: ["$price", 2] },
+          type: 1,
+          marketplace: 1,
+          escrow: 1,
+          price: { $round: ["$price", 4] },
           _id: 0
         }
       }
@@ -386,6 +389,65 @@ exports.totalMarketVolume = async (req, reply) => {
 }
 
 exports.listings = async (req, reply) => {
+
+  if (req.query.mint) {
+    return Transaction.aggregate([
+      {$match: {
+        mint: req.query.mint,
+        ...helpers.matchMainTxs()
+      }},
+      {$sort: {date: -1}},
+      {$limit: 1},
+      {$match: {
+        $or: [
+          {type: { $eq: "list"}},
+          {type: { $eq: "update"}},
+        ]
+      }},
+      {$project : {
+        symbol: 1,
+        mint: 1,
+        owner: 1,
+        price: 1,
+        escrow: 1,
+        marketplace: 1,
+        _id: 0
+      }}
+    ])
+  }
+
+  return Transaction.aggregate([
+    {$match: {
+      symbol: req.query.symbol,
+      ...helpers.matchMainTxs()
+    }},
+    {$sort: {date: -1, price: -1}},
+    {$group : {
+      _id: {mint: '$mint'},
+      owner: {$first: '$owner'},
+      price: {$first: '$price'},
+      type: {$first: '$type'},
+      marketplace: {$first: '$marketplace'}
+    }},
+    {$match: {
+      $or: [
+        {type: { $eq: "list"}},
+        {type: { $eq: "update"}},
+      ]
+    }},
+    {$project : {
+      mint: '$_id.mint',
+      owner: 1,
+      price: 1,
+      type: 1,
+      escrow: 1,
+      marketplace: 1,
+      _id: 0
+    }},
+  ])
+}
+
+exports.currentFloor = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
       symbol: req.query.symbol,
@@ -397,21 +459,12 @@ exports.listings = async (req, reply) => {
         {type: { $eq: "accept_offer"}}
       ]
     }},
-    {$sort: {date: -1}},
+    {$sort: {date: -1, price: -1}},
     {$group : {
       _id: {mint: '$mint'},
-      owner: {$first: '$owner'},
       price: {$first: '$price'},
       type: {$first: '$type'},
       marketplace: {$first: '$marketplace'}
-    }},
-    {$project : {
-      mint: '$_id.mint',
-      owner: 1,
-      price: 1,
-      type: 1,
-      marketplace: 1,
-      _id: 0
     }},
     {$match: {
       $or: [
@@ -420,10 +473,18 @@ exports.listings = async (req, reply) => {
       ]
     }},
     {$project : {
-      mint: 1,
-      owner: 1,
       price: 1,
       marketplace: 1,
+      _id: 0
+    }},
+    {$group : {
+      _id: {marketplace: '$marketplace'},
+      price: {$min: '$price'},
+    }},
+    {$project : {
+      marketplace: "$_id.marketplace",
+      floor: { $round: ["$price", 2] },
+      _id: 0
     }}
   ])
 }

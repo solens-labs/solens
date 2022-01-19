@@ -1,31 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Menu } from "../../assets/icons/menu.svg";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import "./style.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { selectAddress, selectConnected } from "../../redux/network";
-import { links } from "../../constants/constants";
+import { links, themeColors } from "../../constants/constants";
 import logo2 from "../../assets/images/logo2.png";
-import { selectCurrentPage } from "../../redux/app";
+import { setConnected, setAddress, setBalance } from "../../redux/app";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
-import { connect_button } from "../Buttons";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Navigation = (props) => {
-  //   const connected = useSelector(selectConnected);
-  //   const address = useSelector(selectAddress);
-  //   const address_short = "0x..." + address.slice(-4);
-  const currentPage = useSelector(selectCurrentPage);
+  const { connection } = useConnection();
+  const wallet = useWallet();
+  const dispatch = useDispatch();
 
-  const activePage = (page) => {
-    if (currentPage === page) {
-      return "nav-link-active";
-    }
+  const getSolBalance = async (wallet) => {
+    const balance = await connection.getBalance(wallet.publicKey);
+    const converted = balance / LAMPORTS_PER_SOL;
+    return converted;
   };
+
+  // Get address & balance on wallet connect
+  useEffect(() => {
+    if (wallet.connected && wallet.publicKey && !wallet.disconnecting) {
+      dispatch(setAddress(wallet.publicKey.toString()));
+      dispatch(setConnected(true));
+      const solBalance = getSolBalance(wallet).then((result) => {
+        dispatch(setBalance(result));
+      });
+    } else {
+      dispatch(setAddress(""));
+      dispatch(setConnected(false));
+      dispatch(setBalance(0));
+    }
+  }, [wallet]);
 
   const [menu, setMenu] = useState(false);
   const showMenu = () => {
@@ -33,69 +55,98 @@ const Navigation = (props) => {
   };
 
   return (
-    <nav className="navbar d-flex flex-row justify-content-between">
-      <div className="col-4 col-lg-2 col-xxl-1 d-flex justify-content-start">
+    <nav className="navbar d-flex flex-row justify-content-between align-items-center">
+      <div className="col-4 col-lg-2 d-flex justify-content-start">
         <Link to="/" style={{ textDecoration: "none" }}>
           <img src={logo2} className="nav_logo" alt="logo" />
         </Link>
       </div>
 
-      <div className="d-none d-lg-flex col-lg-7 col-xl-6 col-xxl-5 flex-wrap justify-content-around align-items-center">
-        <div className="nav_link_container">
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">home</h1>
-          </Link>
-        </div>
-        <div className="nav_link_container">
-          <Link to="/collections" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">collections</h1>
-          </Link>
-        </div>
-        <div className="nav_link_container">
-          <Link to="/wallets" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">wallets</h1>
-          </Link>
-        </div>
-        <div className="nav_link_container">
-          <Link to="/launch" style={{ textDecoration: "none" }}>
-            <h1 className="nav_link">launchzone</h1>
-          </Link>
-        </div>
+      <div className="col-lg-6 d-none d-lg-flex justify-content-around align-items-center">
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <div className="d-none d-lg-block">
+              <HomeIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[0] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
+          </div>
+        </Link>
+        <Link to="/launch" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container ">
+            <div className="d-none d-lg-block">
+              <RocketLaunchIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[0] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              launchzone
+            </h1>
+          </div>
+        </Link>
+        <Link to="/collections" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container">
+            <div className="d-none d-lg-block">
+              <CollectionsIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[0] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              collections
+            </h1>
+          </div>
+        </Link>
+        <Link to="/wallets" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container ">
+            <div className="d-none d-lg-block">
+              <AccountBalanceWalletIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[0] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              wallets
+            </h1>
+          </div>
+        </Link>
+        <Link to="/user" style={{ textDecoration: "none" }}>
+          <div className="nav_link_container ">
+            <div className="d-none d-lg-block">
+              <AccountCircleOutlinedIcon
+                fontSize={"medium"}
+                className="nav_icon"
+                style={{ fill: themeColors[0] }}
+              />
+            </div>
+            <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              profile
+            </h1>
+          </div>
+        </Link>
       </div>
 
-      <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between">
-        <div className="icon_link">
-          <a
-            href={links.medium.url}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <MediumIcon style={{ fill: "white" }} className="icon_link" />
-          </a>
-        </div>
-        <div className="icon_link">
-          <a
-            href={links.twitter.url}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <TwitterIcon style={{ fill: "white" }} className="icon_link" />
-          </a>
-        </div>
-        <div className="icon_link">
-          <a
-            href={links.email.contact}
-            target="_blank"
-            style={{ textDecoration: "none" }}
-          >
-            <EmailIcon style={{ fill: "white" }} />
-          </a>
-        </div>
-      </div>
+      <div className="col-lg-2 d-none d-lg-flex justify-content-end align-items-center">
+        {/* <Link to="/user" style={{ textDecoration: "none", color: "white" }}>
+          <AccountCircleOutlinedIcon style={{ marginRight: 20 }} />
+        </Link> */}
 
-      {/* <div className="col-lg-2 d-none d-lg-flex justify-content-end">
-        {connect_button}
-      </div> */}
+        <WalletMultiButton
+          className="connect_button"
+          style={{
+            border: "1px solid black",
+            color: "white",
+            borderRadius: 15,
+          }}
+        />
+      </div>
 
       {!menu && (
         <div onClick={showMenu} className="menu_icon">
@@ -113,24 +164,74 @@ const Navigation = (props) => {
         <div className="mobile_menu">
           <div className="col-12 d-flex flex-column align-items-end">
             <Link to="/" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                home
-              </h1>
-            </Link>
-            <Link to="/collections" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                collections
-              </h1>
-            </Link>
-            <Link to="/wallets" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                wallets
-              </h1>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  home
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <HomeIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
             </Link>
             <Link to="/launch" style={{ textDecoration: "none" }}>
-              <h1 className="nav_link" onClick={() => showMenu()}>
-                launchzone
-              </h1>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  launchzone
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <RocketLaunchIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
+            </Link>
+            <Link to="/collections" style={{ textDecoration: "none" }}>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  collections
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <CollectionsIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
+            </Link>
+            <Link to="/wallets" style={{ textDecoration: "none" }}>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  wallets
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <AccountBalanceWalletIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
+            </Link>
+            <Link to="/user" style={{ textDecoration: "none" }}>
+              <div className="col-12 d-flex">
+                <h1 className="nav_link" onClick={() => showMenu()}>
+                  profile
+                </h1>
+                <div className="p-1 pt-0 pb-1 pr-0">
+                  <AccountCircleOutlinedIcon
+                    fontSize={"small"}
+                    className="nav_icon"
+                    style={{ fill: themeColors[0] }}
+                  />
+                </div>
+              </div>
             </Link>
             <div className="d-flex flex-row col-4 justify-content-around">
               <a

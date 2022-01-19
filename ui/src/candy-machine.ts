@@ -1,6 +1,7 @@
 import * as anchor from "@project-serum/anchor";
 
 import { MintLayout, TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
+import { PublicKey } from "@solana/web3.js";
 
 export const CANDY_MACHINE_PROGRAM = new anchor.web3.PublicKey(
   "cndyAnrLdpjq1Ssp1z8xxDsB8dxe7u4HL5Nxi2K5WXZ"
@@ -294,6 +295,9 @@ export const mintOneToken = async (
 
 export const shortenAddress = (address: string, chars = 4): string => {
   let addressShort: string = "";
+  if (address?.length < 32) {
+    return "";
+  }
 
   try {
     addressShort = `${address.slice(0, chars)}...${address.slice(-chars)}`;

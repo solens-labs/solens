@@ -20,10 +20,12 @@
 .attribute_box_inner {
   background: rgb(18, 11, 37);
   width: 100%;
+  height: 100%;
   border-radius: 13px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 
 .attribute_box_inner p {
@@ -35,7 +37,7 @@
   margin: 3px 0px;
   font-size: 0.8rem;
   font-weight: bold;
-  color: rgb(134, 64, 117);
+  color: rgb(179, 87, 156);
 }
 
 @media screen and (max-width: 990px) {

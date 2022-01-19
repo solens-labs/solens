@@ -27,9 +27,19 @@ import {
   calculateLaunchDate,
   getMarketplaceData,
   marketplaceSelect,
-  splitMarketplaceData,
   compareVolume,
 } from "../../utils/collectionStats";
+import {
+  calculateStats,
+  fetchCollection,
+  fetchFloors,
+  fetchHistoricalFloor,
+  fetchTopFourMetadata,
+  fetchTopTraders,
+  fetchTopTrades,
+  handleMpsData,
+  splitMarketplaceData,
+} from "./utils";
 import Loader from "../../components/Loader";
 import MarketplaceCharts from "../../components/MarketplaceCharts";
 import SocialLinks from "../../components/SocialLinks";
@@ -69,6 +79,7 @@ export default function CollectionPage(props) {
   const [floor, setFloor] = useState(0); // needed for collection summary
   const [floorME, setFloorME] = useState(0); // needed for MP summary
   const [floorSA, setFloorSA] = useState(0); // needed for MP summary
+  const [floorSMB, setFloorSMB] = useState(0); // needed for MP summary
   const [floorChart, setFloorChart] = useState([]); // needed for historical floor chart
   const [floor2W, setFloor2W] = useState([]); // needed for historical floor chart
   const [floor1M, setFloor1M] = useState([]); // needed for historical floor chart
@@ -78,36 +89,26 @@ export default function CollectionPage(props) {
   const [noCollection, setNoCollection] = useState(false); //redirect user on incorrect symbol
 
   // Fetch Collection Data
-  useEffect(async () => {
-    if (name && allCollections.length > 0) {
-      const filterCheck = allCollections.filter((item) => item.symbol === name);
-      const result = filterCheck.length > 0;
-      if (!result) {
-        setNoCollection(true);
-        return;
-      }
-
-      if (result) {
-        const apiRequest = api.server.collection + queries.symbol + name;
-        const collectionInfo = await axios.get(apiRequest).then((response) => {
-          const collectionInfo = response.data[0];
-          setCollectionInfo(collectionInfo);
-          setStats(collectionInfo.alltimestats);
-          setMarketplaces(collectionInfo.alltimestats.length);
-          setDaysSinceCreated(calculateLaunchDate(collectionInfo));
-          setDailyStats(collectionInfo.dailystats);
-
-          const links = {
-            website: collectionInfo.website,
-            twitter: collectionInfo.twitter,
-            discord: collectionInfo.discord,
-          };
-          setCollectionLinks(links);
-        });
-      }
+  useEffect(() => {
+    if (name && allCollections?.length > 0) {
+      const fetchCollectionData = async (symbol) => {
+        let collectionInfo = await fetchCollection(name, allCollections);
+        if (!collectionInfo) {
+          setNoCollection(true);
+          return;
+        }
+        setCollectionInfo(collectionInfo);
+        setStats(collectionInfo?.alltimestats);
+        setMarketplaces(collectionInfo?.alltimestats?.length);
+        setDaysSinceCreated(calculateLaunchDate(collectionInfo));
+        setDailyStats(collectionInfo?.dailystats);
+        setCollectionLinks(collectionInfo?.links);
+      };
+      fetchCollectionData(name);
     }
   }, [name, allCollections]);
 
+  // Calculate Market Cap
   useEffect(() => {
     if (floor > 0 && collectionInfo?.supply > 0 && solPrice > 0) {
       const marketCap = floor * collectionInfo.supply * solPrice;
@@ -120,253 +121,101 @@ export default function CollectionPage(props) {
   }, [solPrice, floor, collectionInfo]);
 
   // Fetch Top Trades All-Time
-  useEffect(async () => {
+  useEffect(() => {
     if (topTradesAll.length === 0) {
-      debug && console.log(`fetching top sales - ${name}`);
-      const apiRequest =
-        api.server.topNFTs + queries.symbol + name + queries.days + 365;
-
-      const topTradesAll = await axios.get(apiRequest).then((response) => {
-        const sales = response.data;
-
-        if (sales.length > 0) {
-          // set top sales to display
-          const topFourSales = sales.slice(0, 4);
-          setTopFour(topFourSales);
-
-          const data = convertTradesData(sales);
-          setTopTradesAll(data);
-          debug && console.log(`received top sales -  ${name}`);
-        }
-      });
+      const fetchTopTradesData = async (symbol) => {
+        let response = await fetchTopTrades(365, symbol);
+        response && setTopTradesAll(response);
+        response && setTopFour(response.slice(0, 4));
+      };
+      fetchTopTradesData(name);
     }
   }, [name]);
+
   // Fetch Top Trades Week
-  useEffect(async () => {
+  useEffect(() => {
     if (topTradesWeek.length === 0) {
-      debug && console.log(`fetching top weekly trades - ${name}`);
-      const apiRequest =
-        api.server.topNFTs + queries.symbol + name + queries.days + 7;
-
-      const topTradesWeek = await axios.get(apiRequest).then((response) => {
-        const trades = response.data;
-        if (trades.length > 0) {
-          const data = convertTradesData(trades);
-          setTopTradesWeek(data);
-          debug && console.log(`received top trades -  ${name}`);
-        }
-      });
+      const fetchTopTradesData = async (symbol) => {
+        let response = await fetchTopTrades(7, symbol);
+        setTopTradesWeek(response);
+      };
+      fetchTopTradesData(name);
     }
   }, [name]);
+
   // Fetch Top Trades Day
-  useEffect(async () => {
+  useEffect(() => {
     if (topTradesDay.length === 0) {
-      debug && console.log(`fetching top weekly trades - ${name}`);
-      const apiRequest =
-        api.server.topNFTs + queries.symbol + name + queries.days + 1;
-
-      const topTradesDay = await axios.get(apiRequest).then((response) => {
-        const trades = response.data;
-        if (trades.length > 0) {
-          const data = convertTradesData(trades);
-          setTopTradesDay(data);
-          debug && console.log(`received top trades -  ${name}`);
-        }
-      });
+      const fetchTopTradesData = async (symbol) => {
+        let response = await fetchTopTrades(1, symbol);
+        setTopTradesDay(response);
+      };
+      fetchTopTradesData(name);
     }
   }, [name]);
+
   // Fetch Top Buyers
-  useEffect(async () => {
+  useEffect(() => {
     if (topBuyers.length === 0) {
-      debug && console.log(`fetching top buyers - ${name}`);
-      const apiRequest =
-        api.server.topTraders +
-        queries.symbol +
-        name +
-        queries.typeBuyers +
-        queries.allTime +
-        true +
-        queries.sortVolume;
-
-      const topBuyers = await axios.get(apiRequest).then((response) => {
-        const buyers = response.data;
-        if (buyers.length > 0) {
-          const data = convertTradersData(buyers);
-          setTopBuyers(data);
-          debug && console.log(`received top buyers - ${name}`);
-        }
-      });
+      const fetchTopBuyers = async (symbol) => {
+        let response = await fetchTopTraders("buyers", symbol);
+        setTopBuyers(response);
+      };
+      fetchTopBuyers(name);
     }
   }, [name]);
-  // Fetch Top Sellers
-  useEffect(async () => {
-    if (topSellers.length === 0) {
-      debug && console.log(`fetching top sellers - ${name}`);
-      const apiRequest =
-        api.server.topTraders +
-        queries.symbol +
-        name +
-        queries.typeSellers +
-        queries.allTime +
-        true +
-        queries.sortVolume;
 
-      const topSellers = await axios.get(apiRequest).then((response) => {
-        const sellers = response.data;
-        if (sellers.length > 0) {
-          const data = convertTradersData(sellers);
-          setTopSellers(data);
-          debug && console.log(`received top sellers-  ${name}`);
-        }
-      });
+  // Fetch Top Sellers
+  useEffect(() => {
+    if (topSellers.length === 0) {
+      const fetchTopSellers = async (symbol) => {
+        let response = await fetchTopTraders("sellers", symbol);
+        setTopSellers(response);
+      };
+      fetchTopSellers(name);
     }
   }, [name]);
 
   // Calculate Collection Summary Stats
   useEffect(() => {
-    if (stats && stats.length > 0) {
-      const volumeAllTime = calculateAllTimeVolume(stats);
-      setCollectionVolume(volumeAllTime);
-
-      const transactionsAllTime = calculateAllTimeTransactions(stats);
-      setCollectionTxCount(transactionsAllTime);
-
-      const averageAllTime = volumeAllTime / transactionsAllTime;
-      setCollectionAverage(averageAllTime);
-    }
+    const collectionStats = (stats) => {
+      const response = calculateStats(stats);
+      setCollectionVolume(response.volumeAllTime);
+      setCollectionTxCount(response.transactionsAllTime);
+      setCollectionAverage(response.averageAllTime);
+    };
+    stats?.length > 0 && collectionStats(stats);
   }, [stats]);
 
-  // Fetch floors from MPs
+  // Fetch & Set Floors
   useEffect(() => {
-    // Request ME Floor
-    const apiRequestME = exchangeApi.magiceden.floor + name;
-    const collectionFloorME = axios.get(apiRequestME).then((response) => {
-      const floorLamports = response.data;
-      if (Object.keys(floorLamports).length > 0) {
-        const floor = floorLamports.results.floorPrice * 10e-10;
-        setFloorME(floor.toFixed(2));
-      }
-    });
-
-    // Request SA Floor
-    const apiRequestSA = exchangeApi.solanart.floor + name;
-    const collectionFloorSA = axios.get(apiRequestSA).then((response) => {
-      const floor = response.data.floorPrice;
-      if (floor) {
-        setFloorSA(floor.toFixed(2));
-      }
-    });
-
-    // Request SMB Floor
-    if (name === "solana_monkey_business") {
-      const apiRequestSMB = exchangeApi.smb.items;
-      const collectionFloorSMB = axios.get(apiRequestSMB).then((response) => {
-        const fullSMBData = response.data.items;
-        const listed = fullSMBData.filter((item) => {
-          if (item.price && item.price > 0) {
-            return item.price;
-          }
-        });
-        const prices = listed.map((item) => {
-          return item.price / 1000000000;
-        });
-        const smbFloor = Math.min(...prices);
-        setFloor(smbFloor.toFixed(2));
-      });
-    }
+    const floor = async (symbol) => {
+      let response = await fetchFloors(symbol);
+      setFloor(response?.floor);
+      setFloorME(response?.magicedn);
+      setFloorSA(response?.solanart);
+      setFloorSMB(response?.smb);
+    };
+    floor(name);
   }, [name]);
-  // Determine absolute floor
+
+  // Split Marketplace Data & Set
   useEffect(() => {
-    if (floorSA !== 0 && floorME !== 0) {
-      const floor = Math.min(floorSA, floorME);
-      setFloor(floor);
-    } else if (floorSA === 0 && floorME !== 0) {
-      setFloor(floorME);
-    } else if (floorSA !== 0 && floorME === 0) {
-      setFloor(floorSA);
-    } else setFloor("Unavailable");
-  }, [floorSA, floorME]);
-
-  // Split Marketplace Data Structures
-  useEffect(() => {
-    if (marketplaces > 1 && dailyStats.length > 0) {
-      const splitData = splitMarketplaceData(dailyStats);
-
-      const smbData = getMarketplaceData(splitData.smb);
-      const solanartData = getMarketplaceData(splitData.solanart);
-      const magicedenData = getMarketplaceData(splitData.magiceden);
-
-      const allMarketplaceData = [];
-      smbData && allMarketplaceData.push(smbData);
-      solanartData && allMarketplaceData.push(solanartData);
-      magicedenData && allMarketplaceData.push(magicedenData);
-
-      allMarketplaceData.sort(compareVolume);
-      setMarketplacesData(allMarketplaceData);
-    } else if (marketplaces === 1 && dailyStats && dailyStats.length > 0) {
-      const allMarketplaceData = [];
-      const singleCollectionData = getMarketplaceData(dailyStats);
-      allMarketplaceData.push(singleCollectionData);
-      setMarketplacesData(allMarketplaceData);
+    if (marketplaces && dailyStats?.length > 0) {
+      const marketplacesData = handleMpsData(dailyStats, marketplaces);
+      setMarketplacesData(marketplacesData);
     }
   }, [dailyStats, marketplaces]);
 
-  // Use to build multi-marketplace select
-  const toggleMarketplace = (index) => {
-    // setSelectedMarketplace(index);
-  };
-
   // Fetch Historical Floor
-  useEffect(async () => {
-    if (floor2W.length === 0) {
-      const apiRequest =
-        api.server.floor + queries.symbol + name + queries.days + 14;
-      const historicalFloor = await axios.get(apiRequest).then((response) => {
-        const floor = response.data;
-
-        // const currentFloor = floor[floor.length - 1].floor.toFixed(2);
-        // setFloor(currentFloor);
-
-        if (floor.length > 0) {
-          const floorData = convertFloorData(floor);
-          setFloor2W(floorData);
-
-          const split = splitMarketplaceData(floor);
-          if (split["magiceden"] && split["magiceden"].length > 0) {
-            const floorME = split["magiceden"][0].floor;
-            setFloorME(floorME);
-          }
-          if (split["solanart"] && split["solanart"].length > 0) {
-            const floorSA = split["solanart"][0].floor;
-            setFloorSA(floorSA);
-          }
-        }
-      });
-    }
-
-    if (floor1M.length === 0) {
-      const apiRequest =
-        api.server.floor + queries.symbol + name + queries.days + 30;
-      const historicalFloor = await axios.get(apiRequest).then((response) => {
-        const floor = response.data;
-        if (floor.length > 0) {
-          const floorData = convertFloorData(floor);
-          setFloor1M(floorData);
-        }
-      });
-    }
-
-    if (floorAll.length === 0) {
-      const apiRequest =
-        api.server.floor + queries.symbol + name + queries.days + 365;
-      const historicalFloor = await axios.get(apiRequest).then((response) => {
-        const floor = response.data;
-        if (floor.length > 0) {
-          const floorData = convertFloorData(floor);
-          setFloorAll(floorData);
-        }
-      });
-    }
+  useEffect(() => {
+    const historicalFloor = async (symbol) => {
+      let response = await fetchHistoricalFloor(name);
+      setFloor2W(response?.twoWeeks);
+      setFloor1M(response?.oneMonth);
+      setFloorAll(response?.allTime);
+    };
+    historicalFloor(name);
   }, [name]);
 
   // Toggle Historical Floor Timeframe
@@ -384,6 +233,17 @@ export default function CollectionPage(props) {
     }
   }, [floor1M, timeframeFloor]);
 
+  // Get Top 4 NFT Sales Metadata
+  useEffect(() => {
+    if (topFourMetadata?.length === 0 && topFour?.length !== 0) {
+      const topFourMD = async (topFour) => {
+        const response = await fetchTopFourMetadata(topFour);
+        setTopFourMetadata(response);
+      };
+      topFourMD(topFour);
+    }
+  }, [topFour]);
+
   // Toggle Top Trades Timeframe
   const topTradesTimeframe = () => {
     switch (timeframeTrades) {
@@ -398,38 +258,6 @@ export default function CollectionPage(props) {
         break;
     }
   };
-
-  // Add multiple MP floor data for line chart to component MP data
-  // useEffect(() => {
-  //   if (
-  //     floorChart.length !== 0 &&
-  //     marketplacesData.length !== 0 &&
-  //     !marketplacesData[0].floorsArray
-  //   ) {
-  //     const combinedMarketplaceData = marketplacesData;
-  //     combinedMarketplaceData[0]["floorDates"] = floorChart.datesArray;
-  //     combinedMarketplaceData[0]["floorsArray"] = floorChart.floorsArray;
-  //     // const newMarketplacesData = [combinedMarketplaceData[0]];
-  //     setMarketplacesData(combinedMarketplaceData);
-  //   }
-  // }, [floorChart, marketplacesData]);
-
-  // Get Top 4 NFT Sales Metadata
-  useEffect(async () => {
-    if (topFourMetadata.length === 0 && topFour.length !== 0) {
-      const topFourMetadataPull = topFour.map(async (token, i) => {
-        const tokenMetadata = await getTokenMetadata(token.mint);
-        tokenMetadata["price"] = topFour[i].price;
-        const date = new Date(topFour[i].date);
-        tokenMetadata["date"] = date.toLocaleDateString();
-
-        return tokenMetadata;
-      });
-
-      const resolved = await Promise.all(topFourMetadataPull);
-      setTopFourMetadata(resolved);
-    }
-  }, [topFour]);
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
@@ -463,18 +291,17 @@ export default function CollectionPage(props) {
             ""
           )}
           <p className="collection_description">{collectionInfo.description}</p>
-          <Link to={`/nfts/${name}`} style={{ textDecoration: "none" }}>
-            <div className="col-12 btn-button btn-main btn-large d-flex mt-2 mb-2">
-              View NFTs
+          <Link
+            to={`/nfts/${name}`}
+            style={{ textDecoration: "none", width: "70%" }}
+          >
+            <div className="col-12 btn-button btn-main btn-large btn-wide d-flex mt-2 mb-2">
+              Trade
             </div>
           </Link>
         </div>
       </div>
 
-      {/* <hr
-        style={{ color: "white", width: "50%" }}
-        className="mt-lg-5 mt-0 mb-3"
-      /> */}
       <h1 className="mt-0 mt-xxl-3">Collection Summary</h1>
       <div className="collection_stats d-flex flex-wrap justify-content-around col-12 col-xxl-10 p-lg-2 pt-lg-0 pb-lg-0 mt-lg-3">
         <CollectionStat
@@ -524,7 +351,7 @@ export default function CollectionPage(props) {
 
       <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-lg-10 mt-5">
         <h2>Historical Floor</h2>
-        {floorChart && floorChart.length !== 0 ? (
+        {floorChart && floorChart?.length !== 0 ? (
           <>
             <div className="col-12 col-sm-10 col-md-8 col-xl-6 col-xxl-4 mt-2 mb-3">
               <Timeframe
@@ -555,7 +382,7 @@ export default function CollectionPage(props) {
       <h1 className="mt-4">Top Sales</h1>
       <div className="d-flex flex-column align-items-center col-12 col-xl-10 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-          {topFourMetadata.length === 4 ? (
+          {topFourMetadata?.length === 4 ? (
             topFourMetadata.map((token, i) => {
               return (
                 <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xxl-3 mb-4 p-2 pb-0 pt-0">
@@ -607,7 +434,7 @@ export default function CollectionPage(props) {
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-5" />
 
       <>
-        {marketplacesData.length > 0 ? (
+        {marketplacesData?.length > 0 ? (
           marketplacesData.map((marketplace, i) => {
             return (
               <MarketplaceCharts marketplaceData={marketplace} symbol={name} />
@@ -633,9 +460,9 @@ export default function CollectionPage(props) {
             />
           </div>
           <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-          {topTradesAll.length !== 0 &&
-          topTradesWeek.length !== 0 &&
-          topTradesDay !== 0 ? (
+          {topTradesAll?.length !== 0 &&
+          topTradesWeek?.length !== 0 &&
+          topTradesDay?.length !== 0 ? (
             <TradesTable data={topTradesTimeframe()} />
           ) : (
             <div className="col-6">
@@ -667,7 +494,7 @@ export default function CollectionPage(props) {
             </button>
           </div>
           <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-          {topBuyers.length !== 0 && topSellers.length !== 0 ? (
+          {topBuyers?.length !== 0 && topSellers?.length !== 0 ? (
             <TradersTable
               data={traderType === "buyers" ? topBuyers : topSellers}
             />

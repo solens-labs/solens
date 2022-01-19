@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { links } from "../../constants/constants";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
+import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 import solens_logo from "../../assets/images/logo2.png";
 
 export default function Footer(props) {
@@ -18,7 +19,7 @@ export default function Footer(props) {
 
   return (
     <div className="footer col-12 d-flex flex-column justify-content-between align-items-center">
-      <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-around justify-content-lg-center align-items-start">
+      <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-around justify-content-lg-center align-items-start mb-0 mb-lg-3">
         <div className="footer_logo_section col-12 col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-start justify-content-xxl-center">
           <img src={solens_logo} className="footer_logo" />
         </div>
@@ -82,6 +83,36 @@ export default function Footer(props) {
         </div>
 
         {pg_break}
+      </div>
+
+      <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between mb-2 mb-lg-4">
+        <div className="icon_link">
+          <a
+            href={links.medium.url}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <MediumIcon style={{ fill: "white" }} className="icon_link" />
+          </a>
+        </div>
+        <div className="icon_link">
+          <a
+            href={links.twitter.url}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+          </a>
+        </div>
+        <div className="icon_link">
+          <a
+            href={links.email.contact}
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <EmailIcon style={{ fill: "white" }} />
+          </a>
+        </div>
       </div>
 
       <div className="copyright col-12 d-flex align-items-end justify-content-center">

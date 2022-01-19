@@ -1,6 +1,7 @@
 const candyMachine = process.env.REACT_APP_CANDY_MACHINE_ID;
 
 const server = "https://api.arnori.io/"; // mainnet production
+const devServer = "http://18.217.246.3:3000/"; // dev
 
 export const queries = {
   symbol: "?symbol=",
@@ -10,6 +11,7 @@ export const queries = {
   typeBuyers: "&type=buyers",
   typeSellers: "&type=sellers",
   mintList: "&mint=true",
+  mint: "&mint=",
   allTime: "&all_time=",
 };
 
@@ -19,14 +21,16 @@ export const api = {
     collection: server + "stats/collection",
     marketStats: server + "stats/marketStats",
     floor: server + "stats/floor",
-
-    // new endpoints -- NEED TO CHANGE "devServer" to "server" before deploy
-    marketVolume: server + "totalMarketVolume",
-    mintSymbol: server + "symbol?mint=",
-    mintHistory: server + "stats/mintHistory?mint=",
     topTraders: server + "stats/topTraders",
     topNFTs: server + "stats/topNFTs",
     listings: server + "listings",
+    mintSymbol: server + "symbol?mint=",
+    marketVolume: server + "totalMarketVolume",
+
+    mintHistory: server + "mintHistory?mint=",
+    walletListings: server + "walletListings?wallet=",
+    walletHistory: server + "walletHistory?wallet=",
+    currentFloor: server + "currentFloor",
   },
 };
 
@@ -82,6 +86,7 @@ export const themeColors = [
   "rgb(65, 37, 156)", // Gradient Purple
   "rgb(134, 64, 117)", // Gradient Pink
   "rgb(18, 11, 37)", // Dark Purple
+  "rgb(57,184,143)", // Teal
 ];
 
 export const links = {

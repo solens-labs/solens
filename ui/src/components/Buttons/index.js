@@ -1,7 +1,7 @@
 import "./style.css";
 
 export const connect_button = (
-  <button className="btn-button btn-main" style={{ width: "80%" }}>
+  <button className="btn-button btn-main" style={{ width: "70%" }}>
     Connect Wallet
   </button>
 );

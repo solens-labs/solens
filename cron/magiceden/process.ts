@@ -46,7 +46,8 @@ async function getLatestTxs(until) {
     let before = null;
     let latestTxs = []
     while (true) {
-        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "finalized")
+        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "confirmed")
+
         let sigs = []
         confirmedSigs.forEach((r) => {
             r.slot >= until && !r.err ? sigs.push(r.signature) : null;

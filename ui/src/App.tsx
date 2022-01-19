@@ -10,16 +10,17 @@ import {
   getPhantomWallet,
   getSolflareWallet,
   getSolletWallet,
+  getLedgerWallet,
 } from "@solana/wallet-adapter-wallets";
 
 import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-
-import { WalletDialogProvider } from "@solana/wallet-adapter-material-ui";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { BrowserRouter as Router } from "react-router-dom";
 import ReactGA from "react-ga";
+import solens_symbol from "./assets/images/logo2.png";
 
 ReactGA.initialize("UA-215619609-1");
 const network = process.env.REACT_APP_SOLANA_NETWORK as WalletAdapterNetwork;
@@ -28,17 +29,22 @@ const App = () => {
   const endpoint = useMemo(() => clusterApiUrl(network), []);
 
   const wallets = useMemo(
-    () => [getPhantomWallet(), getSolflareWallet(), getSolletWallet()],
+    () => [
+      getPhantomWallet(),
+      getSolflareWallet(),
+      getSolletWallet(),
+      // getLedgerWallet(),
+    ],
     []
   );
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletDialogProvider>
+        <WalletModalProvider className="wallet_modal" logo={solens_symbol}>
           <Router>
             <Base />
           </Router>
-        </WalletDialogProvider>
+        </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );

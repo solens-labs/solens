@@ -1,25 +1,29 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
 import "./style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 
 export default function ActivityTable(props) {
   const { data } = props;
   const emptyObject = [
     {
-      buyer: "--",
-      date: "--",
+      marketplace: "--",
+      symbol: "--",
+      type: "--",
       price: "--",
-      seller: "--",
+      buyerLink: "--",
+      sellerLink: "--",
+      date: "--",
     },
     {
-      buyer: "--",
-      date: "--",
+      marketplace: "--",
+      symbol: "--",
+      type: "--",
       price: "--",
-      seller: "--",
+      buyerLink: "--",
+      sellerLink: "--",
+      date: "--",
     },
   ];
 
@@ -35,10 +39,50 @@ export default function ActivityTable(props) {
 
   const columns = React.useMemo(
     () => [
+      // {
+      //   Header: "",
+      //   accessor: "symbol",
+      //   Cell: (row) => {
+      //     return (
+      //       <div>
+      //         <img height={34} src={logo} />
+      //       </div>
+      //     );
+      //   },
+      // },
+      {
+        Header: "TYPE",
+        accessor: "symbol",
+        // width: 40,
+        // maxWidth: 40,
+      },
+      {
+        Header: "MARKET",
+        accessor: "marketplace",
+      },
+      {
+        Header: "DETAIL",
+        accessor: "type",
+      },
+      {
+        Header: "PRICE",
+        accessor: "price",
+      },
+      // {
+      //   Header: "% Change",
+      //   accessor: "change",
+      // },
+      {
+        Header: "BUYER",
+        accessor: "buyerLink",
+      },
+      {
+        Header: "SELLER",
+        accessor: "sellerLink",
+      },
       {
         Header: "DATE",
         accessor: "date",
-        className: "test_width",
         sortMethod: (a, b) => {
           var a1 = new Date(a).getTime();
           var b1 = new Date(b).getTime();
@@ -46,18 +90,6 @@ export default function ActivityTable(props) {
           else if (a1 > b1) return -1;
           else return 0;
         },
-      },
-      {
-        Header: "PRICE",
-        accessor: "price",
-      },
-      {
-        Header: "BUYER",
-        accessor: "buyer",
-      },
-      {
-        Header: "SELLER",
-        accessor: "seller",
       },
     ],
     []
@@ -104,6 +136,12 @@ export default function ActivityTable(props) {
                       // Apply the header cell props
                       <th
                         {...column.getHeaderProps(
+                          // {
+                          //   style: {
+                          //     width: column.width,
+                          //     maxWidth: column.maxWidth,
+                          //   },
+                          // }
                           column.getSortByToggleProps()
                         )}
                         className={

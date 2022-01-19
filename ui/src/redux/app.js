@@ -4,6 +4,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const initialState = {
   address: "",
   balance: 0,
+  userNfts: [],
   connected: false,
   loading: false,
   currentPage: "mint",
@@ -37,6 +38,9 @@ const app = createSlice({
     },
     setBalance: (state, action) => {
       state.balance = action.payload;
+    },
+    setUserNFTs: (state, action) => {
+      state.userNfts = action.payload;
     },
     setConnected: (state, action) => {
       state.connected = action.payload;
@@ -108,6 +112,7 @@ const app = createSlice({
 export const {
   setAddress,
   setBalance,
+  setUserNFTs,
   setConnected,
   setLoading,
   setCurrentPage,
@@ -134,6 +139,7 @@ export const {
 // Selectors
 export const selectAddress = (state) => state.app.address;
 export const selectBalance = (state) => state.app.balance;
+export const selectUserNFTs = (state) => state.app.userNfts;
 export const selectConnected = (state) => state.app.connected;
 export const selectLoading = (state) => state.app.loading;
 export const selectCurrentPage = (state) => state.app.currentPage;
