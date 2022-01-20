@@ -193,7 +193,7 @@ export default function TradeListing(props) {
       <h5 className="p-0 m-0">Select Marketplace to List Item</h5>
       <div className="trading_buttons col-12 d-flex flex-row flex-wrap justify-content-center mb-2">
         {!invalid && (
-          <div className="col-md-6 col-xl-5 p-1 p-xl-2">
+          <div className="col-6 col-xl-5 p-1 p-xl-2">
             <button className="btn_mp">
               <div
                 className={
@@ -217,7 +217,7 @@ export default function TradeListing(props) {
           </div>
         )}
         {!invalid && (
-          <div className="col-md-6 col-xl-5 p-1 p-xl-2">
+          <div className="col-6 col-xl-5 p-1 p-xl-2">
             <button className="btn_mp">
               <div
                 className={
