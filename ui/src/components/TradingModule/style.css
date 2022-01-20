@@ -1,0 +1,45 @@
+.trading_module {
+  border: 1px solid black;
+  border-radius: 15px;
+  background: rgb(18, 11, 37);
+  /* height: 50%; */
+  min-height: 250px;
+  overflow: hidden;
+}
+
+.mint_info,
+.mint_info a {
+  /* color: rgb(134, 64, 117); */
+  font-size: 0.9rem;
+  height: 25px;
+  padding: 0;
+  margin: 8px 0px;
+  color: white;
+}
+
+.mint_info_value {
+  font-size: 0.9rem;
+  padding: 0;
+  margin: 0;
+  color: rgb(179, 87, 156);
+}
+
+.item_collection {
+  color: rgb(179, 87, 156);
+  cursor: pointer;
+}
+
+.trading_connect {
+  /* height: 100%; */
+}
+
+.connect_button_large {
+  width: 70% !important;
+}
+
+.item_price {
+  color: rgb(179, 87, 156);
+  /* color: rgb(65, 37, 156); */
+  font-weight: 800;
+  font-size: 2rem;
+}

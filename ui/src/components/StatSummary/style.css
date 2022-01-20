@@ -1,0 +1,20 @@
+.collection_stats_days {
+  font-size: 0.95rem;
+  line-height: 0px;
+  padding: 0px 0px 10px 0px;
+  color: rgb(156, 156, 156);
+}
+
+.buysell_buttons {
+}
+
+/* .btn-trade {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #04aa6d;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+} */
