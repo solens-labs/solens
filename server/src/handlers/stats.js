@@ -103,6 +103,37 @@ exports.marketStats = async (req, reply) => {
   }
 }
 
+exports.recentCollectionActivity = async (req, reply) => {
+  try {
+    return Transaction.aggregate([
+      { $match: {
+        symbol: req.query.symbol,
+        type: "buy",
+      } },
+      {$sort: {date: -1, price: -1}},
+      { $project:
+        {
+          type: 1,
+          price: 1,
+          date: 1,
+          owner: 1,
+          new_owner: 1,
+          mint: 1,
+          marketplace: 1,
+          tx: 1,
+          _id: 0,
+        }
+      },
+      { $limit: 100 },
+    ],
+    {
+      hint: {symbol: 1, type: 1, date: -1, price: -1}
+    })
+  } catch (err) {
+    throw boom.boomify(err)
+  }
+}
+
 exports.allCollections = async (req, reply) => {
   try {
     const entries = await Collection.aggregate([

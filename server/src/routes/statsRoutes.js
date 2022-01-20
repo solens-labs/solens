@@ -87,6 +87,12 @@ const routes = [
   },
   {
     method: 'GET',
+    url: '/recentCollectionActivity',
+    schema: schema.symbolRequired,
+    handler: statsHandlers.recentCollectionActivity
+  },
+  {
+    method: 'GET',
     url: '/listings',
     schema: schema.tmpSymbolOrMintRequired,
     handler: statsHandlers.listings
