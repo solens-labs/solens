@@ -214,7 +214,7 @@ exports.topNFTs = async (req, reply) => {
 
     let match = { $match: {
       date: { $gte: startDate },
-      ...helpers.matchBuyTxs(),
+      type: "buy"
     } }
     if (query.symbol) {
       match.$match.symbol = query.symbol
@@ -285,15 +285,14 @@ exports.mintHistory = async (req, reply) => {
 
 exports.walletHistory = async (req, reply) => {
   try {
-    console.log(req.query)
     const entries = Transaction.aggregate([
       { $match: {
+        type: "buy",
         $and: [
           {$or: [
             {owner: req.query.wallet},
             {new_owner: req.query.wallet}
-          ]},
-          helpers.matchBuyTxs(),
+          ]}
         ]
       } },
       { $sort: { date: -1} },
@@ -346,7 +345,6 @@ exports.topTraders = async (req, reply) => {
     } else {
       match.$match.type = 'seller'
     }
-    console.log(match)
     return DBCollection.aggregate([
       match,
       { $sort: { [query.sortBy]: -1} },
@@ -375,7 +373,6 @@ exports.floor = async (req, reply) => {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - query.days);
 
-    console.log(query)
     return Floor.aggregate([
       {$match: {
         symbol: query.symbol,
