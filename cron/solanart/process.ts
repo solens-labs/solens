@@ -62,6 +62,23 @@ function getMintFromTx(tokenBalances, index) {
   return mint
 }
 
+function getAcceptOfferTxInfo(tx, ix, index) {
+  let accounts = ix.accounts;
+  let res = new tx_info({
+      mint: accounts[3].toBase58(),
+      owner: accounts[0].toBase58(),
+      price: new BN(base58.decode(ix.data).slice(1, 9), 'le').toNumber() / LAMPORTS_PER_SOL,
+      date: tx.blockTime * 1000 + index,
+      marketplace: 'solanart',
+      escrow: accounts[1].toBase58(),
+      type: 'buy',
+      subtype: 'accept_offer',
+      ix: index,
+      tx: tx.transaction.signatures[0],
+  })
+  return res
+}
+
 function getListTxInfo(tx, ix, index) {
   let accounts = ix.accounts;
   let res = new tx_info({
@@ -124,7 +141,8 @@ function getUpdateTxInfo(tx, ix, index) {
         date: tx.blockTime * 1000,
         marketplace: 'solanart',
         escrow: accounts[1].toBase58(),
-        type: 'update',
+        type: 'list',
+        subtype: 'update',
         tx: tx.transaction.signatures[0],
         ix: index
     })

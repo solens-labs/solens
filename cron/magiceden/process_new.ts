@@ -182,7 +182,8 @@ function getAcceptOfferTxInfo(tx, ix, index) {
         price: new BN(base58.decode(ix.data).slice(8, 16), 'le').toNumber() / LAMPORTS_PER_SOL,
         date: tx.blockTime * 1000 + index,
         marketplace: 'magiceden',
-        type: 'accept_offer',
+        type: 'buy',
+        subtype: 'accept_offer',
         ix: index,
         tx: tx.transaction.signatures[0],
     })
