@@ -8,7 +8,8 @@ export default function ActivityCollectionTable(props) {
   const { data } = props;
   const emptyObject = [
     {
-      mint: "--",
+      image: " -- ",
+      // mint: "--",
       marketplace: "--",
       symbol: "--",
       type: "--",
@@ -18,7 +19,8 @@ export default function ActivityCollectionTable(props) {
       date: "--",
     },
     {
-      mint: "--",
+      image: " -- ",
+      // mint: "--",
       marketplace: "--",
       symbol: "--",
       type: "--",
@@ -54,9 +56,13 @@ export default function ActivityCollectionTable(props) {
       // },
 
       {
-        Header: "MINT",
-        accessor: "mint",
+        Header: "ITEM",
+        accessor: "image",
       },
+      // {
+      //   Header: "MINT",
+      //   accessor: "mint",
+      // },
       {
         Header: "TYPE",
         accessor: "symbol",
@@ -64,15 +70,11 @@ export default function ActivityCollectionTable(props) {
         // maxWidth: 40,
       },
       {
-        Header: "MARKET",
-        accessor: "marketplace",
-      },
-      {
         Header: "DETAIL",
         accessor: "type",
       },
       {
-        Header: "PRICE",
+        Header: "PRICE (SOL)",
         accessor: "price",
       },
       // {
@@ -86,6 +88,10 @@ export default function ActivityCollectionTable(props) {
       {
         Header: "SELLER",
         accessor: "sellerLink",
+      },
+      {
+        Header: "MARKET",
+        accessor: "marketplace",
       },
       {
         Header: "TIME",
@@ -221,6 +227,42 @@ export default function ActivityCollectionTable(props) {
             }
           </tbody>
         </table>
+      </div>
+      <div className="col-12 d-flex flex-column align-items-center">
+        <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mt-3 mb-2">
+          <button
+            className="btn-button btn-main pagination_button"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            Previous
+          </button>
+          <div className="p-2 p-lg-3 pb-lg-0 pt-lg-0 pagination_text">
+            Page {pageIndex + 1} of {pageOptions.length}
+          </div>
+          <button
+            className="btn-button btn-main pagination_button"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            Next
+          </button>
+        </div>
+        <div>
+          <select
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}
+            className="pagination_select"
+          >
+            {[5, 10, 20, 50, 100].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Display {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </>
   );

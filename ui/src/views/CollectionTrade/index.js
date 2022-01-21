@@ -29,6 +29,7 @@ import { filterData, sortData } from "../../utils/sortAndSearch";
 import CollectionActivity from "../../components/CollectionActivity";
 import CollectionListedItems from "../../components/CollectionListedItems";
 import CollectionAllItems from "../../components/CollectionAllItems";
+import convertActivityCollection from "../../utils/convertActivityCollectionData";
 
 export default function CollectionItems(props) {
   const { name } = useParams();
@@ -110,10 +111,11 @@ export default function CollectionItems(props) {
         const apiRequest3 = api.server.collectionHistory + name;
         const collectionActivity = await axios
           .get(apiRequest3)
-          .then((response) => {
+          .then(async (response) => {
             const activity = response.data;
-            const converted = "";
-            setCollectionActivity(converted);
+            const converted = await convertActivityCollection(activity);
+            const resolved = await Promise.all(converted);
+            setCollectionActivity(resolved);
           });
       }
     }

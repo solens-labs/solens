@@ -95,9 +95,9 @@ export default function CollectionListedItems(props) {
 
   return (
     <>
-      <h1 className="mt-0 mt-xxl-3">
-        {listedItems?.length || "Loading"} Listed Items
-      </h1>
+      <div className="col-12 col-lg-3 p-2">
+        <h1 className="">{listedItems?.length || "Loading"} Listed Items</h1>
+      </div>
 
       <div className="col-12 d-flex flex-wrap col-xl-8 mb-4 justify-content-around">
         <select

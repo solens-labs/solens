@@ -47,9 +47,9 @@ export default function CollectionAllItems(props) {
 
   return (
     <>
-      <h1 className="mt-0 mt-xxl-3">
-        {allItems?.length || "Loading"} Listed Items
-      </h1>
+      <div className="col-12 col-lg-3 p-2">
+        <h1 className="">{allItems?.length || "Loading"} Listed Items</h1>
+      </div>
 
       <div className="col-12 col-lg-10">
         <InfiniteScroll

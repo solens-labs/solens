@@ -11,6 +11,7 @@ import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
 import { marketplaceSelect } from "./collectionStats";
 import { getTimeSince } from "./getTimeSince";
+import { getTokenMetadata } from "./getMetadata";
 
 const range = (len) => {
   const arr = [];
@@ -20,11 +21,26 @@ const range = (len) => {
   return arr;
 };
 
-const addTransaction = (transaction, prevPrice) => {
+const addTransaction = async (transaction) => {
+  let image = "";
+
+  const metadata = await getTokenMetadata(transaction["mint"]);
+  if (metadata) {
+    let link = metadata?.image;
+    image = (
+      <a
+        href={`/mint/${transaction["mint"]}`}
+        style={{ textDecoration: "none" }}
+      >
+        <img src={link} alt="nft_image" className="activity_image" />
+      </a>
+    );
+  }
+
   const timeSince = getTimeSince(transaction["date"]);
   const date = <span>{timeSince}</span>;
 
-  const seller = transaction["seller"] || "";
+  const seller = transaction["owner"] || "";
   const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
   const sellerLink = (
     <a
@@ -32,12 +48,12 @@ const addTransaction = (transaction, prevPrice) => {
       target="_blank"
       style={{ textDecoration: "none", color: themeColors[0] }}
     >
-      {shortenAddress(transaction["seller"])}
+      {shortenAddress(transaction["owner"])}
     </a>
   );
-  const buyer = transaction["buyer"] || "";
+  const buyer = transaction["new_owner"] || "";
   const buyerLink =
-    transaction["buyer"] === seller ? (
+    transaction["new_owner"] === seller ? (
       ""
     ) : (
       <a
@@ -45,7 +61,7 @@ const addTransaction = (transaction, prevPrice) => {
         target="_blank"
         style={{ textDecoration: "none", color: themeColors[0] }}
       >
-        {shortenAddress(transaction["buyer"])}
+        {shortenAddress(transaction["new_owner"])}
       </a>
     );
 
@@ -53,7 +69,7 @@ const addTransaction = (transaction, prevPrice) => {
   let symbol = "";
   let type = "";
   let priceNumber = Number(transaction["price"]).toFixed(3);
-  let price = "◎ " + parseFloat(priceNumber);
+  let price = parseFloat(priceNumber);
 
   switch (txType) {
     case "buy":
@@ -122,22 +138,12 @@ const addTransaction = (transaction, prevPrice) => {
       type = "Unknown";
   }
 
-  // const differenceCalc = (
-  //   ((Number(transaction["price"]) - prevPrice) / prevPrice) *
-  //   100
-  // ).toFixed(2);
-  // let difference = isFinite(differenceCalc) ? differenceCalc : " -- ";
-
-  // if (type === "cancel" || type === "sale") {
-  //   difference = " -- ";
-  // }
-
   return {
+    image: image,
     symbol: symbol,
     type: type,
     date: date,
     price: price,
-    // change: difference,
     buyerLink: buyerLink,
     sellerLink: sellerLink,
     buyer: buyer,
@@ -146,22 +152,17 @@ const addTransaction = (transaction, prevPrice) => {
   };
 };
 
-export default function convertData(transactions, lens = 100) {
+export default async function convertData(transactions, lens = 100) {
   const makeDataLevel = () => {
     const requestedLength = Math.min(transactions.length, lens);
 
-    return range(requestedLength).map((d, i) => {
-      const getPreviousPrice = () => {
-        return i === transactions.length - 1
-          ? "--"
-          : Number(transactions[i + 1].price);
-      };
-
-      const prevPrice = getPreviousPrice();
-
-      return {
-        ...addTransaction(transactions[i], prevPrice),
-      };
+    return range(requestedLength).map(async (d, i) => {
+      const returnTX = await addTransaction(transactions[i]);
+      const resolved = Promise.resolve(returnTX);
+      return resolved;
+      // return {
+      //   ...addTransaction(transactions[i]),
+      // };
     });
   };
 
