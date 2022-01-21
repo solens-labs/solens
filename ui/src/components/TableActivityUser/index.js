@@ -3,42 +3,20 @@ import "./style.css";
 import { useTable, useSortBy, usePagination } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Loader from "../Loader";
 
 export default function ActivityWalletTable(props) {
   const { data } = props;
-  const blankObject = {
-    image: "--",
-    txType: "--",
-    detail: "--",
-    // mintLink: "--",
-    symbol: "--",
-    price: "--",
-    marketplace: "--",
-    transactor: "--",
-    txHash: "--",
-    date: "--",
-  };
 
-  const emptyObject = [
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-    blankObject,
-  ];
-
-  const [tableData, setTableData] = useState(emptyObject);
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (Object.keys(data).length === 0) {
-      setTableData(emptyObject);
+      setLoading(true);
     } else {
       setTableData(data);
+      setLoading(false);
     }
   }, [data]);
 
@@ -122,64 +100,78 @@ export default function ActivityWalletTable(props) {
 
   return (
     <>
-      <div className="full_width_table col-12 data_table overflow-auto">
-        <table {...getTableProps()} style={{ width: "100%" }}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={
-                      column.isSorted
-                        ? column.isSortedDesc
-                          ? "activity_header sorted_desc"
-                          : "activity_header sorted_asc"
-                        : "activity_header"
-                    }
-                  >
-                    <div className="header_inner d-flex flex-row p-2 pt-0 justify-content-center">
-                      {column.render("Header")}
-                      <div className="sort_arrow_wallet">
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <ArrowDropDownIcon />
-                          ) : (
-                            <ArrowDropUpIcon />
-                          )
-                        ) : (
-                          ""
+      {!loading && (
+        <>
+          <div className="full_width_table col-12 data_table overflow-auto">
+            <table {...getTableProps()} style={{ width: "100%" }}>
+              <thead>
+                {headerGroups.map((headerGroup) => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map((column) => (
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
                         )}
-                      </div>
-                    </div>
-                  </th>
+                        className={
+                          column.isSorted
+                            ? column.isSortedDesc
+                              ? "activity_header sorted_desc"
+                              : "activity_header sorted_asc"
+                            : "activity_header"
+                        }
+                      >
+                        <div className="header_inner d-flex flex-row p-2 pt-0 justify-content-center">
+                          {column.render("Header")}
+                          <div className="sort_arrow_wallet">
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <ArrowDropDownIcon />
+                              ) : (
+                                <ArrowDropUpIcon />
+                              )
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row, i) => {
-              prepareRow(row);
-              let style = 1;
-              if (i % 2) {
-                style = 2;
-              }
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row, i) => {
+                  prepareRow(row);
+                  let style = 1;
+                  if (i % 2) {
+                    style = 2;
+                  }
 
-              return (
-                <tr {...row.getRowProps()} className={`activity_row` + style}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()} className="activity_data">
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  return (
+                    <tr
+                      {...row.getRowProps()}
+                      className={`activity_row_image` + style}
+                    >
+                      {row.cells.map((cell) => {
+                        return (
+                          <td
+                            {...cell.getCellProps()}
+                            className="activity_data"
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {loading && <Loader />}
     </>
   );
 }
