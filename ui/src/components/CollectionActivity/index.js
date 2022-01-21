@@ -9,7 +9,7 @@ export default function CollectionActivity(props) {
       <div className="col-12 col-lg-3 p-2">
         <h1>Recent Activity</h1>
       </div>
-      <div className="chartbox col-12 col-lg-10 d-flex flex-row flex-wrap justify-content-center mt-4">
+      <div className="activity_box chartbox col-12 col-lg-10 d-flex flex-row flex-wrap justify-content-center mt-4">
         <ActivityTable data={activity} />
       </div>
     </>

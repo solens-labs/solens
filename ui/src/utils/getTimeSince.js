@@ -24,10 +24,11 @@ export const getTimeSince = (date) => {
     return timeSince;
   }
 
-  if (interval.length("hours").toFixed(0) < 24) {
+  if (interval.length("hours").toFixed(0) >= 2) {
     timeSince = interval.length("hours").toFixed(0) + " hours ago";
     return timeSince;
   }
+
   if (
     interval.length("hours").toFixed(0) >= 1 &&
     interval.length("hours").toFixed(0) < 2
@@ -40,7 +41,7 @@ export const getTimeSince = (date) => {
     interval.length("minutes").toFixed(0) < 60 &&
     interval.length("minutes").toFixed(0) >= 2
   ) {
-    timeSince = interval.length("mintes").toFixed(0) + " minutes ago";
+    timeSince = interval.length("minutes").toFixed(0) + " minutes ago";
     return timeSince;
   }
 
@@ -48,7 +49,7 @@ export const getTimeSince = (date) => {
     interval.length("minutes").toFixed(0) < 2 &&
     interval.length("minutes").toFixed(0) >= 1
   ) {
-    timeSince = interval.length("mintes").toFixed(0) + " minute ago";
+    timeSince = interval.length("minutes").toFixed(0) + " minute ago";
     return timeSince;
   }
 

@@ -138,6 +138,16 @@ const addTransaction = async (transaction) => {
       type = "Unknown";
   }
 
+  const txHash = (
+    <a
+      href={explorerLink("tx", transaction["tx"])}
+      style={{ textDecoration: "none", color: themeColors[0] }}
+      target="_blank"
+    >
+      {transaction["tx"].slice(0, 6) + "..."}
+    </a>
+  );
+
   return {
     image: image,
     symbol: symbol,
@@ -148,6 +158,7 @@ const addTransaction = async (transaction) => {
     sellerLink: sellerLink,
     buyer: buyer,
     seller: seller,
+    txHash: txHash,
     marketplace: marketplace,
   };
 };

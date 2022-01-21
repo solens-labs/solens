@@ -64,6 +64,10 @@ export default function ActivityCollectionTable(props) {
       //   accessor: "mint",
       // },
       {
+        Header: "PRICE (SOL)",
+        accessor: "price",
+      },
+      {
         Header: "TYPE",
         accessor: "symbol",
         // width: 40,
@@ -72,10 +76,6 @@ export default function ActivityCollectionTable(props) {
       {
         Header: "DETAIL",
         accessor: "type",
-      },
-      {
-        Header: "PRICE (SOL)",
-        accessor: "price",
       },
       // {
       //   Header: "% Change",
@@ -92,6 +92,10 @@ export default function ActivityCollectionTable(props) {
       {
         Header: "MARKET",
         accessor: "marketplace",
+      },
+      {
+        Header: "TX",
+        accessor: "txHash",
       },
       {
         Header: "TIME",

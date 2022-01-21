@@ -52,6 +52,10 @@
   margin-top: 5px;
 }
 
+.activity_row1 {
+  height: 91.5px !important;
+}
+
 .activity_row2 {
   background-color: rgb(25, 16, 51);
   /* background: linear-gradient(
@@ -61,6 +65,7 @@
   ); */
   border-radius: 15px !important;
   overflow: hidden;
+  height: 91.5px !important;
 }
 .full_width_table {
   width: 100% !important;

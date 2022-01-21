@@ -190,6 +190,24 @@ export default function CollectionItems(props) {
         <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
           <div
             className={`${
+              currentView === "activity"
+                ? "btn_color_outside"
+                : "btn_color_selected"
+            } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
+            onClick={() => {
+              setCurrentView("activity");
+            }}
+          >
+            {currentView === "activity" && (
+              <div className="btn_color_inner">Activity</div>
+            )}
+            {currentView !== "activity" && "Activity"}
+          </div>
+        </div>
+
+        <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
+          <div
+            className={`${
               currentView === "listed"
                 ? "btn_color_outside"
                 : "btn_color_selected"
@@ -218,24 +236,6 @@ export default function CollectionItems(props) {
               <div className="btn_color_inner">All Items</div>
             )}
             {currentView !== "all" ? "All Items" : ""}
-          </div>
-        </div>
-
-        <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
-          <div
-            className={`${
-              currentView === "activity"
-                ? "btn_color_outside"
-                : "btn_color_selected"
-            } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
-            onClick={() => {
-              setCurrentView("activity");
-            }}
-          >
-            {currentView === "activity" && (
-              <div className="btn_color_inner">Activity</div>
-            )}
-            {currentView !== "activity" && "Activity"}
           </div>
         </div>
       </div>
