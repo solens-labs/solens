@@ -138,6 +138,21 @@ export default function User(props) {
         )}
       </div>
 
+      {wallet.connected && window.innerWidth < 990 && (
+        <div className="col-12 d-flex justify-content-center mb-3">
+          <div className="d-flex flex-column align-items-center">
+            <WalletMultiButton
+              className="connect_button"
+              style={{
+                border: "1px solid black",
+                color: "white",
+                borderRadius: 15,
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* {wallet.connected && (
         <div className="col-12 d-flex flex-column align-items-center">
           <h1>User Profile</h1>
