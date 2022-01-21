@@ -84,9 +84,20 @@ const addTransaction = async (transaction, allCollections, user) => {
   // let price = "◎ " + parseFloat(priceNumber);
   let price = parseFloat(priceNumber);
 
+  let displayName = "Unverified";
+
   const namecheck =
     transaction["symbol"] &&
     allCollections.filter((item) => item.symbol === transaction["symbol"]);
+
+  if (namecheck?.length > 0) {
+    if (namecheck[0].name.length < 20) {
+      displayName = namecheck[0].name;
+    }
+    if (namecheck[0].name.length > 20) {
+      displayName = namecheck[0].name.slice(0, 20) + "...";
+    }
+  }
 
   let symbol =
     namecheck?.length > 0 ? (
@@ -94,7 +105,7 @@ const addTransaction = async (transaction, allCollections, user) => {
         href={`/collection/${transaction["symbol"]}`}
         style={{ textDecoration: "none", color: themeColors[0] }}
       >
-        {namecheck[0].name}
+        {displayName}
       </a>
     ) : (
       "Unverified"

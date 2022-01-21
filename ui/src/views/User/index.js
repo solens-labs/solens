@@ -23,7 +23,7 @@ import Loader from "../../components/Loader";
 import ReactGA from "react-ga";
 import { api } from "../../constants/constants";
 import axios from "axios";
-import convertWalletActivity from "../../utils/convertActivityWalletData";
+import convertUserActivity from "../../utils/convertActivityUserData";
 import UserActivity from "../../components/UserActivity";
 import UserListedItems from "../../components/UserItemsListed";
 import UserWalletItems from "../../components/UserItemsWallet";
@@ -55,7 +55,7 @@ export default function User(props) {
       const walletHistory = axios.get(apiRequest).then(async (response) => {
         const activity = response.data;
         const user = wallet.publicKey.toBase58();
-        const converted = await convertWalletActivity(
+        const converted = await convertUserActivity(
           activity,
           allCollections,
           user

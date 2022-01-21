@@ -6,7 +6,7 @@ export const getTimeSince = (date) => {
   let interval = Interval.fromDateTimes(txTime, now);
   let timeSince = "";
 
-  if (interval.length("days").toFixed(0) > 31) {
+  if (interval.length("days").toFixed(2) > 31) {
     timeSince = txTime.toLocaleDateString();
     return timeSince;
   }
@@ -18,20 +18,23 @@ export const getTimeSince = (date) => {
 
   if (
     interval.length("days").toFixed(0) < 2 &&
-    interval.length("days").toFixed(0) >= 1
+    interval.length("days").toFixed(1) >= 1
   ) {
     timeSince = interval.length("days").toFixed(0) + " day ago";
     return timeSince;
   }
 
-  if (interval.length("hours").toFixed(0) >= 2) {
+  if (
+    interval.length("hours").toFixed(0) < 24 &&
+    interval.length("hours").toFixed(1) >= 2
+  ) {
     timeSince = interval.length("hours").toFixed(0) + " hours ago";
     return timeSince;
   }
 
   if (
-    interval.length("hours").toFixed(0) >= 1 &&
-    interval.length("hours").toFixed(0) < 2
+    interval.length("hours").toFixed(0) < 2 &&
+    interval.length("hours").toFixed(1) >= 1
   ) {
     timeSince = interval.length("hours").toFixed(0) + " hour ago";
     return timeSince;
@@ -39,7 +42,7 @@ export const getTimeSince = (date) => {
 
   if (
     interval.length("minutes").toFixed(0) < 60 &&
-    interval.length("minutes").toFixed(0) >= 2
+    interval.length("minutes").toFixed(1) >= 2
   ) {
     timeSince = interval.length("minutes").toFixed(0) + " minutes ago";
     return timeSince;
@@ -47,7 +50,7 @@ export const getTimeSince = (date) => {
 
   if (
     interval.length("minutes").toFixed(0) < 2 &&
-    interval.length("minutes").toFixed(0) >= 1
+    interval.length("minutes").toFixed(1) >= 1
   ) {
     timeSince = interval.length("minutes").toFixed(0) + " minute ago";
     return timeSince;
