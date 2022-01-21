@@ -113,7 +113,7 @@ exports.recentCollectionActivity = async (req, reply) => {
       {$sort: {date: -1, price: -1}},
       { $project:
         {
-          type: 1,
+          type: helpers.projectTypes(),
           price: 1,
           date: 1,
           owner: 1,
@@ -268,7 +268,7 @@ exports.mintHistory = async (req, reply) => {
           buyer: "$new_owner",
           date: 1,
           symbol: 1,
-          type: 1,
+          type: helpers.projectTypes(),
           marketplace: 1,
           escrow: 1,
           tx: 1,
@@ -305,7 +305,7 @@ exports.walletHistory = async (req, reply) => {
           date: 1,
           symbol: 1,
           mint: 1,
-          type: 1,
+          type: helpers.projectTypes(),
           tx: 1,
           marketplace: 1,
           price: { $round: ["$price", 2] },
@@ -476,7 +476,6 @@ exports.listings = async (req, reply) => {
       mint: '$_id.mint',
       owner: 1,
       price: 1,
-      type: 1,
       escrow: 1,
       marketplace: 1,
       _id: 0

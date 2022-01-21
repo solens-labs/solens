@@ -105,3 +105,22 @@ exports.lookupAggregatedStats = (collection, days = 1, skip = 0, outField = '', 
     as: out,
   }}
 }
+
+exports.projectTypes = () => {
+  return {
+    $switch:
+    {
+      branches: [
+        {
+          case: { $eq : [ "$subtype", 'update' ] },
+          then: "update"
+        },
+        {
+          case: { $eq : [ "$subtype", 'accept_offer' ] },
+          then: "accept_offer"
+        }
+      ],
+      default: "$type"
+    }
+  }
+}

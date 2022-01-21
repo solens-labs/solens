@@ -29,10 +29,16 @@ const transactionSchema = new mongoose.Schema({
     enum: [
       'list',
       'cancel',
-      'update',
       'buy',
       'offer',
-      'cancel_offer',
+      'cancel_offer'
+    ]
+  },
+  subtype:
+  {
+    type: String,
+    enum: [
+      'update',
       'accept_offer'
     ]
   },
