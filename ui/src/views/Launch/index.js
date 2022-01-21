@@ -110,7 +110,7 @@ export default function Launch() {
         <div className="launch_detail_container col-12 col-md-6 col-xxl-3 d-flex justify-content-center p-2">
           <div className="launch_detail_box d-flex flex-column align-items-center">
             <h2 className="mb-1" style={{ fontWeight: "bold" }}>
-              Analytics
+              Trading
             </h2>
             <hr style={{ color: "white", width: "70%" }} className="mt-0" />
             <Analytics
@@ -119,8 +119,9 @@ export default function Launch() {
               className="mb-3"
             />
             <h5>
-              Solens will provide analytics for your community as soon as
-              minting completes. We make data easy-to-read and actionable.
+              Your collection will have an analytics & trading page as soon as
+              minting completes. Give your community access to multiple
+              secondary markets.
             </h5>
           </div>
         </div>
