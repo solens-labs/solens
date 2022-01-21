@@ -180,12 +180,17 @@ export default function ActivityMintTable(props) {
           <tbody {...getTableBodyProps()}>
             {
               // Loop over the table rows
-              page.map((row) => {
+              page.map((row, i) => {
                 // Prepare the row for display
                 prepareRow(row);
+                let style = 1;
+                if (i % 2) {
+                  style = 2;
+                }
+
                 return (
                   // Apply the row props
-                  <tr {...row.getRowProps()}>
+                  <tr {...row.getRowProps()} className={`activity_row` + style}>
                     {
                       // Loop over the rows cells
                       row.cells.map((cell) => {
