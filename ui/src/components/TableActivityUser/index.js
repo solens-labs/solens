@@ -7,9 +7,10 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 export default function ActivityWalletTable(props) {
   const { data } = props;
   const blankObject = {
+    image: "--",
     txType: "--",
     detail: "--",
-    mintLink: "--",
+    // mintLink: "--",
     symbol: "--",
     price: "--",
     marketplace: "--",
@@ -44,6 +45,14 @@ export default function ActivityWalletTable(props) {
   const columns = React.useMemo(
     () => [
       {
+        Header: "ITEM",
+        accessor: "image",
+      },
+      {
+        Header: "COLLECTION",
+        accessor: "symbol",
+      },
+      {
         Header: "TYPE",
         accessor: "txType",
       },
@@ -51,14 +60,10 @@ export default function ActivityWalletTable(props) {
         Header: "DETAIL",
         accessor: "detail",
       },
-      {
-        Header: "MINT",
-        accessor: "mintLink",
-      },
-      {
-        Header: "COLLECTION",
-        accessor: "symbol",
-      },
+      // {
+      //   Header: "MINT",
+      //   accessor: "mintLink",
+      // },
       {
         Header: "PRICE",
         accessor: "price",
@@ -117,7 +122,7 @@ export default function ActivityWalletTable(props) {
 
   return (
     <>
-      <div className="col-12 data_table overflow-auto">
+      <div className="full_width_table col-12 data_table overflow-auto">
         <table {...getTableProps()} style={{ width: "100%" }}>
           <thead>
             {headerGroups.map((headerGroup) => (
@@ -153,10 +158,15 @@ export default function ActivityWalletTable(props) {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
+            {page.map((row, i) => {
               prepareRow(row);
+              let style = 1;
+              if (i % 2) {
+                style = 2;
+              }
+
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} className={`activity_row` + style}>
                   {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()} className="activity_data">

@@ -43,3 +43,20 @@
   /* border-right: 1px solid rgba(134, 64, 117, 0.5); */
   /* border-left: 1px solid rgba(134, 64, 117, 0.5); */
 }
+
+.activity_image {
+  max-height: 70px;
+  border: 1px solid black;
+  border-radius: 15px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.activity_row2 {
+  background-color: rgb(23, 15, 47);
+  border-radius: 15px !important;
+  overflow: hidden;
+}
+.full_width_table {
+  width: 100% !important;
+}

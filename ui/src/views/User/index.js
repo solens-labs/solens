@@ -54,11 +54,16 @@ export default function User(props) {
       activity.length === 0
     ) {
       const apiRequest = api.server.walletHistory + wallet.publicKey.toBase58();
-      const walletHistory = axios.get(apiRequest).then((response) => {
+      const walletHistory = axios.get(apiRequest).then(async (response) => {
         const activity = response.data;
         const user = wallet.publicKey.toBase58();
-        const converted = convertWalletActivity(activity, allCollections, user);
-        setActivity(converted);
+        const converted = await convertWalletActivity(
+          activity,
+          allCollections,
+          user
+        );
+        const resolved = await Promise.all(converted);
+        setActivity(resolved);
       });
     }
   }, [wallet, allCollections]);

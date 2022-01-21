@@ -10,6 +10,7 @@ import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
 import { marketplaceSelect } from "./collectionStats";
+import { getTokenMetadata } from "./getMetadata";
 
 const range = (len) => {
   const arr = [];
@@ -19,7 +20,22 @@ const range = (len) => {
   return arr;
 };
 
-const addTransaction = (transaction, allCollections, user) => {
+const addTransaction = async (transaction, allCollections, user) => {
+  let image = "";
+
+  const metadata = await getTokenMetadata(transaction["mint"]);
+  if (metadata) {
+    let link = metadata?.image;
+    image = (
+      <a
+        href={`/mint/${transaction["mint"]}`}
+        style={{ textDecoration: "none" }}
+      >
+        <img src={link} alt="nft_image" className="activity_image" />
+      </a>
+    );
+  }
+
   const date = new Date(transaction["date"]) || "xx/xx/xxxx";
   let buyer = transaction["buyer"];
   let seller = transaction["seller"];
@@ -94,6 +110,7 @@ const addTransaction = (transaction, allCollections, user) => {
   );
 
   return {
+    image: image,
     txType: txType,
     detail: detail,
     mintLink: mintLink,
@@ -106,7 +123,7 @@ const addTransaction = (transaction, allCollections, user) => {
   };
 };
 
-export default function convertData(
+export default async function convertData(
   transactions,
   allCollections,
   user,
@@ -115,18 +132,24 @@ export default function convertData(
   const makeDataLevel = () => {
     const requestedLength = Math.min(transactions.length, lens);
 
-    return range(requestedLength).map((d, i) => {
-      const getPreviousPrice = () => {
-        return i === transactions.length - 1
-          ? "--"
-          : Number(transactions[i + 1].price);
-      };
+    return range(requestedLength).map(async (d, i) => {
+      // const getPreviousPrice = () => {
+      //   return i === transactions.length - 1
+      //     ? "--"
+      //     : Number(transactions[i + 1].price);
+      // };
+      // const prevPrice = getPreviousPrice();
 
-      const prevPrice = getPreviousPrice();
-
-      return {
-        ...addTransaction(transactions[i], allCollections, user),
-      };
+      const returnTX = await addTransaction(
+        transactions[i],
+        allCollections,
+        user
+      );
+      const resolved = Promise.resolve(returnTX);
+      return resolved;
+      // return {
+      //   ...addTransaction(transactions[i], allCollections, user),
+      // };
     });
   };
 
