@@ -161,7 +161,8 @@ def process_tx(sig):
     if symbol:
       payload['symbol'] = symbol['symbol']
 
-  requests.post(TRANSACTION_URI, json=payload)
+  if payload.get('type') in ['buy', 'list', 'cancel', 'accept_offer']:
+    requests.post(TRANSACTION_URI, json=payload)
 
 def get_latest_transactions(until=None):
   before = None
