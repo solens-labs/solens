@@ -114,7 +114,8 @@ def get_accept_tx_info(tx):
 
   payload = {}
   payload['date'] = tx_date(tx)
-  payload['type'] = 'accept_offer'
+  payload['type'] = 'buy'
+  payload['subtype'] = 'accept_offer'
   payload['price'] = (tx['result']['meta']['preBalances'][escrow_index] - tx['result']['meta']['postBalances'][escrow_index]) / LAMPORTS_PER_SOL
   payload['owner'] = get_account(tx, owner_index)
   payload['new_owner'] = get_account(tx, new_owner_index)
