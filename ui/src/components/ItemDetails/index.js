@@ -3,6 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import { shortenAddress } from "../../candy-machine";
 import { explorerLink, themeColors } from "../../constants/constants";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 export default function ItemDetails(props) {
   const {
@@ -17,6 +18,10 @@ export default function ItemDetails(props) {
 
   const owner = listedDetails?.owner || ownerAccount;
 
+  const copyAddress = (address) => {
+    const copy = navigator.clipboard.writeText(address);
+  };
+
   return (
     <div className="d-flex flex-row flex-wrap col-12">
       <div className="col-12 col-lg-6">
@@ -26,51 +31,81 @@ export default function ItemDetails(props) {
           className="mb-2"
         />
         <div className="col-12 d-flex flex-column align-items-start justify-content-between">
-          <h5 className="mint_info">
-            Mint:{" "}
+          <div className="d-flex">
+            <h5 className="mint_info">Mint: </h5>
             {received && item.mint && !invalid && (
-              <a
-                href={explorerLink("token", item.mint)}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <span className="mint_info_value">
-                  {received && shortenAddress(item.mint)}
-                </span>
-              </a>
+              <div className="p-2 pb-0 pt-0 pr-0 d-flex align-items-center">
+                <a
+                  href={explorerLink("token", item.mint)}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <span className="mint_info_value">
+                    {received && shortenAddress(item.mint)}
+                  </span>
+                </a>
+                <ContentCopyIcon
+                  style={{
+                    height: 15,
+                    fill: "rgb(179, 87, 156)",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => copyAddress(item.mint)}
+                />
+              </div>
             )}
             {invalid && <span className="mint_info_value">Invalid Token</span>}
-          </h5>
-          <h5 className="mint_info">
-            Token:{" "}
+          </div>
+          <div className="d-flex">
+            <h5 className="mint_info">Token: </h5>
             {received && tokenAccount && !invalid && (
-              <a
-                href={explorerLink("account", tokenAccount)}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <span className="mint_info_value">
-                  {item && shortenAddress(tokenAccount)}
-                </span>{" "}
-              </a>
+              <div className="p-2 pb-0 pt-0 pr-0 d-flex align-items-center">
+                <a
+                  href={explorerLink("account", tokenAccount)}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <span className="mint_info_value">
+                    {received && shortenAddress(tokenAccount)}
+                  </span>
+                </a>
+                <ContentCopyIcon
+                  style={{
+                    height: 15,
+                    fill: "rgb(179, 87, 156)",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => copyAddress(tokenAccount)}
+                />
+              </div>
             )}
             {invalid && <span className="mint_info_value">Invalid Token</span>}
-          </h5>
-          <h5 className="mint_info">
-            Owner:{" "}
+          </div>
+          <div className="d-flex">
+            <h5 className="mint_info">Owner: </h5>
             {received && owner && !invalid && (
-              <a
-                href={explorerLink("account", owner)}
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <span className="mint_info_value">
-                  {received && shortenAddress(owner)}
-                </span>{" "}
-              </a>
+              <div className="p-2 pb-0 pt-0 pr-0 d-flex align-items-center">
+                <a
+                  href={explorerLink("account", owner)}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <span className="mint_info_value">
+                    {received && shortenAddress(owner)}
+                  </span>
+                </a>
+                <ContentCopyIcon
+                  style={{
+                    height: 15,
+                    fill: "rgb(179, 87, 156)",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => copyAddress(owner)}
+                />
+              </div>
             )}
             {invalid && <span className="mint_info_value">Invalid Token</span>}
-          </h5>
+          </div>
         </div>
       </div>
 
