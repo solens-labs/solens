@@ -11,7 +11,6 @@ import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
 import { marketplaceSelect } from "./collectionStats";
 import { getTokenMetadata } from "./getMetadata";
-import { DateTime, Interval } from "luxon";
 import { getTimeSince } from "./getTimeSince";
 
 const range = (len) => {
@@ -38,10 +37,7 @@ const addTransaction = async (transaction, allCollections, user) => {
     );
   }
 
-  const txTime = new Date(transaction["date"]) || "xx/xx/xxxx";
-  let now = DateTime.now();
-  let interval = Interval.fromDateTimes(txTime, now);
-  const timeSince = getTimeSince(now, interval);
+  const timeSince = getTimeSince(transaction["date"]);
   const date = <span>{timeSince}</span>;
 
   let buyer = transaction["buyer"];

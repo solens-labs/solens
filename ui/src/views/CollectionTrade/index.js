@@ -26,6 +26,9 @@ import {
   setCollectionName,
 } from "../../redux/app";
 import { filterData, sortData } from "../../utils/sortAndSearch";
+import CollectionActivity from "../../components/CollectionActivity";
+import CollectionListedItems from "../../components/CollectionListedItems";
+import CollectionAllItems from "../../components/CollectionAllItems";
 
 export default function CollectionItems(props) {
   const { name } = useParams();
@@ -40,78 +43,14 @@ export default function CollectionItems(props) {
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
   const [collectionListed, setCollectionListed] = useState([]); // all listed items across all MPs
   const [collectionItems, setCollectionItems] = useState([]); // all collection mints
+  const [collectionActivity, setCollectionActivity] = useState([]);
 
   const [marketplaces, setMarketplaces] = useState([]); // number of MPs the collection is on
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
-  const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
-  const [seeAllItems, setSeeAllItems] = useState(false); // needed to toggle listed items/all items
+
+  const [currentView, setCurrentView] = useState("listed");
 
   const [items, setItems] = useState([]); // items always displayed on page and used in infinite scroll
-  const [sortSelected, setSortSelected] = useState(""); // selected sort option
-
-  // Toggle between Listed Items & All Items
-  useEffect(async () => {
-    if (!seeAllItems && collectionListed.length > 0) {
-      setItems([]);
-      const initialItems = await setInitialItems(collectionListed);
-      setItems(initialItems);
-    }
-
-    if (seeAllItems && collectionItems.length > 0) {
-      setItems([]);
-      const initialItems = await setInitialItems(collectionItems);
-      setItems(initialItems);
-    }
-  }, [seeAllItems, collectionItems, collectionListed]);
-
-  // Listen for sort events and set collection listed persist + page items
-  useEffect(async () => {
-    if (sortSelected) {
-      setItems([]);
-      const sortedItems = sortItems(collectionListed, sortSelected);
-      setCollectionListed(sortedItems);
-      const initialItems = await setInitialItems(collectionListed);
-      setItems(initialItems);
-    }
-  }, [sortSelected, seeAllItems]);
-
-  const sortItems = (allItems, sortSelected) => {
-    if (sortSelected && allItems.length > 0) {
-      let sortType = "";
-      let reverse = false;
-
-      switch (sortSelected) {
-        case "price_htl":
-          sortType = "price";
-          break;
-        case "price_lth":
-          sortType = "price";
-          reverse = true;
-          break;
-        default:
-          sortType = "price";
-          reverse = true;
-      }
-
-      const sorted = sortData(allItems, sortType);
-      if (reverse) {
-        sorted.reverse();
-      }
-      return sorted;
-    }
-  };
-
-  const setInitialItems = async (allItems) => {
-    const intitialItems = allItems.slice(0, 20);
-    const intitialItemsMetadata = await fetchItemsMetadata([], intitialItems);
-
-    return intitialItemsMetadata;
-  };
-
-  // Generate link to go to internal NFT Detail Page
-  const goToNFTDetailPage = (mint) => {
-    history.push("/mint/" + mint);
-  };
 
   // Fetch Collection Data, All Items, & Listed Items
   useEffect(async () => {
@@ -166,41 +105,12 @@ export default function CollectionItems(props) {
           .then((response) => {
             const listedItems = response.data;
             // setCollectionListed(listedItems);
-            const sortedListeditems = sortItems(listedItems, "price_lth");
-            setCollectionListed(sortedListeditems);
+            // const sortedListeditems = sortItems(listedItems, "price_lth");
+            setCollectionListed(listedItems);
           });
       }
     }
   }, [name, allCollections]);
-
-  // Infinite Scroll Data Fetch
-  const fetchAndSetItems = async (items, fullList) => {
-    if (items.length > 0 && items.length >= fullList.length) {
-      setHasMore(false);
-      return;
-    }
-    if (items.length === 0 && fullList.length === 0) {
-      return;
-    }
-    const itemsMetadata = await fetchItemsMetadata(items, fullList);
-    setItems(itemsMetadata);
-  };
-
-  // Get metadata of an array of items
-  const fetchItemsMetadata = async (items, totalItems) => {
-    const newMints = totalItems.slice(items.length, items.length + 20);
-    const newMetadata = newMints.map(async (item, i) => {
-      const promise = await getTokenMetadata(item?.mint);
-      const tokenMD = await Promise.resolve(promise);
-      tokenMD["list_price"] = item?.price;
-      tokenMD["list_mp"] = item?.marketplace;
-      tokenMD["owner"] = item?.owner;
-      return tokenMD;
-    });
-    const newResolved = await Promise.all(newMetadata);
-    const fullItems = [...items, ...newResolved];
-    return fullItems;
-  };
 
   // Scroll to Top Button
   const scrollToTop = () => {
@@ -208,31 +118,6 @@ export default function CollectionItems(props) {
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  // Get Explorer links for NFT Cards
-  const getItemLinks = (mint) => {
-    const links = {};
-    if (marketplaces.includes("smb")) {
-      links["smb"] = exchangeApi.smb.itemDetails + mint;
-    }
-    if (marketplaces.includes("magiceden")) {
-      links["magiceden"] = exchangeApi.magiceden.itemDetails + mint;
-    }
-    if (marketplaces.includes("solanart")) {
-      links["solanart"] = exchangeApi.solanart.itemDetails + mint;
-    }
-    return links;
-  };
-
-  const selectedItems = () => {
-    if (seeAllItems) {
-      return collectionItems;
-    }
-
-    if (!seeAllItems) {
-      return collectionListed;
-    }
   };
 
   // Store collection name in redux
@@ -292,145 +177,70 @@ export default function CollectionItems(props) {
         className="mt-0 mb-4"
       />
 
-      <div className="col-12 col-lg-8 col-xl-6 col-xxl-5 d-flex flex-row flex-wrap justify-content-center mb-3">
-        <div className="col-6 p-1 p-lg-3 pt-0 pb-0">
+      <div className="col-12 col-lg-8 col-xl-6 d-flex flex-row flex-wrap justify-content-center mb-3">
+        <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
           <div
-            className={`btn-button btn-tall btn-wide ${
-              seeAllItems ? "btn_color_selected" : "btn_color_outside"
-            } d-flex mt-2 mb-2`}
-            onClick={() => setSeeAllItems(false)}
+            className={`${
+              currentView === "listed"
+                ? "btn_color_outside"
+                : "btn_color_selected"
+            } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
+            onClick={() => {
+              setCurrentView("listed");
+            }}
           >
-            {!seeAllItems && (
-              <div className="btn_color_inner">Listed Items</div>
+            {currentView === "listed" && (
+              <div className="btn_color_inner">Listed</div>
             )}
-            {seeAllItems && "Listed Items"}
+            {currentView !== "listed" ? "Listed" : ""}
           </div>
         </div>
-        <div className="col-6 p-1 p-lg-3 pt-0 pb-0">
+
+        <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
           <div
-            className={`btn-button btn-tall btn-wide ${
-              !seeAllItems ? "btn_color_selected" : "btn_color_outside"
-            } d-flex mt-2 mb-2`}
-            onClick={() => setSeeAllItems(true)}
+            className={`${
+              currentView === "all" ? "btn_color_outside" : "btn_color_selected"
+            } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
+            onClick={() => {
+              setCurrentView("all");
+            }}
           >
-            {seeAllItems && <div className="btn_color_inner">All Items</div>}
-            {!seeAllItems && "All Items"}
+            {currentView === "all" && (
+              <div className="btn_color_inner">All Items</div>
+            )}
+            {currentView !== "all" ? "All Items" : ""}
+          </div>
+        </div>
+
+        <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
+          <div
+            className={`${
+              currentView === "activity"
+                ? "btn_color_outside"
+                : "btn_color_selected"
+            } btn-button btn-tall btn-wide d-flex mt-2 mb-2`}
+            onClick={() => {
+              setCurrentView("activity");
+            }}
+          >
+            {currentView === "activity" && (
+              <div className="btn_color_inner">Activity</div>
+            )}
+            {currentView !== "activity" && "Activity"}
           </div>
         </div>
       </div>
 
-      {!seeAllItems && (
-        <>
-          <h1 className="mt-0 mt-xxl-3">
-            {collectionListed?.length || "Loading"} Listed Items
-          </h1>
-
-          <div className="col-12 d-flex flex-wrap col-xl-8 mb-4 justify-content-around">
-            <select
-              name="sort_mints"
-              id="sort_mints"
-              className="select_collection_filter"
-              onChange={(e) => {
-                setSortSelected(e.target.value);
-              }}
-            >
-              <option value="" disabled selected>
-                Sort by
-              </option>
-              <option value="price_htl">Price - High to Low</option>
-              <option value="price_lth">Price - Low to High</option>
-              {/* <option value="mint_solanart">Solanart</option> */}
-              {/* <option value="mint_magiceden">Magic Eden</option> */}
-            </select>
-
-            {/* <input
-          type="text"
-          placeholder="Search"
-          className="search_collection_input"
-          onChange={(e) => setSearch(e.target.value)}
-        /> */}
-          </div>
-        </>
+      {currentView === "listed" && (
+        <CollectionListedItems listedItems={collectionListed} name={name} />
       )}
 
-      {seeAllItems && (
-        <h1 className="mt-0 mt-xxl-3">
-          {collectionItems?.length || "Loading"} Total Items
-        </h1>
+      {currentView === "all" && (
+        <CollectionAllItems collectionItems={collectionItems} />
       )}
 
-      <div className="col-12 col-lg-10">
-        <InfiniteScroll
-          dataLength={items.length}
-          next={() => fetchAndSetItems(items, selectedItems())}
-          hasMore={hasMore}
-          loader={
-            <div className="mt-5 mb-5">
-              <Loader />
-            </div>
-          }
-        >
-          {!seeAllItems && (
-            <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-              {items.length > 0 &&
-                items.map((item, i) => {
-                  return (
-                    <div
-                      className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                      key={i}
-                    >
-                      <div className="nft_card_container col-12">
-                        <div
-                          className="nft_card col-12 d-flex flex-column align-items-center"
-                          onClick={() => goToNFTDetailPage(item.mint)}
-                        >
-                          <NftCard
-                            item={item}
-                            links={getItemLinks(item.mint)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
-          )}
-          {seeAllItems && (
-            <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-              {items.length > 0 &&
-                items.map((item, i) => {
-                  return (
-                    <div
-                      className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                      key={i}
-                    >
-                      <NftCardView
-                        item={item}
-                        links={getItemLinks(item.mint)}
-                      />
-                    </div>
-                  );
-                })}
-            </div>
-          )}
-        </InfiniteScroll>
-      </div>
-
-      {items.length > 0 && hasMore && (
-        <div
-          className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2"
-          onClick={() => fetchAndSetItems(items, collectionListed)}
-        >
-          Load More
-        </div>
-      )}
-
-      {!hasMore && (
-        <Link to={`/collection/${name}`} style={{ textDecoration: "none" }}>
-          <div className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2">
-            View Insights
-          </div>
-        </Link>
+      {currentView === "activity" && (
+        <CollectionActivity activity={collectionActivity} />
       )}
 
       <button className="scroll_top" onClick={scrollToTop}>

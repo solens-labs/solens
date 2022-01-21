@@ -1,11 +1,15 @@
 import { DateTime, Interval } from "luxon";
 
-export const getTimeSince = (now, interval) => {
+export const getTimeSince = (date) => {
+  const txTime = new Date(date);
+  let now = DateTime.now();
+  let interval = Interval.fromDateTimes(txTime, now);
   let timeSince = "";
 
-  console.log(interval.length("days").toFixed(0) + " days");
-  console.log(interval.length("hours").toFixed(0) + " hours");
-  console.log(interval.length("minutes").toFixed(0) + " minutes");
+  if (interval.length("days").toFixed(0) > 31) {
+    timeSince = txTime.toLocaleDateString();
+    return timeSince;
+  }
 
   if (interval.length("days").toFixed(0) >= 2) {
     timeSince = interval.length("days").toFixed(0) + " days ago";
@@ -24,12 +28,6 @@ export const getTimeSince = (now, interval) => {
     timeSince = interval.length("hours").toFixed(0) + " hours ago";
     return timeSince;
   }
-
-  if (interval.length("hours").toFixed(0) < 24) {
-    timeSince = interval.length("hours").toFixed(0) + " hours ago";
-    return timeSince;
-  }
-
   if (
     interval.length("hours").toFixed(0) >= 1 &&
     interval.length("hours").toFixed(0) < 2
@@ -38,8 +36,24 @@ export const getTimeSince = (now, interval) => {
     return timeSince;
   }
 
-  if (interval.length("minutes").toFixed(0) < 60) {
+  if (
+    interval.length("minutes").toFixed(0) < 60 &&
+    interval.length("minutes").toFixed(0) >= 2
+  ) {
     timeSince = interval.length("mintes").toFixed(0) + " minutes ago";
+    return timeSince;
+  }
+
+  if (
+    interval.length("minutes").toFixed(0) < 2 &&
+    interval.length("minutes").toFixed(0) >= 1
+  ) {
+    timeSince = interval.length("mintes").toFixed(0) + " minute ago";
+    return timeSince;
+  }
+
+  if (interval.length("seconds").toFixed(0) < 61) {
+    timeSince = interval.length("seconds").toFixed(0) + " seconds ago";
     return timeSince;
   }
 };

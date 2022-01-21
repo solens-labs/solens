@@ -41,8 +41,6 @@ export default function User(props) {
   const [walletItems, setWalletItems] = useState([]);
   const [activity, setActivity] = useState([]);
 
-  const [seeActivity, setSeeActivity] = useState(true);
-  const [seeAllItems, setSeeAllItems] = useState(false);
   const [currentView, setCurrentView] = useState("activity");
 
   useEffect(() => {
