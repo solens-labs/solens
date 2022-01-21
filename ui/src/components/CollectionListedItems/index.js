@@ -168,20 +168,6 @@ export default function CollectionListedItems(props) {
           </div>
         </Link>
       )}
-
-      {/* <div className="col-12 col-xxl-10 d-flex flex-row flex-wrap justify-content-center mt-4">
-        {items?.length > 0 &&
-          items.map((item, i) => {
-            return (
-              <div
-                className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                key={i}
-              >
-                <NftCard item={item} links={""} />
-              </div>
-            );
-          })}
-      </div> */}
     </>
   );
 }

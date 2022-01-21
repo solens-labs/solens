@@ -50,8 +50,6 @@ export default function CollectionItems(props) {
 
   const [currentView, setCurrentView] = useState("listed");
 
-  const [items, setItems] = useState([]); // items always displayed on page and used in infinite scroll
-
   // Fetch Collection Data, All Items, & Listed Items
   useEffect(async () => {
     if (name && allCollections.length > 0) {
@@ -107,6 +105,15 @@ export default function CollectionItems(props) {
             // setCollectionListed(listedItems);
             // const sortedListeditems = sortItems(listedItems, "price_lth");
             setCollectionListed(listedItems);
+          });
+
+        const apiRequest3 = api.server.collectionHistory + name;
+        const collectionActivity = await axios
+          .get(apiRequest3)
+          .then((response) => {
+            const activity = response.data;
+            const converted = "";
+            setCollectionActivity(converted);
           });
       }
     }
@@ -236,7 +243,7 @@ export default function CollectionItems(props) {
       )}
 
       {currentView === "all" && (
-        <CollectionAllItems collectionItems={collectionItems} />
+        <CollectionAllItems allItems={collectionItems} name={name} />
       )}
 
       {currentView === "activity" && (
