@@ -10,6 +10,8 @@ import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
 import { marketplaceSelect } from "./collectionStats";
+import { DateTime, Interval } from "luxon";
+import { getTimeSince } from "./getTimeSince";
 
 const range = (len) => {
   const arr = [];
@@ -20,7 +22,12 @@ const range = (len) => {
 };
 
 const addTransaction = (transaction, prevPrice) => {
-  const date = new Date(transaction["date"]) || "xx/xx/xxxx";
+  const txTime = new Date(transaction["date"]) || "xx/xx/xxxx";
+  let now = DateTime.now();
+  let interval = Interval.fromDateTimes(txTime, now);
+  const timeSince = getTimeSince(now, interval);
+  const date = <span>{timeSince}</span>;
+
   const seller = transaction["seller"] || "";
   const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
   const sellerLink = (
@@ -132,7 +139,7 @@ const addTransaction = (transaction, prevPrice) => {
   return {
     symbol: symbol,
     type: type,
-    date: date.toLocaleDateString(),
+    date: date,
     price: price,
     // change: difference,
     buyerLink: buyerLink,

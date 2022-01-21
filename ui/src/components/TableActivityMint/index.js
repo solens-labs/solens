@@ -81,7 +81,7 @@ export default function ActivityMintTable(props) {
         accessor: "sellerLink",
       },
       {
-        Header: "DATE",
+        Header: "TIME",
         accessor: "date",
         sortMethod: (a, b) => {
           var a1 = new Date(a).getTime();
