@@ -11,13 +11,13 @@ export const getTimeSince = (date) => {
     return timeSince;
   }
 
-  if (interval.length("days").toFixed(0) >= 2) {
+  if (interval.length("days").toFixed(1) >= 2) {
     timeSince = interval.length("days").toFixed(0) + " days ago";
     return timeSince;
   }
 
   if (
-    interval.length("days").toFixed(0) < 2 &&
+    interval.length("days").toFixed(1) < 2 &&
     interval.length("days").toFixed(1) >= 1
   ) {
     timeSince = interval.length("days").toFixed(0) + " day ago";
@@ -25,7 +25,7 @@ export const getTimeSince = (date) => {
   }
 
   if (
-    interval.length("hours").toFixed(0) < 24 &&
+    interval.length("hours").toFixed(1) < 24 &&
     interval.length("hours").toFixed(1) >= 2
   ) {
     timeSince = interval.length("hours").toFixed(0) + " hours ago";
@@ -33,7 +33,7 @@ export const getTimeSince = (date) => {
   }
 
   if (
-    interval.length("hours").toFixed(0) < 2 &&
+    interval.length("hours").toFixed(1) < 2 &&
     interval.length("hours").toFixed(1) >= 1
   ) {
     timeSince = interval.length("hours").toFixed(0) + " hour ago";
@@ -41,7 +41,7 @@ export const getTimeSince = (date) => {
   }
 
   if (
-    interval.length("minutes").toFixed(0) < 60 &&
+    interval.length("minutes").toFixed(1) < 60 &&
     interval.length("minutes").toFixed(1) >= 2
   ) {
     timeSince = interval.length("minutes").toFixed(0) + " minutes ago";
@@ -49,14 +49,14 @@ export const getTimeSince = (date) => {
   }
 
   if (
-    interval.length("minutes").toFixed(0) < 2 &&
+    interval.length("minutes").toFixed(1) < 2 &&
     interval.length("minutes").toFixed(1) >= 1
   ) {
     timeSince = interval.length("minutes").toFixed(0) + " minute ago";
     return timeSince;
   }
 
-  if (interval.length("seconds").toFixed(0) < 61) {
+  if (interval.length("seconds").toFixed(1) < 61) {
     timeSince = interval.length("seconds").toFixed(0) + " seconds ago";
     return timeSince;
   }
