@@ -26,7 +26,7 @@ ReactGA.initialize("UA-215619609-1");
 const network = process.env.REACT_APP_SOLANA_NETWORK as WalletAdapterNetwork;
 
 const App = () => {
-  const endpoint = useMemo(() => clusterApiUrl(network), []);
+  const endpoint = process.env.REACT_APP_SOLANA_RPC_HOST as string;
 
   const wallets = useMemo(
     () => [
