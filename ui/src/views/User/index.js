@@ -17,9 +17,6 @@ import {
 } from "../../redux/app";
 import getTokenAccounts from "../../utils/getTokenAccounts";
 import getNftAccounts from "../../utils/getNftAccounts";
-import NftCard from "../../components/CardNft/userWallet";
-import NftCardListed from "../../components/CardNft/index";
-import Loader from "../../components/Loader";
 import ReactGA from "react-ga";
 import { api } from "../../constants/constants";
 import axios from "axios";

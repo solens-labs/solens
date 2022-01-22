@@ -130,9 +130,7 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
-                profile
-              </h1>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">sell</h1>
             </div>
           </Link>
         </div>
@@ -228,7 +226,7 @@ const Navigation = (props) => {
               <Link to="/user" style={{ textDecoration: "none" }}>
                 <div className="col-12 d-flex">
                   <h1 className="nav_link" onClick={() => showMenu()}>
-                    profile
+                    sell
                   </h1>
                   <div className="p-1 pt-0 pb-1 pr-0">
                     <AccountCircleOutlinedIcon
