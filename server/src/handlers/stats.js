@@ -544,7 +544,7 @@ exports.currentFloor = async (req, reply) => {
       floor: 1,
       _id: 0
     }}
-  ]).explain()
+  ])
 }
 
 // indexes used: owner_1_type_list_historical_false
