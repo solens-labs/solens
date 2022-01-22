@@ -67,10 +67,8 @@ exports.matchBuyTxs = () => {
 exports.matchMainTxs = () => {
   return { $or: [
       {type: { $eq: "list"}},
-      {type: { $eq: "update"}},
       {type: { $eq: "buy"}},
-      {type: { $eq: "cancel"}},
-      {type: { $eq: "accept_offer"}}
+      {type: { $eq: "cancel"}}
     ]
   }
 }

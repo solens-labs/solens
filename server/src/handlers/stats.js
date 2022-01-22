@@ -103,6 +103,7 @@ exports.marketStats = async (req, reply) => {
   }
 }
 
+// indexes used: symbol_1_date_-1_type_buy
 exports.recentCollectionActivity = async (req, reply) => {
   try {
     return Transaction.aggregate([
@@ -110,7 +111,7 @@ exports.recentCollectionActivity = async (req, reply) => {
         symbol: req.query.symbol,
         type: "buy",
       } },
-      {$sort: {date: -1, price: -1}},
+      {$sort: {date: -1}},
       { $project:
         {
           type: helpers.projectTypes(),
@@ -125,10 +126,7 @@ exports.recentCollectionActivity = async (req, reply) => {
         }
       },
       { $limit: 100 },
-    ],
-    {
-      hint: {symbol: 1, type: 1, date: -1, price: -1}
-    })
+    ])
   } catch (err) {
     throw boom.boomify(err)
   }
@@ -206,6 +204,8 @@ exports.collection = async (req, reply) => {
   }
 }
 
+// indexes used: symbol_1_price_-1_date_-1_type_buy
+// indexes used: price_-1_date_-1_type_buy
 exports.topNFTs = async (req, reply) => {
   try {
     const { ...query } = req.query
@@ -253,12 +253,12 @@ exports.symbol = async (req, reply) => {
   }
 }
 
+// indexes used: mint_1_date_-1
 exports.mintHistory = async (req, reply) => {
   try {
     const entries = Transaction.aggregate([
       { $match: {
         mint: req.query.mint,
-        ...helpers.matchMainTxs(),
       } },
       { $sort: { date: -1} },
       { $limit: 10 },
@@ -283,6 +283,8 @@ exports.mintHistory = async (req, reply) => {
   }
 }
 
+// indexes used: new_owner_1_date_-1_type_buy
+// indexes used: owner_1_date_-1_type_buy
 exports.walletHistory = async (req, reply) => {
   try {
     const entries = Transaction.aggregate([
@@ -420,22 +422,21 @@ exports.totalMarketVolume = async (req, reply) => {
   ])
 }
 
+
+// indexes used: mint_1_date_-1
+// indexes used: symbol_1_type_list_historical_false
 exports.listings = async (req, reply) => {
 
   if (req.query.mint) {
     return Transaction.aggregate([
       {$match: {
         mint: req.query.mint,
-        historical: false,
-        ...helpers.matchMainTxs()
       }},
-      {$sort: {mint: 1, date: -1}},
+      {$sort: { date: -1}},
       {$limit: 1},
       {$match: {
-        $or: [
-          {type: { $eq: "list"}},
-          {type: { $eq: "update"}},
-        ]
+        historical: false,
+        type: 'list'
       }},
       {$project : {
         symbol: 1,
@@ -453,24 +454,10 @@ exports.listings = async (req, reply) => {
     {$match: {
       symbol: req.query.symbol,
       historical: false,
-      ...helpers.matchMainTxs()
-    }},
-    {$sort: {mint: 1, date: -1}},
-    {$group : {
-      _id: {mint: '$mint'},
-      owner: {$first: '$owner'},
-      price: {$first: '$price'},
-      type: {$first: '$type'},
-      marketplace: {$first: '$marketplace'}
-    }},
-    {$match: {
-      $or: [
-        {type: { $eq: "list"}},
-        {type: { $eq: "update"}},
-      ]
+      type: 'list'
     }},
     {$project : {
-      mint: '$_id.mint',
+      mint: 1,
       owner: 1,
       price: 1,
       escrow: 1,
@@ -480,73 +467,96 @@ exports.listings = async (req, reply) => {
   ])
 }
 
+// exports.listings = async (req, reply) => {
+
+//   if (req.query.mint) {
+//     return Transaction.aggregate([
+//       {$match: {
+//         mint: req.query.mint,
+//         historical: false,
+//         ...helpers.matchMainTxs()
+//       }},
+//       {$sort: {mint: 1, date: -1}},
+//       {$limit: 1},
+//       {$match: {
+//         $or: [
+//           {type: { $eq: "list"}},
+//           {type: { $eq: "update"}},
+//         ]
+//       }},
+//       {$project : {
+//         symbol: 1,
+//         mint: 1,
+//         owner: 1,
+//         price: 1,
+//         escrow: 1,
+//         marketplace: 1,
+//         _id: 0
+//       }}
+//     ])
+//   }
+
+//   return Transaction.aggregate([
+//     {$match: {
+//       symbol: req.query.symbol,
+//       historical: false,
+//       ...helpers.matchMainTxs()
+//     }},
+//     {$sort: {mint: 1, date: -1}},
+//     {$group : {
+//       _id: {mint: '$mint'},
+//       owner: {$first: '$owner'},
+//       price: {$first: '$price'},
+//       type: {$first: '$type'},
+//       marketplace: {$first: '$marketplace'}
+//     }},
+//     {$match: {
+//       $or: [
+//         {type: { $eq: "list"}},
+//         {type: { $eq: "update"}},
+//       ]
+//     }},
+//     {$project : {
+//       mint: '$_id.mint',
+//       owner: 1,
+//       price: 1,
+//       escrow: 1,
+//       marketplace: 1,
+//       _id: 0
+//     }},
+//   ])
+// }
+
+// indexes used: symbol_1_type_list_historical_false
 exports.currentFloor = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
       symbol: req.query.symbol,
       historical: false,
-      $or: [
-        {type: { $eq: "list"}},
-        {type: { $eq: "update"}},
-        {type: { $eq: "buy"}},
-        {type: { $eq: "cancel"}},
-        {type: { $eq: "accept_offer"}}
-      ]
-    }},
-    {$sort: {mint: 1, date: -1}},
-    {$group : {
-      _id: {mint: '$mint'},
-      price: {$first: '$price'},
-      type: {$first: '$type'},
-      marketplace: {$first: '$marketplace'}
-    }},
-    {$match: {
-      $or: [
-        {type: { $eq: "list"}},
-        {type: { $eq: "update"}},
-      ]
-    }},
-    {$project : {
-      price: 1,
-      marketplace: 1,
-      _id: 0
+      type: 'list'
     }},
     {$group : {
       _id: {marketplace: '$marketplace'},
-      price: {$min: '$price'},
+      floor: {$min: '$price'},
     }},
     {$project : {
       marketplace: "$_id.marketplace",
-      floor: { $round: ["$price", 2] },
+      floor: 1,
       _id: 0
     }}
-  ])
+  ]).explain()
 }
 
+// indexes used: owner_1_type_list_historical_false
 exports.walletListings = async (req, reply) => {
   return Transaction.aggregate([
     {$match: {
       owner: req.query.wallet,
       historical: false,
-      ...helpers.matchMainTxs()
-    }},
-    {$sort: {date: -1}},
-    {$group : {
-      _id: {mint: '$mint'},
-      owner: {$first: '$owner'},
-      price: {$first: '$price'},
-      type: {$first: '$type'},
-      escrow: {$first: '$escrow'},
-      marketplace: {$first: '$marketplace'}
-    }},
-    {$match: {
-      $or: [
-        {type: { $eq: "list"}},
-        {type: { $eq: "update"}},
-      ]
+      type: 'list'
     }},
     {$project : {
-      mint: '$_id.mint',
+      mint: 1,
       owner: 1,
       price: 1,
       escrow: 1,

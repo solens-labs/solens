@@ -47,23 +47,28 @@ const transactionSchema = new mongoose.Schema({
 })
 
 // for getting live floor, listings
-transactionSchema.index({ 'symbol': 1, 'type': 1, 'date': -1, 'price': -1 } )
-// transactionSchema.index({ 'historical': 1, 'symbol': 1, 'type': 1, 'date': -1, 'price': -1 } )
-// transactionSchema.index({ 'historical': 1, 'symbol': 1, 'type': 1, 'mint': 1, 'date': -1, 'price': -1 } )
+transactionSchema.index({ 'mint': 1, 'date': -1} ) // For individual mint listing stats
+transactionSchema.index({ 'symbol': 1}, { partialFilterExpression: { type: 'list', historical: false }, name: 'symbol_1_type_list_historical_false'})
 
 // for getting topNFTs
-transactionSchema.index({ 'symbol': 1, 'type': 1, 'price': -1, 'date': -1} )
-transactionSchema.index({ 'type': 1, 'price': -1, 'date': -1} )
+transactionSchema.index({ 'symbol': 1, 'price': -1, 'date': -1}, { partialFilterExpression: { type: 'buy' }, name: 'symbol_1_price_-1_date_-1_type_buy'})
+transactionSchema.index({ 'price': -1, 'date': -1}, { partialFilterExpression: { type: 'buy' }, name: 'price_-1_date_-1_type_buy'})
+
+// for recentCollectionActivity
+transactionSchema.index({ 'symbol': 1, 'date': -1}, { partialFilterExpression: { type: 'buy' }, name: 'symbol_1_date_-1_type_buy'})
 
 // for getting mint history
-transactionSchema.index({ 'mint': 1, 'type': 1, 'date': -1} )
+transactionSchema.index({ 'mint': 1, 'date': -1} )
 
 // for getting wallet history
-transactionSchema.index({ 'owner': 1, 'type': 1, 'date': -1} )
-transactionSchema.index({ 'new_owner': 1, 'type': 1, 'date': -1} )
+transactionSchema.index({ 'owner': 1, 'date': -1}, { partialFilterExpression: { type: 'buy' }, name: 'owner_1_date_-1_type_buy'})
+transactionSchema.index({ 'new_owner': 1, 'date': -1}, { partialFilterExpression: { type: 'buy' }, name: 'new_owner_1_date_-1_type_buy'})
 
 // tx uniqueness
 transactionSchema.index({ 'tx': 1, 'ix': 1}, {unique: true})
+
+// for tx_historical trigger
+transactionSchema.index({ 'mint': 1, 'date': -1}, { partialFilterExpression: { historical: false }, name: "mint_1_date_-1_historical_false"})
 
 
 module.exports = mongoose.model('Transaction', transactionSchema)
