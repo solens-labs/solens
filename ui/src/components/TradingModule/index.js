@@ -42,13 +42,13 @@ export default function TradingModule(props) {
   };
 
   const floorDifference =
-    ((price - floorDetails.floor) / floorDetails.floor) * 100;
+    ((price - floorDetails?.floor) / floorDetails?.floor) * 100;
 
   return (
     <div className="trading_module col-12 d-flex flex-column align-items-center justify-content-around p-2 pb-3">
       <div className="item_title_and_details col-12 d-flex flex-column align-items-center">
         <h1 className="item_title m-0 p-0">
-          {invalid ? "Invalid Token" : item.name}
+          {invalid ? "Invalid Token" : item?.name}
         </h1>
 
         <h4 className="item_collection m-0 p-0" onClick={collectionInsights}>
