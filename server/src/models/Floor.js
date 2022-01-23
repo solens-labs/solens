@@ -7,6 +7,6 @@ const floorSchema = new mongoose.Schema({
   marketplace: {type: String, require: true},
 })
 
-floorSchema.index({ symbol: 1, date: 1 }, { unique: true })
+floorSchema.index({ marketplace: 1, symbol: 1, date: 1 }, { unique: true })
 
 module.exports = mongoose.model('Floor', floorSchema)
