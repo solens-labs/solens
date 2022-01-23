@@ -9,43 +9,30 @@ import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 import { sortItems } from "../../utils/sortItems";
 
 export default function CollectionListedItems(props) {
-  const { listedItems, name } = props;
-
-  const [collectionListed, setCollectionListed] = useState([]);
-  const [items, setItems] = useState([]);
+  const {
+    listedItems,
+    name,
+    listedItemsMetadata,
+    setListedItemsMetadata,
+    setListedItemsSort,
+  } = props;
 
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
-  const [sortSelected, setSortSelected] = useState(""); // selected sort option
-
-  // Listen for sort events and set collection listed persist + page items
-  useEffect(async () => {
-    if (sortSelected) {
-      setItems([]);
-      const sortedItems = sortItems(collectionListed, sortSelected);
-      setCollectionListed(sortedItems);
-      const intitialItems = sortedItems.slice(0, 20);
-      const intitialItemsMetadata = await fetchItemsMetadata([], intitialItems);
-      setItems(intitialItemsMetadata);
-    }
-  }, [sortSelected]);
-
-  // Fetch & Set initial items
-  useEffect(() => {
-    if (items.length === 0 && listedItems.length > 0) {
-      setCollectionListed(listedItems);
-      fetchItems(items, listedItems);
-    }
-  }, [listedItems]);
 
   // Infinite Scroll Data Fetch
-  const fetchItems = async (items, allItems) => {
-    if (items.length > 0 && items.length === allItems.length) {
+  const fetchItems = async () => {
+    if (
+      listedItemsMetadata.length > 0 &&
+      listedItemsMetadata.length === listedItems.length
+    ) {
       setHasMore(false);
       return;
     }
-
-    const itemsMetadata = await fetchItemsMetadata(items, allItems);
-    setItems(itemsMetadata);
+    const itemsMetadata = await fetchItemsMetadata(
+      listedItemsMetadata,
+      listedItems
+    );
+    setListedItemsMetadata(itemsMetadata);
   };
 
   return (
@@ -60,7 +47,7 @@ export default function CollectionListedItems(props) {
           id="sort_mints"
           className="select_collection_filter"
           onChange={(e) => {
-            setSortSelected(e.target.value);
+            setListedItemsSort(e.target.value);
           }}
         >
           <option value="" disabled selected>
@@ -82,8 +69,8 @@ export default function CollectionListedItems(props) {
 
       <div className="col-12 col-lg-10">
         <InfiniteScroll
-          dataLength={items.length}
-          next={() => fetchItems(items, collectionListed)}
+          dataLength={listedItemsMetadata.length}
+          next={fetchItems}
           hasMore={hasMore}
           loader={
             <div className="mt-5 mb-5">
@@ -92,8 +79,8 @@ export default function CollectionListedItems(props) {
           }
         >
           <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-            {items.length > 0 &&
-              items.map((item, i) => {
+            {listedItemsMetadata.length > 0 &&
+              listedItemsMetadata.map((item, i) => {
                 return (
                   <div
                     className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
@@ -107,10 +94,10 @@ export default function CollectionListedItems(props) {
         </InfiniteScroll>
       </div>
 
-      {items.length > 0 && hasMore && (
+      {listedItemsMetadata.length > 0 && hasMore && (
         <div
           className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2"
-          onClick={() => fetchItems(items, collectionListed)}
+          onClick={fetchItems}
         >
           Load More
         </div>

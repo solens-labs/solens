@@ -30,6 +30,8 @@ import CollectionActivity from "../../components/CollectionActivity";
 import CollectionListedItems from "../../components/CollectionItemsListed";
 import CollectionAllItems from "../../components/CollectionItemsAll";
 import convertActivityCollection from "../../utils/convertActivityCollectionData";
+import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
+import { sortItems } from "../../utils/sortItems";
 
 export default function CollectionItems(props) {
   const { name } = useParams();
@@ -42,14 +44,17 @@ export default function CollectionItems(props) {
 
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
   const [collectionLinks, setCollectionLinks] = useState({}); // needed for collection details
-  const [collectionListed, setCollectionListed] = useState([]); // all listed items across all MPs
-  const [collectionItems, setCollectionItems] = useState([]); // all collection mints
-  const [collectionActivity, setCollectionActivity] = useState([]);
 
-  const [marketplaces, setMarketplaces] = useState([]); // number of MPs the collection is on
+  const [activity, setActivity] = useState([]); // recent collection activity
+  const [allItems, setAllItems] = useState([]); // all collection mints
+  const [listedItems, setListedItems] = useState([]); // all listed items across all MPs
+  const [listedItemsMetadata, setListedItemsMetadata] = useState([]);
+  const [allItemsMetadata, setAllItemsMetadata] = useState([]);
+  const [listedItemsSort, setListedItemsSort] = useState(""); // selected sort option
+
+  // const [marketplaces, setMarketplaces] = useState([]); // number of MPs the collection is on
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
-
-  const [currentView, setCurrentView] = useState("listed");
+  const [currentView, setCurrentView] = useState("listed"); // which component to show
 
   // Fetch Collection Data, All Items, & Listed Items
   useEffect(async () => {
@@ -67,57 +72,57 @@ export default function CollectionItems(props) {
       //   return;
       // }
 
-      if (result) {
-        const apiRequest =
-          api.server.collection + queries.symbol + name + queries.mintList;
-        const collectionInfo = await axios.get(apiRequest).then((response) => {
+      const apiRequest =
+        api.server.collection + queries.symbol + name + queries.mintList;
+      const collectionInfo = await axios
+        .get(apiRequest)
+        .then(async (response) => {
           const collectionInfo = response.data[0];
-
           setCollectionInfo(collectionInfo);
-
-          const collectionMints = collectionInfo?.mint.map((item) => {
-            return {
-              mint: item,
-            };
-          });
-          setCollectionItems(collectionMints);
-
-          const marketplacesArray = [];
-          if (collectionInfo) {
-            collectionInfo.alltimestats.map((item, i) => {
-              marketplacesArray.push(item.marketplace);
-            });
-          }
-          setMarketplaces(marketplacesArray);
-
           const links = {
             website: collectionInfo.website,
             twitter: collectionInfo.twitter,
             discord: collectionInfo.discord,
           };
           setCollectionLinks(links);
+
+          const collectionMints = collectionInfo?.mint.map((item) => {
+            return {
+              mint: item,
+            };
+          });
+          setAllItems(collectionMints);
+          const intitialItems = collectionMints.slice(0, 20);
+          const intitialMetadata = await fetchItemsMetadata([], intitialItems);
+          setAllItemsMetadata(intitialMetadata);
+          // const marketplacesArray = [];
+          // if (collectionInfo) {
+          //   collectionInfo.alltimestats.map((item, i) => {
+          //     marketplacesArray.push(item.marketplace);
+          //   });
+          // }
+          // setMarketplaces(marketplacesArray);
         });
 
-        const apiRequest2 = api.server.listings + queries.symbol + name;
-        const collectionListed = await axios
-          .get(apiRequest2)
-          .then((response) => {
-            const listedItems = response.data;
-            // setCollectionListed(listedItems);
-            // const sortedListeditems = sortItems(listedItems, "price_lth");
-            setCollectionListed(listedItems);
-          });
+      const apiRequest2 = api.server.listings + queries.symbol + name;
+      const collectionListed = await axios
+        .get(apiRequest2)
+        .then(async (response) => {
+          const listedItems = response.data;
+          setListedItems(listedItems);
+          // const sortedListeditems = sortItems(listedItems, "price_lth");
+          // setListedItems(sortedListeditems);
+        });
 
-        const apiRequest3 = api.server.collectionHistory + name;
-        const collectionActivity = await axios
-          .get(apiRequest3)
-          .then(async (response) => {
-            const activity = response.data;
-            const converted = await convertActivityCollection(activity);
-            const resolved = await Promise.all(converted);
-            setCollectionActivity(resolved);
-          });
-      }
+      const apiRequest3 = api.server.collectionHistory + name;
+      const collectionActivity = await axios
+        .get(apiRequest3)
+        .then(async (response) => {
+          const activity = response.data;
+          const converted = await convertActivityCollection(activity);
+          const resolved = await Promise.all(converted);
+          setActivity(resolved);
+        });
     }
   }, [name, allCollections]);
 
@@ -128,6 +133,24 @@ export default function CollectionItems(props) {
       behavior: "smooth",
     });
   };
+
+  // Wait for listedItems to change (initial & after sorting)
+  useEffect(async () => {
+    if (listedItems?.length > 0) {
+      setListedItemsMetadata([]);
+      const intitialItems = listedItems.slice(0, 20);
+      const intitialMetadata = await fetchItemsMetadata([], intitialItems);
+      setListedItemsMetadata(intitialMetadata);
+    }
+  }, [listedItems]);
+
+  // Listen for sort events, sort, and set listedItems state
+  useEffect(async () => {
+    if (listedItemsSort) {
+      const sortedItems = sortItems(listedItems, listedItemsSort);
+      setListedItems(sortedItems);
+    }
+  }, [listedItemsSort]);
 
   // Store collection name in redux
   // useEffect(() => {
@@ -241,16 +264,26 @@ export default function CollectionItems(props) {
       </div>
 
       {currentView === "listed" && (
-        <CollectionListedItems listedItems={collectionListed} name={name} />
+        <CollectionListedItems
+          listedItems={listedItems}
+          name={name}
+          listedItemsMetadata={listedItemsMetadata}
+          setListedItemsMetadata={setListedItemsMetadata}
+          listedItemsSort={listedItemsSort}
+          setListedItemsSort={setListedItemsSort}
+        />
       )}
 
       {currentView === "all" && (
-        <CollectionAllItems allItems={collectionItems} name={name} />
+        <CollectionAllItems
+          allItems={allItems}
+          name={name}
+          allItemsMetadata={allItemsMetadata}
+          setAllItemsMetadata={setAllItemsMetadata}
+        />
       )}
 
-      {currentView === "activity" && (
-        <CollectionActivity activity={collectionActivity} />
-      )}
+      {currentView === "activity" && <CollectionActivity activity={activity} />}
 
       <button className="scroll_top" onClick={scrollToTop}>
         Top

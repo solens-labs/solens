@@ -10,20 +10,19 @@ export default function UserWalletItems(props) {
 
   const [hasMore, setHasMore] = useState(true);
 
-  // Fetch & Set initial items
-  useEffect(() => {
-    if (walletItemsMetadata.length === 0 && walletItems.length > 0) {
-      fetchItems(walletItemsMetadata, walletItems);
-    }
-  }, [walletItems]);
-
   // Infinite Scroll Data Fetch
-  const fetchItems = async (items, walletItems) => {
-    if (items.length > 0 && items.length === walletItems.length) {
+  const fetchItems = async () => {
+    if (
+      walletItemsMetadata.length > 0 &&
+      walletItemsMetadata.length === walletItems.length
+    ) {
       setHasMore(false);
       return;
     }
-    const itemsMetadata = await fetchItemsMetadata(items, walletItems);
+    const itemsMetadata = await fetchItemsMetadata(
+      walletItemsMetadata,
+      walletItems
+    );
     setWalletItemsMetadata(itemsMetadata);
   };
 
@@ -38,7 +37,7 @@ export default function UserWalletItems(props) {
       <div className="col-12 col-lg-10">
         <InfiniteScroll
           dataLength={walletItemsMetadata.length}
-          next={() => fetchItems(walletItemsMetadata, walletItems)}
+          next={fetchItems}
           hasMore={hasMore}
           loader={
             <div className="mt-5 mb-5">

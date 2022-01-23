@@ -10,21 +10,19 @@ export default function UserListedItems(props) {
 
   const [hasMore, setHasMore] = useState(true);
 
-  // Fetch & Set initial items
-  useEffect(() => {
-    if (listedItemsMetadata.length === 0 && listedItems.length > 0) {
-      fetchItems(listedItemsMetadata, listedItems);
-    }
-  }, [listedItems]);
-
   // Infinite Scroll Data Fetch
-  const fetchItems = async (items, listedItems) => {
-    if (items.length > 0 && items.length === listedItems.length) {
+  const fetchItems = async () => {
+    if (
+      listedItemsMetadata.length > 0 &&
+      listedItemsMetadata.length === listedItems.length
+    ) {
       setHasMore(false);
       return;
     }
-
-    const itemsMetadata = await fetchItemsMetadata(items, listedItems);
+    const itemsMetadata = await fetchItemsMetadata(
+      listedItemsMetadata,
+      listedItems
+    );
     setlistedItemsMetadata(itemsMetadata);
   };
 
@@ -39,7 +37,7 @@ export default function UserListedItems(props) {
       <div className="col-12 col-lg-10">
         <InfiniteScroll
           dataLength={listedItemsMetadata.length}
-          next={() => fetchItems(listedItemsMetadata, listedItems)}
+          next={fetchItems}
           hasMore={hasMore}
           loader={
             <div className="mt-5 mb-5">

@@ -24,6 +24,7 @@ import convertUserActivity from "../../utils/convertActivityUserData";
 import UserActivity from "../../components/UserActivity";
 import UserListedItems from "../../components/UserItemsListed";
 import UserWalletItems from "../../components/UserItemsWallet";
+import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -35,13 +36,14 @@ export default function User(props) {
   const walletAddress = useSelector(selectAddress);
 
   const [activity, setActivity] = useState([]);
-  const [listedItems, setListedItems] = useState([]);
   const [walletItems, setWalletItems] = useState([]);
+  const [listedItems, setListedItems] = useState([]);
   const [listedItemsMetadata, setlistedItemsMetadata] = useState([]);
   const [walletItemsMetadata, setWalletItemsMetadata] = useState([]);
 
   const [currentView, setCurrentView] = useState("activity");
 
+  // Get user activity
   useEffect(() => {
     if (
       wallet &&
@@ -65,29 +67,15 @@ export default function User(props) {
     }
   }, [wallet, allCollections]);
 
-  // Send user sign in analytics
-  useEffect(() => {
-    if (wallet && wallet.connected && wallet.publicKey) {
-      ReactGA.event({
-        category: "User",
-        action: "Login",
-        label: wallet.publicKey.toBase58(),
-      });
-    }
-  }, [wallet]);
-
   // Get wallet token accounts, filter for NFTs, and fetch/set metadata
   useEffect(async () => {
     if (wallet && wallet.connected && wallet.publicKey) {
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
       setWalletItems(userNftTokenAccts);
-    }
-
-    if (!wallet.connected || (wallet.disconnecting && walletItems.length > 0)) {
-      // dispatch(setUserNFTs([]));
-      setWalletItems([]);
-      dispatch(setAddress(""));
+      const intitialItems = userNftTokenAccts.slice(0, 20);
+      const intitialMetadata = await fetchItemsMetadata([], intitialItems);
+      setWalletItemsMetadata(intitialMetadata);
     }
   }, [wallet]);
 
@@ -99,11 +87,33 @@ export default function User(props) {
       const fetchListed = axios.get(apiRequest).then(async (response) => {
         const items = response.data;
         setListedItems(items);
+        const intitialItems = items.slice(0, 20);
+        const intitialMetadata = await fetchItemsMetadata([], intitialItems);
+        setlistedItemsMetadata(intitialMetadata);
       });
     }
+  }, [wallet]);
 
-    if (!wallet.connected || (wallet.disconnecting && walletItems.length > 0)) {
+  // Clear component state on wallet disconnect
+  useEffect(() => {
+    if ((!wallet.connected || wallet.disconnecting) && walletItems.length > 0) {
+      // dispatch(setUserNFTs([]));
+      // dispatch(setAddress(""));
       setListedItems([]);
+      setWalletItems([]);
+      setlistedItemsMetadata([]);
+      setWalletItemsMetadata([]);
+    }
+  }, [wallet]);
+
+  // Send user sign in analytics
+  useEffect(() => {
+    if (wallet && wallet.connected && wallet.publicKey) {
+      ReactGA.event({
+        category: "User",
+        action: "Login",
+        label: wallet.publicKey.toBase58(),
+      });
     }
   }, [wallet]);
 

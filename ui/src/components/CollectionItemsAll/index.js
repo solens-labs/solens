@@ -7,27 +7,21 @@ import NftCard from "../CardNft/itemUnlisted";
 import Loader from "../Loader";
 
 export default function CollectionAllItems(props) {
-  const { allItems, name } = props;
+  const { allItems, name, allItemsMetadata, setAllItemsMetadata } = props;
 
-  const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
 
-  // Fetch & Set initial items
-  useEffect(() => {
-    if (items.length === 0 && allItems.length > 0) {
-      fetchItems(items, allItems);
-    }
-  }, [allItems]);
-
   // Infinite Scroll Data Fetch
-  const fetchItems = async (items, allItems) => {
-    if (items.length > 0 && items.length === allItems.length) {
+  const fetchItems = async () => {
+    if (
+      allItemsMetadata.length > 0 &&
+      allItemsMetadata.length === allItems.length
+    ) {
       setHasMore(false);
       return;
     }
-
-    const itemsMetadata = await fetchItemsMetadata(items, allItems);
-    setItems(itemsMetadata);
+    const itemsMetadata = await fetchItemsMetadata(allItemsMetadata, allItems);
+    setAllItemsMetadata(itemsMetadata);
   };
 
   return (
@@ -38,8 +32,8 @@ export default function CollectionAllItems(props) {
 
       <div className="col-12 col-lg-10">
         <InfiniteScroll
-          dataLength={items.length}
-          next={() => fetchItems(items, allItems)}
+          dataLength={allItemsMetadata.length}
+          next={fetchItems}
           hasMore={hasMore}
           loader={
             <div className="mt-5 mb-5">
@@ -48,8 +42,8 @@ export default function CollectionAllItems(props) {
           }
         >
           <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-            {items.length > 0 &&
-              items.map((item, i) => {
+            {allItemsMetadata.length > 0 &&
+              allItemsMetadata.map((item, i) => {
                 return (
                   <div
                     className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
@@ -63,10 +57,10 @@ export default function CollectionAllItems(props) {
         </InfiniteScroll>
       </div>
 
-      {items.length > 0 && hasMore && (
+      {allItemsMetadata.length > 0 && hasMore && (
         <div
           className="col-12 btn-button btn-main btn-large d-flex mt-3 mt-lg-5 mb-2"
-          onClick={() => fetchItems(items, allItems)}
+          onClick={fetchItems}
         >
           Load More
         </div>
