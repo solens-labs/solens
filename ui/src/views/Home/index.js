@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./style.css";
 import logo from "../../assets/images/logo2.png";
 import { Link, useHistory } from "react-router-dom";
-import CollectionSection from "../../components/CollectionSection";
+import CollectionSection from "../../components/SectionCollection";
 import { useSelector } from "react-redux";
 import {
   selectAllCollections,
@@ -17,10 +17,12 @@ import {
 } from "../../redux/app";
 import Loader from "../../components/Loader";
 import Timeframe from "../../components/Timeframe";
-import WalletsHomeSection from "../../components/WalletsHomeSection";
-import NftCard from "../../components/NftCard/homepage";
+import WalletsHomeSection from "../../components/SectionWallets";
+import NftCard from "../../components/CardNft/homepage";
 import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
+import collections_gif from "../../assets/images/collections.gif";
+import solens_logo from "../../assets/images/logo2.png";
 
 export default function HomePage(props) {
   const history = useHistory();
@@ -86,13 +88,16 @@ export default function HomePage(props) {
   const visitLaunchzone = () => {
     history.push("/launch");
   };
+  const visitProfile = () => {
+    history.push("/user");
+  };
 
   return (
     <div className="landing_page col-12 d-flex flex-column align-items-center justify-content-center mb-5">
       <div className="main_header">
         <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
         <h3 className="homepage_tagline mb-2">
-          Solana's Premiere NFT Platform
+          Solana's Premiere NFT Marketplex
         </h3>
         <Link to="/collections">
           <button
@@ -127,6 +132,50 @@ export default function HomePage(props) {
               maximumFractionDigits: 2,
             })}
           </h3>
+        </div>
+      </div>
+
+      {/* <div className="trade_now landing_page_section d-flex flex-column align-items-center justify-content-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h3 className="mb-2">
+          trade your NFTs on magiceden and solanart through solens
+        </h3>
+        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
+      </div> */}
+
+      <div className="trade_now tradezone_image_bg d-flex flex-wrap justify-content-center align-items-center col-12 col-xxl-10 mt-5 m-0 p-0 overflow-hidden">
+        <div className="col-12 col-xl-4 d-flex flex-row justify-content-center">
+          <img
+            src={collections_gif}
+            alt="launchzone_logo"
+            className="collections_gif mt-5 mt-lg-0"
+          />
+        </div>
+
+        <div className="blackground col-12 col-xl-6 mt-5 mb-5 d-flex flex-column align-items-center">
+          <h5 style={{ fontSize: "1.7rem" }}>
+            Trade NFTs on Magic Eden and Solanart
+          </h5>
+
+          <h3 className="mt-4 mt-lg-3" style={{ fontSize: "2.2rem" }}>
+            Directly on{" "}
+            <span>
+              <img src={solens_logo} style={{ height: 50, marginBottom: 17 }} />
+            </span>
+          </h3>
+
+          <button
+            className="apply_launchzone explore_all_button mt-3 mb-2 btn-large"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              width: "70%",
+              fontSize: "1.5rem",
+              fontWeight: 800,
+            }}
+            onClick={visitProfile}
+          >
+            TRADE
+          </button>
         </div>
       </div>
 

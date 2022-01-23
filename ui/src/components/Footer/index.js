@@ -85,7 +85,7 @@ export default function Footer(props) {
         {pg_break}
       </div>
 
-      <div className="col-lg-2 col-xxl-1 d-none d-lg-flex justify-content-between mb-2 mb-lg-4">
+      <div className="col-6 col-lg-2 col-xxl-1 d-flex justify-content-between mt-2 mt-lg-0 mb-2 mb-lg-4">
         <div className="icon_link">
           <a
             href={links.medium.url}

@@ -41,7 +41,7 @@ import Launch from "../Launch";
 import Footer from "../../components/Footer";
 import Apply from "../Apply";
 import User from "../User";
-import CollectionItems from "../CollectionItems";
+import CollectionTrade from "../CollectionTrade";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -84,10 +84,10 @@ export default function Home(props) {
         .get(api.server.allCollections)
         .then((response) => {
           const collections = response.data;
-          const collectionsAboveZero = collections.filter((collection) => {
-            return collection.total_volume > 0;
-          });
-          const dailyChangeAdded = collectionsAboveZero.map((collection) => {
+          // const collectionsAboveZero = collections.filter((collection) => {
+          //   return collection.total_volume > 0;
+          // });
+          const dailyChangeAdded = collections.map((collection) => {
             const volumeToday = collection.daily_volume;
             const volumeYesterday = collection.past_day_volume;
             let change =
@@ -238,7 +238,7 @@ export default function Home(props) {
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
           <Route path="/collection/:name" component={CollectionPage} />
-          <Route path="/nfts/:name" component={CollectionItems} />
+          <Route path="/nfts/:name" component={CollectionTrade} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
           <Route path="/user" component={User} />

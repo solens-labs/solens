@@ -14,9 +14,9 @@ import {
   AccordionDetails,
 } from "../../components/Accordion";
 import { Typography } from "@material-ui/core";
-import convertActivityData from "../../utils/convertActivityData";
+import convertActivityData from "../../utils/convertActivityMintData";
 import axios from "axios";
-import ActivityTable from "../../components/ActivityTable";
+import ActivityTable from "../../components/TableActivityMint";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";

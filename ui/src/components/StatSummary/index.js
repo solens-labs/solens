@@ -18,11 +18,11 @@ export default function StatSummary(props) {
   };
 
   const sendAnalytics = () => {
-    ReactGA.event({
-      category: "Outbound",
-      action: `Trade on ${marketplaceData.marketplace}`,
-      label: symbol,
-    });
+    // ReactGA.event({
+    //   category: "Outbound",
+    //   action: `Trade on ${marketplaceData.marketplace}`,
+    //   label: symbol,
+    // });
     ReactGA.event({
       category: "Trade",
       action: `Trading ${symbol}`,
@@ -101,6 +101,7 @@ export default function StatSummary(props) {
       <Link
         to={`/nfts/${symbol}`}
         style={{ textDecoration: "none", width: "100%" }}
+        // onClick={() => sendAnalytics()}
       >
         <div className="col-12 btn-button btn-main btn-large btn-wide d-flex mt-2 mb-2">
           Trade

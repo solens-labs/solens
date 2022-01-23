@@ -9,7 +9,7 @@ import { magicEden, listMEden } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 
 export default function TradeListing(props) {
@@ -23,6 +23,7 @@ export default function TradeListing(props) {
     setTxHash,
   } = props;
   const history = useHistory();
+  const location = useLocation();
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
@@ -99,6 +100,7 @@ export default function TradeListing(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
+        history.push(location.pathname);
       }, 3000);
     } catch (e) {
       console.log(e);
@@ -179,7 +181,7 @@ export default function TradeListing(props) {
   };
 
   useEffect(() => {
-    if (listPrice > 0 && listPrice < floorDetails.floor) {
+    if (listPrice > 0 && listPrice < floorDetails?.floor) {
       setShowWarning(true);
     } else {
       setShowWarning(false);
@@ -191,7 +193,7 @@ export default function TradeListing(props) {
       <h5 className="p-0 m-0">Select Marketplace to List Item</h5>
       <div className="trading_buttons col-12 d-flex flex-row flex-wrap justify-content-center mb-2">
         {!invalid && (
-          <div className="col-md-6 col-xl-5 p-1 p-xl-2">
+          <div className="col-6 col-xl-5 p-1 p-xl-2">
             <button className="btn_mp">
               <div
                 className={
@@ -215,7 +217,7 @@ export default function TradeListing(props) {
           </div>
         )}
         {!invalid && (
-          <div className="col-md-6 col-xl-5 p-1 p-xl-2">
+          <div className="col-6 col-xl-5 p-1 p-xl-2">
             <button className="btn_mp">
               <div
                 className={
@@ -253,7 +255,7 @@ export default function TradeListing(props) {
           {showWarning && (
             <span className="floor_warning">
               Warning! Your listing is below the current floor:{" "}
-              {floorDetails.floor} SOL
+              {floorDetails?.floor} SOL
             </span>
           )}
 

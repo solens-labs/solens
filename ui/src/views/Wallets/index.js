@@ -9,7 +9,7 @@ import {
   selectWalletSellers,
   selectWalletSellersDay,
 } from "../../redux/app";
-import WalletsSection from "../../components/WalletsSection";
+import WalletsSection from "../../components/WalletsPageSection";
 import Timeframe from "../../components/Timeframe";
 
 export default function Wallets(props) {

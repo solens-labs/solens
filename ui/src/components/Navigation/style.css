@@ -1,3 +1,16 @@
+.maintenance {
+  width: 100%;
+  background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 1),
+    rgba(134, 64, 117, 1) 90%
+  );
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  /* height: 30px; */
+}
+
 .navbar {
   width: 100%;
   color: white;
@@ -221,6 +234,10 @@
     text-decoration: none;
     font-size: 30px;
     padding: 1.1vh 0;
+  }
+
+  .maintenance {
+    font-size: 0.7rem;
   }
 }
 

@@ -46,7 +46,8 @@ export const faqs = [
     small mistakes can be very costly. Utilizing our launchpad service will give you 
     the peace of mind of having experts at your fingertips. Even more - the Metaplex 
     team, which created the Candy Machine, have said they recommend using Solens' 
-    Launchzone because of our attention to detail for security.`,
+    Launchzone because of our attention to detail for security. Plus, your community
+    will have instant access to multiple secondary markets to trade as soon as minting completes.`,
   },
   {
     question: "What about security",
@@ -65,6 +66,15 @@ export const faqs = [
     collection, we will plan out the launch schedule to make sure you have your time 
     to shine!`,
   },
+  {
+    question: "What about trading",
+    answer: `All Launchzone collections will be verified and included on Solens as soon as minting 
+    completes. This means we will provide an analytics page and a trading page for your collection. 
+    Your community, and others that missed out on the mint, will have a chance to instantly trade, 
+    all while having the best insights available from day 1. Give your community the ultimate flexibility
+    without waiting for verification.`,
+  },
+
   {
     question: "How to move forward",
     answer: moveForward(),

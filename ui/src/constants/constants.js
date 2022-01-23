@@ -31,6 +31,7 @@ export const api = {
     walletListings: server + "walletListings?wallet=",
     walletHistory: server + "walletHistory?wallet=",
     currentFloor: server + "currentFloor",
+    collectionHistory: server + "recentCollectionActivity?symbol=",
   },
 };
 

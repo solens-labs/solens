@@ -46,6 +46,14 @@
   min-height: 75vh;
 }
 
+.sorted_asc {
+  color: rgb(134, 64, 117);
+}
+
+.sorted_desc {
+  color: rgb(65, 37, 156);
+}
+
 .page_box {
   background: linear-gradient(rgba(75, 53, 134, 0.7), rgba(0, 0, 0, 0.7));
   /* border: 2px solid rgb(250, 163, 64); */
@@ -86,6 +94,97 @@
   overflow: hidden;
   padding: 0px 7px;
   z-index: 3;
+}
+
+.activity_box {
+  min-height: 1075px;
+}
+
+.activity_header {
+  min-width: 150px;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(65, 37, 156, 0.7);
+  /* border-right: 1px solid rgba(134, 64, 117, 0.5); */
+  /* border-left: 1px solid rgba(134, 64, 117, 0.5); */
+  color: white;
+  /* background-image: linear-gradient(
+    -45deg,
+    rgb(65, 37, 156),
+    rgb(134, 64, 117) 120%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  text-align: center;
+}
+
+.header_inner {
+  width: 100%;
+  position: relative;
+}
+
+.sort_arrow_wallet {
+  /* width: 25px; */
+  position: absolute;
+  right: 0;
+  padding-right: 5%;
+  /* overflow: hidden; */
+}
+
+.sorted_asc {
+  color: rgb(134, 64, 117);
+}
+
+.sorted_desc {
+  color: rgb(65, 37, 156);
+}
+
+.activity_data {
+  color: white;
+  text-align: center;
+  border-top: none !important;
+  /* border-right: 1px solid rgba(134, 64, 117, 0.5); */
+  /* border-left: 1px solid rgba(134, 64, 117, 0.5); */
+}
+
+.activity_image {
+  max-height: 70px;
+  border: 1px solid black;
+  border-radius: 15px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.activity_row1 {
+}
+
+.activity_row2 {
+  background-color: rgb(25, 16, 51);
+  /* background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 0.2),
+    rgba(134, 64, 117, 0.2) 120%
+  ); */
+  border-radius: 15px !important;
+  overflow: hidden;
+}
+
+.activity_row_image1 {
+  height: 91.5px !important;
+}
+
+.activity_row_image2 {
+  background-color: rgb(25, 16, 51);
+  /* background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 0.2),
+    rgba(134, 64, 117, 0.2) 120%
+  ); */
+  border-radius: 15px !important;
+  overflow: hidden;
+  height: 91.5px !important;
+}
+.full_width_table {
+  width: 100% !important;
 }
 
 @media screen and (max-width: 1250px) {

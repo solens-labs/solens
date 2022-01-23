@@ -17,8 +17,8 @@ import {
   lineColors,
   queries,
 } from "../../constants/constants";
-import TradesTable from "../../components/TradesTable";
-import TradersTable from "../../components/TradersTable";
+import TradesTable from "../../components/TableCollectionTrades";
+import TradersTable from "../../components/TableCollectionTraders";
 import convertTradesData from "../../utils/convertTradesData";
 import convertTradersData from "../../utils/convertTradersData";
 import {
@@ -60,6 +60,7 @@ export default function CollectionPage(props) {
   const [timeframeTrades, setTimeframeTrades] = useState(1000); // default timeframe for top trades table
   const [traderType, setTraderType] = useState("buyers");
 
+  const [zeroVolumeCollection, setZeroVolumeCollection] = useState(false);
   const [marketplacesData, setMarketplacesData] = useState([]); // needed for each MP's charts
   const [daysSinceCreated, setDaysSinceCreated] = useState(0); // needed for days launched
   const [collectionInfo, setCollectionInfo] = useState([]); // needed to populate collection data
@@ -97,6 +98,10 @@ export default function CollectionPage(props) {
           setNoCollection(true);
           return;
         }
+        if (collectionInfo.alltimestats.length === 0) {
+          setZeroVolumeCollection(true);
+        }
+
         setCollectionInfo(collectionInfo);
         setStats(collectionInfo?.alltimestats);
         setMarketplaces(collectionInfo?.alltimestats?.length);
@@ -122,7 +127,7 @@ export default function CollectionPage(props) {
 
   // Fetch Top Trades All-Time
   useEffect(() => {
-    if (topTradesAll.length === 0) {
+    if (topTradesAll?.length === 0) {
       const fetchTopTradesData = async (symbol) => {
         let response = await fetchTopTrades(365, symbol);
         response && setTopTradesAll(response);
@@ -134,7 +139,7 @@ export default function CollectionPage(props) {
 
   // Fetch Top Trades Week
   useEffect(() => {
-    if (topTradesWeek.length === 0) {
+    if (topTradesWeek?.length === 0) {
       const fetchTopTradesData = async (symbol) => {
         let response = await fetchTopTrades(7, symbol);
         setTopTradesWeek(response);
@@ -145,7 +150,7 @@ export default function CollectionPage(props) {
 
   // Fetch Top Trades Day
   useEffect(() => {
-    if (topTradesDay.length === 0) {
+    if (topTradesDay?.length === 0) {
       const fetchTopTradesData = async (symbol) => {
         let response = await fetchTopTrades(1, symbol);
         setTopTradesDay(response);
@@ -156,7 +161,7 @@ export default function CollectionPage(props) {
 
   // Fetch Top Buyers
   useEffect(() => {
-    if (topBuyers.length === 0) {
+    if (topBuyers?.length === 0) {
       const fetchTopBuyers = async (symbol) => {
         let response = await fetchTopTraders("buyers", symbol);
         setTopBuyers(response);
@@ -167,7 +172,7 @@ export default function CollectionPage(props) {
 
   // Fetch Top Sellers
   useEffect(() => {
-    if (topSellers.length === 0) {
+    if (topSellers?.length === 0) {
       const fetchTopSellers = async (symbol) => {
         let response = await fetchTopTraders("sellers", symbol);
         setTopSellers(response);
@@ -307,10 +312,12 @@ export default function CollectionPage(props) {
         <CollectionStat
           stat={collectionMarketCap ? `$${collectionMarketCap}` : "Loading..."}
           label={"Market Cap"}
+          noData={zeroVolumeCollection}
         />
         <CollectionStat
           stat={floor > 0 ? floor : "Loading..."}
           label={"Floor (SOL)"}
+          noData={zeroVolumeCollection}
         />
         <CollectionStat
           stat={
@@ -322,6 +329,7 @@ export default function CollectionPage(props) {
               : "Loading..."
           }
           label={"Volume (SOL)"}
+          noData={zeroVolumeCollection}
         />
         <CollectionStat
           stat={
@@ -330,10 +338,12 @@ export default function CollectionPage(props) {
               : "Loading..."
           }
           label={"Transactions"}
+          noData={zeroVolumeCollection}
         />
         <CollectionStat
           stat={collectionAverage ? collectionAverage.toFixed(2) : "Loading..."}
           label={"Average (SOL)"}
+          noData={zeroVolumeCollection}
         />
         <CollectionStat
           stat={
@@ -351,28 +361,36 @@ export default function CollectionPage(props) {
 
       <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-lg-10 mt-5">
         <h2>Historical Floor</h2>
-        {floorChart && floorChart?.length !== 0 ? (
+        {!zeroVolumeCollection ? (
           <>
-            <div className="col-12 col-sm-10 col-md-8 col-xl-6 col-xxl-4 mt-2 mb-3">
-              <Timeframe
-                currentTimeframe={timeframeFloor}
-                setTimeframe={setTimeframeFloor}
-                timeframes={["2W", "1M", "ALL"]}
-                intervals={[14, 30, 1000]}
-              />
-            </div>
-            <LineChart
-              dates={floorChart.datesArray}
-              // legend={["SOL"]}
-              dataset={[floorChart.floorsArray]}
-              color={lineColors[2]}
-              tension={0.5}
-              pointRadius={timeframeFloor === 1000 ? 3 : 5}
-            />
+            {floorChart && floorChart?.length !== 0 ? (
+              <>
+                <div className="col-12 col-sm-10 col-md-8 col-xl-6 col-xxl-4 mt-2 mb-3">
+                  <Timeframe
+                    currentTimeframe={timeframeFloor}
+                    setTimeframe={setTimeframeFloor}
+                    timeframes={["2W", "1M", "ALL"]}
+                    intervals={[14, 30, 1000]}
+                  />
+                </div>
+                <LineChart
+                  dates={floorChart.datesArray}
+                  // legend={["SOL"]}
+                  dataset={[floorChart.floorsArray]}
+                  color={lineColors[2]}
+                  tension={0.5}
+                  pointRadius={timeframeFloor === 1000 ? 3 : 5}
+                />
+              </>
+            ) : (
+              <div className="h-100 d-flex align-items-center">
+                <Loader />
+              </div>
+            )}
           </>
         ) : (
-          <div className="h-100 d-flex align-items-center">
-            <Loader />
+          <div className="col-12 d-flex align-items-center justify-content-center h-50">
+            <h3>This collection has no historical data yet</h3>
           </div>
         )}
       </div>
@@ -419,6 +437,10 @@ export default function CollectionPage(props) {
                 </div>
               );
             })
+          ) : zeroVolumeCollection ? (
+            <div className="col-12 d-flex align-items-center justify-content-center h-50">
+              <h3>This collection has no sales yet</h3>
+            </div>
           ) : (
             <Loader />
           )}
@@ -440,6 +462,8 @@ export default function CollectionPage(props) {
               <MarketplaceCharts marketplaceData={marketplace} symbol={name} />
             );
           })
+        ) : zeroVolumeCollection ? (
+          <></>
         ) : (
           <div className="mt-5 mb-5 d-flex justify-content-center">
             <Loader />
@@ -464,6 +488,10 @@ export default function CollectionPage(props) {
           topTradesWeek?.length !== 0 &&
           topTradesDay?.length !== 0 ? (
             <TradesTable data={topTradesTimeframe()} />
+          ) : zeroVolumeCollection ? (
+            <div className="col-12 d-flex align-items-center justify-content-center h-50">
+              <h3>This collection has no trades yet</h3>
+            </div>
           ) : (
             <div className="col-6">
               <Loader />
@@ -494,10 +522,16 @@ export default function CollectionPage(props) {
             </button>
           </div>
           <hr style={{ color: "white", width: "100%" }} className="mt-0" />
-          {topBuyers?.length !== 0 && topSellers?.length !== 0 ? (
+          {!zeroVolumeCollection &&
+          topBuyers?.length !== 0 &&
+          topSellers?.length !== 0 ? (
             <TradersTable
               data={traderType === "buyers" ? topBuyers : topSellers}
             />
+          ) : zeroVolumeCollection ? (
+            <div className="col-12 d-flex align-items-center justify-content-center h-50">
+              <h3>This collection has no traders yet</h3>
+            </div>
           ) : (
             <div className="col-6">
               <Loader />
