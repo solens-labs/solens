@@ -5,6 +5,48 @@ import { useTable, useSortBy, usePagination } from "react-table";
 
 export default function TradersTable(props) {
   const { data } = props;
+  // const data = null;
+
+  const blankTx = {
+    address: "--",
+    total: "--",
+    count: "--",
+    min: "--",
+    average: "--",
+    max: "--",
+  };
+
+  const emptyObject = [
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+  ];
+
+  const [tableData, setTableData] = useState(emptyObject);
+
+  useEffect(() => {
+    if (!data || Object.keys(data).length === 0) {
+      setTableData(emptyObject);
+    } else {
+      if (Object.keys(data).length < 6) {
+        const items = Object.keys(data).length;
+        const addedItems = 10 - items;
+        for (let i = 0; i < addedItems; i++) {
+          data.push(blankTx);
+        }
+        setTableData(data);
+      } else {
+        setTableData(data);
+      }
+    }
+  }, [data]);
 
   const columns = useMemo(
     () => [
@@ -51,7 +93,11 @@ export default function TradersTable(props) {
     setPageSize,
     canPreviousPage,
     canNextPage,
-  } = useTable({ columns: columns, data: data }, useSortBy, usePagination);
+  } = useTable({ columns: columns, data: tableData }, useSortBy, usePagination);
+
+  // if (!data) {
+  //   return null;
+  // }
 
   return (
     <>

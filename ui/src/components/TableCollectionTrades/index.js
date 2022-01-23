@@ -15,7 +15,18 @@ export default function TradesTable(props) {
     date: "--",
   };
 
-  const emptyObject = [blankTx, blankTx, blankTx, blankTx, blankTx, blankTx];
+  const emptyObject = [
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+    blankTx,
+  ];
 
   const [tableData, setTableData] = useState(emptyObject);
 
@@ -25,7 +36,7 @@ export default function TradesTable(props) {
     } else {
       if (Object.keys(data).length < 6) {
         const items = Object.keys(data).length;
-        const addedItems = 6 - items;
+        const addedItems = 10 - items;
         for (let i = 0; i < addedItems; i++) {
           data.push(blankTx);
         }
@@ -90,6 +101,10 @@ export default function TradesTable(props) {
     useSortBy,
     usePagination
   );
+
+  // if (!data) {
+  //   return null;
+  // }
 
   return (
     <>

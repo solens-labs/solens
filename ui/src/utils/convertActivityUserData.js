@@ -56,7 +56,9 @@ const addTransaction = async (transaction, allCollections, user) => {
         {shortenAddress(seller)}
       </a>
     );
-    txType = <BuyIcon style={{ fill: themeColors[0] }} fontSize="medium" />;
+    txType = (
+      <BuyIcon style={{ fill: "rgba(86, 143, 56, 1)" }} fontSize="medium" />
+    );
     detail = "Buy";
   } else if (seller === user) {
     transactor = (
@@ -68,7 +70,9 @@ const addTransaction = async (transaction, allCollections, user) => {
         {shortenAddress(buyer)}
       </a>
     );
-    txType = <OfferIcon style={{ fill: themeColors[0] }} fontSize="small" />;
+    txType = (
+      <BuyIcon style={{ fill: "rgba(201, 87, 87, 1)" }} fontSize="medium" />
+    );
     detail = "Sell";
   }
 

@@ -84,10 +84,10 @@ export default function Home(props) {
         .get(api.server.allCollections)
         .then((response) => {
           const collections = response.data;
-          const collectionsAboveZero = collections.filter((collection) => {
-            return collection.total_volume > 0;
-          });
-          const dailyChangeAdded = collectionsAboveZero.map((collection) => {
+          // const collectionsAboveZero = collections.filter((collection) => {
+          //   return collection.total_volume > 0;
+          // });
+          const dailyChangeAdded = collections.map((collection) => {
             const volumeToday = collection.daily_volume;
             const volumeYesterday = collection.past_day_volume;
             let change =

@@ -8,7 +8,33 @@ import Loader from "../Loader";
 export default function ActivityWalletTable(props) {
   const { data } = props;
 
-  const [tableData, setTableData] = useState([]);
+  const blankObject = {
+    image: "--",
+    txType: "--",
+    detail: "--",
+    // mintLink: "--",
+    symbol: "--",
+    price: "--",
+    marketplace: "--",
+    transactor: "--",
+    txHash: "--",
+    date: "--",
+  };
+
+  const emptyObject = [
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+    blankObject,
+  ];
+
+  const [tableData, setTableData] = useState(emptyObject);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
