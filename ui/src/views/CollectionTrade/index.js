@@ -36,7 +36,6 @@ import { sortItems } from "../../utils/sortItems";
 export default function CollectionItems(props) {
   const { name } = useParams();
   const dispatch = useDispatch();
-  const history = useHistory();
   const allCollections = useSelector(selectAllCollections);
   // const storedCollection = useSelector(selectCollection);
   // const storedCollectionName = useSelector(selectCollectionName);
@@ -56,7 +55,7 @@ export default function CollectionItems(props) {
   const [noCollection, setNoCollection] = useState(false); // redirect user on incorrect symbol
   const [currentView, setCurrentView] = useState("listed"); // which component to show
 
-  // Fetch Collection Data, All Items, & Listed Items
+  // Check if valid collection & fetch/set info & all items metadata
   useEffect(async () => {
     if (name && allCollections.length > 0) {
       const filterCheck = allCollections.filter((item) => item.symbol === name);
@@ -65,12 +64,6 @@ export default function CollectionItems(props) {
         setNoCollection(true);
         return;
       }
-
-      // if (storedCollection && storedCollectionName === name) {
-      //   console.log(storedCollection);
-      //   console.log(name);
-      //   return;
-      // }
 
       const apiRequest =
         api.server.collection + queries.symbol + name + queries.mintList;
@@ -95,6 +88,7 @@ export default function CollectionItems(props) {
           const intitialItems = collectionMints.slice(0, 20);
           const intitialMetadata = await fetchItemsMetadata([], intitialItems);
           setAllItemsMetadata(intitialMetadata);
+
           // const marketplacesArray = [];
           // if (collectionInfo) {
           //   collectionInfo.alltimestats.map((item, i) => {
@@ -103,36 +97,34 @@ export default function CollectionItems(props) {
           // }
           // setMarketplaces(marketplacesArray);
         });
-
-      const apiRequest2 = api.server.listings + queries.symbol + name;
-      const collectionListed = await axios
-        .get(apiRequest2)
-        .then(async (response) => {
-          const listedItems = response.data;
-          setListedItems(listedItems);
-          // const sortedListeditems = sortItems(listedItems, "price_lth");
-          // setListedItems(sortedListeditems);
-        });
-
-      const apiRequest3 = api.server.collectionHistory + name;
-      const collectionActivity = await axios
-        .get(apiRequest3)
-        .then(async (response) => {
-          const activity = response.data;
-          const converted = await convertActivityCollection(activity);
-          const resolved = await Promise.all(converted);
-          setActivity(resolved);
-        });
     }
   }, [name, allCollections]);
 
-  // Scroll to Top Button
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  // Fetch collection listed items
+  useEffect(() => {
+    const apiRequest2 = api.server.listings + queries.symbol + name;
+    const collectionListed = await axios
+      .get(apiRequest2)
+      .then(async (response) => {
+        const listedItems = response.data;
+        setListedItems(listedItems);
+        // const sortedListeditems = sortItems(listedItems, "price_lth");
+        // setListedItems(sortedListeditems);
+      });
+  }, [name]);
+
+  // Fetch collection activity
+  useEffect(() => {
+    const apiRequest3 = api.server.collectionHistory + name;
+    const collectionActivity = await axios
+      .get(apiRequest3)
+      .then(async (response) => {
+        const activity = response.data;
+        const converted = await convertActivityCollection(activity);
+        const resolved = await Promise.all(converted);
+        setActivity(resolved);
+      });
+  }, [name]);
 
   // Wait for listedItems to change (initial & after sorting)
   useEffect(async () => {
@@ -151,6 +143,14 @@ export default function CollectionItems(props) {
       setListedItems(sortedItems);
     }
   }, [listedItemsSort]);
+
+  // Scroll to Top Button
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   // Store collection name in redux
   // useEffect(() => {
