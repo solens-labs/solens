@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import NftCard from "../CardNft/itemUnlisted";
 import Loader from "../Loader";
@@ -7,8 +8,7 @@ import Loader from "../Loader";
 export default function UserWalletItems(props) {
   const { walletItems, walletItemsMetadata, setWalletItemsMetadata } = props;
 
-  // const [items, setItems] = useState([]);
-  const [hasMore, setHasMore] = useState(true); // needed for infinite scroll end
+  const [hasMore, setHasMore] = useState(true);
 
   // Fetch & Set initial items
   useEffect(() => {
@@ -23,22 +23,8 @@ export default function UserWalletItems(props) {
       setHasMore(false);
       return;
     }
-
     const itemsMetadata = await fetchItemsMetadata(items, walletItems);
     setWalletItemsMetadata(itemsMetadata);
-  };
-
-  // Get metadata of an array of items
-  const fetchItemsMetadata = async (items, totalItems) => {
-    const newMints = totalItems.slice(items.length, items.length + 20);
-    const newMetadata = newMints.map(async (item, i) => {
-      const promise = await getTokenMetadata(item?.mint);
-      const tokenMD = await Promise.resolve(promise);
-      return tokenMD;
-    });
-    const newResolved = await Promise.all(newMetadata);
-    const fullItems = [...items, ...newResolved];
-    return fullItems;
   };
 
   return (

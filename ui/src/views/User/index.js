@@ -34,11 +34,11 @@ export default function User(props) {
   const walletBalance = useSelector(selectBalance);
   const walletAddress = useSelector(selectAddress);
 
-  const [listedItems, setListedItems] = useState([]);
-  const [listedItemsMetadata, setlistedItemsMetadata] = useState([]);
-  const [walletItems, setWalletItems] = useState([]);
-  const [walletItemsMetadata, setWalletItemsMetadata] = useState([]);
   const [activity, setActivity] = useState([]);
+  const [listedItems, setListedItems] = useState([]);
+  const [walletItems, setWalletItems] = useState([]);
+  const [listedItemsMetadata, setlistedItemsMetadata] = useState([]);
+  const [walletItemsMetadata, setWalletItemsMetadata] = useState([]);
 
   const [currentView, setCurrentView] = useState("activity");
 

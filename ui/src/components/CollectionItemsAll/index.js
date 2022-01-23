@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
+import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import NftCard from "../CardNft/itemUnlisted";
 import Loader from "../Loader";
@@ -27,22 +28,6 @@ export default function CollectionAllItems(props) {
 
     const itemsMetadata = await fetchItemsMetadata(items, allItems);
     setItems(itemsMetadata);
-  };
-
-  // Get metadata of an array of items
-  const fetchItemsMetadata = async (items, totalItems) => {
-    const newMints = totalItems.slice(items.length, items.length + 20);
-    const newMetadata = newMints.map(async (item, i) => {
-      const promise = await getTokenMetadata(item?.mint);
-      const tokenMD = await Promise.resolve(promise);
-      tokenMD["list_price"] = item?.price;
-      tokenMD["list_mp"] = item?.marketplace;
-      tokenMD["owner"] = item?.owner;
-      return tokenMD;
-    });
-    const newResolved = await Promise.all(newMetadata);
-    const fullItems = [...items, ...newResolved];
-    return fullItems;
   };
 
   return (
