@@ -6,7 +6,7 @@ export default function UserListedItems(props) {
 
   return (
     <>
-      <div className="stat_container col-12 col-lg-3 p-2">
+      <div className="stat_container col-12 col-xl-3 p-2">
         <div className="stat p-2">
           <h2>{listedItems?.length || 0} Listed Items</h2>
         </div>

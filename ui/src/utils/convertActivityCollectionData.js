@@ -44,7 +44,7 @@ const addTransaction = async (transaction) => {
   const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
   const sellerLink = (
     <a
-      href={explorerLink("account", transaction["seller"])}
+      href={explorerLink("account", transaction["owner"])}
       target="_blank"
       style={{ textDecoration: "none", color: themeColors[0] }}
     >
@@ -57,7 +57,7 @@ const addTransaction = async (transaction) => {
       ""
     ) : (
       <a
-        href={explorerLink("account", transaction["buyer"])}
+        href={explorerLink("account", transaction["new_owner"])}
         target="_blank"
         style={{ textDecoration: "none", color: themeColors[0] }}
       >

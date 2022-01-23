@@ -95,7 +95,7 @@ export default function CollectionListedItems(props) {
 
   return (
     <>
-      <div className="col-12 col-lg-3 p-2">
+      <div className="col-12 p-2">
         <h1 className="">{listedItems?.length || "Loading"} Listed Items</h1>
       </div>
 

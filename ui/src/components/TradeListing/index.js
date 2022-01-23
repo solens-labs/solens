@@ -181,7 +181,7 @@ export default function TradeListing(props) {
   };
 
   useEffect(() => {
-    if (listPrice > 0 && listPrice < floorDetails.floor) {
+    if (listPrice > 0 && listPrice < floorDetails?.floor) {
       setShowWarning(true);
     } else {
       setShowWarning(false);
@@ -255,7 +255,7 @@ export default function TradeListing(props) {
           {showWarning && (
             <span className="floor_warning">
               Warning! Your listing is below the current floor:{" "}
-              {floorDetails.floor} SOL
+              {floorDetails?.floor} SOL
             </span>
           )}
 

@@ -47,8 +47,8 @@ export default function CollectionAllItems(props) {
 
   return (
     <>
-      <div className="col-12 col-lg-3 p-2">
-        <h1 className="">{allItems?.length || "Loading"} Listed Items</h1>
+      <div className="col-12 p-2">
+        <h1 className="">{allItems?.length || "Loading"} Total Items</h1>
       </div>
 
       <div className="col-12 col-lg-10">
