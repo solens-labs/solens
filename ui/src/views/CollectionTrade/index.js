@@ -101,7 +101,7 @@ export default function CollectionItems(props) {
   }, [name, allCollections]);
 
   // Fetch collection listed items
-  useEffect(() => {
+  useEffect(async () => {
     const apiRequest2 = api.server.listings + queries.symbol + name;
     const collectionListed = await axios
       .get(apiRequest2)
@@ -114,7 +114,7 @@ export default function CollectionItems(props) {
   }, [name]);
 
   // Fetch collection activity
-  useEffect(() => {
+  useEffect(async () => {
     const apiRequest3 = api.server.collectionHistory + name;
     const collectionActivity = await axios
       .get(apiRequest3)
