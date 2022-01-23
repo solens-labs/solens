@@ -81,7 +81,7 @@ const addTransaction = async (transaction) => {
     case "accept_offer":
       symbol = (
         <AcceptOfferIcon
-          style={{ fill: "rgba(86, 143, 56, 0.8)" }}
+          style={{ fill: "rgba(86, 143, 56, 1)" }}
           fontSize="small"
         />
       );

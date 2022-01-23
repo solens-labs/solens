@@ -35,7 +35,9 @@ export default function User(props) {
   const walletAddress = useSelector(selectAddress);
 
   const [listedItems, setListedItems] = useState([]);
+  const [listedItemsMetadata, setlistedItemsMetadata] = useState([]);
   const [walletItems, setWalletItems] = useState([]);
+  const [walletItemsMetadata, setWalletItemsMetadata] = useState([]);
   const [activity, setActivity] = useState([]);
 
   const [currentView, setCurrentView] = useState("activity");
@@ -79,12 +81,7 @@ export default function User(props) {
     if (wallet && wallet.connected && wallet.publicKey) {
       const userTokenAccts = await getTokenAccounts(wallet, connection);
       const userNftTokenAccts = getNftAccounts(userTokenAccts);
-      const nftMetadataPromise = userNftTokenAccts.map(async (token, i) => {
-        return await getTokenMetadata(token.mint);
-      });
-      const nftMetadata = await Promise.all(nftMetadataPromise);
-      // dispatch(setUserNFTs(nftMetadata));
-      setWalletItems(nftMetadata);
+      setWalletItems(userNftTokenAccts);
     }
 
     if (!wallet.connected || (wallet.disconnecting && walletItems.length > 0)) {
@@ -101,17 +98,7 @@ export default function User(props) {
         api.server.walletListings + wallet.publicKey.toBase58();
       const fetchListed = axios.get(apiRequest).then(async (response) => {
         const items = response.data;
-        const nftMetadataPromise = items.map(async (item, i) => {
-          const promise = await getTokenMetadata(item?.mint);
-          const tokenMD = await Promise.resolve(promise);
-          tokenMD["list_price"] = item?.price;
-          tokenMD["list_mp"] = item?.marketplace;
-          tokenMD["owner"] = item?.owner;
-          return tokenMD;
-        });
-        const nftMetadata = await Promise.all(nftMetadataPromise);
-
-        setListedItems(nftMetadata);
+        setListedItems(items);
       });
     }
 
@@ -218,11 +205,19 @@ export default function User(props) {
       )}
 
       {wallet.connected && currentView === "listed" && (
-        <UserListedItems listedItems={listedItems} />
+        <UserListedItems
+          listedItems={listedItems}
+          listedItemsMetadata={listedItemsMetadata}
+          setlistedItemsMetadata={setlistedItemsMetadata}
+        />
       )}
 
       {wallet.connected && currentView === "wallet" && (
-        <UserWalletItems walletItems={walletItems} />
+        <UserWalletItems
+          walletItems={walletItems}
+          walletItemsMetadata={walletItemsMetadata}
+          setWalletItemsMetadata={setWalletItemsMetadata}
+        />
       )}
 
       {wallet.connected && currentView === "activity" && (

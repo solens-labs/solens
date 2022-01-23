@@ -6,7 +6,7 @@ export default function UserActivity(props) {
 
   return (
     <>
-      <div className="stat_container col-12 col-lg-3 p-2">
+      <div className="stat_container col-12 col-lg-4 col-xxl-3 p-2">
         <div className="stat p-2">
           <h2>Recent Activity</h2>
         </div>

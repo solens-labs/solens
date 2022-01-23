@@ -6,11 +6,6 @@ export const getTimeSince = (date) => {
   let interval = Interval.fromDateTimes(txTime, now);
   let timeSince = "";
 
-  let test = new Date("2022-01-23T03:28:58.000Z");
-  let interval2 = Interval.fromDateTimes(test, now);
-
-  console.log(interval2.length("seconds").toFixed(1) + " seconds");
-
   if (interval.length("days").toFixed(1) > 31) {
     timeSince = txTime.toLocaleDateString();
     return timeSince;

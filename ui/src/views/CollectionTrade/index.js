@@ -27,8 +27,8 @@ import {
 } from "../../redux/app";
 import { filterData, sortData } from "../../utils/sortAndSearch";
 import CollectionActivity from "../../components/CollectionActivity";
-import CollectionListedItems from "../../components/CollectionListedItems";
-import CollectionAllItems from "../../components/CollectionAllItems";
+import CollectionListedItems from "../../components/CollectionItemsListed";
+import CollectionAllItems from "../../components/CollectionItemsAll";
 import convertActivityCollection from "../../utils/convertActivityCollectionData";
 
 export default function CollectionItems(props) {
