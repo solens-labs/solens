@@ -55,6 +55,7 @@ export default function CollectionListedItems(props) {
           </option>
           <option value="price_htl">Price - High to Low</option>
           <option value="price_lth">Price - Low to High</option>
+          <option value="price_lth">Listed - Recent</option>
           {/* <option value="mint_solanart">Solanart</option> */}
           {/* <option value="mint_magiceden">Magic Eden</option> */}
         </select>

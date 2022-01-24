@@ -41,7 +41,7 @@ export default function User(props) {
   const [listedItemsMetadata, setlistedItemsMetadata] = useState([]);
   const [walletItemsMetadata, setWalletItemsMetadata] = useState([]);
 
-  const [currentView, setCurrentView] = useState("activity");
+  const [currentView, setCurrentView] = useState("listed");
 
   // Get user activity
   useEffect(() => {

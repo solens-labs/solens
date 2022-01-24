@@ -35,11 +35,11 @@ export default function ActivityWalletTable(props) {
   ];
 
   const [tableData, setTableData] = useState(emptyObject);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (Object.keys(data).length === 0) {
-      setLoading(true);
+      // setLoading(true);
     } else {
       setTableData(data);
       setLoading(false);

@@ -13,7 +13,7 @@ export default function UserListedItems(props) {
   // Infinite Scroll Data Fetch
   const fetchItems = async () => {
     if (
-      listedItemsMetadata.length > 0 &&
+      // listedItemsMetadata.length > 0 &&
       listedItemsMetadata.length === listedItems.length
     ) {
       setHasMore(false);
