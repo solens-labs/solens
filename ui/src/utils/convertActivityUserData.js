@@ -32,7 +32,7 @@ const addTransaction = async (transaction, allCollections, user) => {
         href={`/mint/${transaction["mint"]}`}
         style={{ textDecoration: "none" }}
       >
-        <img src={link} alt="nft_image" className="activity_image" />
+        <img src={link} className="activity_image" alt="nft image" />
       </a>
     );
   }

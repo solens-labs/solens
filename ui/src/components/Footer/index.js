@@ -21,7 +21,7 @@ export default function Footer(props) {
     <div className="footer col-12 d-flex flex-column justify-content-between align-items-center">
       <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-around justify-content-lg-center align-items-start mb-0 mb-lg-3">
         <div className="footer_logo_section col-12 col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-start justify-content-xxl-center">
-          <img src={solens_logo} className="footer_logo" />
+          <img src={solens_logo} className="footer_logo" alt="solens logo" />
         </div>
 
         {pg_break}

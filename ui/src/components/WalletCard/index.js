@@ -36,7 +36,7 @@ export default function WalletCard(props) {
           }`}
         >
           {/* <div className={`col-5  ${type === "SALES" && ""}`}> */}
-          <img src={wallet_pic} alt="" className="wallet_image" />
+          <img src={wallet_pic} className="wallet_image" alt="wallet image" />
           {/* <AccountBalanceWalletIcon sx={{ fontSize: 60 }} /> */}
         </div>
 

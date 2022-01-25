@@ -25,6 +25,7 @@ import UserActivity from "../../components/UserActivity";
 import UserListedItems from "../../components/UserItemsListed";
 import UserWalletItems from "../../components/UserItemsWallet";
 import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
+import { Helmet } from "react-helmet";
 
 export default function User(props) {
   const { connection } = useConnection();
@@ -119,6 +120,14 @@ export default function User(props) {
 
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4">
+      <Helmet>
+        <title>Solens - User Profile</title>
+        <meta
+          name="description"
+          content="Login and view all of your NFTs - those listed on Magic Eden or Solanart, NFTs in your wallet, and your recent NFT activity."
+        />
+      </Helmet>
+
       <div className="col-12 d-flex justify-content-center">
         {!wallet.connected && (
           <div className="d-flex flex-column align-items-center">

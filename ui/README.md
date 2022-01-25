@@ -1,3 +1,3 @@
 #Solens
 
-Solana's premiere NFT platform.
+Solana's premier NFT platform.

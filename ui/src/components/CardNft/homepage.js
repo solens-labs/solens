@@ -18,12 +18,17 @@ export default function NftCard(props) {
         className="nft_card d-flex flex-column align-items-center"
         onClick={() => goToNFTDetailPage(item.mint)}
       >
-        <img src={item.image} className="nft_card_image_home" alt="nft_card" />
+        <img src={item.image} className="nft_card_image_home" alt="nft image" />
 
         <div className="nft_card_details_home d-flex flex-column align-items-center justify-content-center">
           <h5>{item.name}</h5>
           <h4>
-            <img src={sol_logo} alt="sol logo" className="price_logo_lg" />
+            <img
+              src={sol_logo}
+              alt="sol logo"
+              className="price_logo_lg"
+              alt="solana logo"
+            />
             {item.price}
           </h4>
         </div>

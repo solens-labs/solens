@@ -37,7 +37,11 @@ export default function CollectionCard(props) {
       onClick={() => onClick()}
     >
       <div className="collection_image_container">
-        <img src={collection.image} alt="" className="collection_card_image" />
+        <img
+          src={collection.image}
+          alt="nft collection image"
+          className="collection_card_image"
+        />
       </div>
       <h2 className="collection_card_title">{collection.name}</h2>
 

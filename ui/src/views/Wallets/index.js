@@ -11,6 +11,7 @@ import {
 } from "../../redux/app";
 import WalletsSection from "../../components/WalletsPageSection";
 import Timeframe from "../../components/Timeframe";
+import { Helmet } from "react-helmet";
 
 export default function Wallets(props) {
   const walletBuyersAll = useSelector(selectWalletBuyers);
@@ -48,6 +49,14 @@ export default function Wallets(props) {
 
   return (
     <div className="d-flex flex-wrap flex-column align-items-center justify-content-center col-12 mt-4 mb-5">
+      <Helmet>
+        <title>Solens - Wallets</title>
+        <meta
+          name="description"
+          content="View the largest buyers and sellers of Solana NFTs. Follow smart money. Find the next big opportunity."
+        />
+      </Helmet>
+
       <h1 className="mb-2">Wallet Analysis</h1>
       <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-2 mb-3">
         <Timeframe

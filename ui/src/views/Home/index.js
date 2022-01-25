@@ -23,6 +23,7 @@ import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
 import collections_gif from "../../assets/images/collections.gif";
 import solens_logo from "../../assets/images/logo2.png";
+import { Helmet } from "react-helmet";
 
 export default function HomePage(props) {
   const history = useHistory();
@@ -94,10 +95,18 @@ export default function HomePage(props) {
 
   return (
     <div className="landing_page col-12 d-flex flex-column align-items-center justify-content-center mb-5">
+      <Helmet>
+        <title>Solens - Solana NFT Marketplex</title>
+        <meta
+          name="description"
+          content="Premier NFT Marketplex on Solana. Discover NFT collections, get in-depth analytics, and trade across multiple marketplaces."
+        />
+      </Helmet>
+
       <div className="main_header">
-        <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
+        <img src={logo} className="homepage_logo img-fluid" alt="solens logo" />
         <h3 className="homepage_tagline mb-2">
-          Solana's Premiere NFT Marketplex
+          Solana's Premier NFT Marketplex
         </h3>
         <Link to="/collections">
           <button
@@ -159,7 +168,11 @@ export default function HomePage(props) {
           <h3 className="mt-4 mt-lg-3" style={{ fontSize: "2.2rem" }}>
             Directly on{" "}
             <span>
-              <img src={solens_logo} style={{ height: 50, marginBottom: 17 }} />
+              <img
+                src={solens_logo}
+                style={{ height: 50, marginBottom: 17 }}
+                alt="solens logo"
+              />
             </span>
           </h3>
 
@@ -263,7 +276,11 @@ export default function HomePage(props) {
           <h5>
             Looking to launch your own NFT collection on{" "}
             <span>
-              <img src={solana} style={{ height: "1rem", paddingBottom: 4 }} />
+              <img
+                src={solana}
+                style={{ height: "1rem", paddingBottom: 4 }}
+                alt="solana logo"
+              />
             </span>
             ?
           </h5>

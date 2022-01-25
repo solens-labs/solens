@@ -32,6 +32,7 @@ import CollectionAllItems from "../../components/CollectionItemsAll";
 import convertActivityCollection from "../../utils/convertActivityCollectionData";
 import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 import { sortItems } from "../../utils/sortItems";
+import { Helmet } from "react-helmet";
 
 export default function CollectionItems(props) {
   const { name } = useParams();
@@ -162,6 +163,15 @@ export default function CollectionItems(props) {
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
+      {collectionInfo && collectionInfo.name && (
+        <Helmet>
+          <title>{`Solens - ${collectionInfo.name}`}</title>
+          <meta
+            name="description"
+            content={`Trade and get analytics for ${collectionInfo?.name} on Solana's premier NFT Marketplex.`}
+          />
+        </Helmet>
+      )}
       {noCollection && <Redirect to="/" />}
       <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
