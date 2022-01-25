@@ -29,7 +29,7 @@ async function generateSitemap() {
       return new Sitemap(router)
         .applyParams(paramsNfts)
         .applyParams(paramsCollection)
-        .build("https://www.solens.io")
+        .build("https://solens.io")
         .save("./public/sitemap.xml");
     });
   } catch (e) {
