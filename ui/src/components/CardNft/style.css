@@ -15,6 +15,10 @@
   box-shadow: 0px 0px 20px black;
 }
 
+.nft_card:hover {
+  cursor: pointer;
+}
+
 .nft_card_details {
   height: 83px;
   /* width: 100%; */
@@ -36,6 +40,9 @@
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 0px 20px black;
+}
+.nft_card_mobile:hover {
+  cursor: pointer;
 }
 
 .nft_card_details_mobile {

@@ -16,14 +16,15 @@ import {
   selectTopNFTsDay,
 } from "../../redux/app";
 import Loader from "../../components/Loader";
-import Timeframe from "../../components/Timeframe";
-import WalletsHomeSection from "../../components/SectionWallets";
 import NftCard from "../../components/CardNft/homepage";
 import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
 import collections_gif from "../../assets/images/collections.gif";
 import solens_logo from "../../assets/images/logo2.png";
 import { Helmet } from "react-helmet";
+import { themeColors } from "../../constants/constants";
+import { launch_collections } from "../../constants/launchzone";
+import UpcomingCollection from "../../components/CardCollection/upcoming";
 
 export default function HomePage(props) {
   const history = useHistory();
@@ -144,13 +145,6 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      {/* <div className="trade_now landing_page_section d-flex flex-column align-items-center justify-content-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h3 className="mb-2">
-          trade your NFTs on magiceden and solanart through solens
-        </h3>
-        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
-      </div> */}
-
       <div className="trade_now tradezone_image_bg d-flex flex-wrap justify-content-center align-items-center col-12 col-xxl-10 mt-5 m-0 p-0 overflow-hidden">
         <div className="col-12 col-xl-4 d-flex flex-row justify-content-center">
           <img
@@ -171,7 +165,7 @@ export default function HomePage(props) {
               <img
                 src={solens_logo}
                 style={{ height: 50, marginBottom: 17 }}
-                alt="solens logo"
+                alt="Solens"
               />
             </span>
           </h3>
@@ -232,6 +226,46 @@ export default function HomePage(props) {
             Explore Collections
           </button>
         </Link>
+      </div>
+
+      <div className="launchzone_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1 className="mb-2">Upcoming Launches</h1>
+        <h5 className="collection_stats_days">
+          on the{" "}
+          <span>
+            <Link
+              to="/launch"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              Solens Launchzone
+            </Link>
+          </span>
+        </h5>
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+
+        <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3">
+          {launch_collections.length === 0 && (
+            <>
+              <UpcomingCollection />
+              <UpcomingCollection />
+              <UpcomingCollection />
+            </>
+          )}
+
+          {launch_collections.length !== 0 ? (
+            launch_collections.map((collection, i) => {
+              return (
+                <UpcomingCollection
+                  collection={collection}
+                  key={i}
+                  onClick={visitLaunchzone}
+                />
+              );
+            })
+          ) : (
+            <Loader />
+          )}
+        </div>
       </div>
 
       <div className="launchzone_section landing_page_section launchzone_image_bg d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">

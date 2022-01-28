@@ -10,10 +10,10 @@
 }
 
 .collection_image_container {
-  max-height: 275px;
+  height: 275px;
   overflow: hidden;
   /* background: rgb(28, 0, 59); */
-  background: black;
+  background: transparent;
 }
 
 .collection_card_image {
@@ -48,13 +48,13 @@
 }
 
 .collection_card:hover {
-  box-shadow: 0px 0px 20px rgb(134, 64, 117);
-  border: 1px solid rgb(134, 64, 117);
+  /* box-shadow: 0px 0px 20px rgb(134, 64, 117); */
+  /* border: 1px solid rgb(134, 64, 117); */
   cursor: pointer;
 }
 
 .collection_card:active {
-  box-shadow: inset 0px 0px 20px black;
+  /* box-shadow: inset 0px 0px 20px black; */
 }
 
 .collection_card_stat {
