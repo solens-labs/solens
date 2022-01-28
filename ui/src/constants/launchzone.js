@@ -1,6 +1,6 @@
 export const launch_collections = [
   {
-    name: "Bucketheadz",
+    name: "Bucketheads",
     image:
       "https://pbs.twimg.com/profile_images/1480955362274537473/llPyMiJp_400x400.jpg",
     date: "2022-02-01T12:00:00",

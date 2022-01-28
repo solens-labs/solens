@@ -6,8 +6,9 @@
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
   /* margin: 5px; */
   height: 425px;
+
+  width: 100%;
   /* max-width: 425px; */
-  /* width: 100%; */
   /* max-width: 325px; */
   border: 1px solid black;
   border-radius: 15px;

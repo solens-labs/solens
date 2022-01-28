@@ -187,7 +187,7 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className="launchzone_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Upcoming Launches</h1>
         <h5 className="collection_stats_days">
           on the{" "}
