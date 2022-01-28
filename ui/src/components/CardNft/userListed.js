@@ -32,7 +32,7 @@ export default function NftCard(props) {
   };
 
   return (
-    <div className="nft_card_container col-12">
+    <div className="nft_card_container col-12 d-flex flex-column align-items-center">
       <div
         className="nft_card col-12 d-flex flex-column align-items-center"
         onClick={() => goToNFTDetailPage(item?.mint)}

@@ -234,36 +234,6 @@ export default function HomePage(props) {
         </Link>
       </div>
 
-      <div className="top_wallets landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Wallet Analysis</h1>
-        <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-3 mb-3">
-          <Timeframe
-            currentTimeframe={walletsTimeframe}
-            setTimeframe={setWalletsTimeframe}
-            timeframes={["DAY", "ALL"]}
-            intervals={[1, 10000]}
-          />
-        </div>
-
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-
-        <WalletsHomeSection buyers={buyers} sellers={sellers} volume={volume} />
-
-        <Link to="/wallets">
-          <button
-            className="explore_all_button mt-3 mb-3"
-            style={{
-              border: "1px solid black",
-              color: "white",
-              marginTop: "20px",
-              fontSize: "1.5rem",
-            }}
-          >
-            Explore Wallets
-          </button>
-        </Link>
-      </div>
-
       <div className="launchzone_section landing_page_section launchzone_image_bg d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <img
           src={launchzone}

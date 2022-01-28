@@ -15,7 +15,7 @@ export default function NftCard(props) {
   return (
     <div className="nft_card_container d-flex justify-content-center col-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mb-4 p-2 pb-0 pt-0">
       <div
-        className="nft_card d-flex flex-column align-items-center"
+        className="nft_card col-10 d-flex flex-column align-items-center"
         onClick={() => goToNFTDetailPage(item.mint)}
       >
         <img src={item.image} className="nft_card_image_home" alt="nft image" />
