@@ -37,11 +37,12 @@ import Wallets from "../Wallets";
 import ScrollToTop from "../../utils/ScrollToTop";
 import { getTokenMetadata } from "../../utils/getMetadata";
 import { calculateLaunchDate } from "../../utils/collectionStats";
-import Launch from "../Launch";
+import Launchzone from "../Launchzone";
 import Footer from "../../components/Footer";
 import Apply from "../Apply";
 import User from "../User";
 import CollectionTrade from "../CollectionTrade";
+import LaunchzoneMint from "../LaunchzoneMint";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -242,7 +243,8 @@ export default function Home(props) {
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
           <Route path="/user" component={User} />
-          <Route path="/launch" component={Launch} />
+          <Route path="/launch" component={Launchzone} />
+          <Route path="/launch/:name" component={LaunchzoneMint} />
           <Route path="/mint/:address" component={MintPage} />
           <Route path="*" component={HomePage} />
         </Switch>

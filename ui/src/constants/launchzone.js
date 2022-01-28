@@ -7,6 +7,7 @@ export const launch_collections = [
     website: "https://bucketheads.io/",
     twitter: "https://twitter.com/bucketheadsnft",
     discord: "https://discord.gg/PA6TQQTnwW",
+    symbol: "bucketheads",
   },
   {
     name: "Solana Cutiez",
@@ -16,6 +17,7 @@ export const launch_collections = [
     website: "https://cutiezheaven.pantherbyte.eu/",
     twitter: "https://twitter.com/solanacutiez",
     discord: "https://discord.gg/CfHKGqgXwH",
+    symbol: "solana_cuties",
   },
   {
     name: "Club Crypto",
@@ -25,5 +27,6 @@ export const launch_collections = [
     website: "https://www.clubcrypto.social/",
     twitter: "https://twitter.com/clubcryptonft",
     discord: "https://discord.gg/XABKGHVJgV",
+    symbol: "club_crypto",
   },
 ];
