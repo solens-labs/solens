@@ -15,12 +15,19 @@ export default function CollectionCard(props) {
       key={key || 0}
     >
       <div className="collection_image_container">
-        <img
-          src={collection?.image}
-          alt="nft collection image"
-          className="collection_card_image"
-          onClick={onClick}
-        />
+        <a
+          href={collection?.twitter}
+          target="_blank"
+          aria-label="twitter link"
+          style={{ textDecoration: "none", color: "white" }}
+        >
+          <img
+            src={collection?.image}
+            alt="nft collection image"
+            className="collection_card_image"
+            //   onClick={onClick}
+          />
+        </a>
       </div>
       <div>
         <h2 className="collection_card_title">{collection?.name}</h2>
@@ -39,17 +46,6 @@ export default function CollectionCard(props) {
           />
         </div>
         <div className="d-flex justify-content-around col-6">
-          {collection?.twitter && (
-            <a
-              href={collection?.twitter}
-              target="_blank"
-              aria-label="twitter link"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              <TwitterIcon />
-            </a>
-          )}
-
           {collection?.website && (
             <a
               href={collection?.website}
@@ -58,6 +54,17 @@ export default function CollectionCard(props) {
               style={{ textDecoration: "none", color: "white" }}
             >
               <WebsiteIcon />
+            </a>
+          )}
+
+          {collection?.twitter && (
+            <a
+              href={collection?.twitter}
+              target="_blank"
+              aria-label="twitter link"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <TwitterIcon />
             </a>
           )}
 
