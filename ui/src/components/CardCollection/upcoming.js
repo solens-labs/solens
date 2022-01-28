@@ -7,6 +7,8 @@ import DiscordIcon from "../../assets/images/discord.svg";
 export default function CollectionCard(props) {
   const { collection, key, onClick } = props;
 
+  const launchDate = new Date(collection?.date).toLocaleDateString();
+
   return (
     <div
       className="collection_card d-flex flex-column justify-content-between"
@@ -22,7 +24,7 @@ export default function CollectionCard(props) {
       </div>
       <div>
         <h2 className="collection_card_title">{collection?.name}</h2>
-        <h1 className="collection_info_header">{collection?.date}</h1>
+        <h1 className="collection_info_header">{launchDate}</h1>
       </div>
 
       <div className="collection_card_stat col-12 d-flex flex-column align-items-center">
