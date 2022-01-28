@@ -22,7 +22,7 @@ export default function CollectionCard(props) {
       </div>
       <div>
         <h2 className="collection_card_title">{collection?.name}</h2>
-        <h1 className="collection_card_info">{collection?.date}</h1>
+        <h1 className="collection_info_header">{collection?.date}</h1>
       </div>
 
       <div className="collection_card_stat col-12 d-flex flex-column align-items-center">

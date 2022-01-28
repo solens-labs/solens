@@ -25,6 +25,7 @@ import { Helmet } from "react-helmet";
 import { themeColors } from "../../constants/constants";
 import { launch_collections } from "../../constants/launchzone";
 import UpcomingCollection from "../../components/CardCollection/upcoming";
+import { upcoming_collections } from "../../constants/emptySections";
 
 export default function HomePage(props) {
   const history = useHistory();
@@ -186,6 +187,48 @@ export default function HomePage(props) {
         </div>
       </div>
 
+      <div className="launchzone_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1 className="mb-2">Upcoming Launches</h1>
+        <h5 className="collection_stats_days">
+          on the{" "}
+          <span>
+            <Link
+              to="/launch"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              Solens Launchzone
+            </Link>
+          </span>
+        </h5>
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+
+        <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3 mb-4">
+          {launch_collections.map((collection, i) => {
+            return (
+              <UpcomingCollection
+                collection={collection}
+                key={i}
+                onClick={visitLaunchzone}
+              />
+            );
+          })}
+        </div>
+
+        <Link to="/launch">
+          <button
+            className="explore_all_button mt-3 mb-3"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              marginTop: "20px",
+              fontSize: "1.5rem",
+            }}
+          >
+            Explore Launchzone
+          </button>
+        </Link>
+      </div>
+
       <div className="top_nfts landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Top Traded NFTs</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
@@ -226,46 +269,6 @@ export default function HomePage(props) {
             Explore Collections
           </button>
         </Link>
-      </div>
-
-      <div className="launchzone_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Upcoming Launches</h1>
-        <h5 className="collection_stats_days">
-          on the{" "}
-          <span>
-            <Link
-              to="/launch"
-              style={{ textDecoration: "none", color: themeColors[0] }}
-            >
-              Solens Launchzone
-            </Link>
-          </span>
-        </h5>
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-
-        <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3">
-          {launch_collections.length === 0 && (
-            <>
-              <UpcomingCollection />
-              <UpcomingCollection />
-              <UpcomingCollection />
-            </>
-          )}
-
-          {launch_collections.length !== 0 ? (
-            launch_collections.map((collection, i) => {
-              return (
-                <UpcomingCollection
-                  collection={collection}
-                  key={i}
-                  onClick={visitLaunchzone}
-                />
-              );
-            })
-          ) : (
-            <Loader />
-          )}
-        </div>
       </div>
 
       <div className="launchzone_section landing_page_section launchzone_image_bg d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">

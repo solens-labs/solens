@@ -11,3 +11,9 @@ export const trending_collections = [
   <TrendingCollection />,
   <TrendingCollection />,
 ];
+
+export const upcoming_collections = [
+  <UpcomingCollection />,
+  <UpcomingCollection />,
+  <UpcomingCollection />,
+];
