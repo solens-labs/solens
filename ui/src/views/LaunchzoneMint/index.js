@@ -26,37 +26,41 @@ export default function LaunchzoneMint(props) {
     return this;
   };
 
-  const launchDate = new Date(collectionInfo?.date).addHours(-84.36);
-  const endDate = new Date(collectionInfo?.date).addHours(-84.35);
+  const launchDate = new Date(collectionInfo?.date).addHours(0);
+  const endDate = new Date(collectionInfo?.date).addHours(40);
   const [released, setReleased] = useState(false);
   const [ended, setEnded] = useState(false);
   const [soldOut, setSoldOut] = useState(false);
 
   const [mintProgress, setMintProgress] = useState(0);
+
   const mintOne = () => {
     if (!released) {
       alert("Minting has not begun!");
       return;
     }
-
     if (ended) {
       alert(
         "Minting has completed! Please visit our marketplace for secondary sales."
       );
       return;
     }
-
     if (mintProgress === 100) {
-      setSoldOut(true);
       alert("Sold Out!");
       return;
     }
 
-    setMintProgress(mintProgress + 5);
+    setMintProgress(mintProgress + 2);
   };
   const itemsTotal = collectionInfo?.supply;
   const itemsMinted = mintProgress * 0.01 * itemsTotal;
   const itemsRemaining = 0;
+
+  useEffect(() => {
+    if (mintProgress >= 100) {
+      setSoldOut(true);
+    }
+  }, [mintProgress]);
 
   // Set collection info from params -- change to API pull
   useEffect(() => {
@@ -119,7 +123,7 @@ export default function LaunchzoneMint(props) {
               label={"Launch"}
             />
             <MintingStat
-              stat={collectionInfo?.supply.toLocaleString()}
+              stat={collectionInfo?.supply?.toLocaleString()}
               label={"Items"}
             />
             <MintingStat stat={collectionInfo?.price + " ◎"} label={"Price"} />
@@ -130,60 +134,62 @@ export default function LaunchzoneMint(props) {
         </div>
       </div>
 
-      <div className="minting_module chartbox d-flex flex-column align-items-center justify-content-between flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3">
-        {!released && (
-          <>
-            <h2 className="m-0 p-0">Minting Begins</h2>
-            <Countdown
-              date={launchDate}
-              onMount={({ completed }) => completed && setReleased(true)}
-              onComplete={() => setReleased(true)}
-              renderer={renderCounter}
-            />
-          </>
-        )}
+      <div className="minting_module chartbox d-flex flex-column align-items-center justify-content-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3">
+        <div className="minting_title col-12 d-flex flex-column align-items-center justify-content-center">
+          {!released && (
+            <>
+              <h2 className="m-0 p-0">Minting Begins</h2>
+              <Countdown
+                date={launchDate}
+                onMount={({ completed }) => completed && setReleased(true)}
+                onComplete={() => setReleased(true)}
+                renderer={renderCounter}
+              />
+            </>
+          )}
 
-        {released && !ended && !soldOut && (
-          <>
-            <h2 className="m-0 p-0">Time Remaining</h2>
-            <Countdown
-              date={endDate}
-              onMount={({ completed }) => completed && setEnded(true)}
-              onComplete={() => setEnded(true)}
-              renderer={renderCounter}
-            />
-          </>
-        )}
+          {released && !ended && !soldOut && (
+            <>
+              <h2 className="m-0 p-0">Time Remaining</h2>
+              <Countdown
+                date={endDate}
+                onMount={({ completed }) => completed && setEnded(true)}
+                onComplete={() => setEnded(true)}
+                renderer={renderCounter}
+              />
+            </>
+          )}
 
-        {released && soldOut && (
-          <>
-            <h2 className="m-0 p-0">Sold Out</h2>
-            <span
-              style={{
-                color: themeColors[0],
-                fontSize: "1.3rem",
-                marginTop: 0,
-              }}
-            >
-              Available to trade on Solens shortly
-            </span>
-          </>
-        )}
+          {released && soldOut && (
+            <>
+              <h2 className="m-0 p-0">Sold Out</h2>
+              <span
+                style={{
+                  color: themeColors[0],
+                  fontSize: "1.3rem",
+                  marginTop: 0,
+                }}
+              >
+                Available to trade on Solens shortly
+              </span>
+            </>
+          )}
 
-        {released && ended && (
-          <>
-            <h2 className="m-0 p-0">Minting Complete</h2>
-            <span
-              style={{
-                color: themeColors[0],
-                fontSize: "1.3rem",
-                marginTop: 0,
-              }}
-            >
-              Available to trade on Solens shortly
-            </span>
-          </>
-        )}
+          {released && ended && (
+            <>
+              <h2 className="m-0 p-0">Minting Complete</h2>
+              <span
+                style={{
+                  color: themeColors[0],
+                  fontSize: "1.3rem",
+                  marginTop: 0,
+                }}
+              >
+                Available to trade on Solens shortly
+              </span>
+            </>
+          )}
+        </div>
 
         <div className="minting_progress col-12 d-flex flex-column align-items-center justify-content-center">
           <div className="col-6 mt-3 mb-3">
@@ -208,29 +214,31 @@ export default function LaunchzoneMint(props) {
           </h4>
         </div>
 
-        {!wallet.connected && !ended && (
-          <WalletMultiButton
-            className="connect_button"
-            style={{
-              border: "1px solid black",
-              color: "white",
-              borderRadius: 15,
-            }}
-          />
-        )}
+        {/* <div className="minting_buttons col-12 d-flex flex-column align-items-center justify-content-center">
+          {!wallet.connected && !ended && (
+            <WalletMultiButton
+              className="connect_button"
+              style={{
+                border: "1px solid black",
+                color: "white",
+                borderRadius: 15,
+              }}
+            />
+          )}
 
-        {wallet.connected && !ended && (
-          <button
-            className="btn-button connect_button"
-            onClick={() => mintOne()}
-          >
-            Mint
-          </button>
-        )}
+          {wallet.connected && !ended && (
+            <button
+              className="btn-button connect_button"
+              onClick={() => mintOne()}
+            >
+              Mint
+            </button>
+          )}
 
-        {wallet.connected && ended && (
-          <button className="btn-button connect_button">Ended</button>
-        )}
+          {ended && (
+            <button className="btn-button connect_button">Ended</button>
+          )}
+        </div> */}
       </div>
     </div>
   );
@@ -239,9 +247,9 @@ export default function LaunchzoneMint(props) {
 const renderCounter = ({ days, hours, minutes, seconds, completed }) => {
   return (
     <span style={{ color: themeColors[0], fontSize: "1.3rem", marginTop: 0 }}>
-      {days > 0 && `${days} days, `}
-      {hours > 0 && `${hours} hours, `} {minutes > 0 && `${minutes} minutes, `}
-      {`${seconds} seconds `}
+      {days > 0 && `${days} days `}
+      {/* {hours > 0 && `${hours} hours, `} {minutes > 0 && `${minutes} minutes, `}
+      {`${seconds} seconds `} */}
     </span>
   );
 };
