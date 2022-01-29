@@ -11,6 +11,8 @@ import Marketing from "@mui/icons-material/Public";
 import Analytics from "@mui/icons-material/Insights";
 import logo from "../../assets/images/logo2.png";
 import { Helmet } from "react-helmet";
+import { launch_collections } from "../../constants/launchzone";
+import LaunchMint from "../../components/LaunchMint";
 
 export default function Launch() {
   const dispatch = useDispatch();
@@ -61,6 +63,11 @@ export default function Launch() {
           </div>
         </div>
       </div>
+
+      <div className="launchzone_featured col-12 d-flex justify-content-center mt-4">
+        <LaunchMint symbol={"bucketheads"} />
+      </div>
+      <hr style={{ color: "white", width: "70%" }} className="m-4" />
 
       <div className="col-12 d-flex flex-wrap justify-content-center mt-4 p-lg-5 pb-lg-0 pt-lg-0">
         <div className="launch_detail_container col-12 col-md-6 col-xxl-3 d-flex justify-content-center p-2">
