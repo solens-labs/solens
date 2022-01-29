@@ -20,7 +20,7 @@ export default function CollectionCard(props) {
 
   return (
     <div
-      className="collection_card d-flex flex-column justify-content-between"
+      className="collection_card d-flex flex-column justify-content-between mt-3"
       key={key || 0}
     >
       <div className="collection_image_container">

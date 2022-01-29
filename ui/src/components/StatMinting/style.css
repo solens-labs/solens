@@ -1,0 +1,47 @@
+.minting_stat {
+  /* border: 1px solid white; */
+  /* background-color: rgb(196, 185, 173); */
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+  border-radius: 15px;
+  padding: 5px 0px;
+  /* min-width: 200px; */
+  max-width: 250px;
+  width: 100%;
+}
+
+.minting_stat_secondary {
+  /* border: 1px solid white; */
+  /* background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%); */
+  background: rgb(53, 43, 87);
+  /* box-shadow: inset 0px 0px 5px 0px black; */
+  border-radius: 15px;
+  padding: 5px 5px;
+  /* margin: 5px 0px; */
+  /* width: 300px; */
+  width: 100%;
+}
+
+.minting_stats {
+  /* margin-top: 20px; */
+  /* padding-top: 20px; */
+}
+
+.minting_info_stat {
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding-bottom: 0;
+  margin-bottom: 0px;
+}
+
+.minting_info_header {
+  /* font-weight: bold; */
+  font-size: 0.9rem;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 990px) {
+  .minting_info_stat {
+    font-size: 0.9rem;
+  }
+}

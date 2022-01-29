@@ -88,6 +88,7 @@ export const themeColors = [
   "rgb(134, 64, 117)", // Gradient Pink
   "rgb(18, 11, 37)", // Dark Purple
   "rgb(57,184,143)", // Teal
+  "rgb(25, 16, 51)", // Background Purple
 ];
 
 export const links = {

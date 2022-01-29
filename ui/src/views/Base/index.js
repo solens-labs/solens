@@ -236,6 +236,7 @@ export default function Home(props) {
       <div className={`${pageContentStyle} col-12`}>
         <ScrollToTop />
         <Switch>
+          <Route exact strict path="/launch" component={Launchzone} />
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
           <Route path="/collection/:name" component={CollectionPage} />
@@ -243,7 +244,6 @@ export default function Home(props) {
           <Route path="/wallets" component={Wallets} />
           <Route path="/apply" component={Apply} />
           <Route path="/user" component={User} />
-          <Route path exact="/launch" component={Launchzone} />
           <Route path="/launch/:symbol" component={LaunchzoneMint} />
           <Route path="/mint/:address" component={MintPage} />
           <Route path="*" component={HomePage} />

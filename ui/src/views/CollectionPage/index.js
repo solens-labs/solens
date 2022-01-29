@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Redirect, useParams } from "react-router-dom";
-import "../../components/CollectionStat/style.css";
+import "../../components/StatCollection/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
 import {
@@ -48,7 +48,7 @@ import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
-import CollectionStat from "../../components/CollectionStat";
+import CollectionStat from "../../components/StatCollection";
 import { Helmet } from "react-helmet";
 
 export default function CollectionPage(props) {

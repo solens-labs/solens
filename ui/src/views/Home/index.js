@@ -30,43 +30,10 @@ import { upcoming_collections } from "../../constants/emptySections";
 export default function HomePage(props) {
   const history = useHistory();
   const collections = useSelector(selectAllCollections);
-  const walletBuyersAll = useSelector(selectWalletBuyers);
-  const walletBuyersDay = useSelector(selectWalletBuyersDay);
-  const walletSellersAll = useSelector(selectWalletSellers);
-  const walletSellersDay = useSelector(selectWalletSellersDay);
   const [trending, setTrending] = useState([]);
   const solPrice = useSelector(selectSolPrice);
   const volumeDay = useSelector(selectDailyVolume);
-  const volumeWeek = useSelector(selectWeeklyVolume);
   const topNFTs = useSelector(selectTopNFTsDay);
-
-  const [walletsTimeframe, setWalletsTimeframe] = useState(1);
-  const [volume, setVolume] = useState(volumeDay);
-  const [buyers, setBuyers] = useState(walletBuyersDay);
-  const [sellers, setSellers] = useState(walletSellersDay);
-
-  // Wallets timeframe switching
-  useEffect(() => {
-    switch (walletsTimeframe) {
-      case 1:
-        setVolume(volumeDay);
-        setBuyers(walletBuyersDay);
-        setSellers(walletSellersDay);
-        break;
-      case 10000:
-        setVolume(volumeWeek);
-        setBuyers(walletBuyersAll);
-        setSellers(walletSellersAll);
-        break;
-    }
-  }, [walletsTimeframe]);
-
-  // Set the default wallets timeframe
-  useEffect(() => {
-    setVolume(volumeDay);
-    setBuyers(walletBuyersDay);
-    setSellers(walletSellersDay);
-  }, [walletBuyersDay, walletSellersDay, volumeDay]);
 
   // Calculate Trending Collections
   useEffect(() => {
@@ -151,7 +118,7 @@ export default function HomePage(props) {
           <img
             src={collections_gif}
             alt="launchzone_logo"
-            className="collections_gif mt-5 mt-lg-0"
+            className="collections_gif mt-5 mt-lg-4 mt-xl-0"
           />
         </div>
 
@@ -200,9 +167,9 @@ export default function HomePage(props) {
             </Link>
           </span>
         </h5>
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-2" />
 
-        <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3 mb-4">
+        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
           {launch_collections.map((collection, i) => {
             return (
               <UpcomingCollection

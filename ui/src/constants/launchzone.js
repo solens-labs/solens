@@ -10,10 +10,13 @@ export const launch_collections = [
     symbol: "bucketheads",
     supply: 2500,
     price: 0.75,
-    description: `We are a derivative passion project collection to start, 
-      sharing our love of sci-fi and gaming, we are doing everything
-      we do for our holders, to be as free to access for all our future 
-      plans so there is no barrier for entry to what we want to create.`,
+    description: `Scattered far away, rising out of the chaos, an army fractured and 
+    broken slowly gathers. BucketHeads have begun their journey across the Metaverse 
+    with a singular focus; invading and recruiting wallets to join their cause and 
+    reclaim their status, are you ready to join them and provide your wallet as a home?
+    Bucketheads is an inspired art collection of childhood dreams dating back to the 
+    80’s, the project is a forerunner for exciting projects yet to come, think sci-fi 
+    and superheroes.`,
   },
   {
     name: "Cutiez Angels",
