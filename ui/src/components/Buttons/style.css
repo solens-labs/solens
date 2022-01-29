@@ -135,6 +135,50 @@ COLORS:
   box-shadow: inset 0px 0px 5px black;
 }
 
+.btn_outline_outer {
+  border-radius: 15px;
+  padding: 5px 30px;
+  min-width: 200px;
+  height: 50px;
+  border-radius: 15px;
+  border: 1px solid transparent;
+
+  background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 1),
+    rgba(134, 64, 117, 1) 120%
+  );
+  padding: 2px;
+  box-shadow: 0px 0px 2px 2px black;
+}
+
+.btn_outline_inner {
+  padding: 5px;
+  background: rgb(18, 11, 37);
+  height: 100%;
+  width: 100%;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+.btn_outline_inner:hover {
+  background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 1),
+    rgba(134, 64, 117, 1) 120%
+  );
+}
+
 /* @media only screen and (max-width: 991px) {
   .btn_timeframe {
     padding: 2px 6px;
