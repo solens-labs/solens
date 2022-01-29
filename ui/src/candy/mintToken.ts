@@ -9,7 +9,7 @@ import {
   CANDY_MACHINE_PROGRAM_V2_ID,
   TOKEN_METADATA_PROGRAM_ID,
 } from "./candyConstants";
-import { SystemProgram } from "@solana/web3.js";
+import { SystemProgram, Transaction } from "@solana/web3.js";
 
 const getMetadata = async (
   mint: anchor.web3.PublicKey
@@ -128,5 +128,10 @@ export async function mintToken(
     })
   );
 
-  return instructions;
+  const final_tx = new Transaction({
+    feePayer: payer,
+  });
+
+  final_tx.add(...instructions);
+  return final_tx;
 }
