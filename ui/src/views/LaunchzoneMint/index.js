@@ -55,11 +55,9 @@ export default function LaunchzoneMint(props) {
             );
             const mint = anchor.web3.Keypair.generate()
 
-
         } catch (e) {
             console.log(e)
         }
-
 
         if (!released) {
             alert("Minting has not begun!");
@@ -76,17 +74,19 @@ export default function LaunchzoneMint(props) {
             return;
         }
 
-        setMintProgress(mintProgress + 2);
     };
+
     const itemsTotal = collectionInfo?.supply;
     const itemsMinted = mintProgress * 0.01 * itemsTotal;
     const itemsRemaining = 0;
 
+    // Sold out logic
     useEffect(() => {
         if (mintProgress >= 100) {
             setSoldOut(true);
         }
     }, [mintProgress]);
+
 
     // Set collection info from params -- change to API pull
     useEffect(() => {

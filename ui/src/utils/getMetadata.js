@@ -15,11 +15,22 @@ export const getTokenMetadata = async (mint) => {
 
     const fullData = tokenMetadata.data;
 
-    const detailedData = await fetch(tokenMetadata.data.data.uri)
-      .then((response) => response.json())
-      .then((data) => {
-        return data;
-      });
+    let detailedData = "";
+
+    for (let i = 0; i < 4; i++) {
+      try {
+        detailedData = await fetch(tokenMetadata.data.data.uri)
+          .then((response) => response.json())
+          .then((data) => {
+            return data;
+          });
+
+        break;
+      } catch (e) {
+        console.log(e);
+        setTimeout(() => {}, 5);
+      }
+    }
 
     detailedData["mint"] = fullData.mint;
     detailedData["creators"] = fullData.data.creators;
@@ -33,8 +44,8 @@ export const getTokenMetadata = async (mint) => {
     detailedData["metadata_acct"] = metadataPDA.toBase58();
 
     return detailedData;
-  } catch {
-    console.log("Invalid Mint Address");
+  } catch (e) {
+    // console.log("Invalid Mint Address");
     return { invalid: true };
   }
 };

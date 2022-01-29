@@ -21,9 +21,9 @@ export default function NftCard(props) {
   const smallWindow = window.innerWidth < 2000;
   let nameShort = name;
 
-  if (smallWindow && name.length > 20) {
+  if (smallWindow && name?.length > 20) {
     nameShort =
-      name.slice(0, 15) + " ... " + name.slice(name.length - 4, name.length);
+      name.slice(0, 15) + " ... " + name.slice(name?.length - 4, name?.length);
   }
 
   // Generate link to go to internal NFT Detail Page
