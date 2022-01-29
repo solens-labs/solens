@@ -10,6 +10,8 @@ import MintingStat from "../../components/StatMinting";
 import { ProgressBar } from "react-bootstrap";
 import { themeColors } from "../../constants/constants";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import Countdown from "react-countdown";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function LaunchzoneMint(props) {
   const { symbol } = useParams();
@@ -17,20 +19,46 @@ export default function LaunchzoneMint(props) {
   const [collectionLinks, setCollectionLinks] = useState({});
   const [noCollection, setNoCollection] = useState(false);
 
+  const wallet = useWallet();
+
   Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + h * 60 * 60 * 1000);
     return this;
   };
 
-  const launchDate = new Date(collectionInfo?.date);
-  const endDate = new Date(collectionInfo?.date).addHours(48);
-  const now = new Date();
+  const launchDate = new Date(collectionInfo?.date).addHours(-84.36);
+  const endDate = new Date(collectionInfo?.date).addHours(-84.35);
+  const [released, setReleased] = useState(false);
+  const [ended, setEnded] = useState(false);
+  const [soldOut, setSoldOut] = useState(false);
 
-  const [mintProgress, setMintProgress] = useState(65);
+  const [mintProgress, setMintProgress] = useState(0);
+  const mintOne = () => {
+    if (!released) {
+      alert("Minting has not begun!");
+      return;
+    }
+
+    if (ended) {
+      alert(
+        "Minting has completed! Please visit our marketplace for secondary sales."
+      );
+      return;
+    }
+
+    if (mintProgress === 100) {
+      setSoldOut(true);
+      alert("Sold Out!");
+      return;
+    }
+
+    setMintProgress(mintProgress + 5);
+  };
   const itemsTotal = collectionInfo?.supply;
   const itemsMinted = mintProgress * 0.01 * itemsTotal;
   const itemsRemaining = 0;
 
+  // Set collection info from params -- change to API pull
   useEffect(() => {
     const [filtered] = launch_collections.filter(
       (item) => item.symbol === symbol
@@ -90,8 +118,11 @@ export default function LaunchzoneMint(props) {
               stat={launchDate?.toLocaleDateString()}
               label={"Launch"}
             />
-            <MintingStat stat={collectionInfo?.supply} label={"Items"} />
-            <MintingStat stat={collectionInfo?.price} label={"Price"} />
+            <MintingStat
+              stat={collectionInfo?.supply.toLocaleString()}
+              label={"Items"}
+            />
+            <MintingStat stat={collectionInfo?.price + " ◎"} label={"Price"} />
           </div>
           <p className="collection_description">
             {collectionInfo?.description}
@@ -99,36 +130,118 @@ export default function LaunchzoneMint(props) {
         </div>
       </div>
 
-      <div className="minting_module chartbox d-flex flex-column align-items-center justify-content-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
-        <h2>Minting Progress</h2>
-        <div className="col-6 mt-3 mb-3">
-          <ProgressBar
-            style={{
-              backgroundColor: "rgb(25, 16, 51)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              // height: 30,
-            }}
-            animated
-            striped={true}
-            now={mintProgress}
-            // label={`${mintProgress}%`}
-          />
-        </div>
-        <h4 className="mb-4">
-          Items Minted: {itemsMinted?.toLocaleString()} /{" "}
-          {itemsTotal?.toLocaleString()}{" "}
-          <span style={{ color: themeColors[0] }}>{`(${mintProgress}%)`}</span>
-        </h4>
+      <div className="minting_module chartbox d-flex flex-column align-items-center justify-content-between flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3">
+        {!released && (
+          <>
+            <h2 className="m-0 p-0">Minting Begins</h2>
+            <Countdown
+              date={launchDate}
+              onMount={({ completed }) => completed && setReleased(true)}
+              onComplete={() => setReleased(true)}
+              renderer={renderCounter}
+            />
+          </>
+        )}
 
-        <WalletMultiButton
-          className="connect_button"
-          style={{
-            border: "1px solid black",
-            color: "white",
-            borderRadius: 15,
-          }}
-        />
+        {released && !ended && !soldOut && (
+          <>
+            <h2 className="m-0 p-0">Time Remaining</h2>
+            <Countdown
+              date={endDate}
+              onMount={({ completed }) => completed && setEnded(true)}
+              onComplete={() => setEnded(true)}
+              renderer={renderCounter}
+            />
+          </>
+        )}
+
+        {released && soldOut && (
+          <>
+            <h2 className="m-0 p-0">Sold Out</h2>
+            <span
+              style={{
+                color: themeColors[0],
+                fontSize: "1.3rem",
+                marginTop: 0,
+              }}
+            >
+              Available to trade on Solens shortly
+            </span>
+          </>
+        )}
+
+        {released && ended && (
+          <>
+            <h2 className="m-0 p-0">Minting Complete</h2>
+            <span
+              style={{
+                color: themeColors[0],
+                fontSize: "1.3rem",
+                marginTop: 0,
+              }}
+            >
+              Available to trade on Solens shortly
+            </span>
+          </>
+        )}
+
+        <div className="minting_progress col-12 d-flex flex-column align-items-center justify-content-center">
+          <div className="col-6 mt-3 mb-3">
+            <ProgressBar
+              style={{
+                backgroundColor: "rgb(25, 16, 51)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                // height: 30,
+              }}
+              animated
+              striped={true}
+              now={mintProgress}
+              // label={`${mintProgress}%`}
+            />
+          </div>
+          <h4 className="mb-4">
+            Items Minted: {itemsMinted?.toLocaleString()} /{" "}
+            {itemsTotal?.toLocaleString()}{" "}
+            <span
+              style={{ color: themeColors[0] }}
+            >{`(${mintProgress}%)`}</span>
+          </h4>
+        </div>
+
+        {!wallet.connected && !ended && (
+          <WalletMultiButton
+            className="connect_button"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              borderRadius: 15,
+            }}
+          />
+        )}
+
+        {wallet.connected && !ended && (
+          <button
+            className="btn-button connect_button"
+            onClick={() => mintOne()}
+          >
+            Mint
+          </button>
+        )}
+
+        {wallet.connected && ended && (
+          <button className="btn-button connect_button">Ended</button>
+        )}
       </div>
     </div>
   );
 }
+
+const renderCounter = ({ days, hours, minutes, seconds, completed }) => {
+  return (
+    <span style={{ color: themeColors[0], fontSize: "1.3rem", marginTop: 0 }}>
+      {days > 0 && `${days} days, `}
+      {hours > 0 && `${hours} hours, `} {minutes > 0 && `${minutes} minutes, `}
+      {`${seconds} seconds `}
+    </span>
+  );
+};
