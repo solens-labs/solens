@@ -33,8 +33,6 @@ export default function LaunchzoneMint(props) {
   const [ended, setEnded] = useState(false);
   const [soldOut, setSoldOut] = useState(false);
 
-  const [mintProgress, setMintProgress] = useState(0);
-
   const mintOne = () => {
     if (!released) {
       alert("Minting has not begun!");
@@ -53,10 +51,12 @@ export default function LaunchzoneMint(props) {
 
     setMintProgress(mintProgress + 2);
   };
+  const [mintProgress, setMintProgress] = useState(0);
   const itemsTotal = collectionInfo?.supply;
   const itemsMinted = mintProgress * 0.01 * itemsTotal;
   const itemsRemaining = 0;
 
+  // Sold out logic
   useEffect(() => {
     if (mintProgress >= 100) {
       setSoldOut(true);
@@ -250,7 +250,7 @@ export default function LaunchzoneMint(props) {
 const renderCounter = ({ days, hours, minutes, seconds, completed }) => {
   return (
     <span style={{ color: themeColors[0], fontSize: "1.3rem", marginTop: 0 }}>
-      {days > 0 && `${days} days `}
+      {days > 0 && `${days} days, `}
       {hours > 0 && `${hours} hours, `} {minutes > 0 && `${minutes} minutes, `}
       {`${seconds} seconds `}
     </span>
