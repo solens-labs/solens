@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import { Link, Redirect, useHistory, useParams } from "react-router-dom";
-import { mintToken } from "../../utils/mintToken.ts";
+import { mintToken } from "../../candy/mintToken.ts";
 import { launch_collections } from "../../constants/launchzone";
 import { Helmet } from "react-helmet";
 import SocialLinks from "../../components/SocialLinks";
