@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import { Link, Redirect, useHistory, useParams } from "react-router-dom";
-import { mintToken } from "../../utils/mintToken";
+import { mintToken } from "../../utils/mintToken.ts";
 import { launch_collections } from "../../constants/launchzone";
 import { Helmet } from "react-helmet";
 import SocialLinks from "../../components/SocialLinks";
@@ -11,7 +11,7 @@ import { ProgressBar } from "react-bootstrap";
 import { themeColors } from "../../constants/constants";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Countdown from "react-countdown";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 export default function LaunchzoneMint(props) {
   const { symbol } = useParams();
@@ -20,6 +20,7 @@ export default function LaunchzoneMint(props) {
   const [noCollection, setNoCollection] = useState(false);
 
   const wallet = useWallet();
+  const connection = useConnection();
 
   Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + h * 60 * 60 * 1000);
@@ -92,6 +93,7 @@ export default function LaunchzoneMint(props) {
         </Helmet>
       )}
       {noCollection && <Redirect to="/" />}
+
       <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo?.image ? (
@@ -106,8 +108,8 @@ export default function LaunchzoneMint(props) {
             </div>
           )}
         </div>
-        <div className="collection_header col-12 col-lg-7 d-flex flex-column align-items-center justify-content-around">
-          <div>
+        <div className="collection_heading col-12 col-lg-7 d-flex flex-column align-items-center justify-content-around">
+          <div className="collection_header">
             {collectionInfo?.name ? (
               <h1 className="collection_name_large">{collectionInfo?.name}</h1>
             ) : (
@@ -128,13 +130,14 @@ export default function LaunchzoneMint(props) {
             />
             <MintingStat stat={collectionInfo?.price + " ◎"} label={"Price"} />
           </div>
+
           <p className="collection_description">
             {collectionInfo?.description}
           </p>
         </div>
       </div>
 
-      <div className="minting_module chartbox d-flex flex-column align-items-center justify-content-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3">
+      <div className="minting_module chartbox d-flex flex-column align-items-center justify-content-between flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3">
         <div className="minting_title col-12 d-flex flex-column align-items-center justify-content-center">
           {!released && (
             <>
@@ -214,7 +217,7 @@ export default function LaunchzoneMint(props) {
           </h4>
         </div>
 
-        {/* <div className="minting_buttons col-12 d-flex flex-column align-items-center justify-content-center">
+        <div className="minting_buttons col-12 d-flex flex-column align-items-center justify-content-center">
           {!wallet.connected && !ended && (
             <WalletMultiButton
               className="connect_button"
@@ -229,7 +232,7 @@ export default function LaunchzoneMint(props) {
           {wallet.connected && !ended && (
             <button
               className="btn-button connect_button"
-              onClick={() => mintOne()}
+              onClick={() => mintToken()}
             >
               Mint
             </button>
@@ -238,7 +241,7 @@ export default function LaunchzoneMint(props) {
           {ended && (
             <button className="btn-button connect_button">Ended</button>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );
@@ -248,8 +251,8 @@ const renderCounter = ({ days, hours, minutes, seconds, completed }) => {
   return (
     <span style={{ color: themeColors[0], fontSize: "1.3rem", marginTop: 0 }}>
       {days > 0 && `${days} days `}
-      {/* {hours > 0 && `${hours} hours, `} {minutes > 0 && `${minutes} minutes, `}
-      {`${seconds} seconds `} */}
+      {hours > 0 && `${hours} hours, `} {minutes > 0 && `${minutes} minutes, `}
+      {`${seconds} seconds `}
     </span>
   );
 };
