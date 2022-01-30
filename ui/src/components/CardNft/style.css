@@ -6,13 +6,18 @@
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
   /* margin: 5px; */
   height: 425px;
-  max-width: 400px;
-  /* width: 100%; */
+
+  width: 100%;
+  /* max-width: 425px; */
   /* max-width: 325px; */
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 0px 20px black;
+}
+
+.nft_card:hover {
+  cursor: pointer;
 }
 
 .nft_card_details {
@@ -36,6 +41,9 @@
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 0px 20px black;
+}
+.nft_card_mobile:hover {
+  cursor: pointer;
 }
 
 .nft_card_details_mobile {

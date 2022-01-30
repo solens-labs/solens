@@ -20,6 +20,7 @@ import CollectionCard from "../../components/CardCollection";
 import { sortData, filterData } from "../../utils/sortAndSearch";
 import ReactGA from "react-ga";
 import CollectionCardMobile from "../../components/CardCollectionMobile";
+import { Helmet } from "react-helmet";
 
 export default function CollectionList(props) {
   const dispatch = useDispatch();
@@ -92,6 +93,14 @@ export default function CollectionList(props) {
 
   return (
     <div className="collection_list d-flex flex-column align-items-center col-12 mt-4 mb-5">
+      <Helmet>
+        <title>Solens - Collections</title>
+        <meta
+          name="description"
+          content="Explore and trade Solana NFT Collections. Get analytics, recent activity, and more."
+        />
+      </Helmet>
+
       <h1>{allCollections.length !== 0 && collections.length} Collections</h1>
 
       <div className="mb-4 d-flex flex-wrap col-12 col-xl-8 justify-content-around">

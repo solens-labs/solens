@@ -10,12 +10,21 @@ import Security from "@mui/icons-material/Security";
 import Marketing from "@mui/icons-material/Public";
 import Analytics from "@mui/icons-material/Insights";
 import logo from "../../assets/images/logo2.png";
+import { Helmet } from "react-helmet";
 
 export default function Launch() {
   const dispatch = useDispatch();
 
   return (
     <div className="col-12 d-flex flex-column align-items-center overflow-hidden mb-5">
+      <Helmet>
+        <title>Solens - Launchzone</title>
+        <meta
+          name="description"
+          content="Launch your Solana NFT collection through our launchpad, powered by Metaplex Candy Machine V2."
+        />
+      </Helmet>
+
       <div className="launchzone_image_bg col-12 d-flex justify-content-center align-items-center">
         <div className="col-12 d-flex flex-column align-items-center">
           <img

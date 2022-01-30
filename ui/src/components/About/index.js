@@ -64,7 +64,12 @@ export default function About(props) {
             to browse our FAQ.
           </p>
           <div className="col-12 col-lg-5">
-            <img src={example2} alt="nft_example" className="nft_example" />
+            <img
+              src={example2}
+              alt="nft_example"
+              className="nft_example"
+              alt="nft image"
+            />
           </div>
         </div>
 

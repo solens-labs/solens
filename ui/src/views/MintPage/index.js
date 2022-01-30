@@ -25,6 +25,7 @@ import {
   getListedInfoFromBackend,
   getListedInfoFromChain,
 } from "../../utils/getListedDetails";
+import { Helmet } from "react-helmet";
 
 export default function MintPage(props) {
   const { address } = useParams();
@@ -200,11 +201,21 @@ export default function MintPage(props) {
 
   return (
     <div className="col-12 d-flex flex-column align-items-center mt-4 mt-lg-5">
+      {collectionInfo && collectionInfo.name && (
+        <Helmet>
+          <title>{`Solens - ${collectionInfo.name}`}</title>
+          <meta
+            name="description"
+            content={`Trade and get analytics for ${collectionInfo?.name} on Solana's premier NFT Marketplex.`}
+          />
+        </Helmet>
+      )}
+
       <div className="details_header col-12 col-xl-10 col-xxl-8 d-flex flex-row flex-wrap justify-content-center mb-3">
         <div className="mint_item_image col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
-              <img src={image} className="nft_image" alt="" />
+              <img src={image} className="nft_image" alt="nft image" />
             </div>
           ) : (
             <div className="nft_image_container d-flex justify-content-center overflow-hidden">

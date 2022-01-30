@@ -49,6 +49,7 @@ import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
 import CollectionStat from "../../components/CollectionStat";
+import { Helmet } from "react-helmet";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -266,6 +267,15 @@ export default function CollectionPage(props) {
 
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
+      {collectionInfo && collectionInfo.name && (
+        <Helmet>
+          <title>{`Solens - ${collectionInfo.name}`}</title>
+          <meta
+            name="description"
+            content={`Trade and get analytics for ${collectionInfo?.name} on Solana's premier NFT Marketplex.`}
+          />
+        </Helmet>
+      )}
       {noCollection && <Redirect to="/" />}
 
       <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">

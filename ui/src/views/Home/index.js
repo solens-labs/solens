@@ -16,13 +16,16 @@ import {
   selectTopNFTsDay,
 } from "../../redux/app";
 import Loader from "../../components/Loader";
-import Timeframe from "../../components/Timeframe";
-import WalletsHomeSection from "../../components/SectionWallets";
 import NftCard from "../../components/CardNft/homepage";
 import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
 import collections_gif from "../../assets/images/collections.gif";
 import solens_logo from "../../assets/images/logo2.png";
+import { Helmet } from "react-helmet";
+import { themeColors } from "../../constants/constants";
+import { launch_collections } from "../../constants/launchzone";
+import UpcomingCollection from "../../components/CardCollection/upcoming";
+import { upcoming_collections } from "../../constants/emptySections";
 
 export default function HomePage(props) {
   const history = useHistory();
@@ -94,10 +97,18 @@ export default function HomePage(props) {
 
   return (
     <div className="landing_page col-12 d-flex flex-column align-items-center justify-content-center mb-5">
+      <Helmet>
+        <title>Solens - Solana NFT Marketplex</title>
+        <meta
+          name="description"
+          content="Premier NFT Marketplex on Solana. Discover NFT collections, get in-depth analytics, and trade across multiple marketplaces."
+        />
+      </Helmet>
+
       <div className="main_header">
-        <img src={logo} alt="solens_logo" className="homepage_logo img-fluid" />
+        <img src={logo} className="homepage_logo img-fluid" alt="solens logo" />
         <h3 className="homepage_tagline mb-2">
-          Solana's Premiere NFT Marketplex
+          Solana's Premier NFT Marketplex
         </h3>
         <Link to="/collections">
           <button
@@ -135,13 +146,6 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      {/* <div className="trade_now landing_page_section d-flex flex-column align-items-center justify-content-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h3 className="mb-2">
-          trade your NFTs on magiceden and solanart through solens
-        </h3>
-        <h5 className="collection_stats_days">LAST 24 HOURS</h5>
-      </div> */}
-
       <div className="trade_now tradezone_image_bg d-flex flex-wrap justify-content-center align-items-center col-12 col-xxl-10 mt-5 m-0 p-0 overflow-hidden">
         <div className="col-12 col-xl-4 d-flex flex-row justify-content-center">
           <img
@@ -159,7 +163,11 @@ export default function HomePage(props) {
           <h3 className="mt-4 mt-lg-3" style={{ fontSize: "2.2rem" }}>
             Directly on{" "}
             <span>
-              <img src={solens_logo} style={{ height: 50, marginBottom: 17 }} />
+              <img
+                src={solens_logo}
+                style={{ height: 50, marginBottom: 17 }}
+                alt="Solens"
+              />
             </span>
           </h3>
 
@@ -177,6 +185,48 @@ export default function HomePage(props) {
             TRADE
           </button>
         </div>
+      </div>
+
+      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1 className="mb-2">Upcoming Launches</h1>
+        <h5 className="collection_stats_days">
+          on the{" "}
+          <span>
+            <Link
+              to="/launch"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              Solens Launchzone
+            </Link>
+          </span>
+        </h5>
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
+
+        <div className="d-flex flex-wrap justify-content-around col-12 mt-lg-3 mb-4">
+          {launch_collections.map((collection, i) => {
+            return (
+              <UpcomingCollection
+                collection={collection}
+                key={i}
+                onClick={visitLaunchzone}
+              />
+            );
+          })}
+        </div>
+
+        <Link to="/launch">
+          <button
+            className="explore_all_button mt-3 mb-3"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              marginTop: "20px",
+              fontSize: "1.5rem",
+            }}
+          >
+            Explore Launchzone
+          </button>
+        </Link>
       </div>
 
       <div className="top_nfts landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
@@ -221,36 +271,6 @@ export default function HomePage(props) {
         </Link>
       </div>
 
-      <div className="top_wallets landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Wallet Analysis</h1>
-        <div className="d-flex flex-wrap flex-row justify-content-around col-8 col-md-6 col-lg-4 col-xxl-3 mb-3">
-          <Timeframe
-            currentTimeframe={walletsTimeframe}
-            setTimeframe={setWalletsTimeframe}
-            timeframes={["DAY", "ALL"]}
-            intervals={[1, 10000]}
-          />
-        </div>
-
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />
-
-        <WalletsHomeSection buyers={buyers} sellers={sellers} volume={volume} />
-
-        <Link to="/wallets">
-          <button
-            className="explore_all_button mt-3 mb-3"
-            style={{
-              border: "1px solid black",
-              color: "white",
-              marginTop: "20px",
-              fontSize: "1.5rem",
-            }}
-          >
-            Explore Wallets
-          </button>
-        </Link>
-      </div>
-
       <div className="launchzone_section landing_page_section launchzone_image_bg d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <img
           src={launchzone}
@@ -263,7 +283,11 @@ export default function HomePage(props) {
           <h5>
             Looking to launch your own NFT collection on{" "}
             <span>
-              <img src={solana} style={{ height: "1rem", paddingBottom: 4 }} />
+              <img
+                src={solana}
+                style={{ height: "1rem", paddingBottom: 4 }}
+                alt="solana logo"
+              />
             </span>
             ?
           </h5>
