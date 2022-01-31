@@ -3,7 +3,8 @@ export const launch_collections = [
     name: "Bucketheads",
     image:
       "https://pbs.twimg.com/profile_images/1480955362274537473/llPyMiJp_400x400.jpg",
-    date: "2022-02-01T12:00:00",
+    // date: "2022-02-01T12:00:00",
+    date: 1643749200000,
     website: "https://bucketheads.io/",
     twitter: "https://twitter.com/bucketheadsnft",
     discord: "https://discord.gg/PA6TQQTnwW",
@@ -22,22 +23,23 @@ export const launch_collections = [
     name: "Cutiez Angels",
     image:
       "https://pbs.twimg.com/profile_images/1482662626631036936/7k_aon9Z_400x400.jpg",
-    date: "2022-02-03T12:00:00",
+    // date: "2022-02-03T12:00:00",
+    date: 1643922000000,
     website: "https://cutiezheaven.pantherbyte.eu/",
     twitter: "https://twitter.com/solanacutiez",
     discord: "https://discord.gg/CfHKGqgXwH",
     symbol: "solana_cuties",
-    supply: 10000,
+    supply: 6969,
     price: 0.25,
-    description: `Exploring Solana corners "They" spotted a mythical meta 
-    land and called it Ridralas. It was a name of one of the Ancient Elder 
-    CutiezArchangels. By quick discovery of many efficient resources the 
-    great decision has been made to create here a MetaWorld ! Proudly brought 
-    by Cutiez Metaverse a CutiezHeaven dApp offers amazing opportunity to 
-    mint unique collection of 100x CutiezAngelsDAO NFTs. When all Angels 
-    from four batches will be minted then a Heavens Gate in Ridralas MetaWorld 
-    will open and meta evolution will begin. See evolution progress by 
-    checking out the "The Living Art" ! Do not miss a chance and join Club now!`,
+    description: `They say you can’t always have angel by your side. Guess what? Well, 
+    now you can! We have created these 6969 truly unique hand drawn angels that consist 
+    of various traits with own special rarity level. There are also some secrets hidden 
+    in the world and NFTs itself. Join Cutiez community to combine them all and solve a 
+    collection mystery which will unlock bigger rewards, special airdrop and much more 
+    to come. CutiezAngels will initiate evolution of Ridralas MetaWorld which is available 
+    for you to observe on the main website of Cutiez Metaverse. We want to use our NFTs in 
+    future merch store and P2E online TD game! This is what Solana NFT world needs... a 
+    Cutiez Metaverse. For more information please visit our website and Discord server!`,
   },
   {
     name: "Club Crypto",

@@ -283,12 +283,18 @@ export default function LaunchzoneMint(props) {
             />
           )}
 
-          {wallet.connected && !ended && (
+          {wallet.connected && released && !ended && (
             <button
               className="btn-button connect_button"
               onClick={() => mintOne()}
             >
               Mint
+            </button>
+          )}
+
+          {wallet.connected && !released && (
+            <button className="btn_outline_outer">
+              <div className="btn_outline_inner">Launching Soon</div>
             </button>
           )}
 
