@@ -39,8 +39,8 @@ export default function LaunchzoneMint(props) {
 
   const [mintProgress, setMintProgress] = useState(0);
   const itemsTotal = collectionInfo?.supply;
-  const itemsMinted = mintProgress * 0.01 * itemsTotal;
-  const itemsRemaining = 0;
+  const itemsMinted = mintProgress * 0.01 * itemsTotal; // pull state from Candy Machine
+  const itemsRemaining = 0; // pull state from Candy Machine
 
   const mintOne = async () => {
     const provider = new anchor.Provider(connection, wallet, {

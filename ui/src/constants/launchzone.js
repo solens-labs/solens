@@ -3,7 +3,7 @@ export const launch_collections = [
     name: "Bucketheads",
     image:
       "https://pbs.twimg.com/profile_images/1480955362274537473/llPyMiJp_400x400.jpg",
-    // date: "2022-02-01T12:00:00",
+    candyMachineID: "",
     date: 1643749200000,
     website: "https://bucketheads.io/",
     twitter: "https://twitter.com/bucketheadsnft",
@@ -23,7 +23,7 @@ export const launch_collections = [
     name: "Cutiez Angels",
     image:
       "https://pbs.twimg.com/profile_images/1482662626631036936/7k_aon9Z_400x400.jpg",
-    // date: "2022-02-03T12:00:00",
+    candyMachineID: "",
     date: 1643922000000,
     website: "https://cutiezheaven.pantherbyte.eu/",
     twitter: "https://twitter.com/solanacutiez",
@@ -45,6 +45,7 @@ export const launch_collections = [
     name: "Club Crypto",
     image:
       "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
+    candyMachineID: "",
     date: "2022-02-18T12:00:00",
     website: "https://www.clubcrypto.social/",
     twitter: "https://twitter.com/clubcryptonft",
@@ -52,7 +53,8 @@ export const launch_collections = [
     symbol: "club_crypto",
     supply: 7500,
     price: 0.33,
-    description: `Our mission is to educate and introduce new users to Web3 and 
-    blockchain through social, play and earn game mechanics.`,
+    description: `Club Crypto V2 is a collection of 4,444 algorithmically generated isometric 
+    characters, with a mission to educate and introduce new users to Web3 and blockchain 
+    through social, P2E game mechanics and Metaverse integration.`,
   },
 ];
