@@ -1,5 +1,6 @@
 import { CandyIDL, Solens_Candy_Machine } from "./candyConstants";
 import * as anchor from "@project-serum/anchor";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export const getCandyMachineState = async (
   connection,
@@ -17,6 +18,9 @@ export const getCandyMachineState = async (
   const candyMachineState = await program.account.candyMachine.fetch(
     candyMachine
   );
+  const price = candyMachineState.data.price.toNumber() / LAMPORTS_PER_SOL;
+  const goLiveDate = new Date(candyMachineState.data.goLiveDate * 1000);
+
   const itemsTotal = candyMachineState.data.itemsAvailable.toNumber();
   const itemsMinted = candyMachineState.itemsRedeemed.toNumber();
   const itemsPreminted = collectionInfo?.preminted;

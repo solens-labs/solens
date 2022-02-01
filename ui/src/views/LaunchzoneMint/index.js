@@ -17,6 +17,7 @@ import { mintToken } from "../../candy/mintToken";
 import { getCandyMachineState } from "../../candy/getCandyMachineState";
 import { selectBalance } from "../../redux/app";
 import { useSelector } from "react-redux";
+import { alertInsufficientBalance, alertSoldOut } from "../../constants/alerts";
 
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
@@ -81,8 +82,11 @@ export default function LaunchzoneMint(props) {
   // Mint one item
   const mintOne = async (candyMachineID) => {
     if (balance < collectionInfo?.price) {
-      alert("Not enough SOL to mint.");
-      return;
+      return alertInsufficientBalance();
+    }
+
+    if (soldOut) {
+      return alertSoldOut();
     }
 
     setLoading(true);
@@ -103,6 +107,7 @@ export default function LaunchzoneMint(props) {
       const candyMachineState = await program.account.candyMachine.fetch(
         candyMachine
       );
+
       const final_tx = await mintToken(
         payer,
         candyMachine,
@@ -132,9 +137,6 @@ export default function LaunchzoneMint(props) {
   const getSetCandyState = async () => {
     const { itemsRemaining, itemsMintedAndPreminted, progress, launchDate } =
       await getCandyMachineState(connection, wallet, collectionInfo);
-    console.log({ itemsRemaining });
-    console.log({ itemsMintedAndPreminted });
-
     setItemsMinted(itemsMintedAndPreminted);
     setMintProgress(progress);
     if (itemsRemaining === 0) {
