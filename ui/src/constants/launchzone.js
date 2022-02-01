@@ -59,11 +59,13 @@ export const launch_collections = [
     twitter: "https://twitter.com/clubcryptonft",
     discord: "https://discord.gg/XABKGHVJgV",
     symbol: "club_crypto",
-    supply: 4444,
-    preminted: 0,
+    supply: 4702,
+    preminted: 258,
     price: 0.44,
-    description: `Club Crypto V2 is a collection of 4,444 algorithmically generated isometric 
+    description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
     characters, with a mission to educate and introduce new users to Web3 and blockchain 
-    through social, P2E game mechanics and Metaverse integration.`,
+    through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder 
+    Edition NFT have already been minted by early adopters! Don't miss your chance to 
+    join the Club.`,
   },
 ];

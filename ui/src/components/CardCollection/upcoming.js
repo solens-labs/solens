@@ -10,7 +10,7 @@ export default function CollectionCard(props) {
 
   const symbol = collection?.symbol;
   const now = new Date();
-  let launchDate = new Date(collection?.date);
+  let launchDate = new Date(collection?.launchDate);
 
   if (now > launchDate) {
     launchDate = "Minting Live!";
