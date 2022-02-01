@@ -85,10 +85,6 @@ export default function LaunchzoneMint(props) {
       return alertInsufficientBalance();
     }
 
-    if (soldOut) {
-      return alertSoldOut();
-    }
-
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
       preflightCommitment: "processed",
@@ -110,10 +106,8 @@ export default function LaunchzoneMint(props) {
       const itemsTotal = candyMachineState.data.itemsAvailable.toNumber();
       const itemsMinted = candyMachineState.itemsRedeemed.toNumber();
       const itemsRemaining = itemsTotal - itemsMinted;
-      console.log({ itemsRemaining });
       if (itemsRemaining === 0) {
-        setSoldOut(true);
-        return;
+        return alertSoldOut();
       }
 
       const final_tx = await mintToken(
