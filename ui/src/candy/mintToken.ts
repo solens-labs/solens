@@ -53,12 +53,13 @@ const getCandyMachineCreator = async (
 
 export async function mintToken(
   payer: anchor.web3.PublicKey,
-  candyMachine: anchor.web3.PublicKey,
+  candyMachineAddress: anchor.web3.PublicKey,
   wallet: anchor.web3.PublicKey,
+  raise: anchor.web3.PublicKey,
   mint: anchor.web3.PublicKey,
   program: anchor.Program
 ) {
-  let [userTokenAccountAddress, bump] =
+  let [userTokenAccountAddress, _] =
     await anchor.web3.PublicKey.findProgramAddress(
       [payer.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
       ASSOCIATED_TOKEN_PROGRAM_ID
@@ -68,8 +69,12 @@ export async function mintToken(
   const masterEdition = await getMasterEdition(mint);
 
   const [candyMachineCreator, creatorBump] = await getCandyMachineCreator(
-    candyMachine
+    candyMachineAddress
   );
+
+  // const candyMachine: any = await program.account.candyMachine.fetch(
+  //   candyMachineAddress,
+  // );
 
   const instructions = [
     anchor.web3.SystemProgram.createAccount({
@@ -106,10 +111,11 @@ export async function mintToken(
   instructions.push(
     await program.instruction.mintNft(creatorBump, {
       accounts: {
-        candyMachine: candyMachine,
+        candyMachine: candyMachineAddress,
         candyMachineCreator,
         payer: payer,
         wallet: wallet,
+        raise: raise,
         mint: mint,
         metadata: metadataAddress,
         masterEdition,
