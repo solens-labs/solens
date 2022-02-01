@@ -6,7 +6,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import {
-  CANDY_MACHINE_PROGRAM_V2_ID,
+  Solens_Candy_Machine,
   TOKEN_METADATA_PROGRAM_ID,
 } from "./candyConstants";
 import { SystemProgram } from "@solana/web3.js";
@@ -47,7 +47,7 @@ const getCandyMachineCreator = async (
 ): Promise<[anchor.web3.PublicKey, number]> => {
   return await anchor.web3.PublicKey.findProgramAddress(
     [Buffer.from("candy_machine"), candyMachine.toBuffer()],
-    CANDY_MACHINE_PROGRAM_V2_ID
+    Solens_Candy_Machine
   );
 };
 
