@@ -15,6 +15,8 @@ import * as anchor from "@project-serum/anchor";
 import { Solens_Candy_Machine, CandyIDL } from "../../candy/candyConstants";
 import { mintToken } from "../../candy/mintToken";
 import { getCandyMachineState } from "../../candy/getCandyMachineState";
+import { selectBalance } from "../../redux/app";
+import { useSelector } from "react-redux";
 
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
@@ -26,6 +28,7 @@ export default function LaunchzoneMint(props) {
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
+  const balance = useSelector(selectBalance);
 
   const [collectionInfo, setCollectionInfo] = useState({});
   const [collectionLinks, setCollectionLinks] = useState({});
@@ -38,15 +41,13 @@ export default function LaunchzoneMint(props) {
   const endDate =
     collectionInfo?.endDate && new Date(collectionInfo?.endDate).addHours(0);
 
-  const [released, setReleased] = useState(true); // toggle to display mint/launchingSoon button
-  const [ended, setEnded] = useState(false); // triggered after endDate countdown, once set in constants
+  const [released, setReleased] = useState(false); // toggle to display mint/launchingSoon button
+  const [ended, setEnded] = useState(false); // set in LZ constants, prevents minting
   const [soldOut, setSoldOut] = useState(false);
 
   const [mintProgress, setMintProgress] = useState(0);
   const [itemsTotal, setItemsTotal] = useState(0);
   const [itemsMinted, setItemsMinted] = useState(0);
-
-  // Error: when they dont have enough funds to mint
 
   // Set collection info from params -- change to API pull
   useEffect(() => {
@@ -86,6 +87,11 @@ export default function LaunchzoneMint(props) {
 
   // Mint one item
   const mintOne = async (candyMachineID) => {
+    if (balance < collectionInfo?.price) {
+      alert("Not enough SOL to mint.");
+      return;
+    }
+
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
       preflightCommitment: "processed",
