@@ -18,6 +18,8 @@ export const getCandyMachineState = async (
   const candyMachineState = await program.account.candyMachine.fetch(
     candyMachine
   );
+
+  // console.log(candyMachineState.wallet.toBase58());
   const price = candyMachineState.data.price.toNumber() / LAMPORTS_PER_SOL;
   const goLiveDate = new Date(candyMachineState.data.goLiveDate * 1000);
 

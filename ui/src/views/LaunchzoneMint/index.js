@@ -107,6 +107,14 @@ export default function LaunchzoneMint(props) {
       const candyMachineState = await program.account.candyMachine.fetch(
         candyMachine
       );
+      const itemsTotal = candyMachineState.data.itemsAvailable.toNumber();
+      const itemsMinted = candyMachineState.itemsRedeemed.toNumber();
+      const itemsRemaining = itemsTotal - itemsMinted;
+      console.log({ itemsRemaining });
+      if (itemsRemaining === 0) {
+        setSoldOut(true);
+        return;
+      }
 
       const final_tx = await mintToken(
         payer,
