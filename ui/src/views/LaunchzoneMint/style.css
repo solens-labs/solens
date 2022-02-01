@@ -11,3 +11,23 @@
     rgba(134, 64, 117, 0.8) 120%
   ); */
 }
+
+.minting_title {
+  min-height: 100px;
+}
+
+.minting_progress {
+  min-height: 140px;
+}
+
+.minting_buttons {
+  padding-top: 10px;
+  min-height: 75px;
+  /* background-color: black; */
+}
+
+@media screen and (max-width: 900px) {
+  .minting_title {
+    min-height: 75px;
+  }
+}
