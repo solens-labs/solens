@@ -367,11 +367,15 @@ export default function LaunchzoneMint(props) {
 const renderCounter = ({ days, hours, minutes, seconds, completed }) => {
   return (
     <span style={{ color: themeColors[0], fontSize: "1.3rem", marginTop: 0 }}>
-      {days > 1 && `${days}d `}
-      {hours > 1 && `${hours}h `}
-      {minutes > 9 && `${minutes}m `}
-      {hours && minutes === 0 && `${minutes}m `}
-      {seconds && `${seconds}s `}
+      {days > 0 && `${days}d `}
+      {days > 0 && hours === 0 && `${hours}h `}
+
+      {hours > 0 && `${hours}h `}
+      {(days > 0 || hours > 0) && minutes === 0 && `${minutes}m `}
+
+      {minutes > 0 && `${minutes}m `}
+
+      {seconds >= 0 && `${seconds}s `}
     </span>
   );
 };
