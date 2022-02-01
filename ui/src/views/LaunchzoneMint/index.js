@@ -13,7 +13,7 @@ import Countdown from "react-countdown";
 import {useConnection, useWallet} from "@solana/wallet-adapter-react";
 import * as anchor from "@project-serum/anchor";
 import {
-  Solens_Candy_Machine
+  Solens_Candy_Machine, CandyIDL
 } from "../../candy/candyConstants";
 import {mintToken} from "../../candy/mintToken";
 
@@ -50,17 +50,13 @@ export default function LaunchzoneMint(props) {
         });
 
         try {
-            const idl = await anchor.Program.fetchIdl(
-                Solens_Candy_Machine,
-                provider
-            );
             const payer = wallet.publicKey;
             const candyMachine = new anchor.web3.PublicKey(
                 "EGppSnjZX2mDdvmCUQDdXJ6MpYKjPAYAcL5Wj9eqFcGj"
             );
             const mint = anchor.web3.Keypair.generate();
             const program = new anchor.Program(
-                idl,
+                CandyIDL,
                 Solens_Candy_Machine,
                 provider
             );
