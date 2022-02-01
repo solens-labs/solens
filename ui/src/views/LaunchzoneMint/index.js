@@ -78,19 +78,12 @@ export default function LaunchzoneMint(props) {
     }
   }, [symbol, collectionInfo]);
 
-  // Sold out logic
-  useEffect(() => {
-    if (itemsMinted !== 0 && itemsTotal !== 0 && itemsMinted === itemsTotal) {
-      setSoldOut(true);
-    }
-  }, [itemsMinted, itemsTotal]);
-
   // Mint one item
   const mintOne = async (candyMachineID) => {
-    if (balance < collectionInfo?.price) {
-      alert("Not enough SOL to mint.");
-      return;
-    }
+    // if (balance < collectionInfo?.price) {
+    //   alert("Not enough SOL to mint.");
+    //   return;
+    // }
 
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
@@ -137,10 +130,16 @@ export default function LaunchzoneMint(props) {
   };
 
   const getSetCandyState = async () => {
-    const { itemsRemaining, itemsMinted, progress, launchDate } =
+    const { itemsRemaining, itemsMintedAndPreminted, progress, launchDate } =
       await getCandyMachineState(connection, wallet, collectionInfo);
-    setItemsMinted(itemsMinted);
+    console.log({ itemsRemaining });
+    console.log({ itemsMintedAndPreminted });
+
+    setItemsMinted(itemsMintedAndPreminted);
     setMintProgress(progress);
+    if (itemsRemaining === 0) {
+      setSoldOut(true);
+    }
   };
 
   return (
@@ -355,7 +354,7 @@ export default function LaunchzoneMint(props) {
             </div>
           )}
 
-          {(soldOut || ended) && (
+          {(soldOut || ended) && released && (
             <button className="btn-button connect_button">Ended</button>
           )}
         </div>

@@ -17,9 +17,10 @@ export const getCandyMachineState = async (
   const candyMachineState = await program.account.candyMachine.fetch(
     candyMachine
   );
-  const itemsRemaining = candyMachineState.data.itemsAvailable.toNumber();
+  const itemsTotal = candyMachineState.data.itemsAvailable.toNumber();
   const itemsMinted = candyMachineState.itemsRedeemed.toNumber();
   const itemsPreminted = collectionInfo?.preminted;
+  const itemsRemaining = itemsTotal - itemsMinted;
   const totalMinted = itemsMinted + itemsPreminted;
   const progress = (totalMinted / collectionInfo?.supply) * 100;
   const launchTime = candyMachineState.data.goLiveDate * 1000;
@@ -27,7 +28,7 @@ export const getCandyMachineState = async (
 
   return {
     itemsRemaining: itemsRemaining,
-    itemsMinted: totalMinted,
+    itemsMintedAndPreminted: totalMinted,
     progress: progress,
     launchDate: launchDate,
   };
