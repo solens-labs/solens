@@ -5,7 +5,8 @@ export const launch_collections = [
     name: "Bucketheads",
     image:
       "https://pbs.twimg.com/profile_images/1480955362274537473/llPyMiJp_400x400.jpg",
-    candyMachineID: "6i3o15EjQerzgUqhaeWSAoPZPpAx7EpXPSfCxjVUaFX1",
+    // candyMachineID: "6i3o15EjQerzgUqhaeWSAoPZPpAx7EpXPSfCxjVUaFX1",
+    candyMachineID: "FMsX2Yv7NqqATxYdja9NLpyRHvjGpvXg6n8rUezysxiJ",
     launchDate: 1643749200000,
     endDate: undefined,
     website: "https://bucketheads.io/",

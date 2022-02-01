@@ -80,10 +80,10 @@ export default function LaunchzoneMint(props) {
 
   // Mint one item
   const mintOne = async (candyMachineID) => {
-    // if (balance < collectionInfo?.price) {
-    //   alert("Not enough SOL to mint.");
-    //   return;
-    // }
+    if (balance < collectionInfo?.price) {
+      alert("Not enough SOL to mint.");
+      return;
+    }
 
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
