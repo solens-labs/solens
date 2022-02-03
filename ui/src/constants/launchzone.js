@@ -28,7 +28,7 @@ export const launch_collections = [
     name: "Cutiez Angels",
     image:
       "https://pbs.twimg.com/profile_images/1482662626631036936/7k_aon9Z_400x400.jpg",
-    candyMachineID: "",
+    candyMachineID: "4HpoW7prtsB1f1KykLo7j4BFuYwQpXQkuJhE3mqcG8cF",
     launchDate: 1643922000000,
     endDate: undefined,
     website: "https://cutiezheaven.pantherbyte.eu/",

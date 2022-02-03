@@ -139,6 +139,13 @@ export default function LaunchzoneMint(props) {
   const getSetCandyState = async () => {
     const { itemsRemaining, itemsMintedAndPreminted, progress, launchDate } =
       await getCandyMachineState(connection, wallet, collectionInfo);
+
+    console.log({
+      itemsRemaining,
+      itemsMintedAndPreminted,
+      progress,
+      launchDate,
+    });
     setItemsMinted(itemsMintedAndPreminted);
     setMintProgress(progress);
     if (itemsRemaining === 0) {
