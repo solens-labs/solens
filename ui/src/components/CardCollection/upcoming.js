@@ -34,7 +34,7 @@ export default function CollectionCard(props) {
       </div>
       <div>
         <h2 className="collection_card_title">{collection?.name}</h2>
-        <h1 className="collection_info_header">{launchDate}</h1>
+        <h1 className="collection_info_header2">{launchDate}</h1>
       </div>
 
       <div className="collection_card_stat col-12 d-flex flex-column align-items-center">
