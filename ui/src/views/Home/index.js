@@ -113,6 +113,42 @@ export default function HomePage(props) {
         </div>
       </div>
 
+      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1 className="mb-2">Upcoming Launches</h1>
+        <h5 className="collection_stats_days">
+          on the{" "}
+          <span>
+            <Link
+              to="/launch"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              Solens Launchzone
+            </Link>
+          </span>
+        </h5>
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-2" />
+
+        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
+          {launch_collections.map((collection, i) => {
+            return <UpcomingCollection collection={collection} key={i} />;
+          })}
+        </div>
+
+        <Link to="/launch">
+          <button
+            className="explore_all_button mt-3 mb-3"
+            style={{
+              border: "1px solid black",
+              color: "white",
+              marginTop: "20px",
+              fontSize: "1.5rem",
+            }}
+          >
+            Explore Launchzone
+          </button>
+        </Link>
+      </div>
+
       <div className="trade_now tradezone_image_bg d-flex flex-wrap justify-content-center align-items-center col-12 col-xxl-10 mt-5 m-0 p-0 overflow-hidden">
         <div className="col-12 col-xl-4 d-flex flex-row justify-content-center">
           <img
@@ -152,48 +188,6 @@ export default function HomePage(props) {
             TRADE
           </button>
         </div>
-      </div>
-
-      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Upcoming Launches</h1>
-        <h5 className="collection_stats_days">
-          on the{" "}
-          <span>
-            <Link
-              to="/launch"
-              style={{ textDecoration: "none", color: themeColors[0] }}
-            >
-              Solens Launchzone
-            </Link>
-          </span>
-        </h5>
-        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-2" />
-
-        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
-          {launch_collections.map((collection, i) => {
-            return (
-              <UpcomingCollection
-                collection={collection}
-                key={i}
-                onClick={visitLaunchzone}
-              />
-            );
-          })}
-        </div>
-
-        <Link to="/launch">
-          <button
-            className="explore_all_button mt-3 mb-3"
-            style={{
-              border: "1px solid black",
-              color: "white",
-              marginTop: "20px",
-              fontSize: "1.5rem",
-            }}
-          >
-            Explore Launchzone
-          </button>
-        </Link>
       </div>
 
       <div className="top_nfts landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
