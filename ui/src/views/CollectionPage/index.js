@@ -413,7 +413,7 @@ export default function CollectionPage(props) {
           {topFourMetadata?.length === 4 ? (
             topFourMetadata.map((token, i) => {
               return (
-                <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-3 mb-4 p-2 pb-0 pt-0">
+                <div className="nft_card_container d-flex flex-column align-items-center col-12 col-sm-8 col-md-6 col-lg-3 mb-4 p-2 pb-0 pt-0">
                   <a
                     href={`/mint/${token.mint}`}
                     style={{ textDecoration: "none", color: "white" }}
