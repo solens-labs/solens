@@ -1,7 +1,7 @@
 .nft_card_container {
   /* height: 100%; */
   /* width: 100%; */
-  /* max-width: 350px !important; */
+  max-width: 400px !important;
   overflow: hidden;
   border-radius: 15px;
   /* padding: 0px 5px; */

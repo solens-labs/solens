@@ -278,7 +278,7 @@ export default function CollectionPage(props) {
       )}
       {noCollection && <Redirect to="/" />}
 
-      <div className="collection_details d-flex flex-wrap justify-content-between col-12 col-lg-10 mb-3 mb-lg-5">
+      <div className="collection_details d-flex flex-wrap justify-content-between col-12 col-lg-10 col-xl-9 mb-3 mb-lg-5">
         <div className="collection_imge_container col-12 col-lg-4 d-flex align-items-center justify-content-center overflow-hidden">
           {collectionInfo.image ? (
             <img

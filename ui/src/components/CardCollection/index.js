@@ -43,6 +43,7 @@ export default function CollectionCard(props) {
           className="collection_card_image"
         />
       </div>
+
       <div className="collection_card_details">
         <h2 className="collection_card_title">{collection.name}</h2>
 
