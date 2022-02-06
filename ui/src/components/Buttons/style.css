@@ -45,6 +45,12 @@ COLORS:
   box-shadow: 0px 0px 5px 1px black;
 }
 
+.btn_color_selected {
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+  border: 1px solid black;
+  padding: 2px;
+}
+
 .btn_color_inner {
   background: rgb(18, 11, 37);
   width: 100%;
@@ -88,11 +94,6 @@ COLORS:
 .btn-main {
   /* background: linear-gradient(90deg, rgb(63, 49, 109), rgb(134, 64, 117)); */
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
-}
-
-.btn_color_selected {
-  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
-  border: 1px solid black;
 }
 
 .btn-wide {

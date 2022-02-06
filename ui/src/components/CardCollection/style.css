@@ -71,3 +71,15 @@
   padding-bottom: 0;
   margin-bottom: 0px;
 }
+
+@media screen and (max-width: 800px) {
+  .collection_info {
+    font-size: 1rem;
+  }
+  .collection_info_large {
+    font-size: 1rem;
+  }
+  .collection_info_header {
+    font-size: 0.7rem;
+  }
+}

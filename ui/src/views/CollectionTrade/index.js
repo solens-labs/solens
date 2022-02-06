@@ -174,7 +174,7 @@ export default function CollectionItems(props) {
       )}
       {noCollection && <Redirect to="/" />}
       <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
-        <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
+        <div className="col-12 col-lg-4 d-flex align-items-center justify-content-center">
           {collectionInfo && collectionInfo.image ? (
             <img
               src={collectionInfo.image}
@@ -187,7 +187,7 @@ export default function CollectionItems(props) {
             </div>
           )}
         </div>
-        <div className="collection_header col-12 col-lg-7 d-flex flex-column align-items-center justify-content-around">
+        <div className="collection_header col-12 col-lg-8 d-flex flex-column align-items-center justify-content-around">
           {collectionInfo && collectionInfo.name ? (
             <h1 className="collection_name_large">{collectionInfo.name}</h1>
           ) : (
