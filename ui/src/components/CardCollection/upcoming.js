@@ -19,10 +19,7 @@ export default function CollectionCard(props) {
   }
 
   return (
-    <div
-      className="collection_card d-flex flex-column justify-content-between mt-3"
-      key={key || 0}
-    >
+    <div className="collection_card d-flex flex-column  mt-3" key={key || 0}>
       <div className="collection_image_container">
         <Link to={`/launch/${symbol}`}>
           <img
@@ -32,12 +29,13 @@ export default function CollectionCard(props) {
           />
         </Link>
       </div>
-      <div>
+
+      <div className="collection_card_details d-flex flex-column justify-content-center align-items-center">
         <h2 className="collection_card_title">{collection?.name}</h2>
         <h1 className="collection_info_header2">{launchDate}</h1>
       </div>
 
-      <div className="collection_card_stat col-12 d-flex flex-column align-items-center">
+      {/* <div className="collection_card_stat col-12 d-flex flex-column align-items-center">
         <div className="d-flex justify-content-center col-12">
           <hr
             style={{
@@ -82,7 +80,7 @@ export default function CollectionCard(props) {
             </a>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

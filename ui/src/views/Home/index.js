@@ -206,7 +206,7 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className="trending_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5">
+      <div className="trending_collections landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
         <h1 className="mb-2">Trending Collections</h1>
         <h5 className="collection_stats_days">LAST 24 HOURS</h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-4" />

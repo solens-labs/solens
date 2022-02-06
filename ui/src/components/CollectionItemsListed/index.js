@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTokenMetadata } from "../../utils/getMetadata";
-import NftCard from "../CardNft/userListed";
+import NftCard from "../CardNft/itemListed";
 import { filterData, sortData } from "../../utils/sortAndSearch";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loader from "../Loader";
