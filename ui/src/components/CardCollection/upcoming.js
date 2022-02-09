@@ -3,38 +3,39 @@ import "./style.css";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import WebsiteIcon from "@mui/icons-material/Language";
 import DiscordIcon from "../../assets/images/discord.svg";
+import { Link } from "react-router-dom";
 
 export default function CollectionCard(props) {
-  const { collection, key, onClick } = props;
+  const { collection, key } = props;
 
-  const launchDate = new Date(collection?.date).toLocaleDateString();
+  const symbol = collection?.symbol;
+  const now = new Date();
+  let launchDate = new Date(collection?.launchDate);
+
+  if (now > launchDate) {
+    launchDate = "Minting Live!";
+  } else {
+    launchDate = launchDate.toLocaleDateString();
+  }
 
   return (
-    <div
-      className="collection_card d-flex flex-column justify-content-between"
-      key={key || 0}
-    >
+    <div className="collection_card d-flex flex-column  mt-3" key={key || 0}>
       <div className="collection_image_container">
-        <a
-          href={collection?.twitter}
-          target="_blank"
-          aria-label="twitter link"
-          style={{ textDecoration: "none", color: "white" }}
-        >
+        <Link to={`/launch/${symbol}`}>
           <img
             src={collection?.image}
             alt="nft collection image"
             className="collection_card_image"
-            //   onClick={onClick}
           />
-        </a>
-      </div>
-      <div>
-        <h2 className="collection_card_title">{collection?.name}</h2>
-        <h1 className="collection_info_header">{launchDate}</h1>
+        </Link>
       </div>
 
-      <div className="collection_card_stat col-12 d-flex flex-column align-items-center">
+      <div className="collection_card_details d-flex flex-column justify-content-center align-items-center">
+        <h2 className="collection_card_title">{collection?.name}</h2>
+        <h1 className="collection_info_header2">{launchDate}</h1>
+      </div>
+
+      {/* <div className="collection_card_stat col-12 d-flex flex-column align-items-center">
         <div className="d-flex justify-content-center col-12">
           <hr
             style={{
@@ -79,7 +80,7 @@ export default function CollectionCard(props) {
             </a>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

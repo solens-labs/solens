@@ -26,12 +26,14 @@ export default function NftCard(props) {
 
   return (
     <>
-      <img
-        src={item?.image}
-        loading="lazy"
-        className="nft_card_image"
-        alt="nft_card"
-      />
+      <div className="nft_card_image_container">
+        <img
+          src={item?.image}
+          loading="lazy"
+          className="nft_card_image"
+          alt="nft_card"
+        />
+      </div>
 
       <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-2 ">
         <div className="col-12 d-flex flex-column justify-content-start align-items-center">

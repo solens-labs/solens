@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 import { getTokenMetadata } from "../../utils/getMetadata";
-import NftCard from "../CardNft/userListed";
+import NftCard from "../CardNft/itemListed";
 import Loader from "../Loader";
 
 export default function UserListedItems(props) {

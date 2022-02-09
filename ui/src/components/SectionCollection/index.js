@@ -23,7 +23,7 @@ export default function CollectionSection(props) {
         return (
           <div
             key={i}
-            className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center mb-4"
+            className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center p-1 pb-0 pt-0 mb-4"
           >
             <CollectionCard
               id={i}

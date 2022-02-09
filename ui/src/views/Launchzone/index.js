@@ -4,16 +4,21 @@ import { useDispatch } from "react-redux";
 import launchzone from "../../assets/images/launchzone.png";
 import solana from "../../assets/images/solana.svg";
 import FAQ from "../../components/FAQ";
-import { links } from "../../constants/constants";
+import { links, themeColors } from "../../constants/constants";
 import Experts from "@mui/icons-material/Psychology";
 import Security from "@mui/icons-material/Security";
 import Marketing from "@mui/icons-material/Public";
 import Analytics from "@mui/icons-material/Insights";
 import logo from "../../assets/images/logo2.png";
 import { Helmet } from "react-helmet";
+import { launch_collections } from "../../constants/launchzone";
+import UpcomingCollection from "../../components/CardCollection/upcoming";
+import LaunchMint from "../../components/LaunchMint";
+import { Link, useHistory } from "react-router-dom";
 
 export default function Launch() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   return (
     <div className="col-12 d-flex flex-column align-items-center overflow-hidden mb-5">
@@ -59,6 +64,33 @@ export default function Launch() {
               </button>
             </a>
           </div>
+        </div>
+      </div>
+
+      {/* <div className="launchzone_featured col-12 d-flex justify-content-center mt-4">
+        <LaunchMint symbol={"bucketheads"} />
+      </div>
+      <hr style={{ color: "white", width: "70%" }} className="m-4" /> */}
+
+      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1 className="mb-2">Upcoming Launches</h1>
+        <h5 className="collection_stats_days">
+          on the{" "}
+          <span>
+            <Link
+              to="/launch"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              Solens Launchzone
+            </Link>
+          </span>
+        </h5>
+        <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-2" />
+
+        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
+          {launch_collections.map((collection, i) => {
+            return <UpcomingCollection collection={collection} key={i} />;
+          })}
         </div>
       </div>
 

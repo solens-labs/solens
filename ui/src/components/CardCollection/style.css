@@ -1,12 +1,20 @@
 .collection_card {
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
-  margin: 5px;
-  width: 400px;
-  height: 450px;
+  /* margin: 5px; */
+  width: 375px;
+  height: 400px;
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 0px 20px black;
+}
+.collection_card:hover {
+  /* box-shadow: 0px 0px 20px rgb(134, 64, 117); */
+  /* border: 1px solid rgb(134, 64, 117); */
+  cursor: pointer;
+}
+.collection_card:active {
+  /* box-shadow: inset 0px 0px 20px black; */
 }
 
 .collection_image_container {
@@ -15,9 +23,8 @@
   /* background: rgb(28, 0, 59); */
   background: transparent;
 }
-
 .collection_card_image {
-  opacity: 0.8;
+  /* opacity: 0.8; */
   /* mask-image: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 1) 45%,
@@ -26,19 +33,29 @@
   width: 100%;
   height: 275px;
   object-fit: cover;
+  object-position: center;
   /* box-shadow: 1px 1px 10px 2px rgba(206, 108, 255, 0.6); */
-  border-bottom: 1px solid black;
 }
 
 .collection_card h2 {
-  font-size: 1.45rem;
+  font-size: 1.25rem !important;
   font-weight: bold;
 }
-
 .collection_card h4 {
   font-size: 1rem;
 }
 
+.collection_card_details {
+  /* height: 100%; */
+  border-top: 1px solid black;
+  height: 125px;
+  /* background: red; */
+  /* padding: 5px 0px 0px 0px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden !important;
+}
 .collection_card_title {
   margin: 5px;
   /* margin-top: 30px; */
@@ -46,17 +63,6 @@
   color: white;
   letter-spacing: 2px;
 }
-
-.collection_card:hover {
-  /* box-shadow: 0px 0px 20px rgb(134, 64, 117); */
-  /* border: 1px solid rgb(134, 64, 117); */
-  cursor: pointer;
-}
-
-.collection_card:active {
-  /* box-shadow: inset 0px 0px 20px black; */
-}
-
 .collection_card_stat {
   /* background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%); */
   /* border-radius: 15px; */
@@ -64,10 +70,21 @@
   padding: 0px 0px 10px 0px;
   /* min-width: 150px; */
 }
-
 .collection_card_info {
   font-size: 1rem;
   font-weight: bold;
   padding-bottom: 0;
   margin-bottom: 0px;
+}
+
+@media screen and (max-width: 800px) {
+  .collection_info {
+    font-size: 1rem;
+  }
+  .collection_info_large {
+    font-size: 1rem;
+  }
+  .collection_info_header {
+    font-size: 0.7rem;
+  }
 }

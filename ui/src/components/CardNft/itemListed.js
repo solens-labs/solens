@@ -21,9 +21,9 @@ export default function NftCard(props) {
   const smallWindow = window.innerWidth < 2000;
   let nameShort = name;
 
-  if (smallWindow && name.length > 20) {
+  if (smallWindow && name?.length > 20) {
     nameShort =
-      name.slice(0, 15) + " ... " + name.slice(name.length - 4, name.length);
+      name.slice(0, 15) + " ... " + name.slice(name?.length - 4, name?.length);
   }
 
   // Generate link to go to internal NFT Detail Page
@@ -37,12 +37,14 @@ export default function NftCard(props) {
         className="nft_card col-12 d-flex flex-column align-items-center"
         onClick={() => goToNFTDetailPage(item?.mint)}
       >
-        <img
-          src={item?.image}
-          loading="lazy"
-          className="nft_card_image"
-          alt="nft_card"
-        />
+        <div className="nft_card_image_container">
+          <img
+            src={item?.image}
+            loading="lazy"
+            className="nft_card_image"
+            alt="nft_card"
+          />
+        </div>
 
         <div className="nft_card_details col-12 d-flex flex-column align-items-start p-2 pb-1 pt-2 ">
           <div className="col-12 d-flex flex-column justify-content-start align-items-center">

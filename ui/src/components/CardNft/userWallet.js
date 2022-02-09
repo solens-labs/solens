@@ -14,12 +14,14 @@ export default function NftCard(props) {
   return (
     <div className="nft_card_container_mobile d-flex justify-content-center col-12">
       <div className="nft_card_mobile col-12 d-flex flex-column align-items-center">
-        <img
-          src={item?.image}
-          className="nft_card_image"
-          alt="nft_card"
-          onClick={() => goToNFTDetailPage(item?.mint)}
-        />
+        <div className="nft_card_image_container">
+          <img
+            src={item?.image}
+            className="nft_card_image"
+            alt="nft_card"
+            onClick={() => goToNFTDetailPage(item?.mint)}
+          />
+        </div>
 
         <div className="nft_card_details_mobile col-12 d-flex flex-column align-items-center justify-content-center p-2 pb-1 pt-2">
           <h5 style={{ fontSize: "1.2rem" }}>{item?.name}</h5>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Redirect, useParams } from "react-router-dom";
-import "../../components/CollectionStat/style.css";
+import "../../components/StatCollection/style.css";
 import "./style.css";
 import { useSelector } from "react-redux";
 import {
@@ -48,7 +48,7 @@ import { convertFloorData } from "../../utils/convertFloorData";
 import LineChart from "../../components/LineChart";
 import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
-import CollectionStat from "../../components/CollectionStat";
+import CollectionStat from "../../components/StatCollection";
 import { Helmet } from "react-helmet";
 
 export default function CollectionPage(props) {
@@ -278,8 +278,8 @@ export default function CollectionPage(props) {
       )}
       {noCollection && <Redirect to="/" />}
 
-      <div className="collection_details d-flex flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5">
-        <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
+      <div className="collection_details d-flex flex-wrap justify-content-between col-12 col-lg-10 col-xl-9 mb-3 mb-lg-5">
+        <div className="collection_imge_container col-12 col-lg-4 d-flex align-items-center justify-content-center overflow-hidden">
           {collectionInfo.image ? (
             <img
               src={collectionInfo.image}
@@ -369,7 +369,7 @@ export default function CollectionPage(props) {
         /> */}
       </div>
 
-      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-lg-10 mt-5">
+      <div className="collection_floor chartbox d-flex flex-column align-items-center col-12 col-xl-11 col-xxl-10 mt-5">
         <h2>Historical Floor</h2>
         {!zeroVolumeCollection ? (
           <>
@@ -408,12 +408,12 @@ export default function CollectionPage(props) {
       <hr style={{ color: "white", width: "50%" }} className="mt-4 mb-3" />
 
       <h1 className="mt-4">Top Sales</h1>
-      <div className="d-flex flex-column align-items-center col-12 col-xl-10 mt-lg-3 mb-4">
+      <div className="d-flex flex-column align-items-center col-12 pt-xxl-0 pb-xxl-0 p-xxl-5 mt-lg-3 mb-4">
         <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
           {topFourMetadata?.length === 4 ? (
             topFourMetadata.map((token, i) => {
               return (
-                <div className="nft_card_container col-12 col-sm-8 col-md-6 col-lg-5 col-xxl-3 mb-4 p-2 pb-0 pt-0">
+                <div className="nft_card_container d-flex flex-column align-items-center col-12 col-sm-8 col-md-6 col-lg-3 mb-4 p-2 pb-0 pt-0">
                   <a
                     href={`/mint/${token.mint}`}
                     style={{ textDecoration: "none", color: "white" }}
@@ -482,7 +482,7 @@ export default function CollectionPage(props) {
       </>
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-8 col-xxl-5 mt-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
           <div className="col-12 col-sm-10 col-md-8 col-xxl-7 mb-3">
@@ -509,7 +509,7 @@ export default function CollectionPage(props) {
           )}
         </div>
 
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-8 col-xxl-5 mt-5 mt-lg-3">
+        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-5 mt-lg-3">
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>
