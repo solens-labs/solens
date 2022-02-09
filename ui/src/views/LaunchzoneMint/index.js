@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import { Link, Redirect, useParams } from "react-router-dom";
-import { launch_collections } from "../../constants/launchzone";
+import {
+  launch_collections,
+  minting_collections,
+} from "../../constants/launchzone";
 import { Helmet } from "react-helmet";
 import SocialLinks from "../../components/SocialLinks";
 import Loader from "../../components/Loader";
@@ -52,9 +55,15 @@ export default function LaunchzoneMint(props) {
 
   // Set collection info from params -- change to API pull
   useEffect(() => {
-    const [collection] = launch_collections.filter(
+    const [homepage] = launch_collections.filter(
       (item) => item.symbol === symbol
     );
+    const [minting] = minting_collections.filter(
+      (item) => item.symbol === symbol
+    );
+    console.log({ homepage, minting });
+    const collection = homepage || minting;
+    console.log({ collection });
     if (!collection) {
       setNoCollection(true);
       return;
@@ -294,7 +303,7 @@ export default function LaunchzoneMint(props) {
             />
           </div>
 
-          <h4 className="col-10 col-xl-4 mb-4">
+          <h4 className="col-10 col-xl-6 mb-4">
             Items Minted: {itemsMinted?.toFixed(0).toLocaleString() || 0} /{" "}
             {itemsTotal?.toLocaleString()}{" "}
             <span style={{ color: themeColors[0] }}>

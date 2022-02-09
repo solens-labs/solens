@@ -25,6 +25,49 @@ export const launch_collections = [
     and superheroes.`,
   },
   {
+    name: "Club Crypto",
+    image:
+      "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
+    candyMachineID: "",
+    endDate: undefined,
+    launchDate: "2022-02-18T12:00:00",
+    website: "https://www.clubcrypto.social/",
+    twitter: "https://twitter.com/clubcryptonft",
+    discord: "https://discord.gg/XABKGHVJgV",
+    symbol: "club_crypto",
+    supply: 4702,
+    preminted: 258,
+    price: 0.44,
+    description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
+    characters, with a mission to educate and introduce new users to Web3 and blockchain 
+    through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder 
+    Edition NFT have already been minted by early adopters! Don't miss your chance to 
+    join the Club.`,
+  },
+  {
+    name: "METAMUSKVERSE",
+    image:
+      "https://pbs.twimg.com/profile_images/1483955296229863436/k2uxL5Ak_400x400.jpg",
+    candyMachineID: "",
+    launchDate: "2022-02-23T12:00:00",
+    endDate: undefined,
+    website: "https://www.metamuskverse.space/",
+    twitter: "https://twitter.com/metamuskverse",
+    discord: "https://discord.gg/Txnhtbt4R9",
+    symbol: "metamuskverse",
+    supply: 3333,
+    preminted: 0,
+    price: 1,
+    description: `Welcome to the Metamuskverse. 3333 Metamuskverse NFT holders will be 
+    the first inhabitants of the planet Mars in the multiplayer, play to earn (P2E), 
+    virtual reality (VR) game on Avalanche and Solana. Users will get to explore and 
+    discover the beautiful but dangerous universe, while fighting to earn planets and 
+    galaxies to expand their metaverse experience in an endless universe.`,
+  },
+];
+
+export const minting_collections = [
+  {
     name: "Cutiez Angels",
     image:
       "https://pbs.twimg.com/profile_images/1482662626631036936/7k_aon9Z_400x400.jpg",
@@ -47,25 +90,5 @@ export const launch_collections = [
     for you to observe on the main website of Cutiez Metaverse. We want to use our NFTs in 
     future merch store and P2E online TD game! This is what Solana NFT world needs... a 
     Cutiez Metaverse. For more information please visit our website and Discord server!`,
-  },
-  {
-    name: "Club Crypto",
-    image:
-      "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
-    candyMachineID: "",
-    endDate: undefined,
-    launchDate: "2022-02-18T12:00:00",
-    website: "https://www.clubcrypto.social/",
-    twitter: "https://twitter.com/clubcryptonft",
-    discord: "https://discord.gg/XABKGHVJgV",
-    symbol: "club_crypto",
-    supply: 4702,
-    preminted: 258,
-    price: 0.44,
-    description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
-    characters, with a mission to educate and introduce new users to Web3 and blockchain 
-    through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder 
-    Edition NFT have already been minted by early adopters! Don't miss your chance to 
-    join the Club.`,
   },
 ];

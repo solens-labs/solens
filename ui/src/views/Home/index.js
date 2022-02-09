@@ -114,7 +114,7 @@ export default function HomePage(props) {
       </div>
 
       <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Upcoming Launches</h1>
+        <h1 className="mb-2">Launchzone</h1>
         <h5 className="collection_stats_days">
           on the{" "}
           <span>
@@ -128,7 +128,7 @@ export default function HomePage(props) {
         </h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-2" />
 
-        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
+        <div className="col-12 d-flex flex-row flex-wrap justify-content-around mb-4">
           {launch_collections.map((collection, i) => {
             return <UpcomingCollection collection={collection} key={i} />;
           })}
