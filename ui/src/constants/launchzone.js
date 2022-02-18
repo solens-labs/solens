@@ -30,7 +30,7 @@ export const launch_collections = [
       "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
     candyMachineID: "",
     endDate: undefined,
-    launchDate: "2022-02-18T12:00:00",
+    launchDate: 1645214400000,
     website: "https://www.clubcrypto.social/",
     twitter: "https://twitter.com/clubcryptonft",
     discord: "https://discord.gg/XABKGHVJgV",
@@ -47,7 +47,7 @@ export const launch_collections = [
   {
     name: "METAMUSKVERSE",
     image:
-      "https://pbs.twimg.com/profile_images/1483955296229863436/k2uxL5Ak_400x400.jpg",
+      "https://pbs.twimg.com/profile_images/1491539129578012677/HXOSEeJj_400x400.jpg",
     candyMachineID: "",
     launchDate: "2022-02-23T12:00:00",
     endDate: undefined,
@@ -70,7 +70,7 @@ export const minting_collections = [
   {
     name: "Cutiez Angels",
     image:
-      "https://pbs.twimg.com/profile_images/1482662626631036936/7k_aon9Z_400x400.jpg",
+      "https://docs.google.com/uc?export=open&id=1IIMx_DqCeYgnIa2tqlmah2JoMb_MlqHT",
     candyMachineID: "4HpoW7prtsB1f1KykLo7j4BFuYwQpXQkuJhE3mqcG8cF",
     launchDate: 1643922000000,
     endDate: undefined,

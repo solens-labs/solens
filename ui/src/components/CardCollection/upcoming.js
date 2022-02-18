@@ -19,7 +19,7 @@ export default function CollectionCard(props) {
   }
 
   return (
-    <div className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center p-1 pb-0 pt-0 mb-4">
+    <div className="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-center p-1 pb-0 pt-0 mb-1">
       <div
         className="collection_card d-flex flex-column justify-content-between mt-3"
         key={key || 0}

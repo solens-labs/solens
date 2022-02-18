@@ -40,7 +40,7 @@ export default function NftCard(props) {
         <div className="nft_card_image_container">
           <img
             src={item?.image}
-            loading="lazy"
+            // loading="lazy"
             className="nft_card_image"
             alt="nft_card"
           />
