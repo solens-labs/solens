@@ -9,7 +9,9 @@
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 0px 20px black;
-  width: 325px;
+  /* width: 325px; */
+  min-width: 290px;
+  max-width: 325px;
   height: 400px;
 }
 .nft_card:hover {

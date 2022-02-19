@@ -30,7 +30,7 @@ export const launch_collections = [
       "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
     candyMachineID: "",
     endDate: undefined,
-    launchDate: 1645300800000,
+    launchDate: 1645387200000,
     website: "https://www.clubcrypto.social/",
     twitter: "https://twitter.com/clubcryptonft",
     discord: "https://discord.gg/XABKGHVJgV",
@@ -49,7 +49,7 @@ export const launch_collections = [
     image:
       "https://pbs.twimg.com/profile_images/1491539129578012677/HXOSEeJj_400x400.jpg",
     candyMachineID: "",
-    launchDate: "2022-02-23T12:00:00",
+    launchDate: "2022-03-02T12:00:00",
     endDate: undefined,
     website: "https://www.metamuskverse.space/",
     twitter: "https://twitter.com/metamuskverse",

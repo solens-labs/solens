@@ -68,7 +68,7 @@ export default function CollectionListedItems(props) {
         /> */}
       </div>
 
-      <div className="col-12 col-lg-10">
+      <div className="col-12 col-xxl-11">
         <InfiniteScroll
           dataLength={listedItemsMetadata.length}
           next={fetchItems}
@@ -84,7 +84,7 @@ export default function CollectionListedItems(props) {
               listedItemsMetadata.map((item, i) => {
                 return (
                   <div
-                    className="nft_grid_card col-12 col-sm-8 col-md-4 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-lg-4 col-xxl-3 p-2 p-lg-3"
                     key={i}
                   >
                     <NftCard item={item} links={""} />
