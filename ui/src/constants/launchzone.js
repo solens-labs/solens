@@ -56,7 +56,7 @@ export const launch_collections = [
     discord: "https://discord.gg/Txnhtbt4R9",
     symbol: "metamuskverse",
     supply: 3333,
-    preminted: 0,
+    preminted: 111,
     price: 1,
     description: `Welcome to the Metamuskverse. 3333 Metamuskverse NFT holders will be 
     the first inhabitants of the planet Mars in the multiplayer, play to earn (P2E), 
