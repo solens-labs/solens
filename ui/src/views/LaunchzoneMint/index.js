@@ -135,9 +135,10 @@ export default function LaunchzoneMint(props) {
                             candyMachineState.raise,
                             mint.publicKey,
                             wlMint,
+                            wlTokenAccounts[i],
                             program
                         );
-                    } else if (i === wlTokenAccounts.lenght - 1 && ) {
+                    } else if (i === wlTokenAccounts.lenght - 1) {
 
                     }
                 }
@@ -148,6 +149,7 @@ export default function LaunchzoneMint(props) {
                     candyMachineState.wallet,
                     candyMachineState.raise,
                     mint.publicKey,
+                    null,
                     null,
                     program
                 );
