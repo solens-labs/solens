@@ -57,6 +57,7 @@ export async function mintToken(
   wallet: anchor.web3.PublicKey,
   raise: anchor.web3.PublicKey,
   mint: anchor.web3.PublicKey,
+  wlMint: anchor.web3.PublicKey,
   program: anchor.Program
 ) {
   let [userTokenAccountAddress, _] =
