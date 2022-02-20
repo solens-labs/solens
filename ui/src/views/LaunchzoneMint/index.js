@@ -20,7 +20,11 @@ import { mintToken } from "../../candy/mintToken";
 import { getCandyMachineState } from "../../candy/getCandyMachineState";
 import { selectBalance } from "../../redux/app";
 import { useSelector } from "react-redux";
-import { alertInsufficientBalance, alertSoldOut } from "../../constants/alerts";
+import {
+  alertInsufficientBalance,
+  alertNotWhitelisted,
+  alertSoldOut,
+} from "../../constants/alerts";
 import { datetime } from "react-table/src/sortTypes";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
 
@@ -42,6 +46,8 @@ export default function LaunchzoneMint(props) {
 
   const [whitelist, setWhitelist] = useState(false);
   const [whitelistedUser, setWhitelistedUser] = useState(false);
+  const [whitelistMint, setWhitelistMint] = useState(undefined);
+  const [whitelistMintTA, setWhitelistMintTA] = useState(undefined);
 
   const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState("");
@@ -50,7 +56,7 @@ export default function LaunchzoneMint(props) {
   const endDate =
     collectionInfo?.endDate && new Date(collectionInfo?.endDate).addHours(0);
 
-  const [released, setReleased] = useState(true); // toggle to display mint/launchingSoon button
+  const [released, setReleased] = useState(false); // toggle to display mint/launchingSoon button
   const [ended, setEnded] = useState(false); // set in LZ constants, prevents minting
   const [soldOut, setSoldOut] = useState(false);
 
@@ -66,9 +72,7 @@ export default function LaunchzoneMint(props) {
     const [minting] = minting_collections.filter(
       (item) => item.symbol === symbol
     );
-    // console.log({ homepage, minting });
     const collection = homepage || minting;
-    // console.log({ collection });
     if (!collection) {
       setNoCollection(true);
       return;
@@ -77,7 +81,11 @@ export default function LaunchzoneMint(props) {
     setItemsMinted(collection.preminted);
     setMintProgress((collection.preminted / collection.supply) * 100);
     setCollectionInfo(collection);
-    setWhitelist(collection.wl);
+    if (collection.wl) {
+      setWhitelist(collection.wl);
+      const wlMintAddress = new PublicKey(collection.wlToken);
+      setWhitelistMint(wlMintAddress);
+    }
 
     const links = {
       website: collection.website,
@@ -96,11 +104,10 @@ export default function LaunchzoneMint(props) {
 
   // Check if there is whitelist && if user is whitelisted
   useEffect(async () => {
-    if (wallet.connected && whitelist) {
-      const wlMint = new PublicKey(collectionInfo.wlToken);
+    if (wallet.connected && whitelist && whitelistMint) {
       const payer = wallet.publicKey;
       let wlTokenAccounts = await connection.getTokenAccountsByOwner(payer, {
-        mint: wlMint,
+        mint: whitelistMint,
       });
       for (let i = 0; i < wlTokenAccounts.value.length; i++) {
         let bal = await connection.getTokenAccountBalance(
@@ -109,15 +116,20 @@ export default function LaunchzoneMint(props) {
         if (bal.value.uiAmount >= 1) {
           console.log("whitelisted user");
           setWhitelistedUser(true);
+          setWhitelistMintTA(wlTokenAccounts.value[i].pubkey);
         }
       }
     }
-  }, [wallet, whitelist]);
+  }, [wallet, whitelist, whitelistMint]);
 
   // Mint one item
   const mintOne = async (candyMachineID) => {
     if (balance < collectionInfo?.price) {
       return alertInsufficientBalance();
+    }
+
+    if (whitelist && !whitelistedUser) {
+      return alertNotWhitelisted(collectionInfo.publicDate);
     }
 
     setLoading(true);
@@ -144,18 +156,17 @@ export default function LaunchzoneMint(props) {
       if (itemsRemaining === 0) {
         return alertSoldOut();
       }
-
       let final_tx;
 
       if (whitelist && whitelistedUser) {
-        const wlMint = new PublicKey(collectionInfo.wlToken);
         final_tx = await mintToken(
           payer,
           candyMachine,
           candyMachineState.wallet,
           candyMachineState.raise,
           mint.publicKey,
-          wlMint,
+          whitelistMint,
+          whitelistMintTA,
           program
         );
       } else {
@@ -165,6 +176,7 @@ export default function LaunchzoneMint(props) {
           candyMachineState.wallet,
           candyMachineState.raise,
           mint.publicKey,
+          null,
           null,
           program
         );

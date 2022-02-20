@@ -58,6 +58,7 @@ export async function mintToken(
   raise: anchor.web3.PublicKey,
   mint: anchor.web3.PublicKey,
   wlMint: anchor.web3.PublicKey,
+  wlTokenAccount: anchor.web3.PublicKey,
   program: anchor.Program
 ) {
   let [userTokenAccountAddress, _] =
@@ -108,6 +109,24 @@ export async function mintToken(
   ];
 
   let remainingAccounts: any = [];
+
+  if (wlMint != null){
+    remainingAccounts.push({
+      pubkey: wlTokenAccount,
+      isWritable: true,
+      isSigner: false
+    })
+    remainingAccounts.push({
+      pubkey: wlMint,
+      isWritable: false,
+      isSigner: false
+    })
+    remainingAccounts.push({
+      pubkey: payer,
+      isWritable: false,
+      isSigner: true
+    })
+  }
 
 
 
