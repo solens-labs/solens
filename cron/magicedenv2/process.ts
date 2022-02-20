@@ -97,7 +97,7 @@ function getExecuteSaleInfo(tx, ix, index) {
     return res
 }
 
-function getCancelTxInfo(tx, ix, index) {
+function getSellInfo(tx, ix, index) {
     let accountKeys = tx.transaction.message.accountKeys
     let accounts = ix.accounts;
     let mintIdx;
@@ -106,13 +106,13 @@ function getCancelTxInfo(tx, ix, index) {
     })
 
     let res = new tx_info({
-        mint: getMintFromTx(tx.meta.postTokenBalances, mintIdx),
+        mint: accounts[4].toBase58(),
         owner: accounts[0].toBase58(),
-        price: 0,
+        price: new BN(base58.decode(ix.data).slice(10, 18), 'le').toNumber() / LAMPORTS_PER_SOL,
         date: tx.blockTime * 1000 + index,
-        marketplace: 'magiceden',
-        escrow: accounts[3].toBase58(),
-        type: 'cancel',
+        marketplace: 'magicedenV2',
+        escrow: accounts[8].toBase58(),
+        type: 'sell',
         ix: index,
         tx: tx.transaction.signatures[0],
     })
@@ -209,9 +209,9 @@ async function processLatestTxs(latestTxs) {
                     case IxType.ExecuteSale:
                         payloads.push(getExecuteSaleInfo(tx, ix, index))
                         break;
-                    // case IxType.Cancel:
-                    //     payloads.push(getCancelTxInfo(tx, ix, index))
-                    //     break;
+                    case IxType.Sell:
+                        payloads.push(getSellInfo(tx, ix, index))
+                        break;
                     // case IxType.OldBuy:
                     //     payloads.push(getOldBuyTxInfo(tx, ix, index))
                     //     break;
@@ -248,7 +248,7 @@ async function magicedenV2(until) {
 
 
 async function main() {
-    let last = await connection.getTransaction('5HQmgQnWLyzyJkEPWgzEYoZWTRokGQ9HnWjsiPhwi8awedu36JebqjjUMxx3p3bWVqv675pxLii7pb6itiBXuSVq')
+    let last = await connection.getTransaction('5kBDiwfC8VummLZw3uf5gQc1QcM83q1RiGZgxexbVC3YBBLMgrqTBzV9tyqQwu4ShC4hvqGohMTT1hXA2PZ6Pa8K')
     let block = await connection.getBlock(last.slot)
     let until = block.parentSlot
     let new_until;
