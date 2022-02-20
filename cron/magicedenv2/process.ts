@@ -119,22 +119,16 @@ function getSellInfo(tx, ix, index) {
     return res
 }
 
-function getBuyTxInfo(tx, ix, index) {
-    let accountKeys = tx.transaction.message.accountKeys
+function getCancelSellInfo(tx, ix, index) {
     let accounts = ix.accounts;
-    let mintIdx;
-    accountKeys.forEach((k, index) => {
-        k.pubkey.toBase58() == accounts[1].toBase58() ? mintIdx = index : null;
-    })
     let res = new tx_info({
-        mint: getMintFromTx(tx.meta.postTokenBalances, mintIdx),
-        owner: accounts[2].toBase58(),
-        new_owner: accounts[0].toBase58(),
+        mint: accounts[3].toBase58(),
+        owner: accounts[0].toBase58(),
         price: new BN(base58.decode(ix.data).slice(8, 16), 'le').toNumber() / LAMPORTS_PER_SOL,
         date: tx.blockTime * 1000 + index,
-        marketplace: 'magiceden',
-        escrow: accounts[3].toBase58(),
-        type: 'buy',
+        marketplace: 'magicedenV2',
+        escrow: accounts[6].toBase58(),
+        type: 'cancelSell',
         ix: index,
         tx: tx.transaction.signatures[0],
     })
@@ -212,9 +206,9 @@ async function processLatestTxs(latestTxs) {
                     case IxType.Sell:
                         payloads.push(getSellInfo(tx, ix, index))
                         break;
-                    // case IxType.OldBuy:
-                    //     payloads.push(getOldBuyTxInfo(tx, ix, index))
-                    //     break;
+                    case IxType.CancelSell:
+                        payloads.push(getCancelSellInfo(tx, ix, index))
+                        break;
                     // case IxType.Buy:
                     //     payloads.push(getBuyTxInfo(tx, ix, index))
                     //     break;
