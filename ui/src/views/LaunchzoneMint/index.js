@@ -61,9 +61,9 @@ export default function LaunchzoneMint(props) {
     const [minting] = minting_collections.filter(
       (item) => item.symbol === symbol
     );
-    console.log({ homepage, minting });
+    // console.log({ homepage, minting });
     const collection = homepage || minting;
-    console.log({ collection });
+    // console.log({ collection });
     if (!collection) {
       setNoCollection(true);
       return;
