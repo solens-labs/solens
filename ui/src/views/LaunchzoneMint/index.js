@@ -21,6 +21,7 @@ import {getCandyMachineState} from "../../candy/getCandyMachineState";
 import {selectBalance} from "../../redux/app";
 import {useSelector} from "react-redux";
 import {alertInsufficientBalance, alertSoldOut} from "../../constants/alerts";
+import {datetime} from "react-table/src/sortTypes";
 
 Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + h * 60 * 60 * 1000);
@@ -136,7 +137,8 @@ export default function LaunchzoneMint(props) {
                             wlMint,
                             program
                         );
-                        break
+                    } else if (i === wlTokenAccounts.lenght - 1 && ) {
+
                     }
                 }
             } else {

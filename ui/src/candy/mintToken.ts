@@ -109,6 +109,8 @@ export async function mintToken(
 
   let remainingAccounts: any = [];
 
+
+
   instructions.push(
     await program.instruction.mintNft(creatorBump, {
       accounts: {
