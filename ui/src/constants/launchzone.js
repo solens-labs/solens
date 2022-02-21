@@ -27,7 +27,7 @@ export const launch_collections = [
   {
     name: "Club Crypto",
     image:
-      "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
+      "https://gateway.pinata.cloud/ipfs/QmXwzhAZwQ2vwKYkypdXy6vi5KgeHZkFCVoiGuvbAm4m5U/clubcrypto2.jpg",
     candyMachineID: "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N",
     wl: true,
     wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",
@@ -40,7 +40,7 @@ export const launch_collections = [
     symbol: "club_crypto",
     supply: 4702,
     preminted: 258,
-    price: 0.4,
+    price: 0.44,
     wlPrice: 0.4,
     description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
     characters, with a mission to educate and introduce new users to Web3 and blockchain 

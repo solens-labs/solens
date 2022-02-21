@@ -128,7 +128,10 @@ export default function LaunchzoneMint(props) {
       return alertInsufficientBalance();
     }
 
-    if (whitelist && !whitelistedUser) {
+    const publicMintDate = collectionInfo?.publicDate;
+    const now = Date.now();
+    const beforePublicMint = now < publicMintDate;
+    if (whitelist && !whitelistedUser && beforePublicMint) {
       return alertNotWhitelisted(collectionInfo.publicDate);
     }
 
