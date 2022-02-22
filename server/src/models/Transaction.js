@@ -43,7 +43,8 @@ const transactionSchema = new mongoose.Schema({
     ]
   },
   tx: {type: String, require: true},
-  ix: {type: Number}
+  ix: {type: Number},
+  version: {type: Number},
 })
 
 // for getting live floor, listings
@@ -69,6 +70,9 @@ transactionSchema.index({ 'tx': 1, 'ix': 1}, {unique: true})
 
 // for tx_historical trigger
 transactionSchema.index({ 'mint': 1, 'date': -1}, { partialFilterExpression: { historical: false }, name: "mint_1_date_-1_historical_false"})
+
+// for historical floors
+transactionSchema.index({ 'symbol': 1 })
 
 
 module.exports = mongoose.model('Transaction', transactionSchema)

@@ -1,23 +1,15 @@
 // @ts-nocheck
-import {Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
+import {LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import {BN} from "@project-serum/anchor";
-import axios from "axios";
+import {
+  getLatestTxsUntilBlockTime,
+  timer,
+  uploadTxToDB,
+  checkUpgradeAndHalt,
+  base58
+} from '../../tools/utils'
 
-const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-const base58 = require("base-x")(BASE58);
-
-const connection = new Connection('https://dawn-divine-feather.solana-mainnet.quiknode.pro/971e7d86ae5ad52d9d48097afaec1f7edde191e7/', {
-    wsEndpoint: 'wss://dawn-divine-feather.solana-mainnet.quiknode.pro/971e7d86ae5ad52d9d48097afaec1f7edde191e7/'
-})
-let notified = false
-let id = connection.onProgramAccountChange(new PublicKey('MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8'), (keyedAccountInfo, context) => {
-    notified = true
-}, 'processed')
 const MAGICEDEN = new PublicKey('MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8')
-const BPF_UPGRADABLE = new PublicKey('BPFLoaderUpgradeab1e11111111111111111111111')
-const TRANSACTION_URI = 'http://localhost:3000/transactions'
-const COLLECTION_URI = 'http://localhost:3000/collections/'
-
 
 enum IxType {
     List = '96d480ba74018371',
@@ -40,30 +32,6 @@ class Assignable {
 class tx_info extends Assignable {
 
 }
-
-async function getLatestTxs(until) {
-
-    let before = null;
-    let latestTxs = []
-    while (true) {
-        let confirmedSigs = await connection.getConfirmedSignaturesForAddress2(MAGICEDEN, {before: before}, "confirmed")
-
-        let sigs = []
-        confirmedSigs.forEach((r) => {
-            r.slot >= until && !r.err ? sigs.push(r.signature) : null;
-        })
-        let confirmedTxs = await connection.getParsedConfirmedTransactions(sigs, 'confirmed')
-        sigs.forEach((sig) => {
-            latestTxs.push(confirmedTxs.find(tx => tx.transaction.signatures.includes(sig)))
-        })
-        if (confirmedSigs[confirmedSigs.length - 1].slot < until) {
-            return latestTxs;
-        } else {
-            before = confirmedSigs[confirmedSigs.length - 1].signature
-        }
-    }
-}
-
 
 function getMintFromTx(tokenBalances, index) {
     let mint;
@@ -182,110 +150,78 @@ function getAcceptOfferTxInfo(tx, ix, index) {
         price: new BN(base58.decode(ix.data).slice(8, 16), 'le').toNumber() / LAMPORTS_PER_SOL,
         date: tx.blockTime * 1000 + index,
         marketplace: 'magiceden',
-        type: 'accept_offer',
+        type: 'buy',
+        subtype: 'accept_offer',
         ix: index,
         tx: tx.transaction.signatures[0],
     })
     return res
 }
 
-function checkUpgrade(ix) {
-    return ix.programId.toBase58() == BPF_UPGRADABLE.toBase58() && ix.parsed.info.programAccount == MAGICEDEN.toBase58()
-}
-
 async function processLatestTxs(latestTxs) {
-    let payloads = []
-    latestTxs.forEach((tx) => {
-        tx.transaction.message.instructions.forEach((ix, index) => {
-            if (checkUpgrade(ix)) {
-                // error
-                process.exit(-1)
+  let payloads = []
+  for (let i = 0; i < latestTxs.length; i++) {
+    try {
+      let tx = latestTxs[i]
+      for (let index = 0; index < tx.transaction.message.instructions.length; index++) {
+        try {
+          let ix = tx.transaction.message.instructions[index]
+          await checkUpgradeAndHalt(ix, MAGICEDEN)
+          if (ix.programId.toBase58() == MAGICEDEN.toBase58()) {
+            let ixData = base58.decode(ix.data)
+            let type = ixData.slice(0, 8).toString('hex')
+            switch (type) {
+              case IxType.List:
+                payloads.push(getListTxInfo(tx, ix, index))
+                break;
+              case IxType.OldList:
+                payloads.push(getListTxInfo(tx, ix, index))
+                break;
+              case IxType.Cancel:
+                payloads.push(getCancelTxInfo(tx, ix, index))
+                break;
+              case IxType.OldBuy:
+                payloads.push(getOldBuyTxInfo(tx, ix, index))
+                break;
+              case IxType.Buy:
+                payloads.push(getBuyTxInfo(tx, ix, index))
+                break;
+              case IxType.AcceptOffer:
+                payloads.push(getAcceptOfferTxInfo(tx, ix, index))
+                break;
+              default:
+                break;
             }
-            if (ix.programId.toBase58() == MAGICEDEN.toBase58()) {
-                let ixData = base58.decode(ix.data)
-                let type = ixData.slice(0, 8).toString('hex')
-                switch (type) {
-                    case IxType.List || IxType.OldList:
-                        payloads.push(getListTxInfo(tx, ix, index))
-                        break;
-                    case IxType.Cancel:
-                        payloads.push(getCancelTxInfo(tx, ix, index))
-                        break;
-                    case IxType.OldBuy:
-                        payloads.push(getOldBuyTxInfo(tx, ix, index))
-                        break;
-                    case IxType.Buy:
-                        payloads.push(getBuyTxInfo(tx, ix, index))
-                        break;
-                    case IxType.AcceptOffer:
-                        payloads.push(getAcceptOfferTxInfo(tx, ix, index))
-                        break;
-                    default:
-                        break;
-                }
-            }
-        })
-    })
-    return payloads
-}
-
-
-function sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+          }
+        } catch {}
+      }
+    } catch {}
+  }
+  return payloads
 }
 
 async function magiceden(until) {
-    const txs = await getLatestTxs(until)
-    const payload = await processLatestTxs(txs)
-    for (let i = 0; i < payload.length; i++) {
-      let p = payload[i]
-        const symbol = (await axios.get(`${COLLECTION_URI}${p.mint}`)).data
-        if (symbol) {
-          p.symbol = symbol.symbol
-        }
-        await axios.post(
-          TRANSACTION_URI,
-          p,
-          {
-            headers: {
-              "content-type": "application/json",
-              "Accept": "application/json"
-            }
-          }
-        )
-        console.log(p)
-    }
-    return txs.length > 0 ? txs[0].slot : until
+  const txs = await getLatestTxsUntilBlockTime(MAGICEDEN, until)
+  const payloads = await processLatestTxs(txs)
+  for (let i = 0; i < payloads.length; i++) {
+    await uploadTxToDB(payloads[i])
+  }
+  return txs.length > 0 ? txs[txs.length - 1].blockTime : until
 }
-
 
 async function main() {
-    let last = await connection.getTransaction('4BJwAAgWbubo55ofJVppb5efxXxv5UHoycXqFYEqovkMmUv2R868ecw4v63ZGe3KTq2VH7TWepQGPRLJm9NYUacf')
-    let block = await connection.getBlock(last.slot)
-    let until = block.parentSlot
-    let new_until;
-
-    while (true) {
-        if (notified) {
-            notified = false
-            try {
-                new_until = await magiceden(until)
-                if (new_until != until) {
-                    block = await connection.getBlock(new_until)
-                    until = block.parentSlot
-                }
-            } catch (e) {
-                await sleep((250 * 64) / 160)
-                continue
-            }
-
-        }
-        await sleep((250 * 64) / 160)
+  let until = 1645483959
+  while (true) {
+    let prev_until = until
+    await timer(1000)
+    try {
+      until = await magiceden(until)
+    } catch (e) {
+      until = prev_until
     }
-
-
+  }
 }
 
-
 console.log('Running client.');
+
 main().then(() => console.log(''));
