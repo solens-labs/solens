@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./style.css";
 import sa_logo from "../../assets/images/sa_logo_dark.png";
 import me_logo from "../../assets/images/me_logo_white.png";
-import { themeColors } from "../../constants/constants";
+import { exchangeApi, themeColors } from "../../constants/constants";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import { magicEden, listMEden } from "../../exchanges/magicEden";
 import magicEdenIDL from "../../exchanges/magicEdenIDL";
@@ -38,10 +38,10 @@ export default function TradeListing(props) {
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const listNft = async (marketplace) => {
-    // if (!tradingEnabled) {
-    //   alert("Trading is temporarily disabled.");
-    //   return;
-    // }
+    if (!tradingEnabled) {
+      alert("Trading is temporarily disabled.");
+      return;
+    }
 
     if (listPrice <= 0) {
       return;
@@ -49,7 +49,9 @@ export default function TradeListing(props) {
 
     switch (marketplace) {
       case "magiceden":
-        listNftMagicEden();
+        // listNftMagicEden();
+        const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+        window.open(meLink, "_blank").focus();
         break;
       case "solanart":
         listNftSolanart();
@@ -120,11 +122,6 @@ export default function TradeListing(props) {
     }
   };
   const listNftMagicEden = async () => {
-    if (!tradingEnabled) {
-      alert("Trading on Magic Eden is temporarily disabled.");
-      return;
-    }
-
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
       preflightCommitment: "processed",

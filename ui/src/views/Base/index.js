@@ -51,7 +51,7 @@ export default function Home(props) {
   const location = useLocation();
 
   // TRADING MASTER SWITCH
-  const trading = false;
+  const trading = true;
   useEffect(() => {
     dispatch(setTradingEnabled(trading));
   }, []);

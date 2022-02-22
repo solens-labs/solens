@@ -37,14 +37,16 @@ export default function TradeCancel(props) {
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const cancelNft = async () => {
-    // if (!tradingEnabled) {
-    //   alert("Trading is temporarily disabled.");
-    //   return;
-    // }
+    if (!tradingEnabled) {
+      alert("Trading is temporarily disabled.");
+      return;
+    }
 
     switch (marketplace) {
       case "magiceden":
-        cancelNftMagicEden();
+        // cancelNftMagicEden();
+        const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+        window.open(meLink, "_blank").focus();
         break;
       case "solanart":
         cancelNftSolanart();
