@@ -20,6 +20,7 @@ export default function NftCard(props) {
             className="nft_card_image"
             alt="nft_card"
             onClick={() => goToNFTDetailPage(item?.mint)}
+            loading="eager"
           />
         </div>
 

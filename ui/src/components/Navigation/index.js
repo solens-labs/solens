@@ -62,7 +62,12 @@ const Navigation = (props) => {
       <nav className="navbar d-flex flex-row justify-content-between align-items-center">
         <div className="col-4 col-lg-2 d-flex justify-content-start">
           <Link to="/" style={{ textDecoration: "none" }}>
-            <img src={logo2} className="nav_logo" alt="solens logo" />
+            <img
+              src={logo2}
+              className="nav_logo"
+              alt="solens logo"
+              loading="eager"
+            />
           </Link>
         </div>
 

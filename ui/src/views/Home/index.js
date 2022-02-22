@@ -73,7 +73,12 @@ export default function HomePage(props) {
       </Helmet>
 
       <div className="main_header">
-        <img src={logo} className="homepage_logo img-fluid" alt="solens logo" />
+        <img
+          src={logo}
+          className="homepage_logo img-fluid"
+          alt="solens logo"
+          loading="eager"
+        />
         <h3 className="homepage_tagline mb-2">
           Solana's Premier NFT Marketplex
         </h3>
@@ -155,6 +160,7 @@ export default function HomePage(props) {
             src={collections_gif}
             alt="launchzone_logo"
             className="collections_gif mt-5 mt-lg-4 mt-xl-0"
+            loading="eager"
           />
         </div>
 
@@ -170,6 +176,7 @@ export default function HomePage(props) {
                 src={solens_logo}
                 style={{ height: 50, marginBottom: 17 }}
                 alt="Solens"
+                loading="eager"
               />
             </span>
           </h3>
@@ -238,6 +245,7 @@ export default function HomePage(props) {
           alt="launchzone_logo"
           className="img-fluid"
           style={{ maxHeight: "150px", margin: 0, padding: 0 }}
+          loading="eager"
         />
 
         <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
@@ -248,6 +256,7 @@ export default function HomePage(props) {
                 src={solana}
                 style={{ height: "1rem", paddingBottom: 4 }}
                 alt="solana logo"
+                loading="eager"
               />
             </span>
             ?

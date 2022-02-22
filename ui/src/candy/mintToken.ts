@@ -110,25 +110,23 @@ export async function mintToken(
 
   let remainingAccounts: any = [];
 
-  if (wlMint != null){
+  if (wlMint != null) {
     remainingAccounts.push({
       pubkey: wlTokenAccount,
       isWritable: true,
-      isSigner: false
-    })
+      isSigner: false,
+    });
     remainingAccounts.push({
       pubkey: wlMint,
       isWritable: false,
-      isSigner: false
-    })
+      isSigner: false,
+    });
     remainingAccounts.push({
       pubkey: payer,
       isWritable: false,
-      isSigner: true
-    })
+      isSigner: true,
+    });
   }
-
-
 
   instructions.push(
     await program.instruction.mintNft(creatorBump, {

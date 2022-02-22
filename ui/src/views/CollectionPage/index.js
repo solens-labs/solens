@@ -50,6 +50,7 @@ import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
 import CollectionStat from "../../components/StatCollection";
 import { Helmet } from "react-helmet";
+import Image from "../../components/Image";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -265,6 +266,10 @@ export default function CollectionPage(props) {
     }
   };
 
+  function imgLoad(img) {
+    img.style.visibility = "visible";
+  }
+
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
       {collectionInfo && collectionInfo.name && (
@@ -285,6 +290,7 @@ export default function CollectionPage(props) {
               src={collectionInfo.image}
               alt="collection_image"
               className="collection_image_large img-fluid"
+              loading="eager"
             />
           ) : (
             <div className="collection_image_large d-flex justify-content-center overflow-hidden">
@@ -419,11 +425,16 @@ export default function CollectionPage(props) {
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <div className="nft_card d-flex flex-column align-items-center">
-                      <img
-                        src={topFourMetadata[i].image}
-                        className="nft_card_image"
-                        alt="nft_card"
-                      />
+                      <div className="nft_card_image_container">
+                        <Image
+                          src={topFourMetadata[i].image}
+                          className="nft_card_image"
+                          alt="nft_card"
+                          // loading="eager"
+                          // onLoad={imgLoad(this)}
+                          // style={{ visibility: "hidden" }}
+                        />
+                      </div>
 
                       <div className="nft_card_details_home d-flex align-items-center">
                         <div className="col-12">
@@ -435,6 +446,7 @@ export default function CollectionPage(props) {
                                 src={sol_logo}
                                 alt="sol logo"
                                 className="price_logo_sm"
+                                loading="eager"
                               />
                               {topFourMetadata[i].price}
                             </h5>

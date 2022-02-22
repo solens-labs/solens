@@ -36,6 +36,7 @@ export default function About(props) {
               alt="nft_example"
               className="img-fluid"
               style={{ maxHeight: "300px" }}
+              loading="eager"
             />
           </div>
           <p className="about_text col-12 col-lg-7">
@@ -69,6 +70,7 @@ export default function About(props) {
               alt="nft_example"
               className="nft_example"
               alt="nft image"
+              loading="eager"
             />
           </div>
         </div>

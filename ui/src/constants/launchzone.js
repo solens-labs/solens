@@ -26,8 +26,7 @@ export const launch_collections = [
   },
   {
     name: "Club Crypto",
-    image:
-      "https://gateway.pinata.cloud/ipfs/QmXwzhAZwQ2vwKYkypdXy6vi5KgeHZkFCVoiGuvbAm4m5U/clubcrypto2.jpg",
+    image: "http://arweave.net/FT22FtqdTb79PcBMV63mG-35SD2ofV1-fkP57M5B7vo",
     candyMachineID: "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N",
     wl: true,
     wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",

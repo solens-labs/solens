@@ -20,8 +20,42 @@ export default function Footer(props) {
   return (
     <div className="footer col-12 d-flex flex-column justify-content-between align-items-center">
       <div className="footer_content col-12 d-flex flex-row flex-wrap justify-content-around justify-content-lg-center align-items-start mb-0 mb-lg-3">
-        <div className="footer_logo_section col-12 col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-start justify-content-xxl-center">
-          <img src={solens_logo} className="footer_logo" alt="solens logo" />
+        <div className="footer_logo_section col-12 col-lg-4 d-flex flex-column align-items-center justify-content-center justify-content-lg-start justify-content-xxl-center">
+          <img
+            src={solens_logo}
+            className="footer_logo"
+            alt="solens logo"
+            loading="eager"
+          />
+          <div className="col-10 col-xl-4 d-flex justify-content-between mt-1">
+            <div className="icon_link">
+              <a
+                href={links.medium.url}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <MediumIcon style={{ fill: "white" }} className="icon_link" />
+              </a>
+            </div>
+            <div className="icon_link">
+              <a
+                href={links.twitter.url}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <TwitterIcon style={{ fill: "white" }} className="icon_link" />
+              </a>
+            </div>
+            <div className="icon_link">
+              <a
+                href={links.email.contact}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <EmailIcon style={{ fill: "white" }} />
+              </a>
+            </div>
+          </div>
         </div>
 
         {pg_break}
@@ -85,7 +119,7 @@ export default function Footer(props) {
         {pg_break}
       </div>
 
-      <div className="col-6 col-lg-2 col-xxl-1 d-flex justify-content-between mt-2 mt-lg-0 mb-2 mb-lg-4">
+      {/* <div className="col-6 col-lg-2 col-xxl-1 d-flex justify-content-between mt-2 mt-lg-0 mb-2 mb-lg-4">
         <div className="icon_link">
           <a
             href={links.medium.url}
@@ -113,7 +147,7 @@ export default function Footer(props) {
             <EmailIcon style={{ fill: "white" }} />
           </a>
         </div>
-      </div>
+      </div> */}
 
       <div className="copyright col-12 d-flex align-items-end justify-content-center">
         <CopyrightIcon className="copyright_icon" />

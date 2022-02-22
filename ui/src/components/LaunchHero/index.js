@@ -11,13 +11,18 @@ export default function LaunchHero() {
           alt="launchzone_logo"
           className="img-fluid"
           style={{ maxHeight: "150px", margin: 0, padding: 0 }}
+          loading="eager"
         />
 
         <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
           <h5>
             Looking to launch your own NFT collection on{" "}
             <span>
-              <img src={solana} style={{ height: "1rem", paddingBottom: 4 }} />
+              <img
+                src={solana}
+                style={{ height: "1rem", paddingBottom: 4 }}
+                loading="eager"
+              />
             </span>
             ?
           </h5>

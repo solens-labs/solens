@@ -37,7 +37,7 @@ export default function TradingModule(props) {
   const [txHash, setTxHash] = useState("");
 
   const collectionInsights = () => {
-    history.push(`/nfts/${collection.symbol}`);
+    history.push(`/collection/${collection.symbol}`); // COLLECTION LANDING LINK
     return;
   };
 
@@ -165,6 +165,7 @@ export default function TradingModule(props) {
                     height: 41,
                     background: "transparent",
                   }}
+                  loading="eager"
                 />
               </div>
             </button>

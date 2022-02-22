@@ -30,6 +30,7 @@ export default function NftCard(props) {
               alt="sol logo"
               className="price_logo_lg"
               alt="solana logo"
+              loading="eager"
             />
             {item.price}
           </h4>

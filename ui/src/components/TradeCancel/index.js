@@ -179,6 +179,7 @@ export default function TradeCancel(props) {
                     height: "auto",
                     marginLeft: 10,
                   }}
+                  loading="eager"
                 />
               </div>
             </button>

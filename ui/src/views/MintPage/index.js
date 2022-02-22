@@ -215,7 +215,12 @@ export default function MintPage(props) {
         <div className="mint_item_image col-12 col-lg-6 d-flex flex-column justify-content-start align-items-center p-1 pt-0 pb-0">
           {received ? (
             <div className="nft_image_container">
-              <img src={image} className="nft_image" alt="nft image" />
+              <img
+                src={image}
+                className="nft_image"
+                alt="nft image"
+                loading="eager"
+              />
             </div>
           ) : (
             <div className="nft_image_container d-flex justify-content-center overflow-hidden">

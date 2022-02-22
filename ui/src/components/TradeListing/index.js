@@ -211,6 +211,7 @@ export default function TradeListing(props) {
                     background: "transparent",
                     margin: -8,
                   }}
+                  loading="eager"
                 />
               </div>
             </button>
@@ -235,6 +236,7 @@ export default function TradeListing(props) {
                     background: "transparent",
                     margin: -8,
                   }}
+                  loading="eager"
                 />
               </div>
             </button>
