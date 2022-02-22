@@ -41,10 +41,13 @@ function getExecuteSaleInfo(tx, ix, index) {
     let buyer = accounts[0]
     let seller = accounts[1]
     accountKeys.forEach((a) => {
-        if (a.pubkey.toBase58() == buyer.toBase58()) {
-            a.signer ? subtype = 'buy' : null
-        } else if (a.pubkey.toBase58() == seller.toBase58()) {
-            a.signer ? subtype = 'accept_offer' : null
+        // if (a.pubkey.toBase58() == buyer.toBase58()) {
+        //     a.signer ? subtype = 'buy' : null
+        // } else if (a.pubkey.toBase58() == seller.toBase58()) {
+        //     a.signer ? subtype = 'accept_offer' : null
+        // }
+        if (a.pubkey.toBase58() == seller.toBase58()) {
+          a.signer ? subtype = 'accept_offer' : null
         }
     })
     let res = new tx_info({
@@ -103,7 +106,7 @@ function getCancelSellInfo(tx, ix, index) {
     return res
 }
 
-async function processLatestTxs(latestTxs) {
+export async function processLatestTxs(latestTxs) {
   let payloads = []
   for (let i = 0; i < latestTxs.length; i++) {
     try {
@@ -146,7 +149,7 @@ async function magicedenV2(until) {
 }
 
 async function main() {
-  let until = 1645497594
+  let until = 1645506132
   while (true) {
     let prev_until = until
     await timer(1000)
