@@ -161,7 +161,7 @@ export default function LaunchzoneMint(props) {
       }
       let final_tx;
 
-      if (whitelist && whitelistedUser) {
+      if (whitelist) {
         final_tx = await mintToken(
           payer,
           candyMachine,

@@ -111,6 +111,16 @@ export async function mintToken(
   let remainingAccounts: any = [];
 
   if (wlMint != null) {
+    if (!wlTokenAccount) {
+      wlTokenAccount = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        wlMint,
+        payer,
+        false
+      );
+    }
+
     remainingAccounts.push({
       pubkey: wlTokenAccount,
       isWritable: true,

@@ -17,8 +17,6 @@ import smb_logo from "../../assets/images/smb_logo.png";
 import { useSelector } from "react-redux";
 import { selectTradingEnabled } from "../../redux/app";
 
-const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
-
 export default function TradeCancel(props) {
   const {
     price,
