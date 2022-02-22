@@ -1,14 +1,23 @@
+exports.stats = {
+  querystring: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['symbol'],
+    required: ['from'],
+    properties: {
+      symbol: { type: 'string' },
+      from: { type: 'string' }
+    }
+  }
+}
+
 exports.topNFTs = {
   querystring: {
     type: 'object',
     additionalProperties: false,
     properties: {
       symbol: { type: 'string' },
-      days: {
-        type: 'integer',
-        maximum: 365,
-        default: 1
-      }
+      from: { type: 'string' }
     }
   }
 }
@@ -120,24 +129,6 @@ exports.days = {
         maximum: 365,
         default: 1
       },
-    }
-  }
-}
-
-exports.floor = {
-  querystring: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['symbol'],
-    properties: {
-      days: {
-        type: 'integer',
-        maximum: 365,
-        default: 1
-      },
-      symbol: {
-        type: 'string',
-      }
     }
   }
 }

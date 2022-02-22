@@ -15,10 +15,9 @@ const helpers = require('./helpers')
 exports.dailyStats = async (req, reply) => {
   try {
     const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
+    const startDate = new Date(query.from);
 
-    const entries = DailyStats.aggregate([
+    const entries = await DailyStats.aggregate([
       { $match: {
         start: { $gte: startDate },
         symbol: query.symbol
@@ -35,7 +34,7 @@ exports.dailyStats = async (req, reply) => {
         tx: 0
       }}
     ])
-    return entries
+    return _.groupBy(entries, "marketplace")
   } catch (err) {
     throw boom.boomify(err)
   }
@@ -44,10 +43,9 @@ exports.dailyStats = async (req, reply) => {
 exports.hourlyStats = async (req, reply) => {
   try {
     const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
+    const startDate = new Date(query.from);
 
-    const entries = HourlyStats.aggregate([
+    const entries = await HourlyStats.aggregate([
       { $match: {
         start: { $gte: startDate },
         symbol: query.symbol
@@ -64,40 +62,7 @@ exports.hourlyStats = async (req, reply) => {
         tx: 0
       }}
     ])
-    return entries
-  } catch (err) {
-    throw boom.boomify(err)
-  }
-}
-
-exports.marketStats = async (req, reply) => {
-  try {
-    const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
-
-    const entries = DailyStats.aggregate([
-      { $match: {
-        start: { $gte: startDate },
-      } },
-      { $group:
-        {
-          _id: {date: "$start"},
-          volume: { $sum: "$volume"},
-          count: { $sum: "$count" },
-        },
-      },
-      { $project:
-        {
-          date: "$_id.date",
-          volume: { $round: ["$volume", 2] },
-          count: 1,
-          _id: 0,
-        }
-      },
-      { $sort: { date: 1 } },
-    ])
-    return entries
+    return _.groupBy(entries, "marketplace")
   } catch (err) {
     throw boom.boomify(err)
   }
@@ -132,85 +97,12 @@ exports.recentCollectionActivity = async (req, reply) => {
   }
 }
 
-exports.allCollections = async (req, reply) => {
-  try {
-    const entries = await Collection.aggregate([
-      helpers.lookupAggregatedStats('alltimestats'),
-      { $addFields: {
-        total_volume: {$round: [{$sum: '$alltimestats.volume'}, 2]},
-      }},
-
-      helpers.lookupAggregatedStats('dailystats', days = 14),
-      { $addFields: {
-        weekly_volume: {$round: [{$sum: '$dailystats.volume'}, 2]},
-      }},
-
-      helpers.lookupAggregatedStats('hourlystats'),
-      { $addFields: {
-        daily_volume: {$round: [{$sum: '$hourlystats.volume'}, 2]},
-      }},
-
-      helpers.lookupAggregatedStats('hourlystats', days = 2, skip = 1, 'pastdaystats'),
-      { $addFields: {
-        past_day_volume: {$round: [{$sum: '$pastdaystats.volume'}, 2]},
-      }},
-
-      { $project: {
-        mint: 0,
-        candyMachineIds: 0,
-        updateAuthorities: 0,
-        alltimestats: 0,
-        dailystats: 0,
-        hourlystats: 0,
-        pastdaystats: 0,
-        __v: 0,
-        _id: 0
-      }}
-    ])
-    return _.sortBy(entries, ['total_volume']).reverse()
-  } catch (err) {
-    throw boom.boomify(err)
-  }
-}
-
-exports.collection = async (req, reply) => {
-  try {
-    
-    let project = { 
-      $project: {
-        candyMachineIds: 0,
-        updateAuthorities: 0,
-        __v: 0,
-        _id: 0
-      }
-    }
-
-    if (!req.query.mint) {
-      project.$project.mint = 0
-    }
-
-    const entries = await Collection.aggregate([
-      { $match: {
-        symbol: req.query.symbol,
-      }},
-
-      helpers.lookupAggregatedStats('alltimestats'),
-      helpers.lookupAggregatedStats('dailystats', days = 14),
-      project
-    ])
-    return entries
-  } catch (err) {
-    throw boom.boomify(err)
-  }
-}
-
 // indexes used: symbol_1_price_-1_date_-1_type_buy
 // indexes used: price_-1_date_-1_type_buy
 exports.topNFTs = async (req, reply) => {
   try {
     const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
+    const startDate = new Date(query.from);
 
     let match = { $match: {
       date: { $gte: startDate },
@@ -237,17 +129,6 @@ exports.topNFTs = async (req, reply) => {
       }
     ])
     return entries
-  } catch (err) {
-    throw boom.boomify(err)
-  }
-}
-
-exports.symbol = async (req, reply) => {
-  try {
-    return Collection.findOne(
-      {mint: req.query.mint},
-      {symbol: 1, _id: 0}
-    )
   } catch (err) {
     throw boom.boomify(err)
   }
@@ -320,60 +201,10 @@ exports.walletHistory = async (req, reply) => {
   }
 }
 
-exports.topTraders = async (req, reply) => {
-  try {
-    const { ...query } = req.query
-    const startDate = new Date()
-    startDate.setUTCHours(0)
-    startDate.setUTCMinutes(0)
-    startDate.setUTCSeconds(0)
-    startDate.setUTCMilliseconds(0)
-
-    let DBCollection = Wallets
-
-    let match = { $match: {
-    } }
-    if (!query.all_time) {
-      DBCollection = DailyWallets
-      match.$match.start = startDate
-    }
-    if (query.symbol) {
-      match.$match.symbol = query.symbol
-    } else {
-      match.$match.symbol = 'all'
-    }
-    if (query.type == 'buyers') {
-      match.$match.type = 'buyer'
-    } else {
-      match.$match.type = 'seller'
-    }
-    return DBCollection.aggregate([
-      match,
-      { $sort: { [query.sortBy]: -1} },
-      { $limit: 25 },
-      { $project:
-        {
-          volume: { $round: ["$volume", 2] },
-          min: { $round: ["$min", 2] },
-          max: { $round: ["$max", 2] },
-          avg: { $round: ["$avg", 2] },
-          wallet: 1,
-          symbol: 1,
-          count: 1,
-          _id: 0,
-        }
-      }
-    ])
-  } catch (err) {
-    throw boom.boomify(err)
-  }
-}
-
 exports.floor = async (req, reply) => {
   try {
     const { ...query } = req.query
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - query.days);
+    const startDate = new Date(query.from);
 
     return Floor.aggregate([
       {$match: {
@@ -408,15 +239,24 @@ exports.floor = async (req, reply) => {
 }
 
 exports.totalMarketVolume = async (req, reply) => {
-  return await Wallets.aggregate([
+  let startDate = new Date();
+  startDate.setDate(startDate.getDate() - 1)
+  console.log(startDate)
+
+  return await Transaction.aggregate([
     {$match: {
-      symbol: 'all'
+      date: {$gte: startDate},
+      type: "buy"
     }},
     {$group : {
-      _id: 0,
-      volume: {$sum: '$volume'},
+      _id: {marketplace: "$marketplace"},
+      volume: {$sum: '$price'},
+      count: {$sum: 1},
     }},
     {$project:{
+      marketplace: "$_id.marketplace",
+      volume: 1,
+      count: 1,
       _id : 0
     }}
   ])
