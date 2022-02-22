@@ -36,10 +36,10 @@ export default function TradePurchase(props) {
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const buyNft = async () => {
-    if (!tradingEnabled) {
-      alert("Trading is temporarily disabled.");
-      return;
-    }
+    // if (!tradingEnabled) {
+    //   alert("Trading is temporarily disabled.");
+    //   return;
+    // }
 
     if (!price) {
       alert("Error fetching item price.");
@@ -115,6 +115,11 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftMagicEden = async () => {
+    if (!tradingEnabled) {
+      alert("Trading on Magic Eden is temporarily disabled.");
+      return;
+    }
+
     setLoading(true);
     try {
       const provider = new anchor.Provider(connection, wallet, {

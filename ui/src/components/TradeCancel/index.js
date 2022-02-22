@@ -39,10 +39,10 @@ export default function TradeCancel(props) {
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const cancelNft = async () => {
-    if (!tradingEnabled) {
-      alert("Trading is temporarily disabled.");
-      return;
-    }
+    // if (!tradingEnabled) {
+    //   alert("Trading is temporarily disabled.");
+    //   return;
+    // }
 
     switch (marketplace) {
       case "magiceden":
@@ -108,6 +108,11 @@ export default function TradeCancel(props) {
     }
   };
   const cancelNftMagicEden = async () => {
+    if (!tradingEnabled) {
+      alert("Trading on Magic Eden is temporarily disabled.");
+      return;
+    }
+
     setLoading(true);
     try {
       const provider = new anchor.Provider(connection, wallet, {

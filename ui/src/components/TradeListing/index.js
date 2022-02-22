@@ -38,10 +38,10 @@ export default function TradeListing(props) {
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const listNft = async (marketplace) => {
-    if (!tradingEnabled) {
-      alert("Trading is temporarily disabled.");
-      return;
-    }
+    // if (!tradingEnabled) {
+    //   alert("Trading is temporarily disabled.");
+    //   return;
+    // }
 
     if (listPrice <= 0) {
       return;
@@ -121,6 +121,11 @@ export default function TradeListing(props) {
     }
   };
   const listNftMagicEden = async () => {
+    if (!tradingEnabled) {
+      alert("Trading on Magic Eden is temporarily disabled.");
+      return;
+    }
+
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
       preflightCommitment: "processed",
