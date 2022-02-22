@@ -22,7 +22,6 @@ import {
   setWalletSellersDay,
   setTopNFTsDay,
   selectTopNFTsDay,
-  setTradingEnabled,
 } from "../../redux/app";
 import { useSelector, useDispatch } from "react-redux";
 import MintPage from "../MintPage";
@@ -49,12 +48,6 @@ import SiteBanner from "../../components/SiteBanner";
 export default function Home(props) {
   const dispatch = useDispatch();
   const location = useLocation();
-
-  // TRADING MASTER SWITCH
-  const trading = true;
-  useEffect(() => {
-    dispatch(setTradingEnabled(trading));
-  }, []);
 
   // BANNER DISPLAY
   const banner = false;

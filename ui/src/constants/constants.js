@@ -42,7 +42,7 @@ export const exchangeApi = {
   },
   solanart: {
     floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
-    itemDetails: `https://solanart.io/search/?token=`,
+    itemDetails: `https://solanart.io/nft/`,
   },
   smb: {
     items: `https://market.solanamonkey.business/api/items`,

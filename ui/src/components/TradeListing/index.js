@@ -12,7 +12,11 @@ import { listSolanart } from "../../exchanges/solanart";
 import { useHistory, useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 import { useSelector } from "react-redux";
-import { selectTradingEnabled } from "../../redux/app";
+import {
+  selectTradingEnabled,
+  selectTradingME,
+  selectTradingSA,
+} from "../../redux/trade";
 
 export default function TradeListing(props) {
   const {
@@ -30,6 +34,8 @@ export default function TradeListing(props) {
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
   const tradingEnabled = useSelector(selectTradingEnabled);
+  const tradingME = useSelector(selectTradingME);
+  const tradingSA = useSelector(selectTradingSA);
 
   const lowerBoundry = floorDetails?.floor * 0.8;
   const [listPrice, setListPrice] = useState(0);
@@ -49,9 +55,7 @@ export default function TradeListing(props) {
 
     switch (marketplace) {
       case "magiceden":
-        // listNftMagicEden();
-        const meLink = exchangeApi.magiceden.itemDetails + item.mint;
-        window.open(meLink, "_blank").focus();
+        listNftMagicEden();
         break;
       case "solanart":
         listNftSolanart();
@@ -62,6 +66,12 @@ export default function TradeListing(props) {
     }
   };
   const listNftSolanart = async () => {
+    if (!tradingSA) {
+      const saLink = exchangeApi.solanart.itemDetails + item.mint;
+      window.open(saLink, "_blank").focus();
+      return;
+    }
+
     setLoading(true);
     try {
       const makerString = wallet.publicKey.toBase58();
@@ -122,6 +132,12 @@ export default function TradeListing(props) {
     }
   };
   const listNftMagicEden = async () => {
+    if (!tradingME) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
+      return;
+    }
+
     setLoading(true);
     const provider = new anchor.Provider(connection, wallet, {
       preflightCommitment: "processed",

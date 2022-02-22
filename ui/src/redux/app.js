@@ -26,7 +26,6 @@ const initialState = {
   walletSellersDay: [],
   topNFTsDay: [],
   collectionMints: [],
-  tradingEnabled: true,
 };
 
 // Slice
@@ -106,9 +105,6 @@ const app = createSlice({
     setCollectionMints: (state, action) => {
       state.collectionMints = action.payload;
     },
-    setTradingEnabled: (state, action) => {
-      state.tradingEnabled = action.payload;
-    },
   },
 });
 
@@ -138,7 +134,6 @@ export const {
   setWalletSellersDay,
   setTopNFTsDay,
   setCollectionMints,
-  setTradingEnabled,
 } = app.actions;
 
 // Selectors
@@ -166,7 +161,6 @@ export const selectWalletBuyersDay = (state) => state.app.walletBuyersDay;
 export const selectWalletSellersDay = (state) => state.app.walletSellersDay;
 export const selectTopNFTsDay = (state) => state.app.topNFTsDay;
 export const selectCollectionMints = (state) => state.app.collectionMints;
-export const selectTradingEnabled = (state) => state.app.tradingEnabled;
 
 // Reducer
 export default app.reducer;

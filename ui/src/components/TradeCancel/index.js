@@ -15,7 +15,11 @@ import ReactGA from "react-ga";
 import { exchangeApi } from "../../constants/constants";
 import smb_logo from "../../assets/images/smb_logo.png";
 import { useSelector } from "react-redux";
-import { selectTradingEnabled } from "../../redux/app";
+import {
+  selectTradingEnabled,
+  selectTradingME,
+  selectTradingSA,
+} from "../../redux/trade";
 
 export default function TradeCancel(props) {
   const {
@@ -33,6 +37,8 @@ export default function TradeCancel(props) {
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
   const tradingEnabled = useSelector(selectTradingEnabled);
+  const tradingME = useSelector(selectTradingME);
+  const tradingSA = useSelector(selectTradingSA);
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
@@ -44,9 +50,7 @@ export default function TradeCancel(props) {
 
     switch (marketplace) {
       case "magiceden":
-        // cancelNftMagicEden();
-        const meLink = exchangeApi.magiceden.itemDetails + item.mint;
-        window.open(meLink, "_blank").focus();
+        cancelNftMagicEden();
         break;
       case "solanart":
         cancelNftSolanart();
@@ -57,6 +61,12 @@ export default function TradeCancel(props) {
     }
   };
   const cancelNftSolanart = async () => {
+    if (!tradingSA) {
+      const saLink = exchangeApi.solanart.itemDetails + item.mint;
+      window.open(saLink, "_blank").focus();
+      return;
+    }
+
     setLoading(true);
     try {
       const taker = wallet.publicKey;
@@ -108,8 +118,9 @@ export default function TradeCancel(props) {
     }
   };
   const cancelNftMagicEden = async () => {
-    if (!tradingEnabled) {
-      alert("Trading on Magic Eden is temporarily disabled.");
+    if (!tradingME) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
       return;
     }
 

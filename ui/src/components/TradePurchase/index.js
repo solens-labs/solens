@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectBalance, selectTradingEnabled } from "../../redux/app";
+import { selectBalance } from "../../redux/app";
+import {
+  selectTradingEnabled,
+  selectTradingME,
+  selectTradingSA,
+} from "../../redux/trade";
 import * as anchor from "@project-serum/anchor";
 import {
   magicEden,
@@ -32,6 +37,8 @@ export default function TradePurchase(props) {
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
   const tradingEnabled = useSelector(selectTradingEnabled);
+  const tradingME = useSelector(selectTradingME);
+  const tradingSA = useSelector(selectTradingSA);
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
@@ -55,9 +62,7 @@ export default function TradePurchase(props) {
 
     switch (marketplace) {
       case "magiceden":
-        // buyNftMagicEden();
-        const meLink = exchangeApi.magiceden.itemDetails + item.mint;
-        window.open(meLink, "_blank").focus();
+        buyNftMagicEden();
         break;
       case "solanart":
         buyNftSolanart();
@@ -68,6 +73,12 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftSolanart = async () => {
+    if (!tradingSA) {
+      const saLink = exchangeApi.solanart.itemDetails + item.mint;
+      window.open(saLink, "_blank").focus();
+      return;
+    }
+
     setLoading(true);
     try {
       const taker = wallet.publicKey;
@@ -117,6 +128,12 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftMagicEden = async () => {
+    if (!tradingME) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
+      return;
+    }
+
     setLoading(true);
     try {
       const provider = new anchor.Provider(connection, wallet, {
