@@ -2,8 +2,7 @@ exports.stats = {
   querystring: {
     type: 'object',
     additionalProperties: false,
-    required: ['symbol'],
-    required: ['from'],
+    required: ['from', 'symbol'],
     properties: {
       symbol: { type: 'string' },
       from: { type: 'string' }
