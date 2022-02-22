@@ -43,6 +43,7 @@ import Apply from "../Apply";
 import User from "../User";
 import CollectionTrade from "../CollectionTrade";
 import LaunchzoneMint from "../LaunchzoneMint";
+import SiteBanner from "../../components/SiteBanner";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -230,6 +231,7 @@ export default function Home(props) {
   return (
     <div className="app col-12">
       <div className="navigation col-12">
+        <SiteBanner />
         <Navigation />
       </div>
 
