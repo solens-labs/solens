@@ -37,7 +37,7 @@ class tx_info extends Assignable {
 function getExecuteSaleInfo(tx, ix, index) {
     let accountKeys = tx.transaction.message.accountKeys
     let accounts = ix.accounts;
-    let subtype = 'unknown';
+    let subtype = null;
     let buyer = accounts[0]
     let seller = accounts[1]
     accountKeys.forEach((a) => {
@@ -46,11 +46,12 @@ function getExecuteSaleInfo(tx, ix, index) {
         // } else if (a.pubkey.toBase58() == seller.toBase58()) {
         //     a.signer ? subtype = 'accept_offer' : null
         // }
-        if (a.pubkey.toBase58() == seller.toBase58()) {
-          a.signer ? subtype = 'accept_offer' : null
-        }
+      if (a.pubkey.toBase58() == seller.toBase58()) {
+        a.signer ? subtype = 'accept_offer' : null
+      }
     })
-    let res = new tx_info({
+    if (subtype) {
+      return new tx_info({
         mint: accounts[4].toBase58(),
         owner: accounts[1].toBase58(),
         new_owner: accounts[0].toBase58(),
@@ -62,8 +63,21 @@ function getExecuteSaleInfo(tx, ix, index) {
         subtype: subtype,
         ix: index,
         tx: tx.transaction.signatures[0],
-    })
-    return res
+      })
+    } else {
+      return new tx_info({
+        mint: accounts[4].toBase58(),
+        owner: accounts[1].toBase58(),
+        new_owner: accounts[0].toBase58(),
+        price: new BN(base58.decode(ix.data).slice(10, 18), 'le').toNumber() / LAMPORTS_PER_SOL,
+        date: tx.blockTime * 1000 + index,
+        marketplace: 'magiceden',
+        version: '2',
+        type: 'buy',
+        ix: index,
+        tx: tx.transaction.signatures[0],
+      })
+    }
 }
 
 function getSellInfo(tx, ix, index) {
