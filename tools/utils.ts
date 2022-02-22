@@ -127,10 +127,12 @@ export async function uploadTxToDB(payload: any) {
   const COLLECTION_URI = 'http://localhost:3000/collections/'
   if (payload.mint) {
     try {
-      const symbol = (await axios.get(`${COLLECTION_URI}${payload.mint}`)).data
-      if (symbol) {
-        payload.symbol = symbol.symbol
-      }
+      try {
+        const symbol = (await axios.get(`${COLLECTION_URI}${payload.mint}`)).data
+        if (symbol) {
+          payload.symbol = symbol.symbol
+        }
+      } catch {}
       await axios.post(
         TRANSACTION_URI,
         payload,
