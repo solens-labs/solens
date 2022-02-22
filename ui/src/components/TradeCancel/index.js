@@ -14,6 +14,8 @@ import { useHistory } from "react-router";
 import ReactGA from "react-ga";
 import { exchangeApi } from "../../constants/constants";
 import smb_logo from "../../assets/images/smb_logo.png";
+import { useSelector } from "react-redux";
+import { selectTradingEnabled } from "../../redux/app";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
@@ -32,10 +34,16 @@ export default function TradeCancel(props) {
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
+  const tradingEnabled = useSelector(selectTradingEnabled);
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const cancelNft = async () => {
+    if (!tradingEnabled) {
+      alert("Trading is temporarily disabled.");
+      return;
+    }
+
     switch (marketplace) {
       case "magiceden":
         cancelNftMagicEden();

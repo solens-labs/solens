@@ -11,6 +11,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
 import { useHistory, useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
+import { useSelector } from "react-redux";
+import { selectTradingEnabled } from "../../redux/app";
 
 export default function TradeListing(props) {
   const {
@@ -27,6 +29,7 @@ export default function TradeListing(props) {
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
+  const tradingEnabled = useSelector(selectTradingEnabled);
 
   const lowerBoundry = floorDetails?.floor * 0.8;
   const [listPrice, setListPrice] = useState(0);
@@ -35,6 +38,11 @@ export default function TradeListing(props) {
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const listNft = async (marketplace) => {
+    if (!tradingEnabled) {
+      alert("Trading is temporarily disabled.");
+      return;
+    }
+
     if (listPrice <= 0) {
       return;
     }

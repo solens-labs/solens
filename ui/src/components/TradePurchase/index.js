@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectBalance } from "../../redux/app";
+import { selectBalance, selectTradingEnabled } from "../../redux/app";
 import * as anchor from "@project-serum/anchor";
 import {
   magicEden,
@@ -31,10 +31,16 @@ export default function TradePurchase(props) {
   const wallet = useWallet();
   const { sendTransaction } = useWallet();
   const { connection } = useConnection();
+  const tradingEnabled = useSelector(selectTradingEnabled);
 
   const [txHashAnalytics, setTxHashAnalytics] = useState("");
 
   const buyNft = async () => {
+    if (!tradingEnabled) {
+      alert("Trading is temporarily disabled.");
+      return;
+    }
+
     if (!price) {
       alert("Error fetching item price.");
       return;
