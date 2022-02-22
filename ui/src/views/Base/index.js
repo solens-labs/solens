@@ -56,6 +56,9 @@ export default function Home(props) {
     dispatch(setTradingEnabled(trading));
   }, []);
 
+  // BANNER DISPLAY
+  const banner = false;
+
   useEffect(() => {
     const debug = false;
     dispatch(setDebugMode(debug));
@@ -238,7 +241,7 @@ export default function Home(props) {
   return (
     <div className="app col-12">
       <div className="navigation col-12">
-        <SiteBanner />
+        {banner && <SiteBanner />}
         <Navigation />
       </div>
 
