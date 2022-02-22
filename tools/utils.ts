@@ -127,7 +127,6 @@ export async function uploadTxToDB(payload: any) {
   const COLLECTION_URI = 'http://localhost:3000/collections/'
   if (payload.mint) {
     try {
-      console.log(payload)
       const symbol = (await axios.get(`${COLLECTION_URI}${payload.mint}`)).data
       if (symbol) {
         payload.symbol = symbol.symbol
