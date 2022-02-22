@@ -45,7 +45,6 @@ export default function TradeCancel(props) {
   const cancelNft = async () => {
     if (!tradingEnabled) {
       alert("Trading is temporarily disabled.");
-      return;
     }
 
     switch (marketplace) {
@@ -61,7 +60,7 @@ export default function TradeCancel(props) {
     }
   };
   const cancelNftSolanart = async () => {
-    if (!tradingSA) {
+    if (!tradingSA || !tradingEnabled) {
       const saLink = exchangeApi.solanart.itemDetails + item.mint;
       window.open(saLink, "_blank").focus();
       return;
@@ -118,7 +117,7 @@ export default function TradeCancel(props) {
     }
   };
   const cancelNftMagicEden = async () => {
-    if (!tradingME) {
+    if (!tradingME || !tradingEnabled) {
       const meLink = exchangeApi.magiceden.itemDetails + item.mint;
       window.open(meLink, "_blank").focus();
       return;

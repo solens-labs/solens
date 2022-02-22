@@ -1,6 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-// TRADING MASTER SWITCHES
 
+// TRADING MASTER SWITCHES
 // Initial State
 const initialState = {
   tradingEnabled: true,

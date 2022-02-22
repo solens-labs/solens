@@ -45,7 +45,6 @@ export default function TradePurchase(props) {
   const buyNft = async () => {
     if (!tradingEnabled) {
       alert("Trading is temporarily disabled.");
-      return;
     }
 
     if (!price) {
@@ -73,7 +72,7 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftSolanart = async () => {
-    if (!tradingSA) {
+    if (!tradingSA || !tradingEnabled) {
       const saLink = exchangeApi.solanart.itemDetails + item.mint;
       window.open(saLink, "_blank").focus();
       return;
@@ -128,7 +127,7 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftMagicEden = async () => {
-    if (!tradingME) {
+    if (!tradingME || !tradingEnabled) {
       const meLink = exchangeApi.magiceden.itemDetails + item.mint;
       window.open(meLink, "_blank").focus();
       return;

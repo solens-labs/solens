@@ -46,7 +46,6 @@ export default function TradeListing(props) {
   const listNft = async (marketplace) => {
     if (!tradingEnabled) {
       alert("Trading is temporarily disabled.");
-      return;
     }
 
     if (listPrice <= 0) {
@@ -66,7 +65,7 @@ export default function TradeListing(props) {
     }
   };
   const listNftSolanart = async () => {
-    if (!tradingSA) {
+    if (!tradingSA || !tradingEnabled) {
       const saLink = exchangeApi.solanart.itemDetails + item.mint;
       window.open(saLink, "_blank").focus();
       return;
@@ -132,7 +131,7 @@ export default function TradeListing(props) {
     }
   };
   const listNftMagicEden = async () => {
-    if (!tradingME) {
+    if (!tradingME || !tradingEnabled) {
       const meLink = exchangeApi.magiceden.itemDetails + item.mint;
       window.open(meLink, "_blank").focus();
       return;
