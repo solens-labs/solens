@@ -23,9 +23,9 @@ const range = (len) => {
 const addTransaction = (transaction, prevPrice) => {
   const timeSince = getTimeSince(transaction["date"]);
   const date = <span>{timeSince}</span>;
+  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
 
   const seller = transaction["seller"] || "";
-  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
   const sellerLink = (
     <a
       href={explorerLink("account", transaction["seller"])}
@@ -48,6 +48,16 @@ const addTransaction = (transaction, prevPrice) => {
         {shortenAddress(transaction["buyer"])}
       </a>
     );
+
+  const txLink = (
+    <a
+      href={explorerLink("tx", transaction["tx"])}
+      style={{ textDecoration: "none", color: themeColors[0] }}
+      target="_blank"
+    >
+      {transaction["tx"].slice(0, 6) + "..."}
+    </a>
+  );
 
   const txType = transaction["type"];
   let symbol = "";
@@ -143,6 +153,7 @@ const addTransaction = (transaction, prevPrice) => {
     buyer: buyer,
     seller: seller,
     marketplace: marketplace,
+    tx: txLink,
   };
 };
 

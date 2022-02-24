@@ -149,6 +149,7 @@ export default function MintPage(props) {
       const apiRequest = api.server.mintHistory + address;
       const request = axios.get(apiRequest).then((response) => {
         const history = response.data;
+        console.log(history);
 
         if (history.length > 0) {
           const data = convertActivityData(history);

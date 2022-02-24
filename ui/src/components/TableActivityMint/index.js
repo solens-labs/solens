@@ -15,6 +15,7 @@ export default function ActivityMintTable(props) {
       buyerLink: "--",
       sellerLink: "--",
       date: "--",
+      tx: "--",
     },
     {
       marketplace: "--",
@@ -24,6 +25,7 @@ export default function ActivityMintTable(props) {
       buyerLink: "--",
       sellerLink: "--",
       date: "--",
+      tx: "--",
     },
   ];
 
@@ -90,6 +92,10 @@ export default function ActivityMintTable(props) {
           else if (a1 > b1) return -1;
           else return 0;
         },
+      },
+      {
+        Header: "TX",
+        accessor: "tx",
       },
     ],
     []
