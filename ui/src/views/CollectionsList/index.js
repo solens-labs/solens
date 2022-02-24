@@ -55,7 +55,7 @@ export default function CollectionsList(props) {
   };
 
   return (
-    <div className="collection_list d-flex flex-column align-items-center col-12 p-5 pt-0 pb-0 mt-4 mb-5">
+    <div className="collection_list d-flex flex-column align-items-center col-12 p-1 p-lg-3 p-xl-5 pt-0 pt-lg-0 pt-xl-0 pb-0 mt-4 mb-5">
       <Helmet>
         <title>Solens - Collections</title>
         <meta

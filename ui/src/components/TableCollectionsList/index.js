@@ -42,7 +42,7 @@ export default function ActivityCollectionTable(props) {
       {
         Header: (
           <h5 className="table_header">
-            VOLUME <span className="collection_stats_days slim">(1d)</span>
+            VOL <span className="collection_stats_days slim">(1d)</span>
           </h5>
         ),
         accessor: "volumeDay",
@@ -50,7 +50,7 @@ export default function ActivityCollectionTable(props) {
       {
         Header: (
           <h5 className="table_header">
-            VOLUME <span className="collection_stats_days slim">(1w)</span>
+            VOL <span className="collection_stats_days slim">(1w)</span>
           </h5>
         ),
         accessor: "volumeWeek",
@@ -58,14 +58,14 @@ export default function ActivityCollectionTable(props) {
       {
         Header: (
           <h5 className="table_header">
-            VOLUME <span className="collection_stats_days slim">(ALL)</span>
+            VOL <span className="collection_stats_days slim">(ALL)</span>
           </h5>
         ),
         accessor: "volumeTotal",
       },
       //   {
-      //     Header: <h5 className="table_header">SUPPLY</h5>,
-      //     accessor: "supply",
+      //     Header: <h5 className="table_header">FLOOR</h5>,
+      //     accessor: "floor",
       //   },
       {
         Header: <h5 className="table_header">LAUNCHED</h5>,

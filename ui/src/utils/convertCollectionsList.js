@@ -108,13 +108,27 @@ const addCollection = (collection) => {
     </a>
   );
 
+  const volumeDay = collection["daily_volume"].toLocaleString("en", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+  const volumeWeek = collection["weekly_volume"].toLocaleString("en", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  const volumeTotal = collection["total_volume"].toLocaleString("en", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
   return {
     image: image,
     name: name,
     dailyChange: dailyChangeColored,
-    volumeDay: collection["daily_volume"].toFixed(2),
-    volumeWeek: collection["weekly_volume"].toFixed(0),
-    volumeTotal: collection["total_volume"].toFixed(0),
+    defaultSorter: Number(collection["daily_volume"].toFixed(2)),
+    volumeDay: collection["daily_volume"].toFixed(2) + " ◎",
+    volumeWeek: collection["weekly_volume"].toFixed(0) + " ◎",
+    volumeTotal: collection["total_volume"].toFixed(0) + " ◎",
     supply: collection["supply"],
     date: launch,
     launch: daysLaunched,
@@ -133,5 +147,14 @@ export default function convertData(collections) {
   };
 
   const exportedData = makeDataLevel();
+
+  const defaultSorter = (a, b) => {
+    if (a.defaultSorter < b.defaultSorter) return 1;
+    else if (a.defaultSorter > b.defaultSorter) return -1;
+    else return 0;
+  };
+
+  const sortedExport = exportedData.sort(defaultSorter);
+
   return exportedData;
 }
