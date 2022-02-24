@@ -69,8 +69,7 @@ export const launch_collections = [
   },
   {
     name: "Rhino Savanna NFT",
-    image:
-      "https://gateway.pinata.cloud/ipfs/QmReu1CiY3J2o7LDSmxKZz5v6CA48Lsv7PYV9q5Dc3Md5w",
+    image: "https://arweave.net/DFc3OQlV2hW9Jdy_Tspv1SYtvyDgW6UUgawxoXsaSSM",
     candyMachineID: "",
     wl: false,
     wlToken: "",

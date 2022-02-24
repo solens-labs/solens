@@ -44,6 +44,7 @@ import User from "../User";
 import CollectionTrade from "../CollectionTrade";
 import LaunchzoneMint from "../LaunchzoneMint";
 import SiteBanner from "../../components/SiteBanner";
+import CollectionsList from "../CollectionsList";
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -244,6 +245,7 @@ export default function Home(props) {
           <Route exact strict path="/launch" component={Launchzone} />
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
+          <Route path="/stats" component={CollectionsList} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/nfts/:name" component={CollectionTrade} />
           <Route path="/wallets" component={Wallets} />

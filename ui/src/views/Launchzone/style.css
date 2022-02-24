@@ -4,6 +4,16 @@
   padding: 5px 30px;
   min-width: 200px;
 }
+.connect_button2 {
+  background: linear-gradient(
+    -45deg,
+    rgba(65, 37, 156, 0.6),
+    rgba(134, 64, 117, 0.6) 120%
+  );
+  border-radius: 15px;
+  padding: 5px 30px;
+  /* min-width: 200px; */
+}
 
 .connect_button:hover {
   background: linear-gradient(

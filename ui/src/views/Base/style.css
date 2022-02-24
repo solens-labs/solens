@@ -147,7 +147,9 @@
 }
 
 .activity_image {
-  max-height: 70px;
+  height: 70px;
+  width: 70px;
+  object-fit: cover;
   border: 1px solid black;
   border-radius: 15px;
   margin-bottom: 5px;

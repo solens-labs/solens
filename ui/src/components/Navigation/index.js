@@ -21,6 +21,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ListIcon from "@mui/icons-material/List";
 import HomeIcon from "@mui/icons-material/Home";
 
 const Navigation = (props) => {
@@ -109,6 +110,20 @@ const Navigation = (props) => {
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
                 collections
+              </h1>
+            </div>
+          </Link>
+          <Link to="/stats" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container">
+              <div className="d-none d-lg-block">
+                <ListIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: themeColors[0] }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+                stats
               </h1>
             </div>
           </Link>

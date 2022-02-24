@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Loader from "../../components/Loader";
 import "./style.css";
-import { collections } from "../../constants/constants";
+// import { collections } from "../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -22,7 +22,7 @@ import ReactGA from "react-ga";
 import CollectionCardMobile from "../../components/CardCollectionMobile";
 import { Helmet } from "react-helmet";
 
-export default function CollectionList(props) {
+export default function CollectionsGrid(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const allCollections = useSelector(selectAllCollections);
@@ -94,7 +94,7 @@ export default function CollectionList(props) {
   return (
     <div className="collection_list d-flex flex-column align-items-center col-12 mt-4 mb-5">
       <Helmet>
-        <title>Solens - Collections</title>
+        <title>Solens - Stats</title>
         <meta
           name="description"
           content="Explore and trade Solana NFT Collections. Get analytics, recent activity, and more."
