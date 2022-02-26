@@ -179,7 +179,6 @@ exports.walletHistory = async (req, reply) => {
         ]
       } },
       { $sort: { date: -1} },
-      { $limit: 10 },
       { $project:
         {
           seller : "$owner",
@@ -187,7 +186,6 @@ exports.walletHistory = async (req, reply) => {
           date: 1,
           symbol: 1,
           mint: 1,
-          type: helpers.projectTypes(),
           tx: 1,
           marketplace: 1,
           price: { $round: ["$price", 2] },
