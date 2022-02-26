@@ -179,6 +179,8 @@ exports.walletHistory = async (req, reply) => {
         ]
       } },
       { $sort: { date: -1} },
+      { $skip: req.query.skip },
+      { $limit: req.query.limit },
       { $project:
         {
           seller : "$owner",

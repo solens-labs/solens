@@ -94,9 +94,19 @@ exports.walletHistory = {
   querystring: {
     type: 'object',
     additionalProperties: false,
-    required: ['wallet'],
+    required: ['wallet', 'skip', 'limit'],
     properties: {
       wallet: { type: 'string' },
+      skip: {
+        type: 'integer',
+        maximum: 10,
+        default: 0
+      },
+      limit: {
+        type: 'integer',
+        maximum: 10,
+        default: 10
+      },
     }
   }
 }
