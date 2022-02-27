@@ -169,7 +169,7 @@ export const marketplaceSelectV2 = (unstylized) => {
       marketplace = "Magic Eden 1";
       break;
     case "magicedenV2":
-      marketplace = "Magic Eden 2";
+      marketplace = "Magic Eden V2";
       break;
     case "solanart":
       marketplace = "Solanart";

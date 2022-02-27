@@ -149,7 +149,7 @@ export default function convertData(collections) {
   };
 
   const exportedData = makeDataLevel();
-  console.log({ exportedData });
+  // console.log({ exportedData });
 
   const tableSorter = (a, b) => {
     const type = "volumeDay";
@@ -167,7 +167,7 @@ export default function convertData(collections) {
   };
 
   const sortedExport = exportedData.sort(tableSorter);
-  console.log({ sortedExport });
+  // console.log({ sortedExport });
 
   return exportedData;
 }

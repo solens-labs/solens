@@ -138,7 +138,6 @@ export default function MintPage(props) {
 
     const backendDetails = await getListedInfoFromBackend(address);
     if (backendDetails) {
-      console.log(backendDetails);
       setListed(true);
       setListedDetails(backendDetails);
     }
@@ -351,7 +350,17 @@ export default function MintPage(props) {
           </AccordionSummary>
           <AccordionDetails>
             <div className="col-12">
-              <ActivityTable data={activity} />
+              <ActivityTable
+                data={activity}
+                getColumnProps={(column) => ({
+                  // onClick: () => alert("Column!"),
+                })}
+                getCellProps={(cellInfo) => ({
+                  style: {
+                    // fontWeight: 100,
+                  },
+                })}
+              />
             </div>
           </AccordionDetails>
         </Accordion>
