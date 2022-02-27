@@ -149,8 +149,27 @@ export const marketplaceSelect = (unstylized) => {
   let marketplace = "";
   switch (unstylized) {
     case "magiceden":
-      //   setMarketplace("Magic Eden");
       marketplace = "Magic Eden";
+      break;
+    case "solanart":
+      marketplace = "Solanart";
+      break;
+    case "smb":
+      marketplace = "SMB Market";
+      break;
+  }
+
+  return marketplace;
+};
+
+export const marketplaceSelectV2 = (unstylized) => {
+  let marketplace = "";
+  switch (unstylized) {
+    case "magiceden":
+      marketplace = "Magic Eden 1";
+      break;
+    case "magicedenV2":
+      marketplace = "Magic Eden 2";
       break;
     case "solanart":
       marketplace = "Solanart";

@@ -9,7 +9,7 @@ import OfferIcon from "@mui/icons-material/AttachMoney";
 import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
-import { marketplaceSelect } from "./collectionStats";
+import { marketplaceSelectV2 } from "./collectionStats";
 import { getTimeSince } from "./getTimeSince";
 
 const range = (len) => {
@@ -23,7 +23,7 @@ const range = (len) => {
 const addTransaction = (transaction, prevPrice) => {
   const timeSince = getTimeSince(transaction["date"]);
   const date = <span>{timeSince}</span>;
-  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
+  const marketplace = marketplaceSelectV2(transaction["marketplace"]) || "";
 
   const seller = transaction["seller"] || "";
   const sellerLink = (

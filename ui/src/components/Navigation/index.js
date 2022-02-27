@@ -82,7 +82,9 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
+                home
+              </h1>
             </div>
           </Link>
           <Link to="/launch" style={{ textDecoration: "none" }}>
@@ -94,7 +96,7 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 launchzone
               </h1>
             </div>
@@ -108,7 +110,7 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 collections
               </h1>
             </div>
@@ -122,7 +124,7 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 stats
               </h1>
             </div>
@@ -136,7 +138,7 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 wallets
               </h1>
             </div>
@@ -150,7 +152,9 @@ const Navigation = (props) => {
                   style={{ fill: themeColors[0] }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">sell</h1>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
+                sell
+              </h1>
             </div>
           </Link>
         </div>

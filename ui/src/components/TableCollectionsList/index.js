@@ -5,6 +5,26 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
 
+const parseNumber = (item) => {
+  var sliced = item.slice(0, item.length - 2);
+  var slicedNumber = parseFloat(sliced.replace(/,/g, ""));
+  return slicedNumber;
+};
+
+const numberSorter = (a, b) => {
+  var a1 = a.volumeDay.slice(0, a.volumeDay.length - 2);
+  var b1 = b.volumeDay.slice(0, b.volumeDay.length - 2);
+
+  var pattern = /[,]/g;
+
+  a1 = +a1.replace(pattern, "");
+  b1 = +b1.replace(pattern, "");
+
+  if (a1 < b1) return 1;
+  else if (a1 > b1) return -1;
+  else return 0;
+};
+
 export default function ActivityCollectionTable(props) {
   const { data } = props;
 
@@ -46,6 +66,7 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeDay",
+        sortMethod: () => numberSorter(),
       },
       {
         Header: (

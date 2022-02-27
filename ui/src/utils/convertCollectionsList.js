@@ -108,27 +108,29 @@ const addCollection = (collection) => {
     </a>
   );
 
-  const volumeDay = collection["daily_volume"].toLocaleString("en", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  });
-  const volumeWeek = collection["weekly_volume"].toLocaleString("en", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-  const volumeTotal = collection["total_volume"].toLocaleString("en", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
+  const volumeDay =
+    collection["daily_volume"].toLocaleString("en", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }) + " ◎";
+  const volumeWeek =
+    collection["weekly_volume"].toLocaleString("en", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }) + " ◎";
+  const volumeTotal =
+    collection["total_volume"].toLocaleString("en", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }) + " ◎";
 
   return {
     image: image,
     name: name,
     dailyChange: dailyChangeColored,
-    defaultSorter: Number(collection["daily_volume"].toFixed(2)),
-    volumeDay: collection["daily_volume"].toFixed(2) + " ◎",
-    volumeWeek: collection["weekly_volume"].toFixed(0) + " ◎",
-    volumeTotal: collection["total_volume"].toFixed(0) + " ◎",
+    volumeDay: volumeDay,
+    volumeWeek: volumeWeek,
+    volumeTotal: volumeTotal,
     supply: collection["supply"],
     date: launch,
     launch: daysLaunched,
@@ -147,14 +149,25 @@ export default function convertData(collections) {
   };
 
   const exportedData = makeDataLevel();
+  console.log({ exportedData });
 
-  const defaultSorter = (a, b) => {
-    if (a.defaultSorter < b.defaultSorter) return 1;
-    else if (a.defaultSorter > b.defaultSorter) return -1;
+  const tableSorter = (a, b) => {
+    const type = "volumeDay";
+
+    var a1 = a[type].slice(0, a[type].length - 2);
+    var b1 = b[type].slice(0, b[type].length - 2);
+
+    var pattern = /[,]/g;
+    a1 = +a1.replace(pattern, "");
+    b1 = +b1.replace(pattern, "");
+
+    if (a1 < b1) return 1;
+    else if (a1 > b1) return -1;
     else return 0;
   };
 
-  const sortedExport = exportedData.sort(defaultSorter);
+  const sortedExport = exportedData.sort(tableSorter);
+  console.log({ sortedExport });
 
   return exportedData;
 }

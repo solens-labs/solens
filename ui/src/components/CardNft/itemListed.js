@@ -92,7 +92,7 @@ export default function NftCard(props) {
                 // </a>
               )}
 
-              {listedMP === "magiceden" && (
+              {(listedMP === "magiceden" || listedMP === "magicedenV2") && (
                 // <a
                 //   href={links?.magiceden}
                 //   style={{

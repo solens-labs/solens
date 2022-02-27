@@ -66,12 +66,6 @@ export default function CollectionsList(props) {
 
       <h1>{collections.length !== 0 && collections.length} Collections</h1>
 
-      {collections.length === 0 && (
-        <div className="mt-5 mb-5">
-          <Loader />
-        </div>
-      )}
-
       <div className="chartbox col-12 d-flex flex-row flex-wrap justify-content-center mt-4">
         <CollectionsTable data={collections} />
       </div>

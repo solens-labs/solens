@@ -87,6 +87,7 @@ export default function User(props) {
         api.server.walletListings + wallet.publicKey.toBase58();
       const fetchListed = axios.get(apiRequest).then(async (response) => {
         const items = response.data;
+        console.log(items);
         setListedItems(items);
         const intitialItems = items.slice(0, 20);
         const intitialMetadata = await fetchItemsMetadata([], intitialItems);
