@@ -122,3 +122,18 @@ exports.projectTypes = () => {
     }
   }
 }
+
+exports.projectMarketplaces = () => {
+  return {
+    $switch:
+    {
+      branches: [
+        {
+          case: { $eq : [ "$version", 2 ] },
+          then: { $concat: ["$marketplace", "V", {$toString: "$version"}] }
+        }
+      ],
+      default: "$marketplace"
+    }
+  }
+}
