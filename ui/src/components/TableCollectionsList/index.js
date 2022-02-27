@@ -65,7 +65,7 @@ export default function ActivityCollectionTable(props) {
       {
         Header: (
           <h5 className="table_header">
-            CHANGE <span className="collection_stats_days slim">(1d)</span>
+            VOL <span className="collection_stats_days slim">(1d %)</span>
           </h5>
         ),
         accessor: "dailyChange",
