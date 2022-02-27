@@ -25,8 +25,16 @@ const numberSorter = (a, b) => {
   else return 0;
 };
 
+const defaultPropGetter = () => ({});
+
 export default function ActivityCollectionTable(props) {
-  const { data } = props;
+  const {
+    data,
+    getHeaderProps = defaultPropGetter,
+    getColumnProps = defaultPropGetter,
+    getRowProps = defaultPropGetter,
+    getCellProps = defaultPropGetter,
+  } = props;
 
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,10 +54,13 @@ export default function ActivityCollectionTable(props) {
       {
         Header: "",
         accessor: "image",
+        minWidth: 95,
+        maxWidth: 95,
       },
       {
         Header: <h5 className="table_header">COLLECTION</h5>,
         accessor: "name",
+        minWidth: 200,
       },
       {
         Header: (
@@ -58,6 +69,18 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "dailyChange",
+        minWidth: 135,
+        maxWidth: 135,
+        Cell: (row) => {
+          return (
+            <span style={{ color: `${row.value > 0 ? "green" : "red"}` }}>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }) + " %"}
+            </span>
+          );
+        },
       },
       {
         Header: (
@@ -66,7 +89,18 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeDay",
-        sortMethod: () => numberSorter(),
+        minWidth: 135,
+        maxWidth: 135,
+        Cell: (row) => {
+          return (
+            <span>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }) + " ◎"}
+            </span>
+          );
+        },
       },
       {
         Header: (
@@ -75,6 +109,18 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeWeek",
+        minWidth: 135,
+        maxWidth: 135,
+        Cell: (row) => {
+          return (
+            <span>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }) + " ◎"}
+            </span>
+          );
+        },
       },
       {
         Header: (
@@ -83,6 +129,18 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeTotal",
+        minWidth: 135,
+        maxWidth: 135,
+        Cell: (row) => {
+          return (
+            <span>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }) + " ◎"}
+            </span>
+          );
+        },
       },
       //   {
       //     Header: <h5 className="table_header">FLOOR</h5>,
@@ -91,14 +149,20 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">LAUNCHED</h5>,
         accessor: "launch",
+        minWidth: 135,
+        maxWidth: 135,
       },
       {
         Header: <h5 className="table_header">TRADE</h5>,
         accessor: "trade",
+        minWidth: 160,
+        maxWidth: 160,
       },
       {
         Header: <h5 className="table_header">ANALYTICS</h5>,
         accessor: "analytics",
+        minWidth: 160,
+        maxWidth: 160,
       },
     ],
     []
@@ -140,9 +204,18 @@ export default function ActivityCollectionTable(props) {
                   <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => (
                       <th
-                        {...column.getHeaderProps(
-                          column.getSortByToggleProps()
-                        )}
+                        {...column.getHeaderProps([
+                          {
+                            style: {
+                              maxWidth: column.maxWidth,
+                              minWidth: column.minWidth,
+                              width: column.width,
+                            },
+                          },
+                          column.getSortByToggleProps(),
+                          getColumnProps(column),
+                          getHeaderProps(column),
+                        ])}
                         className={
                           column.isSorted
                             ? column.isSortedDesc
@@ -194,7 +267,17 @@ export default function ActivityCollectionTable(props) {
                             // Apply the cell props
                             return (
                               <td
-                                {...cell.getCellProps()}
+                                {...cell.getCellProps([
+                                  {
+                                    style: {
+                                      maxWidth: cell.column.maxWidth,
+                                      minWidth: cell.column.minWidth,
+                                      width: cell.column.width,
+                                    },
+                                  },
+                                  getColumnProps(cell.column),
+                                  getCellProps(cell),
+                                ])}
                                 className="activity_data"
                               >
                                 {

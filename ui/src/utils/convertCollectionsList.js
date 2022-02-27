@@ -56,20 +56,6 @@ const addCollection = (collection) => {
   const dailyChange =
     collection["past_day_volume"] === 0 ? "0 %" : collection["daily_change"];
 
-  let dailyChangeColored = "";
-
-  if (dailyChange > 0) {
-    dailyChangeColored = (
-      <span style={{ color: "green" }}>{dailyChange.toFixed(1)} %</span>
-    );
-  } else if (dailyChange < 0) {
-    dailyChangeColored = (
-      <span style={{ color: "red" }}>{dailyChange.toFixed(1)} %</span>
-    );
-  } else {
-    dailyChangeColored = <span>0 %</span>;
-  }
-
   const pastDayVolume = collection["past_day_volume"];
   const daysLaunched = collection["days_launched"] + " Days";
 
@@ -108,26 +94,14 @@ const addCollection = (collection) => {
     </a>
   );
 
-  const volumeDay =
-    collection["daily_volume"].toLocaleString("en", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    }) + " ◎";
-  const volumeWeek =
-    collection["weekly_volume"].toLocaleString("en", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }) + " ◎";
-  const volumeTotal =
-    collection["total_volume"].toLocaleString("en", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }) + " ◎";
+  const volumeDay = collection["daily_volume"];
+  const volumeWeek = collection["weekly_volume"];
+  const volumeTotal = collection["total_volume"];
 
   return {
     image: image,
     name: name,
-    dailyChange: dailyChangeColored,
+    dailyChange: dailyChange,
     volumeDay: volumeDay,
     volumeWeek: volumeWeek,
     volumeTotal: volumeTotal,
@@ -154,12 +128,8 @@ export default function convertData(collections) {
   const tableSorter = (a, b) => {
     const type = "volumeDay";
 
-    var a1 = a[type].slice(0, a[type].length - 2);
-    var b1 = b[type].slice(0, b[type].length - 2);
-
-    var pattern = /[,]/g;
-    a1 = +a1.replace(pattern, "");
-    b1 = +b1.replace(pattern, "");
+    var a1 = a[type];
+    var b1 = b[type];
 
     if (a1 < b1) return 1;
     else if (a1 > b1) return -1;
