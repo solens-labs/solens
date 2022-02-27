@@ -28,10 +28,10 @@ export const api = {
     currentFloor: server + "currentFloor",
     collectionHistory: server + "recentCollectionActivity?symbol=",
 
-    listings: server + "listings",
+    listings: devServer + "listings",
     mintHistory: devServer + "mintHistory?mint=",
     walletListings: devServer + "walletListings?wallet=",
-    walletHistory: server + "walletHistory?wallet=",
+    walletHistory: devServer + "walletHistory?wallet=",
   },
 };
 

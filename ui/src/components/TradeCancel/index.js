@@ -51,6 +51,9 @@ export default function TradeCancel(props) {
       case "magiceden":
         cancelNftMagicEden();
         break;
+      case "magicedenV2":
+        cancelNftMagicEden();
+        break;
       case "solanart":
         cancelNftSolanart();
         break;
@@ -170,6 +173,7 @@ export default function TradeCancel(props) {
       setLoading(false);
     }
   };
+  const cancelNftMagicEdenV2 = async () => {};
   const cancelNftSMB = async () => {
     setLoading(true);
     alert("Canceling item on SMB Market will be supported soon.");

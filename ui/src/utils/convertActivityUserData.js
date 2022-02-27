@@ -9,7 +9,7 @@ import OfferIcon from "@mui/icons-material/AttachMoney";
 import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
-import { marketplaceSelect } from "./collectionStats";
+import { marketplaceSelectV2 } from "./collectionStats";
 import { getTokenMetadata } from "./getMetadata";
 import { getTimeSince } from "./getTimeSince";
 
@@ -120,7 +120,7 @@ const addTransaction = async (transaction, allCollections, user) => {
       "Unverified"
     );
 
-  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
+  const marketplace = marketplaceSelectV2(transaction["marketplace"]) || "";
 
   const txHash = (
     <a

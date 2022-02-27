@@ -56,6 +56,9 @@ export default function TradeListing(props) {
       case "magiceden":
         listNftMagicEden();
         break;
+      case "magicedenV2":
+        listNftMagicEdenV2();
+        break;
       case "solanart":
         listNftSolanart();
         break;
@@ -198,6 +201,7 @@ export default function TradeListing(props) {
       setLoading(false);
     }
   };
+  const listNftMagicEdenV2 = async () => {};
   const listNftSMB = async () => {
     setLoading(true);
     alert(`Listing on SMB Market will be supported soon. `);

@@ -63,6 +63,9 @@ export default function TradePurchase(props) {
       case "magiceden":
         buyNftMagicEden();
         break;
+      case "magicedenV2":
+        buyNftMagicEden();
+        break;
       case "solanart":
         buyNftSolanart();
         break;
@@ -190,6 +193,7 @@ export default function TradePurchase(props) {
       setLoading(false);
     }
   };
+  const buyNftMagicEdenV2 = async () => {};
   const buyNftSMB = async () => {
     alert("Buying from SMB Market will be supported soon.");
   };
