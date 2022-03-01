@@ -5,26 +5,6 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
 
-const parseNumber = (item) => {
-  var sliced = item.slice(0, item.length - 2);
-  var slicedNumber = parseFloat(sliced.replace(/,/g, ""));
-  return slicedNumber;
-};
-
-const numberSorter = (a, b) => {
-  var a1 = a.volumeDay.slice(0, a.volumeDay.length - 2);
-  var b1 = b.volumeDay.slice(0, b.volumeDay.length - 2);
-
-  var pattern = /[,]/g;
-
-  a1 = +a1.replace(pattern, "");
-  b1 = +b1.replace(pattern, "");
-
-  if (a1 < b1) return 1;
-  else if (a1 > b1) return -1;
-  else return 0;
-};
-
 const defaultPropGetter = () => ({});
 
 export default function ActivityCollectionTable(props) {
@@ -52,7 +32,7 @@ export default function ActivityCollectionTable(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: <h5 className="table_header">ANALYTICS</h5>,
+        Header: <h5 className="table_header">{}</h5>,
         accessor: "image",
         minWidth: 95,
         maxWidth: 95,
@@ -61,17 +41,24 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">COLLECTION</h5>,
         accessor: "name",
-        minWidth: 200,
-        // Cell: (row) => {
-        //   return (
-        //     <span>
-        //       {row.value.toLocaleString("en", {
-        //         minimumFractionDigits: 2,
-        //         maximumFractionDigits: 2,
-        //       }) + " ◎"}
-        //     </span>
-        //   );
-        // },
+        minWidth: 250,
+        width: 250,
+        maxWidth: 250,
+        Cell: (row) => {
+          return (
+            <div className="d-flex flex-column justify-content-center align-items-start">
+              <a
+                href={`/collection/${row.value.symbol}`}
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <span style={{ fontSize: "1.15rem" }}>{row.value.name}</span>
+              </a>
+              <span style={{ fontSize: "0.80rem", color: "grey" }}>
+                Supply: {row.value.supply}
+              </span>
+            </div>
+          );
+        },
       },
       {
         Header: <h5 className="table_header">FLOOR</h5>,
@@ -96,8 +83,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeDay",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 145,
+        maxWidth: 145,
         sortType: (rowA, rowB) => {},
         Cell: (row) => {
           return (
@@ -117,8 +104,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "dailyChange",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 150,
+        maxWidth: 150,
         Cell: (row) => {
           return (
             <span

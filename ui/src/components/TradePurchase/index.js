@@ -67,7 +67,7 @@ export default function TradePurchase(props) {
 
     switch (marketplace) {
       case "magiceden":
-        buyNftMagicEdenV2(); // CHANGE BACK TO V1
+        buyNftMagicEden(); // CHANGE BACK TO V1
         break;
       case "magicedenV2":
         buyNftMagicEdenV2();

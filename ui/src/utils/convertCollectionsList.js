@@ -22,11 +22,9 @@ const range = (len) => {
 };
 
 const addCollection = (collection) => {
+  const symbol = collection["symbol"];
   let image = (
-    <a
-      href={`/collection/${collection["symbol"]}`}
-      style={{ textDecoration: "none" }}
-    >
+    <a href={`/collection/${symbol}`} style={{ textDecoration: "none" }}>
       <img
         src={collection["image"]}
         className="activity_image"
@@ -44,7 +42,7 @@ const addCollection = (collection) => {
   }
   let nameJoined = nameSplit.join(" ");
   const name =
-    nameJoined.length > 28 ? nameJoined.slice(0, 25) + "..." : nameJoined;
+    nameJoined.length >= 28 ? nameJoined.slice(0, 25) + "..." : nameJoined;
 
   const date = new Date(collection["createdAt"]);
   const time = date.getTime();
@@ -77,10 +75,7 @@ const addCollection = (collection) => {
     </a>
   );
   const analytics = (
-    <a
-      href={`/collection/${collection["symbol"]}`}
-      style={{ textDecoration: "none" }}
-    >
+    <a href={`/collection/${symbol}`} style={{ textDecoration: "none" }}>
       <div
         className="connect_button2"
         style={{
@@ -97,15 +92,16 @@ const addCollection = (collection) => {
   const volumeDay = collection["daily_volume"];
   const volumeWeek = collection["weekly_volume"];
   const volumeTotal = collection["total_volume"];
+  const supply = collection["supply"];
 
   return {
     image: image,
-    name: name,
+    name: { name: name, supply: supply, symbol: symbol },
     dailyChange: dailyChange,
     volumeDay: volumeDay,
     volumeWeek: volumeWeek,
     volumeTotal: volumeTotal,
-    supply: collection["supply"],
+    supply: supply,
     date: launch,
     launch: daysLaunched,
     trade: trade,

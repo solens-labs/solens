@@ -60,7 +60,7 @@ export default function TradeListing(props) {
 
     switch (marketplace) {
       case "magiceden":
-        listNftMagicEdenV2(); // CHANGE BACK TO V1
+        listNftMagicEden(); // CHANGE BACK TO V1
         break;
       case "magicedenV2":
         listNftMagicEdenV2();

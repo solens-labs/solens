@@ -21,7 +21,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ListIcon from "@mui/icons-material/List";
+// import ListIcon from "@mui/icons-material/List";
+import ListIcon from "@mui/icons-material/AutoGraph";
 import HomeIcon from "@mui/icons-material/Home";
 
 const Navigation = (props) => {
@@ -55,6 +56,10 @@ const Navigation = (props) => {
     setMenu(!menu);
   };
 
+  // const iconsFill = themeColors[4];
+  const iconsFill = "rgba(179, 87, 156, 0.7)";
+  // const iconsFill = "white";
+
   return (
     <>
       {/* <div className="maintenance col-12 d-flex justify-content-center">
@@ -79,7 +84,7 @@ const Navigation = (props) => {
                 <HomeIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
@@ -93,11 +98,25 @@ const Navigation = (props) => {
                 <RocketLaunchIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 launchzone
+              </h1>
+            </div>
+          </Link>
+          <Link to="/market" style={{ textDecoration: "none" }}>
+            <div className="nav_link_container">
+              <div className="d-none d-lg-block">
+                <ListIcon
+                  fontSize={"medium"}
+                  className="nav_icon"
+                  style={{ fill: iconsFill }}
+                />
+              </div>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
+                market
               </h1>
             </div>
           </Link>
@@ -107,25 +126,11 @@ const Navigation = (props) => {
                 <CollectionsIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 collections
-              </h1>
-            </div>
-          </Link>
-          <Link to="/stats" style={{ textDecoration: "none" }}>
-            <div className="nav_link_container">
-              <div className="d-none d-lg-block">
-                <ListIcon
-                  fontSize={"medium"}
-                  className="nav_icon"
-                  style={{ fill: themeColors[0] }}
-                />
-              </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
-                stats
               </h1>
             </div>
           </Link>
@@ -135,7 +140,7 @@ const Navigation = (props) => {
                 <AccountBalanceWalletIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
@@ -149,7 +154,7 @@ const Navigation = (props) => {
                 <AccountCircleOutlinedIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
@@ -200,7 +205,7 @@ const Navigation = (props) => {
                     <HomeIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -214,9 +219,23 @@ const Navigation = (props) => {
                     <RocketLaunchIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
+                </div>
+              </Link>
+              <Link to="/market" style={{ textDecoration: "none" }}>
+                <div className="nav_link_container">
+                  <div className="d-none d-lg-block">
+                    <ListIcon
+                      fontSize={"medium"}
+                      className="nav_icon"
+                      style={{ fill: iconsFill }}
+                    />
+                  </div>
+                  <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
+                    market
+                  </h1>
                 </div>
               </Link>
               <Link to="/collections" style={{ textDecoration: "none" }}>
@@ -228,7 +247,7 @@ const Navigation = (props) => {
                     <CollectionsIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -242,7 +261,7 @@ const Navigation = (props) => {
                     <AccountBalanceWalletIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -256,7 +275,7 @@ const Navigation = (props) => {
                     <AccountCircleOutlinedIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
