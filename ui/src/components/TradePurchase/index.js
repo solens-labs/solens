@@ -13,13 +13,19 @@ import {
   getEscrowAccount,
   buyMEden,
 } from "../../exchanges/magicEden";
-import { magicEdenIDL } from "../../exchanges/magicEdenIDL";
+import { magicEdenIDL, magicEdenV2IDL } from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
 import ReactGA from "react-ga";
 import { exchangeApi } from "../../constants/constants";
 import smb_logo from "../../assets/images/smb_logo.png";
+import { buyMEv2, magicEdenV2 } from "../../exchanges/magicEdenV2";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  Token,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
 
 export default function TradePurchase(props) {
   const {
@@ -61,7 +67,7 @@ export default function TradePurchase(props) {
 
     switch (marketplace) {
       case "magiceden":
-        buyNftMagicEden();
+        buyNftMagicEdenV2(); // CHANGE BACK TO V1
         break;
       case "magicedenV2":
         buyNftMagicEdenV2();
@@ -139,7 +145,86 @@ export default function TradePurchase(props) {
       setLoading(false);
     }
   };
-  const buyNftMagicEdenV2 = async () => {};
+  const buyNftMagicEdenV2 = async () => {
+    if (!tradingME || !tradingEnabled) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const provider = new anchor.Provider(connection, wallet, {
+        preflightCommitment: "processed",
+        commitment: "processed",
+      });
+
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const maker = new anchor.web3.PublicKey(seller);
+      const sellerATA = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        nftMint,
+        maker,
+        false
+      );
+      const buyer = wallet.publicKey;
+      const buyerATA = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        nftMint,
+        buyer,
+        false
+      );
+      const metadataAccount = new anchor.web3.PublicKey(item.metadata_acct);
+      const program = new anchor.Program(magicEdenV2IDL, magicEdenV2, provider);
+      const creators = item.creators_list;
+
+      const final_tx = await buyMEv2(
+        buyer,
+        maker,
+        sellerATA,
+        buyerATA,
+        nftMint,
+        metadataAccount,
+        creators,
+        price,
+        program
+      );
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        preflightCommitment: "processed",
+      });
+      setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
+
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
+
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy on MagicEden`,
+        label: item.mint,
+        value: price,
+      });
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy Failed on MagicEden`,
+        label: txHashAnalytics,
+      });
+      setLoading(false);
+    }
+  };
   const buyNftSolanart = async () => {
     if (!tradingSA || !tradingEnabled) {
       const saLink = exchangeApi.solanart.itemDetails + item.mint;

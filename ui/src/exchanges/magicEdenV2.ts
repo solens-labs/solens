@@ -184,15 +184,15 @@ export async function sellMEv2(
   );
 }
 
-async function cancelSellMEv2(
-  seller: anchor.web3.Keypair,
+export async function cancelSellMEv2(
+  seller: anchor.web3.PublicKey,
   sellerATA: anchor.web3.PublicKey,
   nftMint: anchor.web3.PublicKey,
   price: number,
   program: anchor.Program
 ) {
   const [sellerTradeState, bump] = await getSellerTradeState(
-    seller.publicKey,
+    seller,
     sellerATA,
     nftMint
   );
@@ -202,7 +202,7 @@ async function cancelSellMEv2(
     new anchor.BN("ffffffffffffffff", "hex"),
     {
       accounts: {
-        seller: seller.publicKey,
+        seller: seller,
         treasuryMint: SystemProgram.programId,
         sellerATA: sellerATA,
         mint: nftMint,
@@ -217,20 +217,22 @@ async function cancelSellMEv2(
   );
 }
 
-async function buyMEv2(
-  buyer: anchor.web3.Keypair,
+export async function buyMEv2(
+  buyer: anchor.web3.PublicKey,
   seller: anchor.web3.PublicKey,
   sellerATA: anchor.web3.PublicKey,
   buyerATA: anchor.web3.PublicKey,
   nftMint: anchor.web3.PublicKey,
+  metadataAccount: anchor.web3.PublicKey,
+  creators: anchor.web3.PublicKey[],
   price: number,
   program: anchor.Program
 ) {
-  let [userEscrow, bump] = await getUserEscrow(buyer.publicKey);
+  let [userEscrow, bump] = await getUserEscrow(buyer);
   let priceBN = new anchor.BN(price * LAMPORTS_PER_SOL);
   let depositIx = await program.instruction.deposit(bump, priceBN, {
     accounts: {
-      user: buyer.publicKey,
+      user: buyer,
       treasuryMint: SystemProgram.programId,
       userEscrow: userEscrow,
       auctionCreator: MEAuctionCreator,
@@ -239,16 +241,12 @@ async function buyMEv2(
     },
   });
 
-  let [buyerTradeState, bumpp] = await getBuyerTradeState(
-    buyer.publicKey,
-    nftMint
-  );
+  let [buyerTradeState, bumpp] = await getBuyerTradeState(buyer, nftMint);
   let [sellerTradeState, dc] = await getSellerTradeState(
     seller,
     sellerATA,
     nftMint
   );
-  let [metadataAccount, _] = await getMetadataAccount(nftMint);
   let buyIx = await program.instruction.buy(
     bumpp,
     bump,
@@ -257,7 +255,7 @@ async function buyMEv2(
     new anchor.BN(0),
     {
       accounts: {
-        buyer: buyer.publicKey,
+        buyer: buyer,
         treasuryMint: SystemProgram.programId,
         mint: nftMint,
         mintMetadata: metadataAccount,
@@ -273,7 +271,6 @@ async function buyMEv2(
     }
   );
 
-  // let remAccounts = await getCreatorsList(metadataAccount);
   let execSaleIx = await program.instruction.executeSale(
     bump,
     MEAuctionBump,
@@ -283,7 +280,7 @@ async function buyMEv2(
     new anchor.BN("ffffffffffffffff", "hex"),
     {
       accounts: {
-        buyer: buyer.publicKey,
+        buyer: buyer,
         seller: seller,
         treasuryMint: SystemProgram.programId,
         sellerATA: sellerATA,
@@ -304,15 +301,15 @@ async function buyMEv2(
         programAsSigner: MEdenAutority,
         rent: SYSVAR_RENT_PUBKEY,
       },
-      // remainingAccounts: remAccounts,
+      remainingAccounts: creators,
     }
   );
   let tx = new anchor.web3.Transaction({
-    feePayer: keypair1.publicKey,
+    feePayer: buyer,
   });
   // @ts-ignore
   tx.add(...[depositIx, buyIx, execSaleIx]);
-  return sendAndConfirmTransaction(connection, tx, [keypair1]);
+  return tx;
 }
 
 async function offerMEv2(

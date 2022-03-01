@@ -7,7 +7,7 @@ import {
   cancelMEden,
   getEscrowAccount,
 } from "../../exchanges/magicEden";
-import { magicEdenIDL } from "../../exchanges/magicEdenIDL";
+import { magicEdenIDL, magicEdenV2IDL } from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
@@ -20,6 +20,7 @@ import {
   selectTradingME,
   selectTradingSA,
 } from "../../redux/trade";
+import { cancelSellMEv2, magicEdenV2 } from "../../exchanges/magicEdenV2";
 
 export default function TradeCancel(props) {
   const {
@@ -49,10 +50,10 @@ export default function TradeCancel(props) {
 
     switch (marketplace) {
       case "magiceden":
-        cancelNftMagicEden();
+        cancelNftMagicEdenV2(); // CHANGE BACK TO V1
         break;
       case "magicedenV2":
-        cancelNftMagicEden();
+        cancelNftMagicEdenV2();
         break;
       case "solanart":
         cancelNftSolanart();
@@ -173,7 +174,67 @@ export default function TradeCancel(props) {
       setLoading(false);
     }
   };
-  const cancelNftMagicEdenV2 = async () => {};
+  const cancelNftMagicEdenV2 = async () => {
+    if (!tradingME || !tradingEnabled) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const provider = new anchor.Provider(connection, wallet, {
+        preflightCommitment: "processed",
+        commitment: "processed",
+      });
+
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const seller = wallet.publicKey;
+      const sellerATA = new anchor.web3.PublicKey(tokenAccount);
+
+      const program = new anchor.Program(magicEdenV2IDL, magicEdenV2, provider);
+      const final_tx = await cancelSellMEv2(
+        seller,
+        sellerATA,
+        nftMint,
+        price,
+        program
+      );
+      // const sendTx = await sendTransaction(final_tx, connection, {
+      //   skipPreflight: false,
+      //   preflightCommitment: "processed",
+      // });
+
+      // setTxHash(sendTx); // not needed because no delay
+      // setTxHashAnalytics(sendTx);
+      // console.log(sendTx);
+
+      // const confirmTx = await connection.confirmTransaction(
+      //   sendTx,
+      //   "processed"
+      // );
+
+      // ReactGA.event({
+      //   category: "Trade",
+      //   action: `Cancel on MagicEden`,
+      //   label: item.mint,
+      //   value: price,
+      // });
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Cancel Failed on MagicEden`,
+        label: txHashAnalytics,
+      });
+      setLoading(false);
+    }
+  };
   const cancelNftSMB = async () => {
     setLoading(true);
     alert("Canceling item on SMB Market will be supported soon.");

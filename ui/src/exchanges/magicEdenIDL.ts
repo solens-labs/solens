@@ -565,7 +565,7 @@ export const magicEdenV2IDL = {
     {
       name: "executeSale",
       accounts: [
-        { name: "buyer", isMut: !0, isSigner: !1 },
+        { name: "buyer", isMut: !0, isSigner: !0 },
         {
           name: "seller",
           isMut: !0,
