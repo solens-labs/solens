@@ -41,9 +41,9 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">COLLECTION</h5>,
         accessor: "collection",
-        minWidth: 250,
-        width: 250,
-        maxWidth: 250,
+        minWidth: 300,
+        width: 300,
+        maxWidth: 300,
         sortType: (a, b) => {
           const a1 = a.values.collection.name.toLowerCase();
           const b1 = b.values.collection.name.toLowerCase();
@@ -58,7 +58,7 @@ export default function ActivityCollectionTable(props) {
                 href={`/collection/${row.value.symbol}`}
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <span style={{ fontSize: "1.15rem" }}>{row.value.name}</span>
+                <span style={{ fontSize: "1.1rem" }}>{row.value.name}</span>
               </a>
               <span style={{ fontSize: "0.80rem", color: "grey" }}>
                 Supply: {row.value.supply}

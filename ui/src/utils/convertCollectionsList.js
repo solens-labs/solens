@@ -42,7 +42,7 @@ const addCollection = (collection) => {
   }
   let nameJoined = nameSplit.join(" ");
   const name =
-    nameJoined.length >= 28 ? nameJoined.slice(0, 25) + "..." : nameJoined;
+    nameJoined.length >= 25 ? nameJoined.slice(0, 22) + "..." : nameJoined;
 
   const date = new Date(collection["createdAt"]);
   const time = date.getTime();
