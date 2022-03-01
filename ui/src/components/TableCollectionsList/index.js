@@ -52,7 +52,7 @@ export default function ActivityCollectionTable(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: "",
+        Header: <h5 className="table_header">ANALYTICS</h5>,
         accessor: "image",
         minWidth: 95,
         maxWidth: 95,
@@ -63,24 +63,20 @@ export default function ActivityCollectionTable(props) {
         minWidth: 200,
       },
       {
-        Header: (
-          <h5 className="table_header">
-            VOL <span className="collection_stats_days slim">(1d %)</span>
-          </h5>
-        ),
-        accessor: "dailyChange",
+        Header: <h5 className="table_header">FLOOR</h5>,
+        accessor: "floor",
         minWidth: 135,
         maxWidth: 135,
-        Cell: (row) => {
-          return (
-            <span style={{ color: `${row.value > 0 ? "green" : "red"}` }}>
-              {row.value.toLocaleString("en", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }) + " %"}
-            </span>
-          );
-        },
+      },
+      {
+        Header: (
+          <h5 className="table_header">
+            FLOOR <span className="collection_stats_days slim">(1d %)</span>
+          </h5>
+        ),
+        accessor: "floorChange",
+        minWidth: 135,
+        maxWidth: 135,
       },
       {
         Header: (
@@ -98,6 +94,26 @@ export default function ActivityCollectionTable(props) {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               }) + " ◎"}
+            </span>
+          );
+        },
+      },
+      {
+        Header: (
+          <h5 className="table_header">
+            VOL <span className="collection_stats_days slim">(1d %)</span>
+          </h5>
+        ),
+        accessor: "dailyChange",
+        minWidth: 135,
+        maxWidth: 135,
+        Cell: (row) => {
+          return (
+            <span style={{ color: `${row.value > 0 ? "green" : "red"}` }}>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }) + " %"}
             </span>
           );
         },
@@ -142,28 +158,24 @@ export default function ActivityCollectionTable(props) {
           );
         },
       },
-      //   {
-      //     Header: <h5 className="table_header">FLOOR</h5>,
-      //     accessor: "floor",
-      //   },
-      {
-        Header: <h5 className="table_header">LAUNCHED</h5>,
-        accessor: "launch",
-        minWidth: 135,
-        maxWidth: 135,
-      },
+      // {
+      //   Header: <h5 className="table_header">LAUNCHED</h5>,
+      //   accessor: "launch",
+      //   minWidth: 135,
+      //   maxWidth: 135,
+      // },
       {
         Header: <h5 className="table_header">TRADE</h5>,
         accessor: "trade",
-        minWidth: 160,
-        maxWidth: 160,
+        minWidth: 130,
+        maxWidth: 130,
       },
-      {
-        Header: <h5 className="table_header">ANALYTICS</h5>,
-        accessor: "analytics",
-        minWidth: 160,
-        maxWidth: 160,
-      },
+      // {
+      //   Header: <h5 className="table_header">ANALYTICS</h5>,
+      //   accessor: "analytics",
+      //   minWidth: 160,
+      //   maxWidth: 160,
+      // },
     ],
     []
   );
