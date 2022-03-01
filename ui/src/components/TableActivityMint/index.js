@@ -49,17 +49,6 @@ export default function ActivityMintTable(props) {
 
   const columns = React.useMemo(
     () => [
-      // {
-      //   Header: "",
-      //   accessor: "symbol",
-      //   Cell: (row) => {
-      //     return (
-      //       <div>
-      //         <img height={34} src={logo} />
-      //       </div>
-      //     );
-      //   },
-      // },
       {
         Header: "TYPE",
         accessor: "symbol",

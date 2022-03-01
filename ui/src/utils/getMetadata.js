@@ -3,7 +3,7 @@ import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
 import { Connection } from "@metaplex/js";
 import * as anchor from "@project-serum/anchor";
 
-const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
+const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST_BACKUP;
 
 export const getTokenMetadata = async (mint) => {
   // const connection = new Connection("mainnet-beta");

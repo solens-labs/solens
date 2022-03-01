@@ -8,7 +8,7 @@ import {
   getEscrowAccount,
   buyMEden,
 } from "../../exchanges/magicEden";
-import magicEdenIDL from "../../exchanges/magicEdenIDL";
+import { magicEdenIDL } from "../../exchanges/magicEdenIDL";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 

@@ -54,7 +54,7 @@ const addCollection = (collection) => {
   };
 
   const dailyChange =
-    collection["past_day_volume"] === 0 ? "0 %" : collection["daily_change"];
+    collection["past_day_volume"] === 0 ? 0 : collection["daily_change"];
 
   const pastDayVolume = collection["past_day_volume"];
   const daysLaunched = collection["days_launched"] + " Days";

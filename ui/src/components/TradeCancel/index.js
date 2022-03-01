@@ -7,7 +7,7 @@ import {
   cancelMEden,
   getEscrowAccount,
 } from "../../exchanges/magicEden";
-import magicEdenIDL from "../../exchanges/magicEdenIDL";
+import { magicEdenIDL } from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";

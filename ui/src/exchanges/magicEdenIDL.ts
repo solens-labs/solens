@@ -1,4 +1,4 @@
-const magicEdenIDL = {
+export const magicEdenIDL = {
   version: "0.0.0",
   name: "escrow",
   instructions: [
@@ -294,4 +294,310 @@ const magicEdenIDL = {
   ],
 };
 
-export default magicEdenIDL;
+export const magicEdenV2IDL = {
+  version: "0.1.0",
+  name: "auction_house",
+  instructions: [
+    {
+      name: "sell",
+      accounts: [
+        { name: "seller", isMut: !0, isSigner: !0 },
+        {
+          name: "treasuryMint",
+          isMut: !0,
+          isSigner: !1,
+        },
+        { name: "sellerTokenAccount", isMut: !0, isSigner: !1 },
+        {
+          name: "sellerAta",
+          isMut: !0,
+          isSigner: !1,
+        },
+        {
+          name: "tokenMint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "mintMetadata",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "auctionCreator",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "auctionHouse",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "sellerTradeState",
+          isMut: !0,
+          isSigner: !1,
+        },
+        {
+          name: "authority",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "tokenProgram",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "systemProgram",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "associatedTokenAccountProgram",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "programAsSigner",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "rent",
+          isMut: !1,
+          isSigner: !1,
+        },
+      ],
+      args: [
+        { name: "bump", type: "u8" },
+        { name: "auctionBump", type: "u8" },
+        {
+          name: "sellerPrice",
+          type: "u64",
+        },
+        { name: "tokenAmount", type: "u64" },
+        { name: "extra", type: "u64" },
+      ],
+    },
+    {
+      name: "buy",
+      accounts: [
+        { name: "buyer", isMut: !0, isSigner: !0 },
+        {
+          name: "treasuryMint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "mint", isMut: !1, isSigner: !1 },
+        {
+          name: "mintMetadata",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "buyerEscrow",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "auctionCreator",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "auctionHouse",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "buyerTradeState",
+          isMut: !0,
+          isSigner: !1,
+        },
+        {
+          name: "authority",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "tokenProgram",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "systemProgram",
+          isMut: !1,
+          isSigner: !1,
+        },
+        {
+          name: "rent",
+          isMut: !1,
+          isSigner: !1,
+        },
+      ],
+      args: [
+        {
+          name: "bump",
+          type: "u8",
+        },
+        {
+          name: "escrowBump",
+          type: "u8",
+        },
+        {
+          name: "buyerPrice",
+          type: "u64",
+        },
+        {
+          name: "tokenAmount",
+          type: "u64",
+        },
+        {
+          name: "extra",
+          type: "u64",
+        },
+      ],
+    },
+    {
+      name: "deposit",
+      accounts: [
+        { name: "user", isMut: !1, isSigner: !0 },
+        {
+          name: "treasuryMint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "userEscrow", isMut: !0, isSigner: !1 },
+        {
+          name: "auctionCreator",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "auctionHouse", isMut: !1, isSigner: !1 },
+        {
+          name: "systemProgram",
+          isMut: !1,
+          isSigner: !1,
+        },
+      ],
+      args: [
+        { name: "bump", type: "u8" },
+        { name: "amount", type: "u64" },
+      ],
+    },
+    {
+      name: "withdraw",
+      accounts: [
+        { name: "user", isMut: !1, isSigner: !0 },
+        {
+          name: "treasuryMint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "userEscrow", isMut: !0, isSigner: !1 },
+        { name: "auctionCreator", isMut: !1, isSigner: !1 },
+        { name: "auctionHouse", isMut: !1, isSigner: !1 },
+        { name: "systemProgram", isMut: !1, isSigner: !1 },
+      ],
+      args: [
+        { name: "bump", type: "u8" },
+        { name: "amount", type: "u64" },
+      ],
+    },
+    {
+      name: "cancelSell",
+      accounts: [
+        { name: "seller", isMut: !1, isSigner: !0 },
+        {
+          name: "treasuryMint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "sellerATA", isMut: !0, isSigner: !1 },
+        {
+          name: "mint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "auctionCreator", isMut: !1, isSigner: !1 },
+        { name: "auctionHouse", isMut: !1, isSigner: !1 },
+        { name: "sellerTradeState", isMut: !0, isSigner: !1 },
+        { name: "authority", isMut: !1, isSigner: !1 },
+        { name: "tokenProgram", isMut: !1, isSigner: !1 },
+        {
+          name: "programAsSigner",
+          isMut: !1,
+          isSigner: !1,
+        },
+      ],
+      args: [
+        { name: "sellerPrice", type: "u64" },
+        { name: "tokenAmount", type: "u64" },
+        { name: "extra", type: "u64" },
+      ],
+    },
+    {
+      name: "cancelBuy",
+      accounts: [
+        { name: "buyer", isMut: !1, isSigner: !0 },
+        {
+          name: "treasuryMint",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "mint", isMut: !0, isSigner: !1 },
+        {
+          name: "auctionCreator",
+          isMut: !1,
+          isSigner: !1,
+        },
+        { name: "auctionHouse", isMut: !1, isSigner: !1 },
+        { name: "buyerTradeState", isMut: !0, isSigner: !1 },
+        { name: "authority", isMut: !1, isSigner: !1 },
+      ],
+      args: [
+        { name: "buyerPrice", type: "u64" },
+        { name: "tokenAmount", type: "u64" },
+        { name: "extra", type: "u64" },
+      ],
+    },
+    {
+      name: "executeSale",
+      accounts: [
+        { name: "buyer", isMut: !0, isSigner: !1 },
+        {
+          name: "seller",
+          isMut: !0,
+          isSigner: !1,
+        },
+        { name: "treasuryMint", isMut: !1, isSigner: !1 },
+        { name: "sellerATA", isMut: !0, isSigner: !1 },
+        { name: "tokenMint", isMut: !1, isSigner: !1 },
+        { name: "mintMetadata", isMut: !1, isSigner: !1 },
+        { name: "buyerEscrow", isMut: !0, isSigner: !1 },
+        { name: "buyerATA", isMut: !0, isSigner: !1 },
+        { name: "auctionCreator", isMut: !0, isSigner: !1 },
+        { name: "auctionHouse", isMut: !1, isSigner: !1 },
+        { name: "auctionFee", isMut: !0, isSigner: !1 },
+        { name: "buyerTradeState", isMut: !0, isSigner: !1 },
+        { name: "authority", isMut: !0, isSigner: !1 },
+        { name: "sellerTradeState", isMut: !0, isSigner: !1 },
+        { name: "eauthority", isMut: !0, isSigner: !1 },
+        { name: "tokenProgram", isMut: !1, isSigner: !1 },
+        { name: "systemProgram", isMut: !1, isSigner: !1 },
+        { name: "associatedTokenAccountProgram", isMut: !1, isSigner: !1 },
+        { name: "programAsSigner", isMut: !1, isSigner: !1 },
+        { name: "rent", isMut: !1, isSigner: !1 },
+      ],
+      args: [
+        { name: "buyerEscrowBump", type: "u8" },
+        { name: "auctionBump", type: "u8" },
+        { name: "buyerPrice", type: "u64" },
+        { name: "tokenAmount", type: "u64" },
+        { name: "extraBuyer", type: "u64" },
+        { name: "extraSeller", type: "u64" },
+      ],
+    },
+  ],
+};

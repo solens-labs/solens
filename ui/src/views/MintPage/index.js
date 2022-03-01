@@ -138,6 +138,7 @@ export default function MintPage(props) {
 
     const backendDetails = await getListedInfoFromBackend(address);
     if (backendDetails) {
+      console.log(backendDetails);
       setListed(true);
       setListedDetails(backendDetails);
     }

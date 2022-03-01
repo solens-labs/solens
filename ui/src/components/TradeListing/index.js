@@ -6,7 +6,7 @@ import me_logo from "../../assets/images/me_logo_white.png";
 import { exchangeApi, themeColors } from "../../constants/constants";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import { magicEden, listMEden } from "../../exchanges/magicEden";
-import magicEdenIDL from "../../exchanges/magicEdenIDL";
+import { magicEdenIDL, magicEdenV2IDL } from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { listSolanart } from "../../exchanges/solanart";
 import { useHistory, useLocation } from "react-router-dom";
@@ -17,6 +17,12 @@ import {
   selectTradingME,
   selectTradingSA,
 } from "../../redux/trade";
+import { magicEdenV2, sellMEv2 } from "../../exchanges/magicEdenV2";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  Token,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
 
 export default function TradeListing(props) {
   const {
@@ -54,7 +60,7 @@ export default function TradeListing(props) {
 
     switch (marketplace) {
       case "magiceden":
-        listNftMagicEden();
+        listNftMagicEdenV2(); // CHANGE BACK TO V1
         break;
       case "magicedenV2":
         listNftMagicEdenV2();
@@ -201,7 +207,82 @@ export default function TradeListing(props) {
       setLoading(false);
     }
   };
-  const listNftMagicEdenV2 = async () => {};
+  const listNftMagicEdenV2 = async () => {
+    if (!tradingME || !tradingEnabled) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
+      return;
+    }
+
+    setLoading(true);
+    const provider = new anchor.Provider(connection, wallet, {
+      preflightCommitment: "processed",
+      commitment: "processed",
+    });
+
+    try {
+      const makerString = wallet.publicKey.toBase58();
+      if (makerString !== ownerAccount) {
+        alert("You are not the owner of this token.");
+        return;
+      }
+
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const seller = wallet.publicKey;
+      const sellerATA = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        nftMint,
+        seller,
+        false
+      );
+      const program = new anchor.Program(magicEdenV2IDL, magicEdenV2, provider);
+
+      const final_tx = await sellMEv2(
+        seller,
+        sellerATA,
+        tokenAccount,
+        nftMint,
+        listPrice,
+        program
+      );
+
+      console.log(final_tx);
+
+      // const sendTx = await sendTransaction(final_tx, connection, {
+      //   skipPreflight: false,
+      //   preflightCommitment: "processed",
+      // });
+      // setTxHash(sendTx);
+      // setTxHashAnalytics(sendTx);
+      // console.log(sendTx);
+
+      // const confirmTx = await connection.confirmTransaction(
+      //   sendTx,
+      //   "processed"
+      // );
+
+      // ReactGA.event({
+      //   category: "Trade",
+      //   action: `List on MagicEden`,
+      //   label: item.mint,
+      //   value: listPrice,
+      // });
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Listing Failed on MagicEden`,
+        label: txHashAnalytics,
+      });
+      setLoading(false);
+    }
+  };
   const listNftSMB = async () => {
     setLoading(true);
     alert(`Listing on SMB Market will be supported soon. `);

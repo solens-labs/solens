@@ -4,7 +4,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 // Initial State
 const initialState = {
   tradingEnabled: true,
-  tradingME: false,
+  tradingME: true,
   tradingSA: true,
 };
 

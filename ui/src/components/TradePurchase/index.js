@@ -13,7 +13,7 @@ import {
   getEscrowAccount,
   buyMEden,
 } from "../../exchanges/magicEden";
-import magicEdenIDL from "../../exchanges/magicEdenIDL";
+import { magicEdenIDL } from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { buySolanart } from "../../exchanges/solanart";
 import { useHistory } from "react-router";
@@ -64,7 +64,7 @@ export default function TradePurchase(props) {
         buyNftMagicEden();
         break;
       case "magicedenV2":
-        buyNftMagicEden();
+        buyNftMagicEdenV2();
         break;
       case "solanart":
         buyNftSolanart();
@@ -74,61 +74,7 @@ export default function TradePurchase(props) {
         break;
     }
   };
-  const buyNftSolanart = async () => {
-    if (!tradingSA || !tradingEnabled) {
-      const saLink = exchangeApi.solanart.itemDetails + item.mint;
-      window.open(saLink, "_blank").focus();
-      return;
-    }
 
-    setLoading(true);
-    try {
-      const taker = wallet.publicKey;
-      const maker = new anchor.web3.PublicKey(seller);
-      const nftMint = new anchor.web3.PublicKey(item.mint);
-      const creators = item.creators_list;
-
-      const final_tx = await buySolanart(
-        taker,
-        maker,
-        nftMint,
-        price,
-        creators
-      );
-
-      const sendTx = await sendTransaction(final_tx, connection, {
-        skipPreflight: false,
-        preflightCommitment: "processed",
-      });
-      setTxHash(sendTx);
-      setTxHashAnalytics(sendTx);
-
-      const confirmTx = await connection.confirmTransaction(
-        sendTx,
-        "processed"
-      );
-
-      ReactGA.event({
-        category: "Trade",
-        action: `Buy on Solanart`,
-        label: item.mint,
-        value: price,
-      });
-
-      setTimeout(function () {
-        setLoading(false);
-        history.go(0);
-      }, 3000);
-    } catch (e) {
-      console.log(e);
-      ReactGA.event({
-        category: "Trade",
-        action: `Buy Failed on Solanart`,
-        label: txHashAnalytics,
-      });
-      setLoading(false);
-    }
-  };
   const buyNftMagicEden = async () => {
     if (!tradingME || !tradingEnabled) {
       const meLink = exchangeApi.magiceden.itemDetails + item.mint;
@@ -194,6 +140,61 @@ export default function TradePurchase(props) {
     }
   };
   const buyNftMagicEdenV2 = async () => {};
+  const buyNftSolanart = async () => {
+    if (!tradingSA || !tradingEnabled) {
+      const saLink = exchangeApi.solanart.itemDetails + item.mint;
+      window.open(saLink, "_blank").focus();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const taker = wallet.publicKey;
+      const maker = new anchor.web3.PublicKey(seller);
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const creators = item.creators_list;
+
+      const final_tx = await buySolanart(
+        taker,
+        maker,
+        nftMint,
+        price,
+        creators
+      );
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        preflightCommitment: "processed",
+      });
+      setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
+
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
+
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy on Solanart`,
+        label: item.mint,
+        value: price,
+      });
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+      ReactGA.event({
+        category: "Trade",
+        action: `Buy Failed on Solanart`,
+        label: txHashAnalytics,
+      });
+      setLoading(false);
+    }
+  };
   const buyNftSMB = async () => {
     alert("Buying from SMB Market will be supported soon.");
   };

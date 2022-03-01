@@ -56,11 +56,22 @@ export default function ActivityCollectionTable(props) {
         accessor: "image",
         minWidth: 95,
         maxWidth: 95,
+        disableSortBy: true,
       },
       {
         Header: <h5 className="table_header">COLLECTION</h5>,
         accessor: "name",
         minWidth: 200,
+        // Cell: (row) => {
+        //   return (
+        //     <span>
+        //       {row.value.toLocaleString("en", {
+        //         minimumFractionDigits: 2,
+        //         maximumFractionDigits: 2,
+        //       }) + " ◎"}
+        //     </span>
+        //   );
+        // },
       },
       {
         Header: <h5 className="table_header">FLOOR</h5>,
@@ -87,6 +98,7 @@ export default function ActivityCollectionTable(props) {
         accessor: "volumeDay",
         minWidth: 135,
         maxWidth: 135,
+        sortType: (rowA, rowB) => {},
         Cell: (row) => {
           return (
             <span>
@@ -109,7 +121,11 @@ export default function ActivityCollectionTable(props) {
         maxWidth: 135,
         Cell: (row) => {
           return (
-            <span style={{ color: `${row.value > 0 ? "green" : "red"}` }}>
+            <span
+              style={{
+                color: `${row.value > 0 ? "green" : "rgba(201, 87, 87, 1)"}`,
+              }}
+            >
               {row.value.toLocaleString("en", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -165,10 +181,17 @@ export default function ActivityCollectionTable(props) {
       //   maxWidth: 135,
       // },
       {
+        Header: <h5 className="table_header">MARKET CAP</h5>,
+        accessor: "marketCap",
+        minWidth: 135,
+        maxWidth: 135,
+      },
+      {
         Header: <h5 className="table_header">TRADE</h5>,
         accessor: "trade",
         minWidth: 130,
         maxWidth: 130,
+        disableSortBy: true,
       },
       // {
       //   Header: <h5 className="table_header">ANALYTICS</h5>,
@@ -255,55 +278,42 @@ export default function ActivityCollectionTable(props) {
                   </tr>
                 ))}
               </thead>
-              {/* Apply the table body props */}
               <tbody {...getTableBodyProps()}>
-                {
-                  // Loop over the table rows
-                  page.map((row, i) => {
-                    // Prepare the row for display
-                    prepareRow(row);
-                    let style = 1;
-                    if (i % 2) {
-                      style = 2;
-                    }
+                {page.map((row, i) => {
+                  prepareRow(row);
+                  let style = 1;
+                  if (i % 2) {
+                    style = 2;
+                  }
 
-                    return (
-                      // Apply the row props
-                      <tr
-                        {...row.getRowProps()}
-                        className={`activity_row_image` + style}
-                      >
-                        {
-                          // Loop over the rows cells
-                          row.cells.map((cell) => {
-                            // Apply the cell props
-                            return (
-                              <td
-                                {...cell.getCellProps([
-                                  {
-                                    style: {
-                                      maxWidth: cell.column.maxWidth,
-                                      minWidth: cell.column.minWidth,
-                                      width: cell.column.width,
-                                    },
-                                  },
-                                  getColumnProps(cell.column),
-                                  getCellProps(cell),
-                                ])}
-                                className="activity_data"
-                              >
-                                {
-                                  // Render the cell contents
-                                  cell.render("Cell")
-                                }
-                              </td>
-                            );
-                          })
-                        }
-                      </tr>
-                    );
-                  })
-                }
+                  return (
+                    <tr
+                      {...row.getRowProps()}
+                      className={`activity_row_image` + style}
+                    >
+                      {row.cells.map((cell) => {
+                        return (
+                          <td
+                            {...cell.getCellProps([
+                              {
+                                style: {
+                                  maxWidth: cell.column.maxWidth,
+                                  minWidth: cell.column.minWidth,
+                                  width: cell.column.width,
+                                },
+                              },
+                              getColumnProps(cell.column),
+                              getCellProps(cell),
+                            ])}
+                            className="activity_data"
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
