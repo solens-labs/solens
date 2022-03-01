@@ -40,10 +40,17 @@ export default function ActivityCollectionTable(props) {
       },
       {
         Header: <h5 className="table_header">COLLECTION</h5>,
-        accessor: "name",
+        accessor: "collection",
         minWidth: 250,
         width: 250,
         maxWidth: 250,
+        sortType: (a, b) => {
+          const a1 = a.values.collection.name.toLowerCase();
+          const b1 = b.values.collection.name.toLowerCase();
+          if (a1 < b1) return 1;
+          else if (a1 > b1) return -1;
+          else return 0;
+        },
         Cell: (row) => {
           return (
             <div className="d-flex flex-column justify-content-center align-items-start">
@@ -63,8 +70,8 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">FLOOR</h5>,
         accessor: "floor",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 145,
+        maxWidth: 145,
       },
       {
         Header: (
@@ -73,8 +80,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "floorChange",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 145,
+        maxWidth: 145,
       },
       {
         Header: (
@@ -85,7 +92,6 @@ export default function ActivityCollectionTable(props) {
         accessor: "volumeDay",
         minWidth: 145,
         maxWidth: 145,
-        sortType: (rowA, rowB) => {},
         Cell: (row) => {
           return (
             <span>
@@ -104,8 +110,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "dailyChange",
-        minWidth: 150,
-        maxWidth: 150,
+        minWidth: 145,
+        maxWidth: 145,
         Cell: (row) => {
           return (
             <span
@@ -128,8 +134,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeWeek",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 145,
+        maxWidth: 145,
         Cell: (row) => {
           return (
             <span>
@@ -148,8 +154,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeTotal",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 145,
+        maxWidth: 145,
         Cell: (row) => {
           return (
             <span>
@@ -170,8 +176,8 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">MARKET CAP</h5>,
         accessor: "marketCap",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 145,
+        maxWidth: 145,
       },
       {
         Header: <h5 className="table_header">TRADE</h5>,

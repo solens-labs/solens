@@ -96,7 +96,7 @@ const addCollection = (collection) => {
 
   return {
     image: image,
-    name: { name: name, supply: supply, symbol: symbol },
+    collection: { name: name, supply: supply, symbol: symbol },
     dailyChange: dailyChange,
     volumeDay: volumeDay,
     volumeWeek: volumeWeek,

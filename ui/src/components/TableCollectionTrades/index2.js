@@ -57,14 +57,6 @@ export default function TradesTable(props) {
       {
         Header: "DATE",
         accessor: "date",
-        className: "test_width",
-        sortMethod: (a, b) => {
-          var a1 = new Date(a).getTime();
-          var b1 = new Date(b).getTime();
-          if (a1 < b1) return 1;
-          else if (a1 > b1) return -1;
-          else return 0;
-        },
       },
     ],
     []
