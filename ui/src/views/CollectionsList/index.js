@@ -29,6 +29,8 @@ export default function CollectionsList(props) {
   const allCollections = useSelector(selectAllCollections);
 
   const [collections, setCollections] = useState([]);
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -47,12 +49,14 @@ export default function CollectionsList(props) {
     }
   }, [allCollections]);
 
-  // Select individual collection for details
-  const selectCollection = (collection) => {
-    dispatch(setCollection(collection));
-    const symbol = collection.symbol;
-    history.push("/collection/" + symbol); // COLLECTION LANDING LINK
-  };
+  useEffect(() => {
+    if (collections) {
+      const collectionsFiltered = collections.filter((item) =>
+        item.collection.name.toLowerCase().includes(search.toLowerCase())
+      );
+      setData(collectionsFiltered);
+    }
+  }, [collections, search]);
 
   return (
     <div className="collection_list d-flex flex-column align-items-center col-12 p-1 p-lg-3 p-xl-5 pt-0 pt-lg-0 pt-xl-0 pb-0 mt-4 mb-5">
@@ -64,10 +68,27 @@ export default function CollectionsList(props) {
         />
       </Helmet>
 
-      <h1>{collections.length !== 0 && collections.length} Collections</h1>
+      <h1>{data.length !== 0 && data.length} Collections</h1>
+      <div className="d-flex flex-wrap col-12 col-xl-8 justify-content-around">
+        <input
+          type="text"
+          placeholder="Search"
+          className="search_collection_input"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        {/* <button
+          className="btn-button btn-main"
+          onClick={() => {
+            toggleShow();
+          }}
+        >
+          Show More
+        </button> */}
+      </div>
 
       <div className="chartbox col-12 d-flex flex-row flex-wrap justify-content-center mt-4">
-        <CollectionsTable data={collections} />
+        <CollectionsTable data={data} />
       </div>
 
       <button className="scroll_top" onClick={scrollToTop}>
