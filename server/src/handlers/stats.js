@@ -120,7 +120,7 @@ exports.recentCollectionActivity = async (req, reply) => {
           owner: 1,
           new_owner: 1,
           mint: 1,
-          marketplace: 1,
+          marketplace: helpers.projectMarketplaces(),
           tx: 1,
           _id: 0,
         }
