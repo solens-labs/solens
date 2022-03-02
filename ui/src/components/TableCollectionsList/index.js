@@ -67,42 +67,22 @@ export default function ActivityCollectionTable(props) {
           );
         },
       },
-      {
-        Header: <h5 className="table_header">FLOOR</h5>,
-        accessor: "floor",
-        minWidth: 145,
-        maxWidth: 145,
-      },
-      {
-        Header: (
-          <h5 className="table_header">
-            FLOOR <span className="collection_stats_days slim">(1d %)</span>
-          </h5>
-        ),
-        accessor: "floorChange",
-        minWidth: 145,
-        maxWidth: 145,
-      },
-      {
-        Header: (
-          <h5 className="table_header">
-            VOL <span className="collection_stats_days slim">(1d)</span>
-          </h5>
-        ),
-        accessor: "volumeDay",
-        minWidth: 145,
-        maxWidth: 145,
-        Cell: (row) => {
-          return (
-            <span>
-              {row.value.toLocaleString("en", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }) + " ◎"}
-            </span>
-          );
-        },
-      },
+      // {
+      //   Header: <h5 className="table_header">FLOOR</h5>,
+      //   accessor: "floor",
+      //   minWidth: 145,
+      //   maxWidth: 145,
+      // },
+      // {
+      //   Header: (
+      //     <h5 className="table_header">
+      //       FLOOR <span className="collection_stats_days slim">(1d %)</span>
+      //     </h5>
+      //   ),
+      //   accessor: "floorChange",
+      //   minWidth: 145,
+      //   maxWidth: 145,
+      // },
       {
         Header: (
           <h5 className="table_header">
@@ -123,6 +103,26 @@ export default function ActivityCollectionTable(props) {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               }) + " %"}
+            </span>
+          );
+        },
+      },
+      {
+        Header: (
+          <h5 className="table_header">
+            VOL <span className="collection_stats_days slim">(1d)</span>
+          </h5>
+        ),
+        accessor: "volumeDay",
+        minWidth: 145,
+        maxWidth: 145,
+        Cell: (row) => {
+          return (
+            <span>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }) + " ◎"}
             </span>
           );
         },
@@ -167,18 +167,18 @@ export default function ActivityCollectionTable(props) {
           );
         },
       },
-      // {
-      //   Header: <h5 className="table_header">LAUNCHED</h5>,
-      //   accessor: "launch",
-      //   minWidth: 135,
-      //   maxWidth: 135,
-      // },
       {
-        Header: <h5 className="table_header">MARKET CAP</h5>,
-        accessor: "marketCap",
-        minWidth: 145,
-        maxWidth: 145,
+        Header: <h5 className="table_header">LAUNCHED</h5>,
+        accessor: "launch",
+        minWidth: 135,
+        maxWidth: 135,
       },
+      // {
+      //   Header: <h5 className="table_header">MARKET CAP</h5>,
+      //   accessor: "marketCap",
+      //   minWidth: 145,
+      //   maxWidth: 145,
+      // },
       {
         Header: <h5 className="table_header">TRADE</h5>,
         accessor: "trade",
