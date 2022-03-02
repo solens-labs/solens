@@ -29,7 +29,7 @@ const addCollection = (collection) => {
         src={collection["image"]}
         className="activity_image"
         alt="collection image"
-        loading="eager"
+        loading="lazy"
       />
     </a>
   );

@@ -40,7 +40,7 @@ export default function WalletCard(props) {
             src={wallet_pic}
             className="wallet_image"
             alt="wallet image"
-            loading="eager"
+            loading="lazy"
           />
           {/* <AccountBalanceWalletIcon sx={{ fontSize: 60 }} /> */}
         </div>

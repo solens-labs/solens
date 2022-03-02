@@ -220,7 +220,7 @@ export default function MintPage(props) {
                 src={image}
                 className="nft_image"
                 alt="nft image"
-                loading="eager"
+                loading="lazy"
               />
             </div>
           ) : (

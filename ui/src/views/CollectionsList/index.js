@@ -22,8 +22,10 @@ import CollectionCardMobile from "../../components/CardCollectionMobile";
 import { Helmet } from "react-helmet";
 import convertCollectionsList from "../../utils/convertCollectionsList";
 import CollectionsTable from "../../components/TableCollectionsList";
+import ViewToggleButtons from "../../components/ButtonsViewToggle";
 
 export default function CollectionsList(props) {
+  const { view } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const allCollections = useSelector(selectAllCollections);
@@ -60,15 +62,21 @@ export default function CollectionsList(props) {
 
   return (
     <div className="collection_list d-flex flex-column align-items-center col-12 p-1 p-lg-3 p-xl-5 pt-0 pt-lg-0 pt-xl-0 pb-0 mt-4 mb-5">
-      <Helmet>
-        <title>Solens - Collections</title>
-        <meta
-          name="description"
-          content="Explore and trade Solana NFT Collections. Get analytics, recent activity, and more."
-        />
-      </Helmet>
+      <div className="collections_number col-12 d-flex flex-row flex-wrap justify-content-center align-items-center">
+        <div className="col-0 col-lg-4"></div>
+        <div className="col-12 col-lg-4 d-flex flex-row justify-content-center align-items-center">
+          <h1 style={{ margin: 0, padding: 0 }}>
+            {data.length !== 0 && data.length} Collections
+          </h1>
+        </div>
+        <div className="col-12 col-lg-4 d-flex flex-row justify-content-center justify-content-lg-end align-items-end p-xl-2 pt-0 pb-0 mb-2 mb-lg-0">
+          <ViewToggleButtons
+            setViewType={view.setViewType}
+            viewType={view.viewType}
+          />
+        </div>
+      </div>
 
-      <h1>{data.length !== 0 && data.length} Collections</h1>
       <div className="d-flex flex-wrap col-12 col-xl-8 justify-content-around">
         <input
           type="text"
@@ -76,15 +84,6 @@ export default function CollectionsList(props) {
           className="search_collection_input"
           onChange={(e) => setSearch(e.target.value)}
         />
-
-        {/* <button
-          className="btn-button btn-main"
-          onClick={() => {
-            toggleShow();
-          }}
-        >
-          Show More
-        </button> */}
       </div>
 
       <div className="chartbox col-12 d-flex flex-row flex-wrap justify-content-center mt-4">

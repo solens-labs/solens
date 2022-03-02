@@ -25,7 +25,7 @@ export default function Footer(props) {
             src={solens_logo}
             className="footer_logo"
             alt="solens logo"
-            loading="eager"
+            loading="lazy"
           />
           <div className="col-10 col-xl-4 d-flex justify-content-between mt-1">
             <div className="icon_link">

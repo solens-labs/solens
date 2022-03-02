@@ -72,7 +72,7 @@ const Navigation = (props) => {
               src={logo2}
               className="nav_logo"
               alt="solens logo"
-              loading="eager"
+              loading="lazy"
             />
           </Link>
         </div>
@@ -103,20 +103,6 @@ const Navigation = (props) => {
               </div>
               <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 launchzone
-              </h1>
-            </div>
-          </Link>
-          <Link to="/market" style={{ textDecoration: "none" }}>
-            <div className="nav_link_container">
-              <div className="d-none d-lg-block">
-                <ListIcon
-                  fontSize={"medium"}
-                  className="nav_icon"
-                  style={{ fill: iconsFill }}
-                />
-              </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
-                market
               </h1>
             </div>
           </Link>
@@ -222,20 +208,6 @@ const Navigation = (props) => {
                       style={{ fill: iconsFill }}
                     />
                   </div>
-                </div>
-              </Link>
-              <Link to="/market" style={{ textDecoration: "none" }}>
-                <div className="nav_link_container">
-                  <div className="d-none d-lg-block">
-                    <ListIcon
-                      fontSize={"medium"}
-                      className="nav_icon"
-                      style={{ fill: iconsFill }}
-                    />
-                  </div>
-                  <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
-                    market
-                  </h1>
                 </div>
               </Link>
               <Link to="/collections" style={{ textDecoration: "none" }}>

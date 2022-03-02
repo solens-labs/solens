@@ -290,7 +290,7 @@ export default function CollectionPage(props) {
               src={collectionInfo.image}
               alt="collection_image"
               className="collection_image_large img-fluid"
-              loading="eager"
+              loading="lazy"
             />
           ) : (
             <div className="collection_image_large d-flex justify-content-center overflow-hidden">
@@ -430,7 +430,7 @@ export default function CollectionPage(props) {
                           src={topFourMetadata[i].image}
                           className="nft_card_image"
                           alt="nft_card"
-                          // loading="eager"
+                          // loading="lazy"
                           // onLoad={imgLoad(this)}
                           // style={{ visibility: "hidden" }}
                         />
@@ -446,7 +446,7 @@ export default function CollectionPage(props) {
                                 src={sol_logo}
                                 alt="sol logo"
                                 className="price_logo_sm"
-                                loading="eager"
+                                loading="lazy"
                               />
                               {topFourMetadata[i].price}
                             </h5>

@@ -173,7 +173,7 @@ export default function LaunchMint(props) {
               src={collectionInfo?.image}
               alt="collection_image"
               className="collection_image_large img-fluid"
-              loading="eager"
+              loading="lazy"
             />
           ) : (
             <div className="collection_image_large d-flex justify-content-center overflow-hidden">

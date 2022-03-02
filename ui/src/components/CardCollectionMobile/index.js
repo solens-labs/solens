@@ -42,7 +42,7 @@ export default function CollectionCardMobile(props) {
             src={collection.image}
             alt=""
             className="collection_card_image_mobile"
-            loading="eager"
+            loading="lazy"
           />
         </div>
 

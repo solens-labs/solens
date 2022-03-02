@@ -310,7 +310,7 @@ export default function TradePurchase(props) {
                     height: "auto",
                     marginLeft: 10,
                   }}
-                  loading="eager"
+                  loading="lazy"
                 />
               </div>
             </button>

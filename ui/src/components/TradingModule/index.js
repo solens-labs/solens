@@ -165,7 +165,7 @@ export default function TradingModule(props) {
                     height: 41,
                     background: "transparent",
                   }}
-                  loading="eager"
+                  loading="lazy"
                 />
               </div>
             </button>

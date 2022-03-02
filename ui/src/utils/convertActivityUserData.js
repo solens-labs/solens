@@ -36,7 +36,7 @@ const addTransaction = async (transaction, allCollections, user) => {
           src={link}
           className="activity_image"
           alt="nft image"
-          loading="eager"
+          loading="lazy"
         />
       </a>
     );

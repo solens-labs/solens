@@ -26,7 +26,7 @@ export default function Roadmap(props) {
                 src={roadmap1}
                 alt="roadmap1"
                 className="img-fluid rollmap"
-                loading="eager"
+                loading="lazy"
               />
             </a>
           </div>
@@ -36,7 +36,7 @@ export default function Roadmap(props) {
                 src={roadmap2}
                 alt="roadmap2"
                 className="img-fluid rollmap"
-                loading="eager"
+                loading="lazy"
               />
             </a>
           </div>
@@ -46,7 +46,7 @@ export default function Roadmap(props) {
                 src={roadmap3}
                 alt="roadmap3"
                 className="img-fluid rollmap"
-                loading="eager"
+                loading="lazy"
               />
             </a>
           </div>
@@ -56,7 +56,7 @@ export default function Roadmap(props) {
                 src={roadmap4}
                 alt="roadmap4"
                 className="img-fluid rollmap"
-                loading="eager"
+                loading="lazy"
               />
             </a>
           </div>

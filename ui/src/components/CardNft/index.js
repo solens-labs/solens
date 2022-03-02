@@ -32,7 +32,7 @@ export default function NftCard(props) {
           // loading="lazy"
           className="nft_card_image"
           alt="nft_card"
-          loading="eager"
+          loading="lazy"
         />
       </div>
 
@@ -53,7 +53,7 @@ export default function NftCard(props) {
                   className=""
                   style={{ height: 33, width: "auto" }}
                   alt=""
-                  loading="eager"
+                  loading="lazy"
                 />
               </a>
             )}
@@ -75,7 +75,7 @@ export default function NftCard(props) {
                   width: "auto",
                   marginLeft: -2,
                 }}
-                loading="eager"
+                loading="lazy"
                 alt=""
               />
               // </a>
@@ -95,7 +95,7 @@ export default function NftCard(props) {
                 className=""
                 style={{ height: 33, width: "auto" }}
                 alt=""
-                loading="eager"
+                loading="lazy"
               />
               // </a>
             )}

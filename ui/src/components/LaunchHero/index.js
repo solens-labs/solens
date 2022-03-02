@@ -11,7 +11,7 @@ export default function LaunchHero() {
           alt="launchzone_logo"
           className="img-fluid"
           style={{ maxHeight: "150px", margin: 0, padding: 0 }}
-          loading="eager"
+          loading="lazy"
         />
 
         <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
@@ -21,7 +21,7 @@ export default function LaunchHero() {
               <img
                 src={solana}
                 style={{ height: "1rem", paddingBottom: 4 }}
-                loading="eager"
+                loading="lazy"
               />
             </span>
             ?
