@@ -14,8 +14,8 @@
 <url> <loc>https://solens.io/collection/solpunks</loc> </url>
 <url> <loc>https://solens.io/collection/shadowysupercoder</loc> </url>
 <url> <loc>https://solens.io/collection/boldbadgers</loc> </url>
-<url> <loc>https://solens.io/collection/frakt</loc> </url>
 <url> <loc>https://solens.io/collection/portals</loc> </url>
+<url> <loc>https://solens.io/collection/frakt</loc> </url>
 <url> <loc>https://solens.io/collection/meerkat_millionaires_country_club</loc> </url>
 <url> <loc>https://solens.io/collection/space_runners</loc> </url>
 <url> <loc>https://solens.io/collection/thugbirdz</loc> </url>
@@ -1149,6 +1149,7 @@
 <url> <loc>https://solens.io/collection/personify</loc> </url>
 <url> <loc>https://solens.io/collection/boat_boys</loc> </url>
 <url> <loc>https://solens.io/collection/koalanas</loc> </url>
+<url> <loc>https://solens.io/collection/kitchen_creatures</loc> </url>
 <url> <loc>https://solens.io/collection/keyclackers</loc> </url>
 <url> <loc>https://solens.io/collection/eternalz</loc> </url>
 <url> <loc>https://solens.io/collection/cyberflockas</loc> </url>
@@ -1158,7 +1159,6 @@
 <url> <loc>https://solens.io/collection/1dao</loc> </url>
 <url> <loc>https://solens.io/collection/solnauts</loc> </url>
 <url> <loc>https://solens.io/collection/genties</loc> </url>
-<url> <loc>https://solens.io/collection/kitchen_creatures</loc> </url>
 <url> <loc>https://solens.io/collection/digbics</loc> </url>
 <url> <loc>https://solens.io/collection/galactic_bananas</loc> </url>
 <url> <loc>https://solens.io/collection/solana_ducks</loc> </url>
@@ -1991,8 +1991,8 @@
 <url> <loc>https://solens.io/nfts/solpunks</loc> </url>
 <url> <loc>https://solens.io/nfts/shadowysupercoder</loc> </url>
 <url> <loc>https://solens.io/nfts/boldbadgers</loc> </url>
-<url> <loc>https://solens.io/nfts/frakt</loc> </url>
 <url> <loc>https://solens.io/nfts/portals</loc> </url>
+<url> <loc>https://solens.io/nfts/frakt</loc> </url>
 <url> <loc>https://solens.io/nfts/meerkat_millionaires_country_club</loc> </url>
 <url> <loc>https://solens.io/nfts/space_runners</loc> </url>
 <url> <loc>https://solens.io/nfts/thugbirdz</loc> </url>
@@ -3126,6 +3126,7 @@
 <url> <loc>https://solens.io/nfts/personify</loc> </url>
 <url> <loc>https://solens.io/nfts/boat_boys</loc> </url>
 <url> <loc>https://solens.io/nfts/koalanas</loc> </url>
+<url> <loc>https://solens.io/nfts/kitchen_creatures</loc> </url>
 <url> <loc>https://solens.io/nfts/keyclackers</loc> </url>
 <url> <loc>https://solens.io/nfts/eternalz</loc> </url>
 <url> <loc>https://solens.io/nfts/cyberflockas</loc> </url>
@@ -3135,7 +3136,6 @@
 <url> <loc>https://solens.io/nfts/1dao</loc> </url>
 <url> <loc>https://solens.io/nfts/solnauts</loc> </url>
 <url> <loc>https://solens.io/nfts/genties</loc> </url>
-<url> <loc>https://solens.io/nfts/kitchen_creatures</loc> </url>
 <url> <loc>https://solens.io/nfts/digbics</loc> </url>
 <url> <loc>https://solens.io/nfts/galactic_bananas</loc> </url>
 <url> <loc>https://solens.io/nfts/solana_ducks</loc> </url>

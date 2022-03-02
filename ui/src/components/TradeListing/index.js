@@ -247,8 +247,6 @@ export default function TradeListing(props) {
         program
       );
 
-      console.log(final_tx);
-
       // const sendTx = await sendTransaction(final_tx, connection, {
       //   skipPreflight: false,
       //   preflightCommitment: "processed",
@@ -272,7 +270,7 @@ export default function TradeListing(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 3000);
+      }, 4000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -307,11 +305,11 @@ export default function TradeListing(props) {
               <button className="btn_mp">
                 <div
                   className={
-                    selectedMarketplace === "magiceden"
+                    selectedMarketplace === "magicedenV2"
                       ? "btn_mp_inner_selected"
                       : "btn_mp_inner"
                   }
-                  onClick={() => setSelectedMarketplace("magiceden")}
+                  onClick={() => setSelectedMarketplace("magicedenV2")}
                 >
                   <img
                     src={me_logo}
@@ -380,7 +378,7 @@ export default function TradeListing(props) {
               </button>
             </div>
 
-            {selectedMarketplace === "magiceden" && (
+            {selectedMarketplace === "magicedenV2" && (
               // Terms & Conditions for Magic Eden
               <p className="terms_text m-0 mt-2 p-0">
                 By clicking "List Item", you agree to{" "}

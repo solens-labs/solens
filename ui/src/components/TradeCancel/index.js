@@ -224,7 +224,7 @@ export default function TradeCancel(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 3000);
+      }, 4000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
