@@ -50,7 +50,7 @@ export default function TradeCancel(props) {
 
     switch (marketplace) {
       case "magiceden":
-        cancelNftMagicEden(); // CHANGE BACK TO V1
+        cancelNftMagicEden();
         break;
       case "magicedenV2":
         cancelNftMagicEdenV2();

@@ -119,6 +119,7 @@ export default function CollectionItems(props) {
       .get(apiRequest3)
       .then(async (response) => {
         const activity = response.data;
+        console.log(activity);
         const converted = await convertActivityCollection(activity);
         const resolved = await Promise.all(converted);
         setActivity(resolved);
