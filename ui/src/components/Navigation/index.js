@@ -12,6 +12,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
+import discord_icon from "../../assets/icons/discord4.png";
+import twitter_icon from "../../assets/icons/twitter1.png";
+import email_icon from "../../assets/icons/email1.png";
+import medium_icon from "../../assets/icons/medium1.png";
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
@@ -253,32 +257,61 @@ const Navigation = (props) => {
                 </div>
               </Link>
               <div className="d-flex flex-row col-6 justify-content-around">
-                <a
-                  href={links.twitter.url}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  <TwitterIcon
-                    style={{ fill: "white" }}
-                    className="icon_link"
-                  />
-                </a>
-
-                <a
-                  href={links.medium.url}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  <MediumIcon style={{ fill: "white" }} className="icon_link" />
-                </a>
-
-                <a
-                  href={links.email.contact}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  <EmailIcon style={{ fill: "white" }} className="icon_link" />
-                </a>
+                <div className="icon_link">
+                  <a
+                    href={links.discord.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src={discord_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                  </a>
+                </div>
+                <div className="icon_link">
+                  <a
+                    href={links.twitter.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    {/* <TwitterIcon style={{ fill: "white" }} className="icon_link" /> */}
+                    <img
+                      src={twitter_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                  </a>
+                </div>
+                <div className="icon_link">
+                  <a
+                    href={links.medium.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src={medium_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                    {/* <MediumIcon style={{ fill: "white" }} className="icon_link" /> */}
+                  </a>
+                </div>
+                <div className="icon_link">
+                  <a
+                    href={links.email.contact}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src={email_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                    {/* <EmailIcon style={{ fill: "white" }} /> */}
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -103,7 +103,7 @@ export const links = {
     text: "Twitter",
   },
   discord: {
-    url: "https://discord.gg/",
+    url: "https://discord.gg/8QxMK3WeMZ",
     text: "Discord",
   },
   opensea: {
