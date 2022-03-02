@@ -14,6 +14,8 @@ import {
   setSort,
   setShowMore,
   selectShowMore,
+  selectViewType,
+  setViewType,
 } from "../../redux/app";
 import ToolBar from "../../components/ToolBar";
 import CollectionCard from "../../components/CardCollection";
@@ -27,12 +29,16 @@ import ViewToggleButtons from "../../components/ButtonsViewToggle";
 
 export default function Collections(props) {
   const dispatch = useDispatch();
+  const allCollections = useSelector(selectAllCollections);
+  const viewType = useSelector(selectViewType);
 
-  const [viewType, setViewType] = useState("list");
+  const setView = (type) => {
+    dispatch(setViewType(type));
+  };
 
   const view = {
     viewType: viewType,
-    setViewType: setViewType,
+    setViewType: (type) => setView(type),
   };
 
   return (
@@ -46,9 +52,13 @@ export default function Collections(props) {
       </Helmet>
 
       <div className="d-flex flex-coulmn col-12">
-        {viewType === "list" && <CollectionsList view={view} />}
+        {viewType === "list" && (
+          <CollectionsList view={view} allCollections={allCollections} />
+        )}
 
-        {viewType === "grid" && <CollectionsGrid view={view} />}
+        {viewType === "grid" && (
+          <CollectionsGrid view={view} allCollections={allCollections} />
+        )}
       </div>
     </div>
   );

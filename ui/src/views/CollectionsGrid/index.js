@@ -24,11 +24,9 @@ import { Helmet } from "react-helmet";
 import ViewToggleButtons from "../../components/ButtonsViewToggle";
 
 export default function CollectionsGrid(props) {
-  const { view } = props;
+  const { view, allCollections } = props;
   const dispatch = useDispatch();
   const history = useHistory();
-  const allCollections = useSelector(selectAllCollections);
-  const showMore = useSelector(selectShowMore);
 
   const [collections, setCollections] = useState([]);
   const [search, setSearch] = useState("");
@@ -42,10 +40,6 @@ export default function CollectionsGrid(props) {
       /* you can also use 'auto' behaviour
          in place of 'smooth' */
     });
-  };
-
-  const toggleShow = () => {
-    dispatch(setShowMore(!showMore));
   };
 
   // Search & Sort Functionality

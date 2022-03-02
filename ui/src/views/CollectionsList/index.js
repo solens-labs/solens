@@ -25,10 +25,7 @@ import CollectionsTable from "../../components/TableCollectionsList";
 import ViewToggleButtons from "../../components/ButtonsViewToggle";
 
 export default function CollectionsList(props) {
-  const { view } = props;
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const allCollections = useSelector(selectAllCollections);
+  const { view, allCollections } = props;
 
   const [collections, setCollections] = useState([]);
   const [data, setData] = useState([]);
