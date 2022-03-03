@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
@@ -34,8 +34,9 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">{}</h5>,
         accessor: "image",
-        minWidth: 95,
-        maxWidth: 95,
+        minWidth: 100,
+        width: 100,
+        maxWidth: 100,
         disableSortBy: true,
       },
       {
@@ -58,7 +59,7 @@ export default function ActivityCollectionTable(props) {
                 href={`/collection/${row.value.symbol}`}
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <span style={{ fontSize: "1.1rem" }}>{row.value.name}</span>
+                <span style={{ fontSize: "1rem" }}>{row.value.name}</span>
               </a>
               <span style={{ fontSize: "0.80rem", color: "grey" }}>
                 Supply: {row.value.supply}
@@ -86,12 +87,34 @@ export default function ActivityCollectionTable(props) {
       {
         Header: (
           <h5 className="table_header">
+            VOL <span className="collection_stats_days slim">(1d)</span>
+          </h5>
+        ),
+        accessor: "volumeDay",
+        minWidth: 155,
+        width: 155,
+        maxWidth: 155,
+        Cell: (row) => {
+          return (
+            <span>
+              {row.value.toLocaleString("en", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }) + " ◎"}
+            </span>
+          );
+        },
+      },
+      {
+        Header: (
+          <h5 className="table_header">
             VOL <span className="collection_stats_days slim">(1d %)</span>
           </h5>
         ),
         accessor: "dailyChange",
-        minWidth: 145,
-        maxWidth: 145,
+        minWidth: 155,
+        width: 155,
+        maxWidth: 155,
         Cell: (row) => {
           return (
             <span
@@ -110,32 +133,13 @@ export default function ActivityCollectionTable(props) {
       {
         Header: (
           <h5 className="table_header">
-            VOL <span className="collection_stats_days slim">(1d)</span>
-          </h5>
-        ),
-        accessor: "volumeDay",
-        minWidth: 145,
-        maxWidth: 145,
-        Cell: (row) => {
-          return (
-            <span>
-              {row.value.toLocaleString("en", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }) + " ◎"}
-            </span>
-          );
-        },
-      },
-      {
-        Header: (
-          <h5 className="table_header">
             VOL <span className="collection_stats_days slim">(1w)</span>
           </h5>
         ),
         accessor: "volumeWeek",
-        minWidth: 145,
-        maxWidth: 145,
+        minWidth: 155,
+        width: 155,
+        maxWidth: 155,
         Cell: (row) => {
           return (
             <span>
@@ -154,8 +158,8 @@ export default function ActivityCollectionTable(props) {
           </h5>
         ),
         accessor: "volumeTotal",
-        minWidth: 145,
-        maxWidth: 145,
+        minWidth: 155,
+        maxWidth: 155,
         Cell: (row) => {
           return (
             <span>
@@ -170,8 +174,9 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">LAUNCHED</h5>,
         accessor: "launch",
-        minWidth: 135,
-        maxWidth: 135,
+        minWidth: 155,
+        width: 155,
+        maxWidth: 155,
       },
       // {
       //   Header: <h5 className="table_header">MARKET CAP</h5>,
@@ -182,8 +187,9 @@ export default function ActivityCollectionTable(props) {
       {
         Header: <h5 className="table_header">TRADE</h5>,
         accessor: "trade",
-        minWidth: 130,
-        maxWidth: 130,
+        minWidth: 170,
+        width: 170,
+        maxWidth: 170,
         disableSortBy: true,
       },
       // {
@@ -218,14 +224,15 @@ export default function ActivityCollectionTable(props) {
       initialState: { pageSize: 50 },
     },
     useSortBy,
-    usePagination
+    usePagination,
+    useFlexLayout
   );
 
   return (
     <>
       {!loading && (
         <>
-          <div className="col-12 data_table overflow-auto">
+          <div className="overflow-auto">
             <table {...getTableProps()} style={{ width: "100%" }}>
               <thead>
                 {headerGroups.map((headerGroup) => (
