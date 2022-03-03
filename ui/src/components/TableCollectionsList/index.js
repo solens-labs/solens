@@ -225,14 +225,14 @@ export default function ActivityCollectionTable(props) {
     },
     useSortBy,
     usePagination,
-    useFlexLayout
+    // useFlexLayout
   );
 
   return (
     <>
       {!loading && (
         <>
-          <div className="overflow-auto">
+          <div className="col-12 overflow-auto">
             <table {...getTableProps()} style={{ width: "100%" }}>
               <thead>
                 {headerGroups.map((headerGroup) => (

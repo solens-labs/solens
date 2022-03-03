@@ -42,8 +42,8 @@ td {
     /* height: 65px; */
   }
 }
-@media screen and (max-width: 1760px) {
+/* @media screen and (max-width: 1760px) {
   .data_table {
     justify-content: start !important;
   }
-}
+} */
