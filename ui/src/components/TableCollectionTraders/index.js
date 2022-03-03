@@ -1,10 +1,26 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
 import "../Buttons/style.css";
-import { useTable, useSortBy, usePagination } from "react-table";
+import {
+  useTable,
+  useSortBy,
+  usePagination,
+  useBlockLayout,
+} from "react-table";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Loader from "../Loader";
+
+const defaultPropGetter = () => ({});
 
 export default function TradersTable(props) {
-  const { data } = props;
+  const {
+    data,
+    getHeaderProps = defaultPropGetter,
+    getColumnProps = defaultPropGetter,
+    getRowProps = defaultPropGetter,
+    getCellProps = defaultPropGetter,
+  } = props;
   // const data = null;
 
   const blankTx = {
@@ -53,26 +69,45 @@ export default function TradersTable(props) {
       {
         Header: "ADDRESS",
         accessor: "address",
+        minWidth: 150,
+        width: 150,
+        maxWidth: 150,
+        overflow: "hidden",
       },
       {
         Header: "TOTAL",
         accessor: "total",
+        minWidth: 110,
+        width: 110,
+        maxWidth: 110,
       },
       {
         Header: "COUNT",
         accessor: "count",
+        minWidth: 90,
+        width: 90,
+        maxWidth: 90,
       },
       {
         Header: "MIN",
         accessor: "min",
+        minWidth: 110,
+        width: 110,
+        maxWidth: 110,
       },
       {
         Header: "AVG",
         accessor: "average",
+        minWidth: 110,
+        width: 110,
+        maxWidth: 110,
       },
       {
         Header: "MAX",
         accessor: "max",
+        minWidth: 110,
+        width: 110,
+        maxWidth: 110,
       },
     ],
     []
@@ -93,7 +128,12 @@ export default function TradersTable(props) {
     setPageSize,
     canPreviousPage,
     canNextPage,
-  } = useTable({ columns: columns, data: tableData }, useSortBy, usePagination);
+  } = useTable(
+    { columns: columns, data: tableData },
+    useSortBy,
+    usePagination,
+    useBlockLayout
+  );
 
   // if (!data) {
   //   return null;
@@ -116,76 +156,85 @@ export default function TradersTable(props) {
           ))}
         </select>
       </div> */}
-      <div className="col-12 data_table overflow-auto">
-        <table {...getTableProps()}>
+      <div className="col-12 overflow-auto">
+        <table {...getTableProps()} style={{ width: "100%" }}>
           <thead>
-            {
-              // Loop over the header rows
-              headerGroups.map((headerGroup) => (
-                // Apply the header row props
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    // Loop over the headers in each row
-                    headerGroup.headers.map((column) => (
-                      // Apply the header cell props
-                      <th
-                        {...column.getHeaderProps(
-                          column.getSortByToggleProps()
-                        )}
-                        className={
-                          column.isSorted
-                            ? column.isSortedDesc
-                              ? "sorted_desc"
-                              : "sorted_asc"
-                            : ""
-                        }
-                      >
-                        {
-                          // Render the header
-                          column.render("Header")
-                        }
-                        {/* <span>
-                      {column.isSorted
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps([
+                      {
+                        style: {
+                          maxWidth: column.maxWidth,
+                          minWidth: column.minWidth,
+                          width: column.width,
+                        },
+                      },
+                      column.getSortByToggleProps(),
+                      getColumnProps(column),
+                      getHeaderProps(column),
+                    ])}
+                    className={
+                      column.isSorted
                         ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span> */}
-                      </th>
-                    ))
-                  }
-                </tr>
-              ))
-            }
-          </thead>
-          {/* Apply the table body props */}
-          <tbody {...getTableBodyProps()}>
-            {
-              // Loop over the table rows
-              page.map((row) => {
-                // Prepare the row for display
-                prepareRow(row);
-                return (
-                  // Apply the row props
-                  <tr {...row.getRowProps()}>
-                    {
-                      // Loop over the rows cells
-                      row.cells.map((cell) => {
-                        // Apply the cell props
-                        return (
-                          <td {...cell.getCellProps()}>
-                            {
-                              // Render the cell contents
-                              cell.render("Cell")
-                            }
-                          </td>
-                        );
-                      })
+                          ? "activity_header sorted_desc"
+                          : "activity_header sorted_asc"
+                        : "activity_header"
                     }
-                  </tr>
-                );
-              })
-            }
+                  >
+                    <div className="header_inner d-flex flex-row p-0 m-0 justify-content-center">
+                      {column.render("Header")}
+                      <div className="sort_arrow">
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <ArrowDropDownIcon />
+                          ) : (
+                            <ArrowDropUpIcon />
+                          )
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row);
+              let style = 1;
+              if (i % 2) {
+                style = 2;
+              }
+
+              return (
+                <tr {...row.getRowProps()} className={`table_row` + style}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td
+                        {...cell.getCellProps([
+                          {
+                            style: {
+                              maxWidth: cell.column.maxWidth,
+                              minWidth: cell.column.minWidth,
+                              width: cell.column.width,
+                            },
+                          },
+                          getColumnProps(cell.column),
+                          getCellProps(cell),
+                        ])}
+                        className="activity_data"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -224,7 +224,7 @@ export default function ActivityCollectionTable(props) {
       initialState: { pageSize: 50 },
     },
     useSortBy,
-    usePagination,
+    usePagination
     // useFlexLayout
   );
 

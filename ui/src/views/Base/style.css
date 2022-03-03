@@ -170,6 +170,14 @@
   overflow: hidden;
 }
 
+.table_row1 {
+}
+
+.table_row2 {
+  background-color: rgb(25, 16, 51);
+  border-radius: 15px !important;
+}
+
 .activity_row_image1 {
   height: 91.5px !important;
 }
