@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { explorerLink, themeColors } from "../../constants/constants";
+import { shortenAddress } from "../../candy-machine";
 
 const defaultPropGetter = () => ({});
 
@@ -53,20 +55,26 @@ export default function ActivityMintTable(props) {
         Header: "TYPE",
         accessor: "symbol",
         width: 90,
+        disableSortBy: true,
       },
       {
         Header: "MARKET",
         accessor: "marketplace",
-        minWidth: 175,
+        width: 175,
       },
       {
         Header: "DETAIL",
         accessor: "type",
+        width: 150,
       },
       {
         Header: "PRICE",
         accessor: "price",
-        minWidth: 110,
+        width: 120,
+        accessor: "price",
+        Cell: (row) => {
+          return row.value + " ◎";
+        },
       },
       // {
       //   Header: "% Change",
@@ -74,20 +82,60 @@ export default function ActivityMintTable(props) {
       // },
       {
         Header: "BUYER",
-        accessor: "buyerLink",
+        accessor: "buyer",
+        width: 130,
+        // disableSortBy: true,
+        Cell: (row) => {
+          return (
+            <a
+              href={explorerLink("account", row.value)}
+              target="_blank"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              {shortenAddress(row.value)}
+            </a>
+          );
+        },
       },
       {
         Header: "SELLER",
-        accessor: "sellerLink",
+        accessor: "seller",
+        // disableSortBy: true,
+        width: 130,
+        Cell: (row) => {
+          return (
+            <a
+              href={explorerLink("account", row.value)}
+              target="_blank"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              {shortenAddress(row.value)}
+            </a>
+          );
+        },
       },
       {
         Header: "TIME",
         accessor: "date",
-        minWidth: 165,
+        minWidth: 170,
       },
       {
         Header: "TX",
         accessor: "tx",
+        disableSortBy: true,
+        width: 130,
+        Cell: (row) => {
+          const hash = row.value;
+          return (
+            <a
+              href={explorerLink("tx", row.value)}
+              style={{ textDecoration: "none", color: themeColors[0] }}
+              target="_blank"
+            >
+              {hash.slice(0, 6) + "..."}
+            </a>
+          );
+        },
       },
     ],
     []
@@ -99,7 +147,8 @@ export default function ActivityMintTable(props) {
         columns: columns,
         data: tableData,
       },
-      useSortBy
+      useSortBy,
+      useFlexLayout
     );
 
   return (

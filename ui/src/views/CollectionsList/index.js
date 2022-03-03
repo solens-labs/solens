@@ -83,7 +83,7 @@ export default function CollectionsList(props) {
         />
       </div>
 
-      <div className="chartbox col-12 d-flex flex-row flex-wrap justify-content-center mt-4">
+      <div className="tablebox col-12 d-flex flex-row flex-wrap justify-content-center mt-4">
         <CollectionsTable data={data} />
       </div>
 

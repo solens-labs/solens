@@ -1,12 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import "./style.css";
-import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useBlockLayout,
-} from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
@@ -95,9 +90,9 @@ export default function TradesTable(props) {
       {
         Header: "DATE",
         accessor: "date",
-        minWidth: 130,
-        width: 130,
-        maxWidth: 130,
+        minWidth: 120,
+        width: 120,
+        maxWidth: 120,
       },
     ],
     []
@@ -122,7 +117,7 @@ export default function TradesTable(props) {
     { columns: columns, data: tableData, initialState: { pageSize: 10 } },
     useSortBy,
     usePagination,
-    useBlockLayout
+    useFlexLayout
   );
 
   // if (!data) {

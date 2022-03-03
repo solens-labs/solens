@@ -494,7 +494,7 @@ export default function CollectionPage(props) {
       </>
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-3">
+        <div className="tablebox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
           <div className="col-12 col-sm-10 col-md-8 col-xxl-7 mb-3">
@@ -505,7 +505,7 @@ export default function CollectionPage(props) {
               intervals={[1, 7, 1000]}
             />
           </div>
-          <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+          {/* <hr style={{ color: "white", width: "100%" }} className="mt-0" /> */}
           {topTradesAll?.length !== 0 &&
           topTradesWeek?.length !== 0 &&
           topTradesDay?.length !== 0 ? (
@@ -521,7 +521,7 @@ export default function CollectionPage(props) {
           )}
         </div>
 
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-5 mt-lg-3">
+        <div className="tablebox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-5 mt-lg-3">
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>
@@ -543,7 +543,7 @@ export default function CollectionPage(props) {
               SELLERS
             </button>
           </div>
-          <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+          {/* <hr style={{ color: "white", width: "100%" }} className="mt-0" /> */}
           {!zeroVolumeCollection &&
           topBuyers?.length !== 0 &&
           topSellers?.length !== 0 ? (

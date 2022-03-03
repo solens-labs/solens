@@ -232,7 +232,7 @@ export default function ActivityCollectionTable(props) {
     <>
       {!loading && (
         <>
-          <div className="col-12 overflow-auto">
+          <div className="full_width_table col-12 overflow-auto">
             <table {...getTableProps()} style={{ width: "100%" }}>
               <thead>
                 {headerGroups.map((headerGroup) => (
@@ -305,7 +305,7 @@ export default function ActivityCollectionTable(props) {
                               getColumnProps(cell.column),
                               getCellProps(cell),
                             ])}
-                            className="activity_data"
+                            className="activity_data2"
                           >
                             {cell.render("Cell")}
                           </td>

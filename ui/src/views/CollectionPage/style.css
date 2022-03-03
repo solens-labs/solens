@@ -78,6 +78,13 @@
   min-height: 350px;
 }
 
+.tablebox {
+  background: rgb(18, 11, 37);
+  padding: 20px;
+  border-radius: 20px;
+  min-height: 350px;
+}
+
 .chartbox_tall {
   min-height: 600px;
 }

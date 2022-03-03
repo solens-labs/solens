@@ -90,7 +90,6 @@ const addTransaction = async (transaction, allCollections, user) => {
     </a>
   );
   let priceNumber = Number(transaction["price"]).toFixed(4);
-  // let price = "◎ " + parseFloat(priceNumber);
   let price = parseFloat(priceNumber);
 
   let displayName = "Unverified";

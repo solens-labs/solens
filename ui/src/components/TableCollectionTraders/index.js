@@ -1,12 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
 import "../Buttons/style.css";
-import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useBlockLayout,
-} from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
@@ -132,7 +127,7 @@ export default function TradersTable(props) {
     { columns: columns, data: tableData },
     useSortBy,
     usePagination,
-    useBlockLayout
+    useFlexLayout
   );
 
   // if (!data) {

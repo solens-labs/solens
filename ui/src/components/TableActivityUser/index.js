@@ -1,12 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
 
+const defaultPropGetter = () => ({});
+
 export default function ActivityWalletTable(props) {
-  const { data } = props;
+  const {
+    data,
+    getHeaderProps = defaultPropGetter,
+    getColumnProps = defaultPropGetter,
+    getRowProps = defaultPropGetter,
+    getCellProps = defaultPropGetter,
+  } = props;
 
   const blankObject = {
     image: "--",
@@ -59,6 +67,7 @@ export default function ActivityWalletTable(props) {
       {
         Header: "TYPE",
         accessor: "txType",
+        width: 90,
       },
       {
         Header: "DETAIL",
@@ -71,10 +80,14 @@ export default function ActivityWalletTable(props) {
       {
         Header: "PRICE",
         accessor: "price",
+        Cell: (row) => {
+          return row.value + " ◎";
+        },
       },
       {
         Header: "MARKET",
         accessor: "marketplace",
+        minWidth: 175,
       },
       {
         Header: "ADDRESS",
@@ -114,7 +127,8 @@ export default function ActivityWalletTable(props) {
       initialState: { pageSize: 10 },
     },
     useSortBy,
-    usePagination
+    usePagination,
+    useFlexLayout
   );
 
   return (

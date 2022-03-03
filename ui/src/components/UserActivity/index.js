@@ -11,7 +11,7 @@ export default function UserActivity(props) {
           <h2>Recent Activity</h2>
         </div>
       </div>
-      <div className="chartbox col-12 col-lg-10 d-flex flex-row flex-wrap justify-content-center mt-4">
+      <div className="tablebox col-12 col-lg-10 d-flex flex-row flex-wrap justify-content-center mt-4">
         <ActivityWalletTable data={activity} />
       </div>
     </>

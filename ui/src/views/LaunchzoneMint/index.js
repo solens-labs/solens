@@ -284,7 +284,7 @@ export default function LaunchzoneMint(props) {
         </div>
       </div>
 
-      <div className="minting_module chartbox d-flex flex-column align-items-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3 p-0">
+      <div className="minting_module tablebox d-flex flex-column align-items-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3 p-0">
         <div className="minting_title col-12 d-flex flex-column align-items-center">
           {!released && (
             <>

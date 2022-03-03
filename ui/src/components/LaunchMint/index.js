@@ -166,7 +166,7 @@ export default function LaunchMint(props) {
       <div className="col-12 col-lg-10 col-xxl-8 p-3 pt-0 pb-0 d-flex justify-content-start">
         <h1 className="subheading">Featured Launch</h1>
       </div>
-      <div className="chartbox collection_details d-flex flex-wrap justify-content-center col-12 col-lg-10 col-xxl-8 mt-3 mb-3">
+      <div className="tablebox collection_details d-flex flex-wrap justify-content-center col-12 col-lg-10 col-xxl-8 mt-3 mb-3">
         <div className="col-12 col-lg-5 d-flex align-items-center justify-content-center">
           {collectionInfo?.image ? (
             <img

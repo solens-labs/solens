@@ -7,7 +7,7 @@ export default function WalletsSection(props) {
 
   return (
     <div className="d-flex flex-column align-items-center col-12 col-xxl-10">
-      <div className="chartbox d-flex flex-row flex-wrap col-12 justify-content-center mb-0 pb-0">
+      <div className="tablebox d-flex flex-row flex-wrap col-12 justify-content-center mb-0 pb-0">
         <h5
           className="collection_stats_days font_white mt-4 mb-4"
           style={{ fontSize: "1.8rem" }}
@@ -34,7 +34,7 @@ export default function WalletsSection(props) {
 
       {/* <hr style={{ color: "white", width: "50%" }} className="mt-5 mb-4" /> */}
 
-      <div className="chartbox d-flex flex-row flex-wrap col-12 justify-content-center mt-5 mb-0 pb-0">
+      <div className="tablebox d-flex flex-row flex-wrap col-12 justify-content-center mt-5 mb-0 pb-0">
         <h5
           className="collection_stats_days font_white mt-4 mb-4"
           style={{ fontSize: "1.8rem" }}
