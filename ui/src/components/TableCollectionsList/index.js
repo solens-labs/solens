@@ -7,6 +7,8 @@ import Loader from "../Loader";
 import { marketplaceSelect } from "../../utils/collectionStats";
 import { useSelector } from "react-redux";
 import { selectSolPrice } from "../../redux/app";
+import ArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 const defaultPropGetter = () => ({});
 
@@ -316,6 +318,27 @@ export default function ActivityCollectionTable(props) {
     <>
       {!loading && (
         <>
+          {/* <div className="col-12 d-flex flex-column align-items-end">
+            <div className="d-flex flex-row flex-wrap justify-content-center align-items-center mb-3">
+              <button
+                className="btn-button btn-main pagination_button"
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                <ArrowLeftIcon />
+              </button>
+              <div className="p-2 p-lg-3 pb-lg-0 pt-lg-0 pagination_text">
+                {pageIndex + 1}
+              </div>
+              <button
+                className="btn-button btn-main pagination_button"
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
+                <ArrowRightIcon />
+              </button>
+            </div>
+          </div> */}
           <div className="full_width_table col-12 overflow-auto">
             <table {...getTableProps()} style={{ width: "100%" }}>
               <thead>
@@ -408,7 +431,7 @@ export default function ActivityCollectionTable(props) {
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
-                Previous
+                <ArrowLeftIcon />
               </button>
               <div className="p-2 p-lg-3 pb-lg-0 pt-lg-0 pagination_text">
                 Page {pageIndex + 1} of {pageOptions.length}
@@ -418,7 +441,7 @@ export default function ActivityCollectionTable(props) {
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >
-                Next
+                <ArrowRightIcon />
               </button>
             </div>
             <div>

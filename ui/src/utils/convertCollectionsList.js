@@ -93,7 +93,9 @@ const addCollection = (collection) => {
   const volumeWeek = collection["weekly_volume"];
   const volumeTotal = collection["total_volume"];
   const supply = collection["supply"];
-  const floor = collection["floor"] ? collection["floor"] + " ◎" : "N/A";
+  const floor = collection["floor"]
+    ? collection["floor"].toFixed(2) + " ◎"
+    : "N/A";
   const floorMP = collection["floor_marketplace"]
     ? collection["floor_marketplace"]
     : "N/A";
