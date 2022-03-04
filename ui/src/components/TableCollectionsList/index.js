@@ -4,6 +4,9 @@ import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
+import { marketplaceSelect } from "../../utils/collectionStats";
+import { useSelector } from "react-redux";
+import { selectSolPrice } from "../../redux/app";
 
 const defaultPropGetter = () => ({});
 
@@ -15,6 +18,8 @@ export default function ActivityCollectionTable(props) {
     getRowProps = defaultPropGetter,
     getCellProps = defaultPropGetter,
   } = props;
+
+  const solPrice = useSelector(selectSolPrice);
 
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,12 +73,46 @@ export default function ActivityCollectionTable(props) {
           );
         },
       },
-      // {
-      //   Header: <h5 className="table_header">FLOOR</h5>,
-      //   accessor: "floor",
-      //   minWidth: 145,
-      //   maxWidth: 145,
-      // },
+      {
+        Header: <h5 className="table_header">FLOOR</h5>,
+        accessor: "floor",
+        minWidth: 155,
+        maxWidth: 155,
+        sortType: (a, b) => {
+          let a1 = a.values.floor.floor;
+          let b1 = b.values.floor.floor;
+
+          if (a1 !== "N/A") {
+            a1 = a1.slice(0, a1.length - 2);
+            a1 = Number(a1);
+          } else {
+            a1 = 0;
+          }
+
+          if (b1 !== "N/A") {
+            b1 = b1.slice(0, b1.length - 2);
+            b1 = Number(b1);
+          } else {
+            b1 = 0;
+          }
+
+          if (a1 < b1) return 1;
+          else if (a1 > b1) return -1;
+          else return 0;
+        },
+        Cell: (row) => {
+          const marketplace = marketplaceSelect(row.value.floorMP);
+          return (
+            <div className="d-flex flex-column justify-content-center align-items-start">
+              <span style={{ fontSize: "1rem" }}>{row.value.floor}</span>
+
+              <span style={{ fontSize: "0.80rem", color: "grey" }}>
+                {marketplace}
+              </span>
+            </div>
+          );
+        },
+      },
       // {
       //   Header: (
       //     <h5 className="table_header">
@@ -83,6 +122,41 @@ export default function ActivityCollectionTable(props) {
       //   accessor: "floorChange",
       //   minWidth: 145,
       //   maxWidth: 145,
+      // },
+      // {
+      //   Header: (
+      //     <h5 className="table_header">
+      //       VOL <span className="collection_stats_days slim">(1d)</span>
+      //     </h5>
+      //   ),
+      //   accessor: "volumeDay",
+      //   minWidth: 155,
+      //   width: 155,
+      //   maxWidth: 155,
+      //   Cell: (row) => {
+      //     let changeColor = "white";
+
+      //     return (
+      //       <div className="d-flex flex-column justify-content-center align-items-start">
+      //         <span>
+      //           {row.value.volumeDay.toLocaleString("en", {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2,
+      //           }) + " ◎"}
+      //         </span>
+      //         <span
+      //           style={{
+      //             fontSize: "0.8rem",
+      //             color: `${
+      //               row.value.dailyChange > 0 ? "green" : "rgba(201, 87, 87, 1)"
+      //             }`,
+      //           }}
+      //         >
+      //           {row.value.dailyChange.toFixed(2) + " %"}
+      //         </span>
+      //       </div>
+      //     );
+      //   },
       // },
       {
         Header: (
@@ -171,19 +245,29 @@ export default function ActivityCollectionTable(props) {
           );
         },
       },
-      {
-        Header: <h5 className="table_header">LAUNCHED</h5>,
-        accessor: "launch",
-        minWidth: 155,
-        width: 155,
-        maxWidth: 155,
-      },
       // {
-      //   Header: <h5 className="table_header">MARKET CAP</h5>,
-      //   accessor: "marketCap",
-      //   minWidth: 145,
-      //   maxWidth: 145,
+      //   Header: <h5 className="table_header">LAUNCHED</h5>,
+      //   accessor: "launch",
+      //   minWidth: 155,
+      //   width: 155,
+      //   maxWidth: 155,
       // },
+      {
+        Header: <h5 className="table_header">MARKET CAP</h5>,
+        accessor: "marketCap",
+        minWidth: 155,
+        maxWidth: 155,
+        Cell: (row) => {
+          let marketCapInit = "N/A";
+          if (row.value > 0) {
+            marketCapInit = Number((row.value * solPrice).toFixed(0));
+            marketCapInit = marketCapInit.toLocaleString();
+            marketCapInit = "$ " + marketCapInit;
+          }
+
+          return marketCapInit;
+        },
+      },
       {
         Header: <h5 className="table_header">TRADE</h5>,
         accessor: "trade",

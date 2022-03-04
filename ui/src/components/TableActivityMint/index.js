@@ -73,7 +73,11 @@ export default function ActivityMintTable(props) {
         width: 120,
         accessor: "price",
         Cell: (row) => {
-          return row.value + " ◎";
+          if (row.value > 0) {
+            return row.value + " ◎";
+          } else {
+            return "";
+          }
         },
       },
       // {

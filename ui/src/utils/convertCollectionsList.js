@@ -93,11 +93,20 @@ const addCollection = (collection) => {
   const volumeWeek = collection["weekly_volume"];
   const volumeTotal = collection["total_volume"];
   const supply = collection["supply"];
+  const floor = collection["floor"] ? collection["floor"] + " ◎" : "N/A";
+  const floorMP = collection["floor_marketplace"]
+    ? collection["floor_marketplace"]
+    : "N/A";
+  const marketCap =
+    collection["floor"] > 0 && supply > 0
+      ? collection["floor"] * supply
+      : "N/A";
 
   return {
     image: image,
     collection: { name: name, supply: supply, symbol: symbol },
     dailyChange: dailyChange,
+    // volumeDay: { volumeDay: volumeDay, dailyChange: dailyChange },
     volumeDay: volumeDay,
     volumeWeek: volumeWeek,
     volumeTotal: volumeTotal,
@@ -107,6 +116,8 @@ const addCollection = (collection) => {
     trade: trade,
     analytics: analytics,
     pastDayVolume: pastDayVolume,
+    floor: { floor: floor, floorMP: floorMP },
+    marketCap: marketCap,
   };
 };
 
