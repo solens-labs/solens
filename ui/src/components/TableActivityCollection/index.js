@@ -6,6 +6,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
 import { shortenAddress } from "../../candy-machine";
 import { explorerLink, themeColors } from "../../constants/constants";
+import ArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 const defaultPropGetter = () => ({});
 
@@ -234,7 +236,7 @@ export default function ActivityCollectionTable(props) {
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
-                Previous
+                <ArrowLeftIcon />
               </button>
               <div className="p-2 p-lg-3 pb-lg-0 pt-lg-0 pagination_text">
                 Page {pageIndex + 1} of {pageOptions.length}
@@ -244,7 +246,7 @@ export default function ActivityCollectionTable(props) {
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >
-                Next
+                <ArrowRightIcon />
               </button>
             </div>
             <div>

@@ -4,6 +4,8 @@ import "../Buttons/style.css";
 import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Loader from "../Loader";
 
 const defaultPropGetter = () => ({});
@@ -239,7 +241,7 @@ export default function TradersTable(props) {
           onClick={() => previousPage()}
           disabled={!canPreviousPage}
         >
-          Previous
+          <ArrowLeftIcon />
         </button>
         <div className="p-2 p-lg-3 pb-lg-0 pt-lg-0 pagination_text">
           Page {pageIndex + 1} of {pageOptions.length}
@@ -249,7 +251,7 @@ export default function TradersTable(props) {
           onClick={() => nextPage()}
           disabled={!canNextPage}
         >
-          Next
+          <ArrowRightIcon />
         </button>
       </div>
       <div>
