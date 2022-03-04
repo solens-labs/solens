@@ -13,6 +13,7 @@ import {
   setSort,
   setShowMore,
   selectShowMore,
+  selectSolPrice,
 } from "../../redux/app";
 import ToolBar from "../../components/ToolBar";
 import CollectionCard from "../../components/CardCollection";
@@ -26,6 +27,7 @@ import ViewToggleButtons from "../../components/ButtonsViewToggle";
 
 export default function CollectionsList(props) {
   const { view, allCollections } = props;
+  const solPrice = useSelector(selectSolPrice);
 
   const [collections, setCollections] = useState([]);
   const [data, setData] = useState([]);
@@ -58,7 +60,7 @@ export default function CollectionsList(props) {
   }, [collections, search]);
 
   return (
-    <div className="collection_list d-flex flex-column align-items-center col-12 p-1 p-lg-3 p-xl-5 pt-0 pt-lg-0 pt-xl-0 pb-0 mt-4 mb-5">
+    <div className="collection_list d-flex flex-column align-items-center col-12 p-0 p-lg-3 p-xl-5 pt-0 pt-lg-0 pt-xl-0 pb-0 mt-4 mb-5">
       <div className="collections_number col-12 d-flex flex-row flex-wrap justify-content-center align-items-center">
         <div className="col-0 col-lg-4"></div>
         <div className="col-12 col-lg-4 d-flex flex-row justify-content-center align-items-center">
@@ -84,7 +86,7 @@ export default function CollectionsList(props) {
       </div>
 
       <div className="tablebox col-12 d-flex flex-row flex-wrap justify-content-center mt-4">
-        <CollectionsTable data={data} />
+        {solPrice > 0 && <CollectionsTable data={data} />}
       </div>
 
       <button className="scroll_top" onClick={scrollToTop}>

@@ -44,7 +44,7 @@ import User from "../User";
 import CollectionTrade from "../CollectionTrade";
 import LaunchzoneMint from "../LaunchzoneMint";
 import SiteBanner from "../../components/SiteBanner";
-import CollectionsList from "../CollectionsList";
+import CollectionsList from "../../components/CollectionsList";
 
 export default function Home(props) {
   const dispatch = useDispatch();

@@ -23,8 +23,8 @@ import { sortData, filterData } from "../../utils/sortAndSearch";
 import ReactGA from "react-ga";
 import CollectionCardMobile from "../../components/CardCollectionMobile";
 import { Helmet } from "react-helmet";
-import CollectionsList from "../CollectionsList";
-import CollectionsGrid from "../CollectionsGrid";
+import CollectionsList from "../../components/CollectionsList";
+import CollectionsGrid from "../../components/CollectionsGrid";
 import ViewToggleButtons from "../../components/ButtonsViewToggle";
 
 export default function Collections(props) {

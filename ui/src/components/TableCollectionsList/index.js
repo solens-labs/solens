@@ -260,9 +260,11 @@ export default function ActivityCollectionTable(props) {
         minWidth: 155,
         maxWidth: 155,
         Cell: (row) => {
+          const value = row.value;
+
           let marketCapInit = "N/A";
-          if (row.value > 0) {
-            marketCapInit = Number((row.value * solPrice).toFixed(0));
+          if (value > 0) {
+            marketCapInit = Number((value * solPrice).toFixed(0));
             marketCapInit = marketCapInit.toLocaleString();
             marketCapInit = "$ " + marketCapInit;
           }
