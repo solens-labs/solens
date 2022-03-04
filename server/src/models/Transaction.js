@@ -47,9 +47,12 @@ const transactionSchema = new mongoose.Schema({
   version: {type: Number},
 })
 
-// for getting live floor, listings
+// for getting listings
 transactionSchema.index({ 'mint': 1, 'date': -1} ) // For individual mint listing stats
 transactionSchema.index({ 'symbol': 1}, { partialFilterExpression: { type: 'list', historical: false }, name: 'symbol_1_type_list_historical_false'})
+
+// for getting listings
+transactionSchema.index({ 'symbol': 1, price: 1}, { partialFilterExpression: { type: 'list', historical: false }, name: 'symbol_1_price_1_type_list_historical_false'})
 
 // for getting topNFTs
 transactionSchema.index({ 'symbol': 1, 'price': -1, 'date': -1}, { partialFilterExpression: { type: 'buy' }, name: 'symbol_1_price_-1_date_-1_type_buy'})

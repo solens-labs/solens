@@ -135,34 +135,10 @@ exports.recentCollectionActivity = async (req, reply) => {
 exports.allCollections = async (req, reply) => {
   try {
     const entries = await Collection.aggregate([
-      helpers.lookupAggregatedStats('alltimestats'),
-      { $addFields: {
-        total_volume: {$round: [{$sum: '$alltimestats.volume'}, 2]},
-      }},
-
-      helpers.lookupAggregatedStats('dailystats', days = 14),
-      { $addFields: {
-        weekly_volume: {$round: [{$sum: '$dailystats.volume'}, 2]},
-      }},
-
-      helpers.lookupAggregatedStats('hourlystats'),
-      { $addFields: {
-        daily_volume: {$round: [{$sum: '$hourlystats.volume'}, 2]},
-      }},
-
-      helpers.lookupAggregatedStats('hourlystats', days = 2, skip = 1, 'pastdaystats'),
-      { $addFields: {
-        past_day_volume: {$round: [{$sum: '$pastdaystats.volume'}, 2]},
-      }},
-
       { $project: {
         mint: 0,
         candyMachineIds: 0,
         updateAuthorities: 0,
-        alltimestats: 0,
-        dailystats: 0,
-        hourlystats: 0,
-        pastdaystats: 0,
         __v: 0,
         _id: 0
       }}

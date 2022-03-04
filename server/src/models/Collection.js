@@ -25,6 +25,12 @@ const collectionSchema = new mongoose.Schema({
   website: {type: String},
   twitter: {type: String},
   discord: {type: String},
+  floor: { type: Number },
+  floor_marketplace: {type: String},
+  total_volume: { type: Number },
+  weekly_volume: { type: Number },
+  daily_volume: { type: Number },
+  past_day_volume: { type: Number }
 })
 
 module.exports = mongoose.model('Collection', collectionSchema)
