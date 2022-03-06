@@ -105,7 +105,7 @@ export default function ActivityCollectionTable(props) {
         Cell: (row) => {
           const marketplace = marketplaceSelect(row.value.floorMP);
           return (
-            <div className="d-flex flex-column justify-content-center align-items-start">
+            <div className="d-flex flex-column justify-content-center align-items-center">
               <span style={{ fontSize: "1rem" }}>{row.value.floor}</span>
 
               <span style={{ fontSize: "0.80rem", color: "grey" }}>

@@ -4,7 +4,10 @@ import "./style.css";
 import sa_logo from "../../assets/images/sa_logo_dark.png";
 import me_logo from "../../assets/images/me_logo_white.png";
 import { exchangeApi, themeColors } from "../../constants/constants";
-import { marketplaceSelect } from "../../utils/collectionStats";
+import {
+  marketplaceSelect,
+  marketplaceSelectV2,
+} from "../../utils/collectionStats";
 import { magicEden, listMEden } from "../../exchanges/magicEden";
 import { magicEdenIDL, magicEdenV2IDL } from "../../exchanges/magicEdenIDL";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -382,7 +385,7 @@ export default function TradeListing(props) {
               // Terms & Conditions for Magic Eden
               <p className="terms_text m-0 mt-2 p-0">
                 By clicking "List Item", you agree to{" "}
-                {marketplaceSelect(selectedMarketplace)}'s{" "}
+                {marketplaceSelectV2(selectedMarketplace)}'s{" "}
                 <a
                   href="https://magiceden.io/terms-of-service.pdf"
                   target="_blank"

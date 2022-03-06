@@ -1,0 +1,9 @@
+.offer_input {
+  background-color: rgb(25, 16, 51);
+  border: 1px solid white;
+  border-radius: 15px;
+  color: white;
+  font-weight: 400;
+  text-align: center;
+  width: 35%;
+}

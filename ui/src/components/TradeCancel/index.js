@@ -20,7 +20,16 @@ import {
   selectTradingME,
   selectTradingSA,
 } from "../../redux/trade";
-import { cancelSellMEv2, magicEdenV2 } from "../../exchanges/magicEdenV2";
+import {
+  acceptOfferMEv2,
+  cancelSellMEv2,
+  magicEdenV2,
+} from "../../exchanges/magicEdenV2";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  Token,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
 
 export default function TradeCancel(props) {
   const {
@@ -241,13 +250,100 @@ export default function TradeCancel(props) {
     setLoading(false);
   };
 
+  const acceptOfferMagicEdenV2 = async () => {
+    if (!tradingME || !tradingEnabled) {
+      const meLink = exchangeApi.magiceden.itemDetails + item.mint;
+      window.open(meLink, "_blank").focus();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const provider = new anchor.Provider(connection, wallet, {
+        preflightCommitment: "processed",
+        commitment: "processed",
+      });
+
+      const nftMint = new anchor.web3.PublicKey(item.mint);
+      const maker = new anchor.web3.PublicKey(seller);
+      const sellerATA = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        nftMint,
+        maker,
+        false
+      );
+      // HARDCODED
+      const buyer = new anchor.web3.PublicKey(
+        "HPgMKJ2oBTQ8JxkjPmKeDr2MWF6XzJg3NnfUUmFBB2S2"
+      );
+      const buyerATA = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        nftMint,
+        buyer,
+        false
+      );
+      const metadataAccount = new anchor.web3.PublicKey(item.metadata_acct);
+      const program = new anchor.Program(magicEdenV2IDL, magicEdenV2, provider);
+      const creators = item.creators_list;
+
+      const final_tx = await acceptOfferMEv2(
+        maker,
+        buyer,
+        tokenAccount,
+        sellerATA,
+        buyerATA,
+        nftMint,
+        metadataAccount,
+        creators,
+        // HARDCODED
+        0.003,
+        program
+      );
+      console.log(final_tx);
+
+      const sendTx = await sendTransaction(final_tx, connection, {
+        skipPreflight: false,
+        preflightCommitment: "processed",
+      });
+      setTxHash(sendTx);
+      setTxHashAnalytics(sendTx);
+
+      const confirmTx = await connection.confirmTransaction(
+        sendTx,
+        "processed"
+      );
+
+      setTimeout(function () {
+        setLoading(false);
+        history.go(0);
+      }, 4000);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
-      <div className="col-8 col-lg-4 p-1">
+      <div className="col-12 p-1">
         {marketplace !== "smb" && (
-          <button className="btn_mp" onClick={() => cancelNft()}>
-            <div className="btn_mp_inner">Cancel Listing</div>
-          </button>
+          <div className="col-12 d-flex justify-content-around">
+            <div className="col-4">
+              <button className="btn_mp" onClick={() => cancelNft()}>
+                <div className="btn_mp_inner">Cancel Listing</div>
+              </button>
+            </div>
+            <div className="col-4">
+              <button
+                className="btn_mp"
+                onClick={() => acceptOfferMagicEdenV2()}
+              >
+                <div className="btn_mp_inner">Accept Offer</div>
+              </button>
+            </div>
+          </div>
         )}
 
         {marketplace === "smb" && (
