@@ -382,7 +382,15 @@ export default function TradePurchase(props) {
       <div className="col-12 p-1">
         {marketplace !== "smb" && (
           <div className="col-12 d-flex justify-content-around">
-            {makingOffer && (
+            {!makingOffer && (
+              <div className="col-4">
+                <button className="btn_mp" onClick={() => buyNft()}>
+                  <div className="btn_mp_inner">Buy Item</div>
+                </button>
+              </div>
+            )}
+
+            {/* {makingOffer && (
               <input
                 min="0"
                 className="offer_input"
@@ -392,14 +400,6 @@ export default function TradePurchase(props) {
                 }}
               />
             )}
-            {!makingOffer && (
-              <div className="col-4">
-                <button className="btn_mp" onClick={() => buyNft()}>
-                  <div className="btn_mp_inner">Buy Item</div>
-                </button>
-              </div>
-            )}
-
             {offerMade && (
               <div className="col-4">
                 <button
@@ -426,7 +426,7 @@ export default function TradePurchase(props) {
                   <div className="btn_mp_inner">Make Offer</div>
                 </button>
               </div>
-            )}
+            )} */}
           </div>
         )}
 

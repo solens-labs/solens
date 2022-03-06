@@ -335,14 +335,14 @@ export default function TradeCancel(props) {
                 <div className="btn_mp_inner">Cancel Listing</div>
               </button>
             </div>
-            <div className="col-4">
+            {/* <div className="col-4">
               <button
                 className="btn_mp"
                 onClick={() => acceptOfferMagicEdenV2()}
               >
                 <div className="btn_mp_inner">Accept Offer</div>
               </button>
-            </div>
+            </div> */}
           </div>
         )}
 
