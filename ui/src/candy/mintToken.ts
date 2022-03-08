@@ -138,6 +138,10 @@ export async function mintToken(
     });
   }
 
+  let slothash = new anchor.web3.PublicKey(
+    "SysvarS1otHashes111111111111111111111111111"
+  );
+
   instructions.push(
     await program.instruction.mintNft(creatorBump, {
       accounts: {
@@ -156,7 +160,7 @@ export async function mintToken(
         systemProgram: SystemProgram.programId,
         rent: anchor.web3.SYSVAR_RENT_PUBKEY,
         clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-        recentBlockhashes: anchor.web3.SYSVAR_RECENT_BLOCKHASHES_PUBKEY,
+        recentBlockhashes: slothash,
         instructionSysvarAccount: anchor.web3.SYSVAR_INSTRUCTIONS_PUBKEY,
       },
       remainingAccounts:

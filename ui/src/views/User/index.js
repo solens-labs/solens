@@ -26,11 +26,19 @@ import UserListedItems from "../../components/UserItemsListed";
 import UserWalletItems from "../../components/UserItemsWallet";
 import { fetchItemsMetadata } from "../../utils/getItemsMetadata";
 import { Helmet } from "react-helmet";
+import * as anchor from "@project-serum/anchor";
+import { magicEdenV2IDL } from "../../exchanges/magicEdenIDL";
+import {
+  depositMEv2,
+  magicEdenV2,
+  withdrawMEv2,
+} from "../../exchanges/magicEdenV2";
 
 export default function User(props) {
   const { connection } = useConnection();
   const dispatch = useDispatch();
   const wallet = useWallet();
+  const { sendTransaction } = useWallet();
   const allCollections = useSelector(selectAllCollections);
 
   const walletBalance = useSelector(selectBalance);
@@ -43,6 +51,64 @@ export default function User(props) {
   const [walletItemsMetadata, setWalletItemsMetadata] = useState([]);
 
   const [currentView, setCurrentView] = useState("listed");
+  const [amount, setAmount] = useState(0);
+
+  const withdrawEscrow = async (amount) => {
+    if (amount <= 0) {
+      alert("Enter an amount greater than 0");
+      return;
+    }
+
+    // NEED TO GET ESCROW ACCOUNT & BALANCE
+    // NEED TO ADD ERROR CHECK OF ESCROW ACCOUNT BALANCE & AMOUNT BEING LOWER
+
+    const provider = new anchor.Provider(connection, wallet, {
+      preflightCommitment: "processed",
+      commitment: "processed",
+    });
+
+    const user = wallet.publicKey;
+    const program = new anchor.Program(magicEdenV2IDL, magicEdenV2, provider);
+    const final_tx = await withdrawMEv2(user, amount, program);
+
+    const sendTx = await sendTransaction(final_tx, connection, {
+      skipPreflight: false,
+      preflightCommitment: "processed",
+    });
+
+    console.log(sendTx);
+
+    const confirmTx = await connection.confirmTransaction(sendTx, "processed");
+  };
+
+  const depositEscrow = async (amount) => {
+    if (amount <= 0) {
+      alert("Enter an amount greater than 0");
+      return;
+    }
+    if (amount > walletBalance) {
+      alert(`The maximum you can deposit is ${walletBalance}`);
+      return;
+    }
+
+    const provider = new anchor.Provider(connection, wallet, {
+      preflightCommitment: "processed",
+      commitment: "processed",
+    });
+
+    const user = wallet.publicKey;
+    const program = new anchor.Program(magicEdenV2IDL, magicEdenV2, provider);
+    const final_tx = await depositMEv2(user, amount, program);
+
+    const sendTx = await sendTransaction(final_tx, connection, {
+      skipPreflight: false,
+      preflightCommitment: "processed",
+    });
+
+    console.log(sendTx);
+
+    const confirmTx = await connection.confirmTransaction(sendTx, "processed");
+  };
 
   // Get user activity
   useEffect(() => {
@@ -165,6 +231,21 @@ export default function User(props) {
         </div>
       )} */}
 
+      {/* {wallet.connected && (
+        <div className="col-4 d-flex justify-content-around">
+          <button onClick={() => depositEscrow(amount)}>Deposit</button>
+          <input
+            value={amount}
+            placeholder="0"
+            style={{ textAlign: "center" }}
+            onChange={(e) => {
+              setAmount(e.target.value);
+            }}
+          />
+          <button onClick={() => withdrawEscrow(amount)}>Withdraw</button>
+        </div>
+      )} */}
+
       {wallet.connected && (
         <div className="col-12 col-lg-8 col-xl-6 d-flex flex-row flex-wrap justify-content-center mb-3">
           <div className="col-4 p-1 p-lg-3 pt-0 pb-0">
@@ -223,6 +304,10 @@ export default function User(props) {
         </div>
       )}
 
+      {wallet.connected && currentView === "activity" && (
+        <UserActivity activity={activity} />
+      )}
+
       {wallet.connected && currentView === "listed" && (
         <UserListedItems
           listedItems={listedItems}
@@ -237,10 +322,6 @@ export default function User(props) {
           walletItemsMetadata={walletItemsMetadata}
           setWalletItemsMetadata={setWalletItemsMetadata}
         />
-      )}
-
-      {wallet.connected && currentView === "activity" && (
-        <UserActivity activity={activity} />
       )}
     </div>
   );

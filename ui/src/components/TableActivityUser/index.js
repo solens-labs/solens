@@ -43,11 +43,13 @@ export default function ActivityWalletTable(props) {
   ];
 
   const [tableData, setTableData] = useState(emptyObject);
+  const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (Object.keys(data).length === 0) {
-      // setLoading(true);
+      setNoData(true);
+      setLoading(false);
     } else {
       setTableData(data);
       setLoading(false);
@@ -133,7 +135,7 @@ export default function ActivityWalletTable(props) {
 
   return (
     <>
-      {!loading && (
+      {!loading && !noData && (
         <>
           <div className="full_width_table col-12 data_table overflow-auto">
             <table {...getTableProps()} style={{ width: "100%" }}>
@@ -204,7 +206,9 @@ export default function ActivityWalletTable(props) {
         </>
       )}
 
-      {loading && <Loader />}
+      {loading && !noData && <Loader />}
+
+      {noData && <h3>This wallet has no activity</h3>}
     </>
   );
 }

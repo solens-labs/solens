@@ -84,37 +84,62 @@ async function getMetadataAccount(mint: anchor.web3.PublicKey) {
 }
 
 export async function depositMEv2(
-  maker: anchor.web3.PublicKey,
-  makerNftAccount: anchor.web3.PublicKey,
-  escrowAccount: anchor.web3.PublicKey,
+  user: anchor.web3.PublicKey,
+  amount: number,
   program: anchor.Program
 ) {
-  return program.rpc.cancelEscrow({
-    accounts: {
-      initializer: maker,
-      pdaDepositTokenAccount: makerNftAccount,
-      pdaAccount: MEdenAutority,
-      escrowAccount: escrowAccount,
-      tokenProgram: TOKEN_PROGRAM_ID,
-    },
-  });
-}
+  let [userEscrow, bump] = await getUserEscrow(user);
 
+  let withdrawIx = await program.instruction.deposit(
+    bump,
+    new anchor.BN(amount * LAMPORTS_PER_SOL),
+    {
+      accounts: {
+        user: user,
+        treasuryMint: SystemProgram.programId,
+        userEscrow: userEscrow,
+        auctionCreator: MEAuctionCreator,
+        auctionHouse: MEHouse,
+        systemProgram: SystemProgram.programId,
+      },
+    }
+  );
+
+  let tx = new anchor.web3.Transaction({
+    feePayer: user,
+  });
+
+  tx.add(...[withdrawIx]);
+  return tx;
+}
 export async function withdrawMEv2(
-  maker: anchor.web3.PublicKey,
-  makerNftAccount: anchor.web3.PublicKey,
-  escrowAccount: anchor.web3.PublicKey,
+  user: anchor.web3.PublicKey,
+  amount: number,
   program: anchor.Program
 ) {
-  return program.rpc.cancelEscrow({
-    accounts: {
-      initializer: maker,
-      pdaDepositTokenAccount: makerNftAccount,
-      pdaAccount: MEdenAutority,
-      escrowAccount: escrowAccount,
-      tokenProgram: TOKEN_PROGRAM_ID,
-    },
+  let [userEscrow, bump] = await getUserEscrow(user);
+
+  let withdrawIx = await program.instruction.withdraw(
+    bump,
+    new anchor.BN(amount * LAMPORTS_PER_SOL),
+    {
+      accounts: {
+        user: user,
+        treasuryMint: SystemProgram.programId,
+        userEscrow: userEscrow,
+        auctionCreator: MEAuctionCreator,
+        auctionHouse: MEHouse,
+        systemProgram: SystemProgram.programId,
+      },
+    }
+  );
+
+  let tx = new anchor.web3.Transaction({
+    feePayer: user,
   });
+
+  tx.add(...[withdrawIx]);
+  return tx;
 }
 
 export async function sellMEv2(
@@ -289,9 +314,6 @@ export async function buyMEv2(
 
 export async function offerMEv2(
   buyer: anchor.web3.PublicKey,
-  // seller: anchor.web3.PublicKey,
-  // sellerATA: anchor.web3.PublicKey,
-  // buyerATA: anchor.web3.PublicKey,
   nftMint: anchor.web3.PublicKey,
   price: number,
   program: anchor.Program
@@ -308,7 +330,6 @@ export async function offerMEv2(
       systemProgram: SystemProgram.programId,
     },
   });
-  console.log(userEscrow.toBase58());
 
   let [buyerTradeState, bumpp] = await getBuyerTradeState(buyer, nftMint);
   let [metadataAccount, _] = await getMetadataAccount(nftMint);
@@ -342,7 +363,6 @@ export async function offerMEv2(
   // @ts-ignore
   // tx.add(...[buyIx]);
   tx.add(...[depositIx, buyIx]);
-  // return sendAndConfirmTransaction(connection, tx, [keypair1]);
   return tx;
 }
 
@@ -391,7 +411,6 @@ export async function cancelOfferMEv2(
   // @ts-ignore
   // tx.add(...[cancelOfferIx]);
   tx.add(...[cancelOfferIx, withdrawIx]);
-  // return sendAndConfirmTransaction(connection, tx, [keypair1]);
   return tx;
 }
 
@@ -480,6 +499,5 @@ export async function acceptOfferMEv2(
   });
   // @ts-ignore
   tx.add(...[sellIx, execSaleIx]);
-  // return sendAndConfirmTransaction(connection, tx, [seller]);
   return tx;
 }
