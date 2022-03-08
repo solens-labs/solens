@@ -90,7 +90,7 @@ export async function depositMEv2(
 ) {
   let [userEscrow, bump] = await getUserEscrow(user);
 
-  let withdrawIx = await program.instruction.deposit(
+  let depositIx = await program.instruction.deposit(
     bump,
     new anchor.BN(amount * LAMPORTS_PER_SOL),
     {
@@ -109,9 +109,10 @@ export async function depositMEv2(
     feePayer: user,
   });
 
-  tx.add(...[withdrawIx]);
+  tx.add(...[depositIx]);
   return tx;
 }
+
 export async function withdrawMEv2(
   user: anchor.web3.PublicKey,
   amount: number,
