@@ -231,7 +231,7 @@ export default function User(props) {
         </div>
       )} */}
 
-      {wallet.connected && (
+      {/* {wallet.connected && (
         <div className="col-4 d-flex justify-content-around">
           <button onClick={() => depositEscrow(amount)}>Deposit</button>
           <input
@@ -244,7 +244,7 @@ export default function User(props) {
           />
           <button onClick={() => withdrawEscrow(amount)}>Withdraw</button>
         </div>
-      )}
+      )} */}
 
       {wallet.connected && (
         <div className="col-12 col-lg-8 col-xl-6 d-flex flex-row flex-wrap justify-content-center mb-3">
