@@ -15,7 +15,11 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Countdown from "react-countdown";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import * as anchor from "@project-serum/anchor";
-import { CandyIDL, Solens_Candy_Machine } from "../../candy/candyConstants";
+import {
+  CandyIDL,
+  Solens_Candy_Machine,
+  Solens_Candy_Machine2,
+} from "../../candy/candyConstants";
 import { mintToken } from "../../candy/mintToken";
 import { getCandyMachineState } from "../../candy/getCandyMachineState";
 import { selectBalance } from "../../redux/app";
@@ -144,11 +148,16 @@ export default function LaunchzoneMint(props) {
       const payer = wallet.publicKey;
       const candyMachine = new anchor.web3.PublicKey(candyMachineID);
       const mint = anchor.web3.Keypair.generate();
-      const program = new anchor.Program(
-        CandyIDL,
-        Solens_Candy_Machine,
-        provider
-      );
+      let program = {};
+
+      if (
+        candyMachineID === "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N" ||
+        candyMachineID === "FMsX2Yv7NqqATxYdja9NLpyRHvjGpvXg6n8rUezysxiJ"
+      ) {
+        program = new anchor.Program(CandyIDL, Solens_Candy_Machine, provider);
+      } else {
+        program = new anchor.Program(CandyIDL, Solens_Candy_Machine2, provider);
+      }
 
       const candyMachineState = await program.account.candyMachine.fetch(
         candyMachine

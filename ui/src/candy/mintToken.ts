@@ -43,11 +43,12 @@ const getMasterEdition = async (
 };
 
 const getCandyMachineCreator = async (
-  candyMachine: anchor.web3.PublicKey
+  candyMachine: anchor.web3.PublicKey,
+  programID: anchor.web3.PublicKey
 ): Promise<[anchor.web3.PublicKey, number]> => {
   return await anchor.web3.PublicKey.findProgramAddress(
     [Buffer.from("candy_machine"), candyMachine.toBuffer()],
-    Solens_Candy_Machine
+    programID
   );
 };
 
@@ -71,7 +72,8 @@ export async function mintToken(
   const masterEdition = await getMasterEdition(mint);
 
   const [candyMachineCreator, creatorBump] = await getCandyMachineCreator(
-    candyMachineAddress
+    candyMachineAddress,
+    program.programId
   );
 
   // const candyMachine: any = await program.account.candyMachine.fetch(
@@ -110,7 +112,7 @@ export async function mintToken(
 
   let remainingAccounts: any = [];
 
-  if (wlMint != null) {
+  if (wlMint) {
     if (!wlTokenAccount) {
       wlTokenAccount = await Token.getAssociatedTokenAddress(
         ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -119,6 +121,32 @@ export async function mintToken(
         payer,
         false
       );
+
+      // try {
+      //   await program.provider.connection.getAccountInfo(wlTokenAccount);
+      // } catch (err) {
+      //   const FAILED_TO_FIND_ACCOUNT = "Failed to find account";
+      //   const INVALID_ACCOUNT_OWNER = "Invalid account owner";
+
+      //   if (
+      //     // @ts-ignore
+      //     err.message === FAILED_TO_FIND_ACCOUNT ||
+      //     // @ts-ignore
+      //     err.message === INVALID_ACCOUNT_OWNER
+      //   ) {
+      //     let createATAix = await Token.createAssociatedTokenAccountInstruction(
+      //       ASSOCIATED_TOKEN_PROGRAM_ID,
+      //       TOKEN_PROGRAM_ID,
+      //       wlMint,
+      //       wlTokenAccount,
+      //       payer,
+      //       payer
+      //     );
+
+      //     instructions.push(createATAix);
+      //   }
+      //   console.log(err);
+      // }
     }
 
     remainingAccounts.push({

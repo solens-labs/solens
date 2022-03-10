@@ -51,8 +51,8 @@ export const launch_collections = [
     name: "METAMUSKVERSE",
     image:
       "https://pbs.twimg.com/profile_images/1491539129578012677/HXOSEeJj_400x400.jpg",
-    candyMachineID: "",
-    launchDate: 1646859600000,
+    candyMachineID: "3vwMh1tuQDTbdZpPHZVWcmq9bvubUeMbQWrrKjAQbJzH",
+    launchDate: 1646946000000,
     endDate: undefined,
     website: "https://www.metamuskverse.space/",
     twitter: "https://twitter.com/metamuskverse",
