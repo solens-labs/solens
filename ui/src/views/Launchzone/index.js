@@ -27,7 +27,7 @@ export default function Launch() {
       return;
     }
     const now = Date.now();
-    const allCollections = [...launch_collections, ...minting_collections];
+    const allCollections = [...launch_collections];
     let upcomingTemp = [];
     let mintingTemp = [];
     let previousTemp = [];
