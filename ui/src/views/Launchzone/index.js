@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import { useDispatch } from "react-redux";
 import FAQ from "../../components/FAQ";
@@ -18,9 +18,9 @@ export default function Launch() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const upcoming = [];
-  const minting = [];
-  const previous = [];
+  const [upcoming, setUpcoming] = useState([]);
+  const [minting, setMinting] = useState([]);
+  const [previous, setPrevious] = useState([]);
 
   useEffect(() => {
     if (launch_collections.length === 0 || minting_collections.length === 0) {
@@ -28,21 +28,28 @@ export default function Launch() {
     }
     const now = Date.now();
     const allCollections = [...launch_collections, ...minting_collections];
+    let upcomingTemp = [];
+    let mintingTemp = [];
+    let previousTemp = [];
 
     allCollections.map((collection) => {
       const launchDate = collection.launchDate;
       const endDate = collection.endDate;
       if (launchDate > now) {
-        upcoming.push(collection);
+        upcomingTemp = [...upcomingTemp, collection];
       }
 
       if (launchDate < now) {
-        minting.push(collection);
+        mintingTemp = [...mintingTemp, collection];
       }
 
       if (endDate < now) {
-        previous.push(collection);
+        previousTemp = [...mintingTemp, collection];
       }
+
+      setUpcoming(upcomingTemp);
+      setMinting(mintingTemp);
+      setPrevious(previousTemp);
     });
   }, [launch_collections, minting_collections]);
 
@@ -64,10 +71,20 @@ export default function Launch() {
       {/* <hr style={{ color: "white", width: "70%" }} className="m-4" /> */}
 
       <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1>Launchzone Collections</h1>
+        <h1>Upcoming Collections</h1>
 
         <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
-          {launch_collections.map((collection, i) => {
+          {upcoming.map((collection, i) => {
+            return <UpcomingCollection collection={collection} key={i} />;
+          })}
+        </div>
+      </div>
+
+      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1>Now Minting</h1>
+
+        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
+          {minting.map((collection, i) => {
             return <UpcomingCollection collection={collection} key={i} />;
           })}
         </div>

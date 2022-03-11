@@ -93,6 +93,26 @@ export const launch_collections = [
     International Rhino Foundation. We'll be donating 10% of Mint price for EACH minted 
     NFT to be used towards Rhino protection, health and habitats!`,
   },
+  {
+    name: "Dinosaur Gentleman",
+    image: "https://www.dinogents.com/images/main.gif",
+    candyMachineID: "",
+    wl: true,
+    wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",
+    launchDate: 1649350800000,
+    publicDate: 1649437200000,
+    endDate: undefined,
+    website: "https://www.dinogents.com/",
+    twitter: "https://twitter.com/dinogentsNFT/",
+    discord: "https://discord.gg/t8qjytpQ8d",
+    symbol: "dinogents",
+    supply: 500,
+    preminted: 0,
+    price: 0.5,
+    wlPrice: 0,
+    description: `Dinogents is built on Solana Blockchain for both Arts and 
+    Token $DNG with the most standard-based community in the Crypto Space.`,
+  },
 ];
 
 export const minting_collections = [
