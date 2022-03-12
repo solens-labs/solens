@@ -28,7 +28,7 @@ export const getTokenMetadata = async (mint) => {
         break;
       } catch (e) {
         console.log(e);
-        setTimeout(() => {}, 5);
+        setTimeout(() => {}, 100);
       }
     }
 

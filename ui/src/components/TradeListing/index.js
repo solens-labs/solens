@@ -131,7 +131,7 @@ export default function TradeListing(props) {
         setLoading(false);
         history.go(0);
         history.push(location.pathname);
-      }, 3000);
+      }, 7000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -199,7 +199,7 @@ export default function TradeListing(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 3000);
+      }, 7000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -273,7 +273,7 @@ export default function TradeListing(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 4000);
+      }, 7000);
     } catch (e) {
       console.log(e);
       ReactGA.event({

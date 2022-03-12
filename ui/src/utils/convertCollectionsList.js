@@ -135,7 +135,7 @@ export default function convertData(collections) {
   // console.log({ exportedData });
 
   const tableSorter = (a, b) => {
-    const type = "volumeDay";
+    const type = "marketCap";
 
     var a1 = a[type];
     var b1 = b[type];

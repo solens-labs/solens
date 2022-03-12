@@ -118,7 +118,7 @@ export default function TradeCancel(props) {
       setTimeout(function () {
         history.go(0);
         setLoading(false);
-      }, 3000);
+      }, 7000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -172,7 +172,7 @@ export default function TradeCancel(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 3000);
+      }, 7000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -233,7 +233,7 @@ export default function TradeCancel(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 4000);
+      }, 7000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
