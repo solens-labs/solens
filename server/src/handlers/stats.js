@@ -431,6 +431,7 @@ exports.listings = async (req, reply) => {
       historical: false,
       type: 'list'
     }},
+    {$sort: {price: 1}},
     {$project : {
       mint: 1,
       owner: 1,
