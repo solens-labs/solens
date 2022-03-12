@@ -569,7 +569,7 @@ export const magicEdenV2IDL = {
         {
           name: "seller",
           isMut: !0,
-          isSigner: !0,
+          isSigner: !1,
         },
         { name: "treasuryMint", isMut: !1, isSigner: !1 },
         { name: "sellerATA", isMut: !0, isSigner: !1 },
