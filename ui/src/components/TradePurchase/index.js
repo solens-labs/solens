@@ -144,7 +144,7 @@ export default function TradePurchase(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 3000);
+      }, 6000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -224,7 +224,7 @@ export default function TradePurchase(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 4000);
+      }, 10000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
@@ -279,7 +279,7 @@ export default function TradePurchase(props) {
       setTimeout(function () {
         setLoading(false);
         history.go(0);
-      }, 3000);
+      }, 6000);
     } catch (e) {
       console.log(e);
       ReactGA.event({
