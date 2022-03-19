@@ -21,9 +21,7 @@ class Assignable {
     });
   }
 }
-
 export class Eden extends Assignable {}
-
 export const MAGICEDEN_SCHEMA = new Map<any, any>([
   [
     Eden,
@@ -38,7 +36,6 @@ export const MAGICEDEN_SCHEMA = new Map<any, any>([
     },
   ],
 ]);
-
 export const extendBorsh = () => {
   (BinaryReader.prototype as any).readPubkey = function () {
     const reader = this as unknown as BinaryReader;

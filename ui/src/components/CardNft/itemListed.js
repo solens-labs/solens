@@ -43,6 +43,7 @@ export default function NftCard(props) {
             loading="lazy"
             className="nft_card_image"
             alt="nft_card"
+            loading="lazy"
           />
         </div>
 
@@ -63,6 +64,7 @@ export default function NftCard(props) {
                     className=""
                     style={{ height: 33, width: "auto" }}
                     alt=""
+                    loading="lazy"
                   />
                 </a>
               )}
@@ -85,11 +87,12 @@ export default function NftCard(props) {
                     marginLeft: -2,
                   }}
                   alt=""
+                  loading="lazy"
                 />
                 // </a>
               )}
 
-              {listedMP === "magiceden" && (
+              {(listedMP === "magiceden" || listedMP === "magicedenV2") && (
                 // <a
                 //   href={links?.magiceden}
                 //   style={{
@@ -103,6 +106,7 @@ export default function NftCard(props) {
                   className=""
                   style={{ height: 33, width: "auto" }}
                   alt=""
+                  loading="lazy"
                 />
                 // </a>
               )}

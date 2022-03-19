@@ -43,10 +43,15 @@ import Apply from "../Apply";
 import User from "../User";
 import CollectionTrade from "../CollectionTrade";
 import LaunchzoneMint from "../LaunchzoneMint";
+import SiteBanner from "../../components/SiteBanner";
+import CollectionsList from "../../components/CollectionsList";
 
 export default function Home(props) {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  // BANNER DISPLAY
+  const banner = false;
 
   useEffect(() => {
     const debug = false;
@@ -230,6 +235,7 @@ export default function Home(props) {
   return (
     <div className="app col-12">
       <div className="navigation col-12">
+        {banner && <SiteBanner />}
         <Navigation />
       </div>
 
@@ -239,6 +245,7 @@ export default function Home(props) {
           <Route exact strict path="/launch" component={Launchzone} />
           <Route path exact="/" component={HomePage} />
           <Route path="/collections" component={Collections} />
+          <Route path="/market" component={CollectionsList} />
           <Route path="/collection/:name" component={CollectionPage} />
           <Route path="/nfts/:name" component={CollectionTrade} />
           <Route path="/wallets" component={Wallets} />

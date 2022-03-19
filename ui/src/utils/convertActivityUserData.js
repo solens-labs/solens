@@ -9,7 +9,7 @@ import OfferIcon from "@mui/icons-material/AttachMoney";
 import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
-import { marketplaceSelect } from "./collectionStats";
+import { marketplaceSelectV2 } from "./collectionStats";
 import { getTokenMetadata } from "./getMetadata";
 import { getTimeSince } from "./getTimeSince";
 
@@ -32,7 +32,12 @@ const addTransaction = async (transaction, allCollections, user) => {
         href={`/mint/${transaction["mint"]}`}
         style={{ textDecoration: "none" }}
       >
-        <img src={link} className="activity_image" alt="nft image" />
+        <img
+          src={link}
+          className="activity_image"
+          alt="nft image"
+          loading="lazy"
+        />
       </a>
     );
   }
@@ -85,7 +90,6 @@ const addTransaction = async (transaction, allCollections, user) => {
     </a>
   );
   let priceNumber = Number(transaction["price"]).toFixed(4);
-  // let price = "◎ " + parseFloat(priceNumber);
   let price = parseFloat(priceNumber);
 
   let displayName = "Unverified";
@@ -115,7 +119,7 @@ const addTransaction = async (transaction, allCollections, user) => {
       "Unverified"
     );
 
-  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
+  const marketplace = marketplaceSelectV2(transaction["marketplace"]) || "";
 
   const txHash = (
     <a

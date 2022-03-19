@@ -73,7 +73,12 @@ export default function HomePage(props) {
       </Helmet>
 
       <div className="main_header">
-        <img src={logo} className="homepage_logo img-fluid" alt="solens logo" />
+        <img
+          src={logo}
+          className="homepage_logo img-fluid"
+          alt="solens logo"
+          loading="lazy"
+        />
         <h3 className="homepage_tagline mb-2">
           Solana's Premier NFT Marketplex
         </h3>
@@ -113,8 +118,8 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
-        <h1 className="mb-2">Upcoming Launches</h1>
+      {/* <div className="upcoming_launches landing_page_section d-flex flex-column align-items-center col-12 col-xxl-10 mt-5 overflow-hidden">
+        <h1 className="mb-2">Launches</h1>
         <h5 className="collection_stats_days">
           on the{" "}
           <span>
@@ -128,7 +133,7 @@ export default function HomePage(props) {
         </h5>
         <hr style={{ color: "white", width: "50%" }} className="mt-0 mb-2" />
 
-        <div className="d-flex flex-wrap justify-content-around col-12 mb-4">
+        <div className="col-12 d-flex flex-row flex-wrap justify-content-around">
           {launch_collections.map((collection, i) => {
             return <UpcomingCollection collection={collection} key={i} />;
           })}
@@ -147,7 +152,7 @@ export default function HomePage(props) {
             Explore Launchzone
           </button>
         </Link>
-      </div>
+      </div> */}
 
       <div className="trade_now tradezone_image_bg d-flex flex-wrap justify-content-center align-items-center col-12 col-xxl-10 mt-5 m-0 p-0 overflow-hidden">
         <div className="col-12 col-xl-4 d-flex flex-row justify-content-center">
@@ -155,6 +160,7 @@ export default function HomePage(props) {
             src={collections_gif}
             alt="launchzone_logo"
             className="collections_gif mt-5 mt-lg-4 mt-xl-0"
+            loading="lazy"
           />
         </div>
 
@@ -170,6 +176,7 @@ export default function HomePage(props) {
                 src={solens_logo}
                 style={{ height: 50, marginBottom: 17 }}
                 alt="Solens"
+                loading="lazy"
               />
             </span>
           </h3>
@@ -238,6 +245,7 @@ export default function HomePage(props) {
           alt="launchzone_logo"
           className="img-fluid"
           style={{ maxHeight: "150px", margin: 0, padding: 0 }}
+          loading="lazy"
         />
 
         <div className="blackground col-12 col-sm-11 col-md-9 col-xxl-6 mt-4 mb-5">
@@ -248,6 +256,7 @@ export default function HomePage(props) {
                 src={solana}
                 style={{ height: "1rem", paddingBottom: 4 }}
                 alt="solana logo"
+                loading="lazy"
               />
             </span>
             ?

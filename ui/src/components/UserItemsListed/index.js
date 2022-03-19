@@ -34,32 +34,34 @@ export default function UserListedItems(props) {
         </div>
       </div>
 
-      <div className="col-12 col-lg-10">
-        <InfiniteScroll
-          dataLength={listedItemsMetadata.length}
-          next={fetchItems}
-          hasMore={hasMore}
-          loader={
-            <div className="mt-5 mb-5">
-              <Loader />
+      {listedItems.length > 0 && (
+        <div className="col-12 col-lg-10">
+          <InfiniteScroll
+            dataLength={listedItemsMetadata.length}
+            next={fetchItems}
+            hasMore={hasMore}
+            loader={
+              <div className="mt-5 mb-5">
+                <Loader />
+              </div>
+            }
+          >
+            <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
+              {listedItemsMetadata.length > 0 &&
+                listedItemsMetadata.map((item, i) => {
+                  return (
+                    <div
+                      className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
+                      key={i}
+                    >
+                      <NftCard item={item} links={""} />
+                    </div>
+                  );
+                })}
             </div>
-          }
-        >
-          <div className="col-12 d-flex flex-row flex-wrap justify-content-center">
-            {listedItemsMetadata.length > 0 &&
-              listedItemsMetadata.map((item, i) => {
-                return (
-                  <div
-                    className="nft_grid_card col-12 col-sm-8 col-md-6 col-xl-4 col-xxl-3 p-2 p-lg-3"
-                    key={i}
-                  >
-                    <NftCard item={item} links={""} />
-                  </div>
-                );
-              })}
-          </div>
-        </InfiniteScroll>
-      </div>
+          </InfiniteScroll>
+        </div>
+      )}
     </>
   );
 }

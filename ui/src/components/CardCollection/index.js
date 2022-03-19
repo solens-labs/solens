@@ -41,6 +41,7 @@ export default function CollectionCard(props) {
           src={collection.image}
           alt="nft collection image"
           className="collection_card_image"
+          loading="lazy"
         />
       </div>
 

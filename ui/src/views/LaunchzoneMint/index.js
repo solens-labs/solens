@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import { Link, Redirect, useParams } from "react-router-dom";
-import { launch_collections } from "../../constants/launchzone";
+import {
+  launch_collections,
+  minting_collections,
+} from "../../constants/launchzone";
 import { Helmet } from "react-helmet";
 import SocialLinks from "../../components/SocialLinks";
 import Loader from "../../components/Loader";
@@ -12,12 +15,22 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Countdown from "react-countdown";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import * as anchor from "@project-serum/anchor";
-import { Solens_Candy_Machine, CandyIDL } from "../../candy/candyConstants";
+import {
+  CandyIDL,
+  Solens_Candy_Machine,
+  Solens_Candy_Machine2,
+} from "../../candy/candyConstants";
 import { mintToken } from "../../candy/mintToken";
 import { getCandyMachineState } from "../../candy/getCandyMachineState";
 import { selectBalance } from "../../redux/app";
 import { useSelector } from "react-redux";
-import { alertInsufficientBalance, alertSoldOut } from "../../constants/alerts";
+import {
+  alertInsufficientBalance,
+  alertNotWhitelisted,
+  alertSoldOut,
+} from "../../constants/alerts";
+import { datetime } from "react-table/src/sortTypes";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
@@ -34,6 +47,11 @@ export default function LaunchzoneMint(props) {
   const [collectionInfo, setCollectionInfo] = useState({});
   const [collectionLinks, setCollectionLinks] = useState({});
   const [noCollection, setNoCollection] = useState(false);
+
+  const [whitelist, setWhitelist] = useState(false);
+  const [whitelistedUser, setWhitelistedUser] = useState(false);
+  const [whitelistMint, setWhitelistMint] = useState(undefined);
+  const [whitelistMintTA, setWhitelistMintTA] = useState(undefined);
 
   const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState("");
@@ -52,9 +70,13 @@ export default function LaunchzoneMint(props) {
 
   // Set collection info from params -- change to API pull
   useEffect(() => {
-    const [collection] = launch_collections.filter(
+    const [homepage] = launch_collections.filter(
       (item) => item.symbol === symbol
     );
+    const [minting] = minting_collections.filter(
+      (item) => item.symbol === symbol
+    );
+    const collection = homepage || minting;
     if (!collection) {
       setNoCollection(true);
       return;
@@ -63,6 +85,11 @@ export default function LaunchzoneMint(props) {
     setItemsMinted(collection.preminted);
     setMintProgress((collection.preminted / collection.supply) * 100);
     setCollectionInfo(collection);
+    if (collection.wl) {
+      setWhitelist(collection.wl);
+      const wlMintAddress = new PublicKey(collection.wlToken);
+      setWhitelistMint(wlMintAddress);
+    }
 
     const links = {
       website: collection.website,
@@ -79,10 +106,37 @@ export default function LaunchzoneMint(props) {
     }
   }, [symbol, collectionInfo]);
 
+  // Check if there is whitelist && if user is whitelisted
+  useEffect(async () => {
+    if (wallet.connected && whitelist && whitelistMint) {
+      const payer = wallet.publicKey;
+      let wlTokenAccounts = await connection.getTokenAccountsByOwner(payer, {
+        mint: whitelistMint,
+      });
+      for (let i = 0; i < wlTokenAccounts.value.length; i++) {
+        let bal = await connection.getTokenAccountBalance(
+          wlTokenAccounts.value[i].pubkey
+        );
+        if (bal.value.uiAmount >= 1) {
+          console.log("whitelisted user");
+          setWhitelistedUser(true);
+          setWhitelistMintTA(wlTokenAccounts.value[i].pubkey);
+        }
+      }
+    }
+  }, [wallet, whitelist, whitelistMint]);
+
   // Mint one item
   const mintOne = async (candyMachineID) => {
     if (balance < collectionInfo?.price) {
       return alertInsufficientBalance();
+    }
+
+    const publicMintDate = collectionInfo?.publicDate;
+    const now = Date.now();
+    const beforePublicMint = now < publicMintDate;
+    if (whitelist && !whitelistedUser && beforePublicMint) {
+      return alertNotWhitelisted(collectionInfo.publicDate);
     }
 
     setLoading(true);
@@ -94,11 +148,16 @@ export default function LaunchzoneMint(props) {
       const payer = wallet.publicKey;
       const candyMachine = new anchor.web3.PublicKey(candyMachineID);
       const mint = anchor.web3.Keypair.generate();
-      const program = new anchor.Program(
-        CandyIDL,
-        Solens_Candy_Machine,
-        provider
-      );
+      let program = {};
+
+      if (
+        candyMachineID === "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N" ||
+        candyMachineID === "FMsX2Yv7NqqATxYdja9NLpyRHvjGpvXg6n8rUezysxiJ"
+      ) {
+        program = new anchor.Program(CandyIDL, Solens_Candy_Machine, provider);
+      } else {
+        program = new anchor.Program(CandyIDL, Solens_Candy_Machine2, provider);
+      }
 
       const candyMachineState = await program.account.candyMachine.fetch(
         candyMachine
@@ -109,15 +168,32 @@ export default function LaunchzoneMint(props) {
       if (itemsRemaining === 0) {
         return alertSoldOut();
       }
+      let final_tx;
 
-      const final_tx = await mintToken(
-        payer,
-        candyMachine,
-        candyMachineState.wallet,
-        candyMachineState.raise,
-        mint.publicKey,
-        program
-      );
+      if (whitelist) {
+        final_tx = await mintToken(
+          payer,
+          candyMachine,
+          candyMachineState.wallet,
+          candyMachineState.raise,
+          mint.publicKey,
+          whitelistMint,
+          whitelistMintTA,
+          program
+        );
+      } else {
+        final_tx = await mintToken(
+          payer,
+          candyMachine,
+          candyMachineState.wallet,
+          candyMachineState.raise,
+          mint.publicKey,
+          null,
+          null,
+          program
+        );
+      }
+
       const sendTx = await sendTransaction(final_tx, connection, {
         skipPreflight: false,
         preflightCommitment: "processed",
@@ -173,6 +249,7 @@ export default function LaunchzoneMint(props) {
               src={collectionInfo?.image}
               alt="collection_image"
               className="collection_image_large img-fluid"
+              loading="lazy"
             />
           ) : (
             <div className="collection_image_large d-flex justify-content-center overflow-hidden">
@@ -216,7 +293,7 @@ export default function LaunchzoneMint(props) {
         </div>
       </div>
 
-      <div className="minting_module chartbox d-flex flex-column align-items-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3 p-0">
+      <div className="minting_module tablebox d-flex flex-column align-items-center flex-wrap col-12 col-lg-10 col-xxl-8 mb-3 mb-lg-5 pb-3 pt-3 p-0">
         <div className="minting_title col-12 d-flex flex-column align-items-center">
           {!released && (
             <>
@@ -294,7 +371,7 @@ export default function LaunchzoneMint(props) {
             />
           </div>
 
-          <h4 className="col-10 col-xl-4 mb-4">
+          <h4 className="col-10 col-xl-6 mb-4">
             Items Minted: {itemsMinted?.toFixed(0).toLocaleString() || 0} /{" "}
             {itemsTotal?.toLocaleString()}{" "}
             <span style={{ color: themeColors[0] }}>

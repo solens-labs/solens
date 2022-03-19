@@ -1,11 +1,21 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { explorerLink, themeColors } from "../../constants/constants";
+import { shortenAddress } from "../../candy-machine";
+
+const defaultPropGetter = () => ({});
 
 export default function ActivityMintTable(props) {
-  const { data } = props;
+  const {
+    data,
+    getHeaderProps = defaultPropGetter,
+    getColumnProps = defaultPropGetter,
+    getRowProps = defaultPropGetter,
+    getCellProps = defaultPropGetter,
+  } = props;
   const emptyObject = [
     {
       marketplace: "--",
@@ -15,6 +25,7 @@ export default function ActivityMintTable(props) {
       buyerLink: "--",
       sellerLink: "--",
       date: "--",
+      tx: "--",
     },
     {
       marketplace: "--",
@@ -24,6 +35,7 @@ export default function ActivityMintTable(props) {
       buyerLink: "--",
       sellerLink: "--",
       date: "--",
+      tx: "--",
     },
   ];
 
@@ -39,34 +51,34 @@ export default function ActivityMintTable(props) {
 
   const columns = React.useMemo(
     () => [
-      // {
-      //   Header: "",
-      //   accessor: "symbol",
-      //   Cell: (row) => {
-      //     return (
-      //       <div>
-      //         <img height={34} src={logo} />
-      //       </div>
-      //     );
-      //   },
-      // },
       {
         Header: "TYPE",
         accessor: "symbol",
-        // width: 40,
-        // maxWidth: 40,
+        width: 90,
+        disableSortBy: true,
       },
       {
         Header: "MARKET",
         accessor: "marketplace",
+        width: 175,
       },
       {
         Header: "DETAIL",
         accessor: "type",
+        width: 150,
       },
       {
         Header: "PRICE",
         accessor: "price",
+        width: 120,
+        accessor: "price",
+        Cell: (row) => {
+          if (row.value > 0) {
+            return row.value + " ◎";
+          } else {
+            return "";
+          }
+        },
       },
       // {
       //   Header: "% Change",
@@ -74,144 +86,157 @@ export default function ActivityMintTable(props) {
       // },
       {
         Header: "BUYER",
-        accessor: "buyerLink",
+        accessor: "buyer",
+        width: 130,
+        // disableSortBy: true,
+        Cell: (row) => {
+          return (
+            <a
+              href={explorerLink("account", row.value)}
+              target="_blank"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              {shortenAddress(row.value)}
+            </a>
+          );
+        },
       },
       {
         Header: "SELLER",
-        accessor: "sellerLink",
+        accessor: "seller",
+        // disableSortBy: true,
+        width: 130,
+        Cell: (row) => {
+          return (
+            <a
+              href={explorerLink("account", row.value)}
+              target="_blank"
+              style={{ textDecoration: "none", color: themeColors[0] }}
+            >
+              {shortenAddress(row.value)}
+            </a>
+          );
+        },
       },
       {
         Header: "TIME",
         accessor: "date",
-        sortMethod: (a, b) => {
-          var a1 = new Date(a).getTime();
-          var b1 = new Date(b).getTime();
-          if (a1 < b1) return 1;
-          else if (a1 > b1) return -1;
-          else return 0;
+        minWidth: 170,
+      },
+      {
+        Header: "TX",
+        accessor: "tx",
+        disableSortBy: true,
+        width: 130,
+        Cell: (row) => {
+          const hash = row.value;
+          return (
+            <a
+              href={explorerLink("tx", row.value)}
+              style={{ textDecoration: "none", color: themeColors[0] }}
+              target="_blank"
+            >
+              {hash.slice(0, 6) + "..."}
+            </a>
+          );
         },
       },
     ],
     []
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    pageOptions,
-    page,
-    state: { pageIndex, pageSize },
-    gotoPage,
-    previousPage,
-    nextPage,
-    setPageSize,
-    canPreviousPage,
-    canNextPage,
-  } = useTable(
-    {
-      columns: columns,
-      data: tableData,
-      initialState: { pageSize: 10 },
-    },
-    useSortBy,
-    usePagination
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns: columns,
+        data: tableData,
+      },
+      useSortBy,
+      useFlexLayout
+    );
 
   return (
     <>
       <div className="col-12 data_table overflow-auto">
         <table {...getTableProps()} style={{ width: "100%" }}>
           <thead>
-            {
-              // Loop over the header rows
-              headerGroups.map((headerGroup) => (
-                // Apply the header row props
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    // Loop over the headers in each row
-                    headerGroup.headers.map((column) => (
-                      // Apply the header cell props
-                      <th
-                        {...column.getHeaderProps(
-                          // {
-                          //   style: {
-                          //     width: column.width,
-                          //     maxWidth: column.maxWidth,
-                          //   },
-                          // }
-                          column.getSortByToggleProps()
-                        )}
-                        className={
-                          column.isSorted
-                            ? column.isSortedDesc
-                              ? "activity_header sorted_desc"
-                              : "activity_header sorted_asc"
-                            : "activity_header"
-                        }
-                      >
-                        <div className="header_inner d-flex flex-row p-0 m-0 justify-content-center">
-                          {
-                            // Render the header
-                            column.render("Header")
-                          }
-                          <div className="sort_arrow">
-                            {column.isSorted ? (
-                              column.isSortedDesc ? (
-                                <ArrowDropDownIcon />
-                              ) : (
-                                <ArrowDropUpIcon />
-                              )
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </th>
-                    ))
-                  }
-                </tr>
-              ))
-            }
-          </thead>
-          {/* Apply the table body props */}
-          <tbody {...getTableBodyProps()}>
-            {
-              // Loop over the table rows
-              page.map((row, i) => {
-                // Prepare the row for display
-                prepareRow(row);
-                let style = 1;
-                if (i % 2) {
-                  style = 2;
-                }
-
-                return (
-                  // Apply the row props
-                  <tr {...row.getRowProps()} className={`activity_row` + style}>
-                    {
-                      // Loop over the rows cells
-                      row.cells.map((cell) => {
-                        // Apply the cell props
-                        return (
-                          <td
-                            {...cell.getCellProps()}
-                            className="activity_data"
-                          >
-                            {
-                              // Render the cell contents
-                              cell.render("Cell")
-                            }
-                          </td>
-                        );
-                      })
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps([
+                      {
+                        style: {
+                          maxWidth: column.maxWidth,
+                          minWidth: column.minWidth,
+                          width: column.width,
+                        },
+                      },
+                      column.getSortByToggleProps(),
+                      getColumnProps(column),
+                      getHeaderProps(column),
+                    ])}
+                    className={
+                      column.isSorted
+                        ? column.isSortedDesc
+                          ? "activity_header sorted_desc"
+                          : "activity_header sorted_asc"
+                        : "activity_header"
                     }
-                  </tr>
-                );
-              })
-            }
+                  >
+                    <div className="header_inner d-flex flex-row p-0 m-0 justify-content-center">
+                      {column.render("Header")}
+
+                      <div className="sort_arrow">
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <ArrowDropDownIcon />
+                          ) : (
+                            <ArrowDropUpIcon />
+                          )
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              let style = 1;
+              if (i % 2) {
+                style = 2;
+              }
+
+              return (
+                <tr {...row.getRowProps()} className={`activity_row` + style}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td
+                        {...cell.getCellProps([
+                          {
+                            style: {
+                              maxWidth: cell.column.maxWidth,
+                              minWidth: cell.column.minWidth,
+                              width: cell.column.width,
+                            },
+                          },
+                          getColumnProps(cell.column),
+                          getCellProps(cell),
+                        ])}
+                        className="activity_data"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

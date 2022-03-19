@@ -9,7 +9,7 @@ import OfferIcon from "@mui/icons-material/AttachMoney";
 import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
-import { marketplaceSelect } from "./collectionStats";
+import { marketplaceSelectV2 } from "./collectionStats";
 import { getTimeSince } from "./getTimeSince";
 
 const range = (len) => {
@@ -23,37 +23,16 @@ const range = (len) => {
 const addTransaction = (transaction, prevPrice) => {
   const timeSince = getTimeSince(transaction["date"]);
   const date = <span>{timeSince}</span>;
+  const marketplace = marketplaceSelectV2(transaction["marketplace"]) || "";
 
   const seller = transaction["seller"] || "";
-  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
-  const sellerLink = (
-    <a
-      href={explorerLink("account", transaction["seller"])}
-      target="_blank"
-      style={{ textDecoration: "none", color: themeColors[0] }}
-    >
-      {shortenAddress(transaction["seller"])}
-    </a>
-  );
   const buyer = transaction["buyer"] || "";
-  const buyerLink =
-    transaction["buyer"] === seller ? (
-      ""
-    ) : (
-      <a
-        href={explorerLink("account", transaction["buyer"])}
-        target="_blank"
-        style={{ textDecoration: "none", color: themeColors[0] }}
-      >
-        {shortenAddress(transaction["buyer"])}
-      </a>
-    );
-
+  const txHash = transaction["tx"];
   const txType = transaction["type"];
   let symbol = "";
   let type = "";
-  let priceNumber = Number(transaction["price"]).toFixed(3);
-  let price = "◎ " + parseFloat(priceNumber);
+  let priceNumber = Number(transaction["price"]).toFixed(2);
+  let price = parseFloat(priceNumber);
 
   switch (txType) {
     case "buy":
@@ -138,11 +117,10 @@ const addTransaction = (transaction, prevPrice) => {
     date: date,
     price: price,
     // change: difference,
-    buyerLink: buyerLink,
-    sellerLink: sellerLink,
     buyer: buyer,
     seller: seller,
     marketplace: marketplace,
+    tx: txHash,
   };
 };
 

@@ -44,7 +44,7 @@ export const getTimeSince = (date) => {
     interval.length("seconds").toFixed(1) < 3600 &&
     interval.length("seconds").toFixed(1) >= 120
   ) {
-    timeSince = interval.length("minutes").toFixed(0) + " minutes ago";
+    timeSince = interval.length("minutes").toFixed(0) + " mins ago";
     return timeSince;
   }
 
@@ -57,7 +57,7 @@ export const getTimeSince = (date) => {
   }
 
   if (interval.length("seconds").toFixed(1) < 60) {
-    timeSince = interval.length("seconds").toFixed(0) + " seconds ago";
+    timeSince = interval.length("seconds").toFixed(0) + " secs ago";
     return timeSince;
   }
 };

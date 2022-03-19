@@ -5,8 +5,19 @@ import * as anchor from "@project-serum/anchor";
 
 const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
 
+const fetchWithRetry = async (uri, retry) => {
+  if (retry == 0) {
+    return "";
+  }
+  console.log("retry", retry)
+  return fetch(uri)
+    .then(res => res.json())
+    .catch(err => {
+      return fetchWithRetry(uri, retry - 1)
+    })
+}
+
 export const getTokenMetadata = async (mint) => {
-  // const connection = new Connection("mainnet-beta");
   try {
     const connection = new anchor.web3.Connection(rpcHost);
     const mintKey = new PublicKey(mint);
@@ -15,22 +26,7 @@ export const getTokenMetadata = async (mint) => {
 
     const fullData = tokenMetadata.data;
 
-    let detailedData = "";
-
-    for (let i = 0; i < 4; i++) {
-      try {
-        detailedData = await fetch(tokenMetadata.data.data.uri)
-          .then((response) => response.json())
-          .then((data) => {
-            return data;
-          });
-
-        break;
-      } catch (e) {
-        console.log(e);
-        setTimeout(() => {}, 5);
-      }
-    }
+    let detailedData = await fetchWithRetry(tokenMetadata.data.data.uri, 4);
 
     detailedData["mint"] = fullData.mint;
     detailedData["creators"] = fullData.data.creators;

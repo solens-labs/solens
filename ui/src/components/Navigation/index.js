@@ -12,6 +12,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import twitter from "../../assets/images/twitter.svg";
 import discord from "../../assets/images/discord.svg";
+import discord_icon from "../../assets/icons/discord4.png";
+import twitter_icon from "../../assets/icons/twitter1.png";
+import email_icon from "../../assets/icons/email1.png";
+import medium_icon from "../../assets/icons/medium1.png";
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
@@ -21,6 +25,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+// import ListIcon from "@mui/icons-material/List";
+import ListIcon from "@mui/icons-material/AutoGraph";
 import HomeIcon from "@mui/icons-material/Home";
 
 const Navigation = (props) => {
@@ -54,6 +60,10 @@ const Navigation = (props) => {
     setMenu(!menu);
   };
 
+  // const iconsFill = themeColors[4];
+  const iconsFill = "rgba(179, 87, 156, 0.7)";
+  // const iconsFill = "white";
+
   return (
     <>
       {/* <div className="maintenance col-12 d-flex justify-content-center">
@@ -62,7 +72,12 @@ const Navigation = (props) => {
       <nav className="navbar d-flex flex-row justify-content-between align-items-center">
         <div className="col-4 col-lg-2 d-flex justify-content-start">
           <Link to="/" style={{ textDecoration: "none" }}>
-            <img src={logo2} className="nav_logo" alt="solens logo" />
+            <img
+              src={logo2}
+              className="nav_logo"
+              alt="solens logo"
+              loading="lazy"
+            />
           </Link>
         </div>
 
@@ -73,10 +88,12 @@ const Navigation = (props) => {
                 <HomeIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">home</h1>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
+                home
+              </h1>
             </div>
           </Link>
           <Link to="/launch" style={{ textDecoration: "none" }}>
@@ -85,10 +102,10 @@ const Navigation = (props) => {
                 <RocketLaunchIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 launchzone
               </h1>
             </div>
@@ -99,10 +116,10 @@ const Navigation = (props) => {
                 <CollectionsIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 collections
               </h1>
             </div>
@@ -113,10 +130,10 @@ const Navigation = (props) => {
                 <AccountBalanceWalletIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
                 wallets
               </h1>
             </div>
@@ -127,10 +144,12 @@ const Navigation = (props) => {
                 <AccountCircleOutlinedIcon
                   fontSize={"medium"}
                   className="nav_icon"
-                  style={{ fill: themeColors[0] }}
+                  style={{ fill: iconsFill }}
                 />
               </div>
-              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xl-block">sell</h1>
+              <h1 className="p-2 pt-0 pb-0 nav_link d-none d-xxl-block">
+                sell
+              </h1>
             </div>
           </Link>
         </div>
@@ -176,7 +195,7 @@ const Navigation = (props) => {
                     <HomeIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -190,7 +209,7 @@ const Navigation = (props) => {
                     <RocketLaunchIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -204,7 +223,7 @@ const Navigation = (props) => {
                     <CollectionsIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -218,7 +237,7 @@ const Navigation = (props) => {
                     <AccountBalanceWalletIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
@@ -232,38 +251,67 @@ const Navigation = (props) => {
                     <AccountCircleOutlinedIcon
                       fontSize={"small"}
                       className="nav_icon"
-                      style={{ fill: themeColors[0] }}
+                      style={{ fill: iconsFill }}
                     />
                   </div>
                 </div>
               </Link>
               <div className="d-flex flex-row col-6 justify-content-around">
-                <a
-                  href={links.twitter.url}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  <TwitterIcon
-                    style={{ fill: "white" }}
-                    className="icon_link"
-                  />
-                </a>
-
-                <a
-                  href={links.medium.url}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  <MediumIcon style={{ fill: "white" }} className="icon_link" />
-                </a>
-
-                <a
-                  href={links.email.contact}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  <EmailIcon style={{ fill: "white" }} className="icon_link" />
-                </a>
+                <div className="icon_link">
+                  <a
+                    href={links.discord.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src={discord_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                  </a>
+                </div>
+                <div className="icon_link">
+                  <a
+                    href={links.twitter.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    {/* <TwitterIcon style={{ fill: "white" }} className="icon_link" /> */}
+                    <img
+                      src={twitter_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                  </a>
+                </div>
+                <div className="icon_link">
+                  <a
+                    href={links.medium.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src={medium_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                    {/* <MediumIcon style={{ fill: "white" }} className="icon_link" /> */}
+                  </a>
+                </div>
+                <div className="icon_link">
+                  <a
+                    href={links.email.contact}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <img
+                      src={email_icon}
+                      style={{ height: "1.1rem" }}
+                      className="icon_link"
+                    />
+                    {/* <EmailIcon style={{ fill: "white" }} /> */}
+                  </a>
+                </div>
               </div>
             </div>
           </div>

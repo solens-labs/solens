@@ -50,6 +50,7 @@ import Timeframe from "../../components/Timeframe";
 import sol_logo from "../../assets/images/sol_logo.png";
 import CollectionStat from "../../components/StatCollection";
 import { Helmet } from "react-helmet";
+import Image from "../../components/Image";
 
 export default function CollectionPage(props) {
   const { name } = useParams();
@@ -265,6 +266,10 @@ export default function CollectionPage(props) {
     }
   };
 
+  function imgLoad(img) {
+    img.style.visibility = "visible";
+  }
+
   return (
     <div className="collection_page d-flex flex-column align-items-center col-12 mt-4 mt-lg-5">
       {collectionInfo && collectionInfo.name && (
@@ -285,6 +290,7 @@ export default function CollectionPage(props) {
               src={collectionInfo.image}
               alt="collection_image"
               className="collection_image_large img-fluid"
+              loading="lazy"
             />
           ) : (
             <div className="collection_image_large d-flex justify-content-center overflow-hidden">
@@ -419,11 +425,16 @@ export default function CollectionPage(props) {
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <div className="nft_card d-flex flex-column align-items-center">
-                      <img
-                        src={topFourMetadata[i].image}
-                        className="nft_card_image"
-                        alt="nft_card"
-                      />
+                      <div className="nft_card_image_container">
+                        <Image
+                          src={topFourMetadata[i].image}
+                          className="nft_card_image"
+                          alt="nft_card"
+                          // loading="lazy"
+                          // onLoad={imgLoad(this)}
+                          // style={{ visibility: "hidden" }}
+                        />
+                      </div>
 
                       <div className="nft_card_details_home d-flex align-items-center">
                         <div className="col-12">
@@ -435,6 +446,7 @@ export default function CollectionPage(props) {
                                 src={sol_logo}
                                 alt="sol logo"
                                 className="price_logo_sm"
+                                loading="lazy"
                               />
                               {topFourMetadata[i].price}
                             </h5>
@@ -482,7 +494,7 @@ export default function CollectionPage(props) {
       </>
 
       <div className="top_tables d-flex flex-wrap justify-content-around col-12">
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-3">
+        <div className="tablebox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-3">
           {" "}
           <h1 className="top_table_header">Top Trades </h1>
           <div className="col-12 col-sm-10 col-md-8 col-xxl-7 mb-3">
@@ -493,7 +505,7 @@ export default function CollectionPage(props) {
               intervals={[1, 7, 1000]}
             />
           </div>
-          <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+          {/* <hr style={{ color: "white", width: "100%" }} className="mt-0" /> */}
           {topTradesAll?.length !== 0 &&
           topTradesWeek?.length !== 0 &&
           topTradesDay?.length !== 0 ? (
@@ -509,7 +521,7 @@ export default function CollectionPage(props) {
           )}
         </div>
 
-        <div className="chartbox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-5 mt-lg-3">
+        <div className="tablebox d-flex flex-column align-items-center col-12 col-lg-10 col-xl-5 col-xxl-5 mt-5 mt-lg-3">
           <h1 className="top_table_header">
             Top {traderType === "buyers" ? "Buyers" : "Sellers"}
           </h1>
@@ -531,7 +543,7 @@ export default function CollectionPage(props) {
               SELLERS
             </button>
           </div>
-          <hr style={{ color: "white", width: "100%" }} className="mt-0" />
+          {/* <hr style={{ color: "white", width: "100%" }} className="mt-0" /> */}
           {!zeroVolumeCollection &&
           topBuyers?.length !== 0 &&
           topSellers?.length !== 0 ? (

@@ -14,7 +14,7 @@ export default function CollectionSection(props) {
   const selectCollection = (collection) => {
     dispatch(setCollection(collection));
     const symbol = collection.symbol;
-    history.push("/nfts/" + symbol);
+    history.push("/collection/" + symbol); // COLLECTION LANDING LINK
   };
 
   return (

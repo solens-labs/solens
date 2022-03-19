@@ -43,11 +43,12 @@ const getMasterEdition = async (
 };
 
 const getCandyMachineCreator = async (
-  candyMachine: anchor.web3.PublicKey
+  candyMachine: anchor.web3.PublicKey,
+  programID: anchor.web3.PublicKey
 ): Promise<[anchor.web3.PublicKey, number]> => {
   return await anchor.web3.PublicKey.findProgramAddress(
     [Buffer.from("candy_machine"), candyMachine.toBuffer()],
-    Solens_Candy_Machine
+    programID
   );
 };
 
@@ -57,6 +58,8 @@ export async function mintToken(
   wallet: anchor.web3.PublicKey,
   raise: anchor.web3.PublicKey,
   mint: anchor.web3.PublicKey,
+  wlMint: anchor.web3.PublicKey,
+  wlTokenAccount: anchor.web3.PublicKey,
   program: anchor.Program
 ) {
   let [userTokenAccountAddress, _] =
@@ -69,7 +72,8 @@ export async function mintToken(
   const masterEdition = await getMasterEdition(mint);
 
   const [candyMachineCreator, creatorBump] = await getCandyMachineCreator(
-    candyMachineAddress
+    candyMachineAddress,
+    program.programId
   );
 
   // const candyMachine: any = await program.account.candyMachine.fetch(
@@ -108,6 +112,64 @@ export async function mintToken(
 
   let remainingAccounts: any = [];
 
+  if (wlMint) {
+    if (!wlTokenAccount) {
+      wlTokenAccount = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        wlMint,
+        payer,
+        false
+      );
+
+      // try {
+      //   await program.provider.connection.getAccountInfo(wlTokenAccount);
+      // } catch (err) {
+      //   const FAILED_TO_FIND_ACCOUNT = "Failed to find account";
+      //   const INVALID_ACCOUNT_OWNER = "Invalid account owner";
+
+      //   if (
+      //     // @ts-ignore
+      //     err.message === FAILED_TO_FIND_ACCOUNT ||
+      //     // @ts-ignore
+      //     err.message === INVALID_ACCOUNT_OWNER
+      //   ) {
+      //     let createATAix = await Token.createAssociatedTokenAccountInstruction(
+      //       ASSOCIATED_TOKEN_PROGRAM_ID,
+      //       TOKEN_PROGRAM_ID,
+      //       wlMint,
+      //       wlTokenAccount,
+      //       payer,
+      //       payer
+      //     );
+
+      //     instructions.push(createATAix);
+      //   }
+      //   console.log(err);
+      // }
+    }
+
+    remainingAccounts.push({
+      pubkey: wlTokenAccount,
+      isWritable: true,
+      isSigner: false,
+    });
+    remainingAccounts.push({
+      pubkey: wlMint,
+      isWritable: false,
+      isSigner: false,
+    });
+    remainingAccounts.push({
+      pubkey: payer,
+      isWritable: false,
+      isSigner: true,
+    });
+  }
+
+  let slothash = new anchor.web3.PublicKey(
+    "SysvarS1otHashes111111111111111111111111111"
+  );
+
   instructions.push(
     await program.instruction.mintNft(creatorBump, {
       accounts: {
@@ -126,7 +188,7 @@ export async function mintToken(
         systemProgram: SystemProgram.programId,
         rent: anchor.web3.SYSVAR_RENT_PUBKEY,
         clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-        recentBlockhashes: anchor.web3.SYSVAR_RECENT_BLOCKHASHES_PUBKEY,
+        recentBlockhashes: slothash,
         instructionSysvarAccount: anchor.web3.SYSVAR_INSTRUCTIONS_PUBKEY,
       },
       remainingAccounts:

@@ -23,15 +23,15 @@ export const api = {
     floor: server + "stats/floor",
     topTraders: server + "stats/topTraders",
     topNFTs: server + "stats/topNFTs",
-    listings: server + "listings",
     mintSymbol: server + "symbol?mint=",
     marketVolume: server + "totalMarketVolume",
+    currentFloor: server + "currentFloor",
+    collectionHistory: server + "recentCollectionActivity?symbol=",
 
+    listings: server + "listings",
     mintHistory: server + "mintHistory?mint=",
     walletListings: server + "walletListings?wallet=",
     walletHistory: server + "walletHistory?wallet=",
-    currentFloor: server + "currentFloor",
-    collectionHistory: server + "recentCollectionActivity?symbol=",
   },
 };
 
@@ -42,7 +42,7 @@ export const exchangeApi = {
   },
   solanart: {
     floor: `https://qzlsklfacc.medianetwork.cloud/get_floor_price?collection=`,
-    itemDetails: `https://solanart.io/search/?token=`,
+    itemDetails: `https://solanart.io/nft/`,
   },
   smb: {
     items: `https://market.solanamonkey.business/api/items`,
@@ -103,7 +103,7 @@ export const links = {
     text: "Twitter",
   },
   discord: {
-    url: "https://discord.gg/",
+    url: "https://discord.gg/8QxMK3WeMZ",
     text: "Discord",
   },
   opensea: {

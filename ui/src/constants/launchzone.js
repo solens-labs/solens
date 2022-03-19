@@ -25,9 +25,101 @@ export const launch_collections = [
     and superheroes.`,
   },
   {
+    name: "Club Crypto",
+    image: "http://arweave.net/FT22FtqdTb79PcBMV63mG-35SD2ofV1-fkP57M5B7vo",
+    candyMachineID: "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N",
+    wl: true,
+    wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",
+    launchDate: 1645387200000,
+    publicDate: 1645473600000,
+    endDate: undefined,
+    website: "https://www.clubcrypto.social/",
+    twitter: "https://twitter.com/clubcryptonft",
+    discord: "https://discord.gg/XABKGHVJgV",
+    symbol: "club_crypto",
+    supply: 4702,
+    preminted: 258,
+    price: 0.44,
+    wlPrice: 0.4,
+    description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
+    characters, with a mission to educate and introduce new users to Web3 and blockchain 
+    through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder 
+    Edition NFT have already been minted by early adopters! Don't miss your chance to 
+    join the Club.`,
+  },
+  {
+    name: "METAMUSKVERSE",
+    image:
+      "https://pbs.twimg.com/profile_images/1491539129578012677/HXOSEeJj_400x400.jpg",
+    candyMachineID: "3vwMh1tuQDTbdZpPHZVWcmq9bvubUeMbQWrrKjAQbJzH",
+    launchDate: 1646946000000,
+    endDate: undefined,
+    website: "https://www.metamuskverse.space/",
+    twitter: "https://twitter.com/metamuskverse",
+    discord: "https://discord.gg/Txnhtbt4R9",
+    symbol: "metamuskverse",
+    supply: 3333,
+    preminted: 111,
+    price: 1,
+    description: `Welcome to the Metamuskverse. 3333 Metamuskverse NFT holders will be 
+    the first inhabitants of the planet Mars in the multiplayer, play to earn (P2E), 
+    virtual reality (VR) game on Avalanche and Solana. Users will get to explore and 
+    discover the beautiful but dangerous universe, while fighting to earn planets and 
+    galaxies to expand their metaverse experience in an endless universe.`,
+  },
+  {
+    name: "Rhino Savanna NFT",
+    image: "https://arweave.net/DFc3OQlV2hW9Jdy_Tspv1SYtvyDgW6UUgawxoXsaSSM",
+    candyMachineID: "",
+    wl: false,
+    wlToken: "",
+    launchDate: 1647709200000,
+    publicDate: 1647795600000,
+    endDate: undefined,
+    website: "https://rhinosavanna.earth/",
+    twitter: "https://twitter.com/RhinoSavannaNFT",
+    discord: "https://discord.gg/RHINOSAVANNANFT",
+    symbol: "rhino_savanna",
+    supply: 8933,
+    preminted: 0,
+    price: "TBD",
+    wlPrice: "TBD",
+    description: `Rhino Savanna is a project with a big heart, aimed at promoting awareness 
+    of endangered species and climate change. With over 8933 passionately designed Rhinos, 
+    incorporating cultures and countries from all over the world, owning a Rhino symbolizes 
+    the mentality of global oneness. 
+ 
+    We're partnered with the Wildlife Conservation Network's Rhino Recovery Fund and 
+    International Rhino Foundation. We'll be donating 10% of Mint price for EACH minted 
+    NFT to be used towards Rhino protection, health and habitats!`,
+  },
+  {
+    name: "Dinosaur Gentleman",
+    image: "https://www.dinogents.com/images/main.gif",
+    candyMachineID: "",
+    wl: true,
+    wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",
+    launchDate: 1649350800000,
+    publicDate: 1649437200000,
+    endDate: undefined,
+    website: "https://www.dinogents.com/",
+    twitter: "https://twitter.com/dinogentsNFT/",
+    discord: "https://discord.gg/t8qjytpQ8d",
+    symbol: "dinogents",
+    supply: 500,
+    preminted: 0,
+    price: 0.5,
+    wlPrice: 0,
+    description: `Dinogents is built on Solana Blockchain for both Arts and 
+    Token $DNG with the most standard-based community in the Crypto Space.`,
+  },
+];
+
+export const minting_collections = [
+  {
     name: "Cutiez Angels",
     image:
-      "https://pbs.twimg.com/profile_images/1482662626631036936/7k_aon9Z_400x400.jpg",
+      "https://docs.google.com/uc?export=open&id=1IIMx_DqCeYgnIa2tqlmah2JoMb_MlqHT",
     candyMachineID: "4HpoW7prtsB1f1KykLo7j4BFuYwQpXQkuJhE3mqcG8cF",
     launchDate: 1643922000000,
     endDate: undefined,
@@ -47,25 +139,5 @@ export const launch_collections = [
     for you to observe on the main website of Cutiez Metaverse. We want to use our NFTs in 
     future merch store and P2E online TD game! This is what Solana NFT world needs... a 
     Cutiez Metaverse. For more information please visit our website and Discord server!`,
-  },
-  {
-    name: "Club Crypto",
-    image:
-      "https://pbs.twimg.com/profile_images/1463858752344395778/_VC73V2e_400x400.jpg",
-    candyMachineID: "",
-    endDate: undefined,
-    launchDate: "2022-02-18T12:00:00",
-    website: "https://www.clubcrypto.social/",
-    twitter: "https://twitter.com/clubcryptonft",
-    discord: "https://discord.gg/XABKGHVJgV",
-    symbol: "club_crypto",
-    supply: 4702,
-    preminted: 258,
-    price: 0.44,
-    description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
-    characters, with a mission to educate and introduce new users to Web3 and blockchain 
-    through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder 
-    Edition NFT have already been minted by early adopters! Don't miss your chance to 
-    join the Club.`,
   },
 ];

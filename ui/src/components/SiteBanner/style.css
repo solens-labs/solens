@@ -1,0 +1,8 @@
+.site_banner {
+  background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 120%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+}

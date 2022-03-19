@@ -9,7 +9,7 @@ import OfferIcon from "@mui/icons-material/AttachMoney";
 import AcceptOfferIcon from "@mui/icons-material/ThumbUp";
 import CancelOfferIcon from "@mui/icons-material/ThumbDown";
 import UnknownIcon from "@mui/icons-material/QuestionMark";
-import { marketplaceSelect } from "./collectionStats";
+import { marketplaceSelect, marketplaceSelectV2 } from "./collectionStats";
 import { getTimeSince } from "./getTimeSince";
 import { getTokenMetadata } from "./getMetadata";
 
@@ -32,7 +32,12 @@ const addTransaction = async (transaction) => {
         href={`/mint/${transaction["mint"]}`}
         style={{ textDecoration: "none" }}
       >
-        <img src={link} className="activity_image" alt="nft image" />
+        <img
+          src={link}
+          className="activity_image"
+          alt="nft image"
+          loading="lazy"
+        />
       </a>
     );
   }
@@ -41,7 +46,7 @@ const addTransaction = async (transaction) => {
   const date = <span>{timeSince}</span>;
 
   const seller = transaction["owner"] || "";
-  const marketplace = marketplaceSelect(transaction["marketplace"]) || "";
+  const marketplace = marketplaceSelectV2(transaction["marketplace"]) || "";
   const sellerLink = (
     <a
       href={explorerLink("account", transaction["owner"])}

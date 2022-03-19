@@ -178,6 +178,7 @@ export default function CollectionItems(props) {
               src={collectionInfo.image}
               alt="collection_image"
               className="collection_image_large img-fluid"
+              loading="lazy"
             />
           ) : (
             <div className="collection_image_large d-flex justify-content-center overflow-hidden">

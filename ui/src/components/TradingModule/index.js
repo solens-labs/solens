@@ -12,7 +12,7 @@ import TradePurchase from "../TradePurchase";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import TradeCancel from "../TradeCancel";
 import Loader from "../Loader";
-import { marketplaceSelect } from "../../utils/collectionStats";
+import { marketplaceSelectV2 } from "../../utils/collectionStats";
 import sa_logo from "../../assets/images/ss_logo.png";
 
 export default function TradingModule(props) {
@@ -37,7 +37,7 @@ export default function TradingModule(props) {
   const [txHash, setTxHash] = useState("");
 
   const collectionInsights = () => {
-    history.push(`/nfts/${collection.symbol}`);
+    history.push(`/collection/${collection.symbol}`); // COLLECTION LANDING LINK
     return;
   };
 
@@ -65,7 +65,7 @@ export default function TradingModule(props) {
         {listed && (
           <div className="col-12 d-flex flex-column align-items-center justify-content-center p-md-2 mt-3 mb-2">
             <h4 className="m-0 p-0">
-              Listed on {marketplaceSelect(marketplace)}
+              Listed on {marketplaceSelectV2(marketplace)}
             </h4>
             <h4 className="item_price m-0 mt-2 p-0">{price} SOL</h4>
             {/* <h5 className="" style={{ fontSize: "1rem" }}>
@@ -165,6 +165,7 @@ export default function TradingModule(props) {
                     height: 41,
                     background: "transparent",
                   }}
+                  loading="lazy"
                 />
               </div>
             </button>

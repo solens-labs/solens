@@ -1,12 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./style.css";
-import { useTable, useSortBy, usePagination } from "react-table";
+import { useTable, useSortBy, usePagination, useFlexLayout } from "react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Loader from "../Loader";
 
+const defaultPropGetter = () => ({});
+
 export default function ActivityWalletTable(props) {
-  const { data } = props;
+  const {
+    data,
+    getHeaderProps = defaultPropGetter,
+    getColumnProps = defaultPropGetter,
+    getRowProps = defaultPropGetter,
+    getCellProps = defaultPropGetter,
+  } = props;
 
   const blankObject = {
     image: "--",
@@ -35,11 +43,13 @@ export default function ActivityWalletTable(props) {
   ];
 
   const [tableData, setTableData] = useState(emptyObject);
+  const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (Object.keys(data).length === 0) {
-      // setLoading(true);
+      setNoData(true);
+      setLoading(false);
     } else {
       setTableData(data);
       setLoading(false);
@@ -59,6 +69,7 @@ export default function ActivityWalletTable(props) {
       {
         Header: "TYPE",
         accessor: "txType",
+        width: 90,
       },
       {
         Header: "DETAIL",
@@ -71,10 +82,14 @@ export default function ActivityWalletTable(props) {
       {
         Header: "PRICE",
         accessor: "price",
+        Cell: (row) => {
+          return row.value + " ◎";
+        },
       },
       {
         Header: "MARKET",
         accessor: "marketplace",
+        minWidth: 175,
       },
       {
         Header: "ADDRESS",
@@ -87,13 +102,6 @@ export default function ActivityWalletTable(props) {
       {
         Header: "DATE",
         accessor: "date",
-        sortMethod: (a, b) => {
-          var a1 = new Date(a).getTime();
-          var b1 = new Date(b).getTime();
-          if (a1 < b1) return 1;
-          else if (a1 > b1) return -1;
-          else return 0;
-        },
       },
     ],
     []
@@ -121,12 +129,13 @@ export default function ActivityWalletTable(props) {
       initialState: { pageSize: 10 },
     },
     useSortBy,
-    usePagination
+    usePagination,
+    useFlexLayout
   );
 
   return (
     <>
-      {!loading && (
+      {!loading && !noData && (
         <>
           <div className="full_width_table col-12 data_table overflow-auto">
             <table {...getTableProps()} style={{ width: "100%" }}>
@@ -197,7 +206,9 @@ export default function ActivityWalletTable(props) {
         </>
       )}
 
-      {loading && <Loader />}
+      {loading && !noData && <Loader />}
+
+      {noData && <h3>This wallet has no activity</h3>}
     </>
   );
 }

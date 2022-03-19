@@ -2,7 +2,7 @@
   background: linear-gradient(-45deg, rgb(65, 37, 156), rgb(134, 64, 117) 80%);
   /* margin: 5px; */
   width: 375px;
-  height: 400px;
+  height: 420px;
   border: 1px solid black;
   border-radius: 15px;
   overflow: hidden;
@@ -20,6 +20,7 @@
 .collection_image_container {
   height: 275px;
   overflow: hidden;
+  border-bottom: 1px solid black;
   /* background: rgb(28, 0, 59); */
   background: transparent;
 }
@@ -47,8 +48,7 @@
 
 .collection_card_details {
   /* height: 100%; */
-  border-top: 1px solid black;
-  height: 125px;
+  height: 145px;
   /* background: red; */
   /* padding: 5px 0px 0px 0px; */
   display: flex;
