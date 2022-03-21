@@ -67,32 +67,32 @@ export const launch_collections = [
     discover the beautiful but dangerous universe, while fighting to earn planets and 
     galaxies to expand their metaverse experience in an endless universe.`,
   },
-  {
-    name: "Rhino Savanna NFT",
-    image: "https://arweave.net/DFc3OQlV2hW9Jdy_Tspv1SYtvyDgW6UUgawxoXsaSSM",
-    candyMachineID: "",
-    wl: false,
-    wlToken: "",
-    launchDate: 1648314000000,
-    publicDate: 1648400400000,
-    endDate: undefined,
-    website: "https://rhinosavanna.earth/",
-    twitter: "https://twitter.com/RhinoSavannaNFT",
-    discord: "https://discord.gg/RHINOSAVANNANFT",
-    symbol: "rhino_savanna",
-    supply: 8933,
-    preminted: 0,
-    price: "TBD",
-    wlPrice: "TBD",
-    description: `Rhino Savanna is a project with a big heart, aimed at promoting awareness 
-    of endangered species and climate change. With over 8933 passionately designed Rhinos, 
-    incorporating cultures and countries from all over the world, owning a Rhino symbolizes 
-    the mentality of global oneness. 
- 
-    We're partnered with the Wildlife Conservation Network's Rhino Recovery Fund and 
-    International Rhino Foundation. We'll be donating 10% of Mint price for EACH minted 
-    NFT to be used towards Rhino protection, health and habitats!`,
-  },
+  // {
+  //   name: "Rhino Savanna NFT",
+  //   image: "https://arweave.net/DFc3OQlV2hW9Jdy_Tspv1SYtvyDgW6UUgawxoXsaSSM",
+  //   candyMachineID: "",
+  //   wl: false,
+  //   wlToken: "",
+  //   launchDate: 1648314000000,
+  //   publicDate: 1648400400000,
+  //   endDate: undefined,
+  //   website: "https://rhinosavanna.earth/",
+  //   twitter: "https://twitter.com/RhinoSavannaNFT",
+  //   discord: "https://discord.gg/RHINOSAVANNANFT",
+  //   symbol: "rhino_savanna",
+  //   supply: 8933,
+  //   preminted: 0,
+  //   price: "TBD",
+  //   wlPrice: "TBD",
+  //   description: `Rhino Savanna is a project with a big heart, aimed at promoting awareness
+  //   of endangered species and climate change. With over 8933 passionately designed Rhinos,
+  //   incorporating cultures and countries from all over the world, owning a Rhino symbolizes
+  //   the mentality of global oneness.
+
+  //   We're partnered with the Wildlife Conservation Network's Rhino Recovery Fund and
+  //   International Rhino Foundation. We'll be donating 10% of Mint price for EACH minted
+  //   NFT to be used towards Rhino protection, health and habitats!`,
+  // },
   {
     name: "Dinosaur Gentleman",
     image: "https://www.dinogents.com/images/main.gif",
