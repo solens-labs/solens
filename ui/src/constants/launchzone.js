@@ -24,49 +24,49 @@ export const launch_collections = [
     80’s, the project is a forerunner for exciting projects yet to come, think sci-fi 
     and superheroes.`,
   },
-  {
-    name: "Club Crypto",
-    image: "http://arweave.net/FT22FtqdTb79PcBMV63mG-35SD2ofV1-fkP57M5B7vo",
-    candyMachineID: "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N",
-    wl: true,
-    wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",
-    launchDate: 1645387200000,
-    publicDate: 1645473600000,
-    endDate: undefined,
-    website: "https://www.clubcrypto.social/",
-    twitter: "https://twitter.com/clubcryptonft",
-    discord: "https://discord.gg/XABKGHVJgV",
-    symbol: "club_crypto",
-    supply: 4702,
-    preminted: 258,
-    price: 0.44,
-    wlPrice: 0.4,
-    description: `Club Crypto is a collection of 4,702 algorithmically generated isometric 
-    characters, with a mission to educate and introduce new users to Web3 and blockchain 
-    through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder 
-    Edition NFT have already been minted by early adopters! Don't miss your chance to 
-    join the Club.`,
-  },
-  {
-    name: "METAMUSKVERSE",
-    image:
-      "https://pbs.twimg.com/profile_images/1491539129578012677/HXOSEeJj_400x400.jpg",
-    candyMachineID: "3vwMh1tuQDTbdZpPHZVWcmq9bvubUeMbQWrrKjAQbJzH",
-    launchDate: 1646946000000,
-    endDate: undefined,
-    website: "https://www.metamuskverse.space/",
-    twitter: "https://twitter.com/metamuskverse",
-    discord: "https://discord.gg/Txnhtbt4R9",
-    symbol: "metamuskverse",
-    supply: 3333,
-    preminted: 111,
-    price: 1,
-    description: `Welcome to the Metamuskverse. 3333 Metamuskverse NFT holders will be 
-    the first inhabitants of the planet Mars in the multiplayer, play to earn (P2E), 
-    virtual reality (VR) game on Avalanche and Solana. Users will get to explore and 
-    discover the beautiful but dangerous universe, while fighting to earn planets and 
-    galaxies to expand their metaverse experience in an endless universe.`,
-  },
+  // {
+  //   name: "Club Crypto",
+  //   image: "http://arweave.net/FT22FtqdTb79PcBMV63mG-35SD2ofV1-fkP57M5B7vo",
+  //   candyMachineID: "yszesogBdEQevowM24frrWu9TrShiepF6fyTzEDfJ1N",
+  //   wl: true,
+  //   wlToken: "epHTbjLiF3Bj5aJ2JbyM55J2xTSAmCkwasCSaduW9Xg",
+  //   launchDate: 1645387200000,
+  //   publicDate: 1645473600000,
+  //   endDate: undefined,
+  //   website: "https://www.clubcrypto.social/",
+  //   twitter: "https://twitter.com/clubcryptonft",
+  //   discord: "https://discord.gg/XABKGHVJgV",
+  //   symbol: "club_crypto",
+  //   supply: 4702,
+  //   preminted: 258,
+  //   price: 0.44,
+  //   wlPrice: 0.4,
+  //   description: `Club Crypto is a collection of 4,702 algorithmically generated isometric
+  //   characters, with a mission to educate and introduce new users to Web3 and blockchain
+  //   through social, P2E game mechanics and Metaverse integration. 258 exclusive Founder
+  //   Edition NFT have already been minted by early adopters! Don't miss your chance to
+  //   join the Club.`,
+  // },
+  // {
+  //   name: "METAMUSKVERSE",
+  //   image:
+  //     "https://pbs.twimg.com/profile_images/1491539129578012677/HXOSEeJj_400x400.jpg",
+  //   candyMachineID: "3vwMh1tuQDTbdZpPHZVWcmq9bvubUeMbQWrrKjAQbJzH",
+  //   launchDate: 1646946000000,
+  //   endDate: undefined,
+  //   website: "https://www.metamuskverse.space/",
+  //   twitter: "https://twitter.com/metamuskverse",
+  //   discord: "https://discord.gg/Txnhtbt4R9",
+  //   symbol: "metamuskverse",
+  //   supply: 3333,
+  //   preminted: 111,
+  //   price: 1,
+  //   description: `Welcome to the Metamuskverse. 3333 Metamuskverse NFT holders will be
+  //   the first inhabitants of the planet Mars in the multiplayer, play to earn (P2E),
+  //   virtual reality (VR) game on Avalanche and Solana. Users will get to explore and
+  //   discover the beautiful but dangerous universe, while fighting to earn planets and
+  //   galaxies to expand their metaverse experience in an endless universe.`,
+  // },
   // {
   //   name: "Rhino Savanna NFT",
   //   image: "https://arweave.net/DFc3OQlV2hW9Jdy_Tspv1SYtvyDgW6UUgawxoXsaSSM",
@@ -112,6 +112,26 @@ export const launch_collections = [
     wlPrice: 0,
     description: `Dinogents is built on Solana Blockchain for both Arts and 
     Token $DNG with the most standard-based community in the Crypto Space.`,
+  },
+  {
+    name: "Dude Pixels",
+    image:
+      "https://cdn.discordapp.com/attachments/876610280531066880/957049779429457960/IMG_1090.jpg",
+    candyMachineID: "",
+    wl: false,
+    wlToken: "",
+    launchDate: 1650474000000,
+    publicDate: 1650474000000,
+    endDate: undefined,
+    website: "",
+    twitter: "",
+    discord: "",
+    symbol: "pixeldudes",
+    supply: 3333,
+    preminted: 0,
+    price: 1,
+    wlPrice: 0,
+    description: `Dude, it's pixels all over the place.`,
   },
 ];
 
