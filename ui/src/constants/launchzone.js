@@ -30,8 +30,8 @@ export const launch_collections = [
     candyMachineID: "72ktUeBDSjKJuJWL9KxKYodMBE1zYQJ5UrdMkKzACema",
     wl: false,
     wlToken: "F9LEgZvh4NnLdyGt8anJ44JjgKTW5bpkcfUdGA9UFXzz",
-    launchDate: 1651525200000,
-    publicDate: 1651525200000,
+    launchDate: 1651521600000,
+    publicDate: 1651521600000,
     endDate: undefined,
     website: "https://rhinosavanna.earth/",
     twitter: "https://twitter.com/RhinoSavannaNFT",
@@ -39,8 +39,8 @@ export const launch_collections = [
     symbol: "rhino_savanna",
     supply: 1560,
     preminted: 52,
-    price: "1.9",
-    wlPrice: "2.4",
+    price: "2.4",
+    wlPrice: "1.9",
     description: `Rhino Savanna is a project with a big heart, aimed at promoting awareness
     of endangered species and climate change. With over 8933 passionately designed Rhinos,
     incorporating cultures and countries from all over the world, owning a Rhino symbolizes
